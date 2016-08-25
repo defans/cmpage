@@ -1,0 +1,88 @@
+
+<div class="bjui-pageContent">
+    <form action="/cmpage/module/save" data-toggle="validate" data-alertmsg="false">
+        <input name="id" type="hidden" value="<%= md.id%>" />
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+            <tr>
+                <td>
+                    <label  class="control-label x85">模块名称：</label>
+                    <input type="text" name="c_modulename"  value="<%= md.c_modulename%>" data-rule="required" size="20">
+                </td>
+                <td>
+                    <label  class="control-label x85">别  名：</label>
+                    <input type="text" name="c_alias"  value="<%= md.c_alias%>" data-rule="required" size="20">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label  class="control-label x85">数据表：</label>
+                    <input type="text" name="c_table" value="<%= md.c_table%>" data-rule="required" size="20">
+                </td>
+                <td>
+                    <label  class="control-label x85">数据来源：</label>
+                    <input type="text" name="c_datasource"  value="<%= md.c_datasource%>" data-rule="required" size="20">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label x85">多行选择：</label>
+                    <input type="checkbox" name="c_multiselect"  data-toggle="icheck" data-label="是否多行选择"  <%= md.c_multiselect ? "checked":""%> >
+                </td>
+                <td>
+                    <label class="control-label x85">分页：</label>
+                    <input type="checkbox" name="c_pager" data-toggle="icheck"   data-label="是否分页" <%= md.c_pager ? "checked":""%> >
+                    <label  class="control-label x85">每页行数：</label>
+                    <input type="text" name="c_page_size"  value="<%= md.c_page_size%>"  size="5">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label  class="control-label x85">模块路径：</label>
+                    <input type="text" name="c_path"  value="<%= md.c_path%>"  size="20">
+                </td>
+                <td>
+                    <label  class="control-label x85">排序方式：</label>
+                    <input type="text" name="c_sort_by"  value="<%= md.c_sort_by%>"  size="20">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label  class="control-label x85">编辑页列数：</label>
+                    <input type="text" name="c_edit_column"  value="<%= md.c_edit_column%>" data-rule="required" size="20">
+                </td>
+                <td >
+                    <label  class="control-label x85">子模块：</label>
+                    <textarea name="c_module_rec"  data-toggle="autoheight" cols="20" rows="1"><%= md.c_module_rec%></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <label for="" class="control-label x85">MUI设置：</label>
+                    <textarea name="c_mui"  data-toggle="autoheight" cols="60" rows="1"><%= md.c_mui%></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <label for="" class="control-label x85">备注：</label>
+                    <textarea name="c_memo"  data-toggle="autoheight" cols="60" rows="1"><%= md.c_memo%></textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter" >
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
+        <!--<li ><button type="button" class="btn-orange"  data-icon="search" onclick="modulePreLook(this);">预览</button></li>-->
+        <li ><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>
+<script type="text/javascript" >
+
+    function modulePreLook(obj) {
+        $(obj).navtab({ id: 'page<%= md.c_modulename%>', url: '/cmpage/page/list?modulename=<%= md.c_modulename%>', title: '<%= md.c_modulename%> 预览' });
+    }
+
+</script>

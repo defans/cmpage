@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+    <meta name="keywords" content="CmPage, ThinkJS, Node.js, B-JUI, MUI, HTML5+, MVC, 权限管理, 工作流, " />
+    <meta name="description" content="CmPage 是一款企业信息管理系统的二次开发框架，采用ThinkJS和B-JUI等开源框架实现。" />
+  <title>CmPage 管理系统框架 采用ThinkJS B-JUI </title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <link rel="alternate icon" type="image/png" href="/static/assets/i/favicon.png">
+  <link rel="stylesheet" href="/static/assets/css/amazeui.min.css"/>
+  <style>
+    .get {
+      background: #1E5B94;
+      color: #fff;
+      text-align: center;
+      padding: 100px 0;
+    }
+
+    .get-title {
+      font-size: 200%;
+      border: 2px solid #fff;
+      padding: 20px;
+      display: inline-block;
+    }
+
+    .get-btn {
+      background: #fff;
+    }
+
+    .detail {
+      background: #fff;
+    }
+
+    .detail-h2 {
+      text-align: center;
+      font-size: 150%;
+      margin: 40px 0;
+    }
+
+    .detail-h3 {
+      color: #1f8dd6;
+    }
+
+    .detail-p {
+      color: #7f8c8d;
+    }
+
+    .detail-mb {
+      margin-bottom: 30px;
+    }
+
+    .hope {
+      background: #0bb59b;
+      padding: 50px 0;
+    }
+
+    .hope-img {
+      text-align: center;
+    }
+
+    .hope-hr {
+      border-color: #149C88;
+    }
+
+    .hope-title {
+      font-size: 140%;
+    }
+
+    .about {
+      background: #fff;
+      padding: 40px 0;
+      color: #7f8c8d;
+    }
+
+    .about-color {
+      color: #34495e;
+    }
+
+    .about-title {
+      font-size: 180%;
+      padding: 30px 0 50px 0;
+      text-align: center;
+    }
+
+    .footer p {
+      color: #7f8c8d;
+      margin: 0;
+      padding: 15px 0;
+      text-align: center;
+      background: #2d3e50;
+    }
+  </style>
+</head>
+
+<body>
+<% include _index_header.html %>
+<div class="get" >
+  <div class="am-g">
+    <div class="am-u-lg-12">
+      <h1 class="get-title">CmPage - 信息管理系统的开源框架</h1>
+
+      <p>
+        期待你的参与，共同打造一个简单易用的信息管理系统的二次开发框架
+      </p>
+
+      <p>
+        <a href="https://git.oschina.net/defans/cmpage" target="_blank" class="am-btn am-btn-sm get-btn">码云上的我√</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="detail">
+  <div class="am-g am-container">
+    <div class="am-u-lg-12">
+      <h2 class="detail-h2">极速开发、拥抱变化，期待和你一起去实现!</h2>
+
+      <div class="am-g">
+        <div class="am-u-lg-3 am-u-md-6 am-u-sm-12 detail-mb">
+
+          <h3 class="detail-h3">
+            <i class="am-icon-plane am-icon-sm"></i>
+            为开发效率而生
+          </h3>
+
+          <p class="detail-p">
+            CmPage 把我们在信息系统开发过程反复不断复制黏贴的部分用框架固定下来，通过参数的配置和功能的扩展来实现一个业务模块，大大提高了开发效率，适用模块特别多的企业级系统。
+          </p>
+        </div>
+        <div class="am-u-lg-3 am-u-md-6 am-u-sm-12 detail-mb">
+          <h3 class="detail-h3">
+            <i class="am-icon-send-o am-icon-sm"></i>
+            跟上业务变化的节奏
+          </h3>
+
+          <p class="detail-p">
+            CmPage 通过便捷而丰富的模块配置信息，当业务发生变化的时候，我们能够做少量的改动，即可实现新的业务逻辑。
+          </p>
+        </div>
+        <div class="am-u-lg-3 am-u-md-6 am-u-sm-12 detail-mb">
+          <h3 class="detail-h3">
+            <i class="am-icon-check-square-o am-icon-sm"></i>
+            内置权限管理
+          </h3>
+          <p class="detail-p">
+            CmPage 通过角色的设置来控制登陆用户的菜单、按钮、字段显示、业务流程等；通过账套的处理来控制数据的展示范围。
+          </p>
+        </div>
+        <div class="am-u-lg-3 am-u-md-6 am-u-sm-12 detail-mb">
+          <h3 class="detail-h3">
+            <i class="am-icon-mobile am-icon-sm"></i>
+            轻松实现移动端开发
+          </h3>
+          <p class="detail-p">
+            CmPage 基于HTML5+和MUI框架提供了手机APP的业务端框架，通过后端的模块配置增加特定的MUI样式来快速实现。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hope">
+  <div class="am-g am-container">
+    <div class="am-u-lg-4 am-u-md-6 am-u-sm-12 hope-img">
+      <img src="/static/assets/i/examples/landing.png" alt="" data-am-scrollspy="{animation:'slide-left', repeat: false}">
+      <hr class="am-article-divider am-show-sm-only hope-hr">
+    </div>
+    <div class="am-u-lg-8 am-u-md-6 am-u-sm-12">
+      <h2 class="hope-title">CmPage 为您打造新一代的信息管理系统而服务</h2>
+
+      <p>
+        业务需求的变化是常态的，如何让管理系统能更好地适应变化并快速地修正BUG和实现新的业务流程，我们期望 CmPage 能帮助您解决问题或者给您提供更多的思路，
+          本系统采用的开源框架主要是B-JUI（前端UI框架）、ThinkJS（后端NodeJS框架）和MUI（手机端H5框架），服务于开发人员而非最终用户。
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="about">
+  <div class="am-g am-container">
+    <div class="am-u-lg-12">
+      <h2 class="about-title about-color">我们期待着您的参与和反馈，谢谢！</h2>
+
+      <div  class="am-g">
+        <!--<div id="register" class="am-u-lg-6 am-u-md-4 am-u-sm-12">-->
+          <!--<form class="am-form">-->
+            <!--<label for="email" class="about-color">邮箱：</label>-->
+            <!--<input id="email" type="email">-->
+            <!--<br/>-->
+            <!--<label for="pwd" class="about-color">密码：</label>-->
+            <!--<input id="pwd" type="password">-->
+            <!--<br/>-->
+            <!--<label for="message" class="about-color">留言:</label>-->
+            <!--<textarea id="message"></textarea>-->
+            <!--<br/>-->
+            <!--<button type="submit" class="am-btn am-btn-primary am-btn-sm"><i class="am-icon-check"></i> 提交注册</button>-->
+            <!--&lt;!&ndash;<button type="button" class="am-btn am-btn-primary am-btn-sm"><i class="am-icon-check"></i> 登陆</button>&ndash;&gt;-->
+          <!--</form>-->
+          <!--<hr class="am-article-divider am-show-sm-only">-->
+        <!--</div>-->
+
+        <div class="am-u-lg-6 am-u-md-8 am-u-sm-12">
+          <h4 class="about-color">关于我们</h4>
+          <p>从新世纪初开始写各种代码直到现在，大多是无偿地使用了各种‘轮子’来使我们跑得更快一点，以便能早日到达目的地，好有更多的时间看各种风景。奔跑在程序研发的路上，我们所
+          得到的帮助要远多于付出，汗颜于此，在我们还能有动力写代码的时候也做出点贡献吧，期望能给同样和我一样默默无闻地码着各种代码的你，提供一点帮助，好能让你也会有更多的时间看看各种风景。</p>
+        </div>
+        <div class="am-u-lg-6 am-u-md-4 am-u-sm-12">
+          <p> </p>
+          <img src="/static/assets/i/about.jpg" alt="" data-am-scrollspy="{animation:'slide-left', repeat: false}" >
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% include _index_footer.html %>
+
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="/static/assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="/static/assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<script src="/static/assets/js/amazeui.min.js"></script>
+</body>
+</html>

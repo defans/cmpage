@@ -1,0 +1,104 @@
+
+<div class="bjui-pageHeader">
+    <label>请选择功能模块，然后点击</label>
+    <a class="btn btn-green" href="#" onclick="rolep_savePrivilege();"  data-icon="save"> 保存权限 </a>
+    <label>进行保存该角色的权限集</label>
+</div>
+<div class="bjui-pageContent" style="padding:5px">
+
+    <div style="float:left; display:block; overflow:auto; width:240px; height:100%; border:solid 1px #CCC; line-height:21px; background:#fff">
+
+        <ul id="rolepTree" class="ztree" data-toggle="ztree"
+            data-options="{
+                onClick: 'rolep_onClick'
+            }"
+        >
+            <% treeList.forEach(function(item)  { %>
+            <li data-id="<%= item.id%>" data-pid="<%= item.c_pid%>" data-root="<%= item.c_root%>"
+                data-open="<%= (item.c_pid == 0) %>" ><%= item.c_name%></li>
+            <%});%>
+        </ul>
+
+    </div>
+
+    <div class="unitBox" style="margin-left:246px;">
+
+        <ul id="rolepvTree" class="ztree"></ul>
+
+    </div>
+
+    <input type="hidden" id="rolep_roleID" value="0" />
+</div>
+
+
+<SCRIPT type="text/javascript">
+
+    function rolep_savePrivilege(){
+        var treeObj = $.fn.zTree.getZTreeObj("rolepvTree");
+        var nodes = treeObj.getCheckedNodes(false);
+        //递交未选中的权限ID
+        var ids = "";
+        if(nodes.length >0){
+            $.each(nodes,function(i,n){
+                ids += n.id +",";
+            });
+            ids = ids.substr(0,ids.length -1);
+        }
+        $.ajax({
+            type: "POST",
+            url: "/admin/code/role_save_privilege",
+            data: "roleID="+$("#rolep_roleID").val()+"&ids="+ids,
+            async: false,
+            success: function (res) {
+                var msg = $.parseJSON(res);
+                $(this).alertmsg('info',msg.message);
+            }
+        });
+    }
+
+    var rolepv_setting = {
+        check:{
+            enable: true
+        },
+        data: {
+            key: {
+                name:"c_name",
+                checked:"isAllow",
+                title: "c_desc"
+            },
+            simpleData: {
+                enable: true,
+                idKey:"id",
+                pIdKey:"c_pid"
+            }
+        },
+        callback: {
+        }
+    };
+
+    var rolepv_zNodes = [];
+
+    function rolep_onClick(event, treeId, treeNode) {
+        $("#rolep_roleID").val(treeNode.id);
+        //刷新右侧权限树
+        $.ajax({
+            type: "POST",
+            url: "/admin/code/role_get_privilege_tree",
+            data: "roleID="+treeNode.id,
+            async: false,
+            success: function (res) {
+//                rolepv_zNodes =$.parseJSON(res);
+                //alert(JSON.stringify(res[0]));
+                rolepv_zNodes = [];
+                res.forEach(function(node){
+                    rolepv_zNodes.push(node);
+                });;
+                if(rolepv_zNodes.length >0){
+                    rolepv_zNodes[0].open =true;
+                    $.fn.zTree.init($("#rolepvTree"), rolepv_setting, rolepv_zNodes);
+                }
+            }
+        });
+    }
+
+</SCRIPT>

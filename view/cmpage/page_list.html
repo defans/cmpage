@@ -1,0 +1,122 @@
+
+<div class="bjui-pageHeader">
+    <form id="pagerForm" name="page<%= page.c_modulename%>Form" data-toggle="ajaxsearch" action="/cmpage/page/list" method="post">
+        <input type="hidden" name="modulename" value="<%= page.c_modulename%>" />
+        <input name="parmsUrl" type="hidden" value="<%= page.parmsUrl%>" />
+        <input type="hidden" id="idSelect<%= page.c_modulename%>" name="idSelect" value="" />
+
+        <% if (page.c_pager) {%>
+            <input type="hidden" name="pageSize" value="<%= page.pageSize%>">
+            <input type="hidden" name="pageIndex" value="<%= page.pageIndex%>">
+            <input type="hidden" name="orderField" value="<%= page.orderField%>">
+            <input type="hidden" name="orderDirection" value="<%= page.orderDirection%>">
+        <% }%>
+        <div class="bjui-searchBar">
+            <%- vb.queryHtml%>
+            <button type="submit" class="btn btn-default" id="btnSearch<%= page.c_modulename%>" data-icon="search"><%= page.c_module_rec==="self" ? "":"查询"%></button>
+
+            <%- vb.btnHeaderHtml%>
+
+
+            <%- vb.otherHtml%>
+
+            <% if(page.c_module_rec !=="self") {%>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-close " data-icon="close">关闭</button>
+                </div>
+            <% }%>
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent">
+    <table data-toggle="tablefixed" data-width="100%"  data-nowrap="false" data-selected-multi="<% page.c_multiselect ? "true":""%>">
+    <%- vb.listHtml%>
+
+    </table>
+
+</div>
+<% if(page.c_pager){ %>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize" >
+                <%if(page.pageSize == 10) {%>
+                <option value="10" selected>10</option>
+                <%} else {%>
+                <option value="10" >10</option>
+                <%}%>
+                <%if(page.pageSize == 20) {%>
+                <option value="20" selected>20</option>
+                <%} else {%>
+                <option value="20" >20</option>
+                <%}%>
+                <%if(page.pageSize == 30) {%>
+                <option value="30" selected>30</option>
+                <%} else {%>
+                <option value="30" >30</option>
+                <%}%>
+                <%if(page.pageSize == 50) {%>
+                <option value="50" selected>50</option>
+                <%} else {%>
+                <option value="50" >50</option>
+                <%}%>
+            </select>
+        </div>
+        <span>&nbsp;条，共  <%= vb.count%> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<%=vb.count%>" data-page-size="<%=page.pageSize%>" data-page-current="<%=page.pageIndex%>">
+    </div>
+</div>
+
+<% } %>
+
+<script type="text/javascript">
+    function page<%= page.c_modulename%>Edit_onClose($navtab) {
+        //$("#pagerForm",$navtab).submit();
+        //$("#btnSearch<%= page.c_modulename%>").click();
+    }
+    function page<%= page.c_modulename%>_refresh() {
+        $("#btnSearch<%= page.c_modulename%>").click();
+    }
+
+    function page<%= page.c_modulename%>Del(id,obj,flag) {
+        var url = "/cmpage/page/delete?table=<%= page.c_table%>&id=" + id+"&flag=" + flag;
+        $(this).alertmsg("confirm", "是否确定要删除？",{
+            okCall:function(){
+                $(obj).bjuiajax('doAjax', { url: url ,callback:function(data){
+                    $(this).alertmsg(data.statusCode=="200" ? "info":"error",data.message);
+                    $('#btnSearch<%= page.c_modulename%>').click();
+                }});
+            }
+        });
+        return false;
+    }
+    function page<%= page.c_modulename%>Close(obj) {
+        $(this).navtab('closeCurrentTab');
+    }
+    function pageRecList_load($navtab){
+        var modulename = $navtab.find("#modulename").val();   //.modulename;
+
+        $navtab.find("div[name='rec"+modulename+"List']").each(function(){
+            //alert($(this).attr("dataurl"));
+            $(this).bjuiajax('doLoad', {target:$(this), url:$(this).attr("dataurl") });
+        });
+    }
+
+    function page<%= page.c_modulename%>ExportData(obj){
+        $(obj).alertmsg("confirm", "是否确定要导出数据？",{
+            okCall:function(){
+                var url ='/cmpage/page/excel_export?'+$("[name='page<%= page.c_modulename%>Form']").serialize();
+                $.fileDownload(url, {
+                    failCallback: function(responseHtml, url) {
+                        $(obj).alertmsg("warn", "下载文件失败！");
+                    }
+                });
+            }
+        });
+        return false;
+    }
+
+</script>
+    

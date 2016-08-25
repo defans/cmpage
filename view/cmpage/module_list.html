@@ -1,0 +1,122 @@
+<div class="bjui-pageHeader">
+    <form id="pagerForm" data-toggle="ajaxsearch" action="/cmpage/module/list" method="post">
+        <input type="hidden" name="numsPerPage" value="<%= vb.numsPerPage%>">
+        <input type="hidden" name="currentPage" value="<%= vb.currentPage%>">
+        <input type="hidden" name="orderField" value="<%= vb.orderField%>">
+        <input type="hidden" name="orderDirection" value="<%= vb.orderDirection%>">
+        <div class="bjui-searchBar">
+            <label>模块名称：</label><input type="text" id="where_c_modulename" name="c_modulename" value="<%= vb.where.c_modulename%>"  class="form-control" size="10">&nbsp;
+            <label>数据来源：</label><input type="text" id="where_c_datasource" name="c_datasource" value="<%= vb.where.c_datasource%>" class="form-control" size="8">&nbsp;
+            <button type="submit" id="btnSearchModule" class="btn-default" data-icon="search">查询</button>&nbsp;
+            <a class="btn btn-green" href="javascript:;" onclick="return moduleAdd(this);" data-icon="plus">增加</a>
+            <div class="pull-right">
+                <button type="button" class="btn-orange " onclick="return moduleCacheClear();" data-icon="refresh">刷新缓存</button>
+                <button type="button" class="btn-close " data-icon="close">关闭</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="bjui-pageContent tableContent">
+    <table data-toggle="tablefixed" data-width="100%" data-nowrap="false">
+        <thead>
+        <tr>
+            <th width="50" >模块名称</th>
+            <th width="40" >子模块名称</th>
+            <th width="30" >数据来源</th>
+            <th width="30" >数据表</th>
+            <th width="20">分页</th>
+            <th width="50" >修改日期</th>
+            <th width="30" >别名</th>
+            <th width="50" >备注</th>
+            <th width="120" >操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%vb.data.forEach(function(item){%>
+        <tr data-id="<%=item.id%>">
+            <td><a data-title="模块编辑"  data-toggle="dialog" href="/cmpage/module/edit?id=<%= item.id%>" data-id="pageModuleEdit" data-options="{mask:true,width:800,height:350}"><%= item.c_modulename%> </a></td>
+            <td><%=item.c_module_rec%></td>
+            <td><%=item.c_datasource%></td>
+            <td><%=item.c_table%></td>
+            <td><%= (item.c_pager ? "是":"否")%></td>
+            <td><%=item.c_time%></td>
+            <td><%=item.c_alias%></td>
+            <td><%=item.c_memo%></td>
+            <td>
+                <a data-title="显示列设置" class="btn btn-default" data-toggle="navtab" href="/cmpage/module/col_list?moduleid=<%= item.id%>" data-id="pageModuleColList" data-options="">显示列</a>
+                <a data-title="按钮设置" class="btn btn-default" data-toggle="navtab" href="/cmpage/module/btn_list?moduleid=<%= item.id%>" data-id="pageModuleBtnList">按钮</a>
+                <a data-title="编辑列设置" class="btn btn-default" data-toggle="navtab" href="/cmpage/module/edit_list?moduleid=<%= item.id%>" data-id="pageModuleEditList">编辑列</a>
+                <a data-title="查询列设置" class="btn btn-default" data-toggle="navtab" href="/cmpage/module/query_list?moduleid=<%= item.id%>" data-id="pageModuleQueryList">查询列</a>
+                <a data-confirm-msg="是否确定要删除本模块设置?" class="btn btn-red" data-toggle="doajax" href="/cmpage/module/delete?table=t_module&flag=false&id=<%= item.id%>">删除</a>
+                <a data-confirm-msg="是否确定要复制本模块，新模块名：<%= item.c_modulename%>_copy ?" class="btn btn-red" data-toggle="doajax" href="/cmpage/module/copy?modulename=<%= item.c_modulename%>">复制</a>
+                <a data-title="<%= item.c_modulename%> 预览" class="btn btn-orange" data-toggle="navtab" data-id="page<%= item.c_modulename%>" href="/cmpage/page/list?modulename=<%= item.c_modulename%>">预览</a>
+            </td>
+        </tr>
+        <%})%>
+        </tbody>
+    </table>
+</div>
+<div class="bjui-pageFooter">
+    <div class="pages">
+        <span>每页&nbsp;</span>
+        <div class="selectPagesize">
+            <select data-toggle="selectpicker" data-toggle-change="changepagesize" >
+                <%if(vb.numsPerPage == 10) {%>
+                <option value="10" selected>10</option>
+                <%} else {%>
+                <option value="10" >10</option>
+                <%}%>
+                <%if(vb.numsPerPage == 20) {%>
+                <option value="20" selected>20</option>
+                <%} else {%>
+                <option value="20" >20</option>
+                <%}%>
+                <%if(vb.numsPerPage == 30) {%>
+                <option value="30" selected>30</option>
+                <%} else {%>
+                <option value="30" >30</option>
+                <%}%>
+                <%if(vb.numsPerPage == 50) {%>
+                <option value="50" selected>50</option>
+                <%} else {%>
+                <option value="50" >50</option>
+                <%}%>
+            </select>
+        </div>
+        <span>&nbsp;条，共  <%=vb.count%> 条</span>
+    </div>
+    <div class="pagination-box" data-toggle="pagination" data-total="<%=vb.count%>" data-page-size="<%=vb.numsPerPage%>" data-page-current="<%=vb.currentPage%>">
+    </div>
+</div>
+
+<script type="text/javascript" >
+    function pageModuleRefresh() {
+        $("#btnSearchModule").click();
+    }
+
+    function moduleAdd(obj) {
+        if ($("#where_c_modulename").val() == "") {
+            $(obj).alertmsg('error', '请输入要增加的模块名称');
+            return false;
+        }
+        if($("#where_c_datasource").val() ==""){
+            $(obj).alertmsg('error', '请输入要增加模块的数据来源名称');
+            return false;
+        }
+        $(obj).dialog({ id: 'moduleEdit', url: "/cmpage/module/edit?id=0&modulename=" + $("#where_c_modulename").val() + "&datasource=" + $("#where_c_datasource").val(),
+            title: '模块新增' ,mask:true,width:800,height:350});
+        return true;
+    }
+    function moduleCacheClear() {
+        $.ajax({
+            type: "POST",
+            url: "/cmpage/module/reset_module_cache",
+            data: "",
+            async: false,
+            success: function (ret) {
+                //var ret = eval("(" + data + ")");
+                $(this).alertmsg(ret.statusCode == "200" ? "info" : "error", ret.message);
+            }
+        });
+    }
+</script>

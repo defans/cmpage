@@ -1,0 +1,30 @@
+
+<header class="am-topbar <%= vb.action==='doc' ? '':'am-topbar-fixed-top' %>">
+    <div class="am-container">
+        <h1 class="am-topbar-brand">
+            <a href="/home/index/index">CmPage</a>
+        </h1>
+
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-secondary am-show-sm-only"
+                data-am-collapse="{target: '#collapse-head'}"><span class="am-sr-only">导航切换</span> <span
+                class="am-icon-bars"></span></button>
+
+        <div class="am-collapse am-topbar-collapse" id="collapse-head">
+            <ul class="am-nav am-nav-pills am-topbar-nav">
+                <li <%= vb.action==='index' ? 'class=am-active':'' %>><a href="/home/index/index">首页</a></li>
+                <li <%= vb.action==='doc' ? 'class=am-active':'' %>><a href="/home/index/doc">文档</a></li>
+                <li ><a href="/admin/index/index" target="_blank">演示</a></li>
+                <!--<li <%= vb.action==='faq' ? 'class=am-active':'' %>><a href="/home/index/faq">问答</a></li>-->
+                <li <%= vb.action==='log' ? 'class=am-active':'' %>><a href="/home/index/log">日志</a></li>
+            </ul>
+
+            <!--<div class="am-topbar-right">-->
+            <!--<button class="am-btn am-btn-secondary am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span> 注册</button>-->
+            <!--</div>-->
+
+            <div class="am-topbar-right">
+                <a href="http://localhost:8080" target="_blank" class="am-btn am-btn-default am-topbar-btn am-btn-sm"><span class="am-icon-user"></span> 社区</a>
+            </div>
+        </div>
+    </div>
+</header>

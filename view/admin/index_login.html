@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>系统登录</title>
+<script src="/static/bjui/js/jquery-1.7.2.min.js"></script>
+<script src="/static/bjui/js/jquery.cookie.js"></script>
+<link href="/static/bjui/themes/css/bootstrap.min.css" rel="stylesheet">
+<style type="text/css">
+* {font-family: "Verdana", "Tahoma", "Lucida Grande", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;}
+body {
+    background: url(/static/images/loginbg_01.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+a:link {color: #285e8e;}
+.main_box {
+    position: absolute; top:50%; left:50%; margin-top:-260px; margin-left: -300px; padding: 30px; width:600px; height:460px;
+    background: #FAFAFA; background: rgba(255,255,255,0.5); border: 1px #DDD solid;
+    border-radius: 5px;
+    -webkit-box-shadow: 1px 5px 8px #888888; -moz-box-shadow: 1px 5px 8px #888888; box-shadow: 1px 5px 8px #888888;
+}
+.main_box .appurl {position: absolute; top: 5px; left: 10px;}
+.main_box .setting {position: absolute; top: 5px; right: 10px; width: 10px; height: 10px;}
+.main_box .setting a {color: #FF6600;}
+.main_box .setting a:hover {color: #555;}
+.login_logo {margin-bottom: 20px; height: 45px; text-align: center;}
+.login_logo img {height: 45px;}
+.login_msg {text-align: center; font-size: 16px;}
+.login_form {padding-top: 20px; font-size: 16px;}
+.login_box .form-control {display: inline-block; *display: inline; zoom: 1; width: auto; font-size: 18px;}
+.login_box .form-control.x319 {width: 319px;}
+.login_box .form-control.x164 {width: 164px;}
+.login_box .form-group {margin-bottom: 20px;}
+.login_box .form-group label.t {width: 120px; text-align: right; cursor: pointer;}
+.login_box .form-group.space {padding-top: 15px; border-top: 1px #FFF dotted;}
+.login_box .form-group img {margin-top: 1px; height: 32px; vertical-align: top;}
+.login_box .m {cursor: pointer;}
+.bottom {text-align: center; font-size: 12px;}
+
+.code
+{
+    background-image:url(code.jpg);
+    font-family:Arial;
+    font-style:italic;
+    color:Red;
+    border:0;
+    padding:2px 3px;
+    letter-spacing:3px;
+    font-weight:bolder;
+}
+.unchanged
+{
+    border:0;
+}
+</style>
+</head>
+<body onload="createCode()">
+<!--[if lte IE 7]>
+<style type="text/css">
+#errorie {position: fixed; top: 0; z-index: 100000; height: 30px; background: #FCF8E3;}
+#errorie div {width: 900px; margin: 0 auto; line-height: 30px; color: orange; font-size: 14px; text-align: center;}
+#errorie div a {color: #459f79;font-size: 14px;}
+#errorie div a:hover {text-decoration: underline;}
+</style>
+<div id="errorie"><div>您的IE版本太旧了，请升级您的浏览器到 IE8以上版本 <a target="_blank" href="http://windows.microsoft.com/zh-cn/internet-explorer/ie-8-worldwide-languages">点击升级</a>&nbsp;&nbsp;强烈建议您更改换浏览器：<a href="http://down.tech.sina.com.cn/content/40975.html" target="_blank">谷歌 Chrome</a></div></div>
+<![endif]-->
+    <!--<div class="appurl"><img alt="Andriod APP下载" src="/Mob/download/erp_andriod.png" width="260px" height="260px" /></div>-->
+    <!--</br></br></br>-->
+    <!--<div ><img alt="IOS APP下载" src="/Mob/download/erp_ios.png" width="260px" height="260px" /></div>-->
+<div class="main_box">
+    <div class="setting"><a href="javascript:;" onclick="choose_bg();" title="更换背景"><span class="glyphicon glyphicon-th-large"></span></a></div>
+	<div class="login_box">    
+        <div class="login_logo">            
+            <img src="/static/images/logo.png" />
+        </div>
+
+        <div class="login_form">
+    		<form action="/admin/index/login" id="login_form" method="post">
+    			<div class="form-group">
+    				<label  class="t">账 &nbsp; 套：</label>
+                    <select name="loginGroup" data-toggle="selectpicker" class="form-control x319 in">
+                    <% vb.groups.forEach(function(item){  %>
+                        <option value="<%= item.id%>"><%= item.c_name%></option>
+                    <% })%>
+                    </select>
+    			</div>
+    			<div class="form-group">
+    				<label for="loginName" class="t">用户名：</label> <input id="loginName" name="loginName" value="<%= vb.loginName%>" type="text" class="form-control x319 in" autocomplete="off">
+    			</div>
+    			<div class="form-group">
+    				<label for="loginPwd" class="t">密　码：</label> <input id="loginPwd" name="loginPwd" value="" type="password" class="form-control x319 in">
+    			</div>
+    			<div class="form-group">
+    				<label for="inputCode" class="t">验证码：</label> <input id="inputCode" name="inputCode" type="text" class="form-control x164 in">
+                    <input type="text" onclick="createCode()" readonly="readonly" id="checkCode"  class="unchanged" style="width: 80px"  />
+    			</div>
+    			<!--<div class="form-group">-->
+                    <!--<label class="t"></label>-->
+                    <!--<label for="chkSave" class="m"><input name="chkSave" type="checkbox" > 两周内自动登录</label>-->
+    			<!--</div>-->
+    			<div class="form-group space">
+                    <label class="t"></label>　　　
+    				<input type="submit" id="login_ok" onclick="return loginCheckForm();" value="&nbsp;登&nbsp;录&nbsp;" class="btn btn-primary btn-lg">&nbsp;&nbsp;&nbsp;&nbsp;
+    				<input type="reset" value="&nbsp;重&nbsp;置&nbsp;" class="btn btn-default btn-lg">
+    			</div>
+    			<div class="form-group">
+                    <label class="t" style="color:#c000ff;">友情提醒：</label>
+                    <label id="loginMsg" style="color:#c000ff;"  ><%= vb.msg%></label>
+    			</div>
+    		</form>
+        </div>
+	</div>
+
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+    var code ; //在全局 定义验证码
+    function createCode()
+    {
+        code = "";
+        var codeLength = 4;//验证码的长度
+        var checkCode = document.getElementById("checkCode");
+        var selectChar = new Array(0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');//所有候选组成验证码的字符，当然也可以用中文的
+        for(var i=0;i<codeLength;i++)
+        {
+            var charIndex = Math.floor(Math.random()*36);
+            code +=selectChar[charIndex];
+        }
+        if(checkCode)
+        {
+            checkCode.className="code";
+            checkCode.value = code;
+        }
+    }
+
+    function loginCheckForm() {
+        if ($("#LoginName").val() == "") {
+            $("#loginMsg").html("请输入用户名");
+            $("#LoginName").focus();
+            return false;
+        }
+        if ($("#LoginPwd").val() == "") {
+            $("#loginMsg").html("请输入密码");
+            $("#LoginPwd").focus();
+            return false;
+        }
+        //正式使用时去掉下面的注释
+//        var inputCode = document.getElementById("inputCode").value;
+//        if(inputCode.length <=0)
+//        {
+//            alert("请输入验证码！");
+//        }
+//        else if(inputCode != code )
+//        {
+//            alert("验证码输入错误！");
+//            createCode();//刷新验证码
+//        }
+
+        return true;
+    }
+
+    function choose_bg() {
+        var bg = Math.floor(Math.random() * 9 + 1);
+        $('body').css('background-image', 'url(/static/images/loginbg_0' + bg + '.jpg)');
+    }
+
+</script>

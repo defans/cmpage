@@ -1,0 +1,17 @@
+.bjui-doc{margin:10px;}
+.bjui-doc .page-header{margin-top:0; border-bottom-color:#CCC;}
+.bjui-doc ul, ol{margin-left:22px; margin-top:0; margin-bottom:10px;}
+.bjui-doc ul{list-style:disc;}
+.bjui-doc ol{list-style:decimal;}
+.bjui-doc p,
+.bjui-doc li,
+.bjui-doc code,
+.bjui-doc blockquote *{line-height:1.7; font-size:14px;}
+.bjui-doc blockquote.point{border-left-color:#FF6600;}
+.bjui-doc blockquote {padding:5px 15px; border-top:1px #EEE solid; border-right:1px #EEE solid; border-bottom:1px #EEE solid; border-radius:5px;}
+.bjui-doc code.h4{margin:10px 0; font-size:18px; font-weight:500; color:#c7254e;}
+.bjui-doc .table{margin-bottom:15px;}
+.bjui-doc td{line-height:1.7;}
+.bjui-doc .syntaxhighlighter *{font-size:12px !important; line-height:1.5 !important;}
+.bjui-doc .bjui-tablefixed .table{margin-bottom:0;}
+
