@@ -6,7 +6,6 @@
 export default class extends think.base {
 
 
-
     /************************************数字值的格式化输出 **************************************/
     _format = function(pattern,num,z){
         let j = pattern.length >= num.length ? pattern.length : num.length ;

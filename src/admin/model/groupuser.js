@@ -68,19 +68,19 @@ export default class extends CMPage {
     async getLoginGroups(userID,groupID){
         //假设账套不超过3层
         let codeModel = this.model('code');
-        let cnt = await this.model('t_group_user').where({c_group:groupID, c_user:userID}).count('id');
+        let cnt = await this.model('t_group_user').where({c_group:groupID, c_user:userID}).count();
         if(cnt == 0){
             let groupMd = await codeModel.getCodeById(groupID);
             if(!groupMd || groupMd.c_pid==0){
                 return '';
             }
-            cnt = await this.model('t_group_user').where({c_group:groupMd.c_pid, c_user:userID}).count('id');
+            cnt = await this.model('t_group_user').where({c_group:groupMd.c_pid, c_user:userID}).count();
             if(cnt == 0) {
                 let groupMd = await codeModel.getCodeById(groupMd.c_pid);
                 if (!groupMd || groupMd.c_pid == 0) {
                     return '';
                 }
-                cnt = await this.model('t_group_user').where({c_group:groupMd.c_pid, c_user:userID}).count('id');
+                cnt = await this.model('t_group_user').where({c_group:groupMd.c_pid, c_user:userID}).count();
                 if(cnt ==0 ){
                     return '';
                 }

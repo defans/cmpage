@@ -272,6 +272,7 @@ export default class extends Base {
         md.c_width = posts[`editList[${i}].c_width`];
         md.c_style = posts[`editList[${i}].c_style`].trim();
         md.c_suffix = posts[`editList[${i}].c_suffix`];
+        md.c_validate_rules = posts[`editList[${i}].c_validate_rules`];
         md.c_mui = posts[`editList[${i}].c_mui`];
         md.c_memo = posts[`editList[${i}].c_memo`];
         global.debug(JSON.stringify(md));

@@ -42,6 +42,7 @@
                 <th title="显示格式"><input type="text" name="editList[#index#].c_format" value="" size="5"></th>
                 <th title="编辑样式"><input type="text" name="editList[#index#].c_style"  value="" size="5"></th>
                 <th title="是否必填"><input type="checkbox" name="editList[#index#].c_isrequired" class="j-icheck" data-toggle="icheck" value="true"></th>
+                <th title="ThinkJS校验"><input type="text" name="editList[#index#].c_validate_rules"  value="" size="5"></th>
                 <th title="宽度"><input type="text" name="editList[#index#].c_width" data-toggle="spinner" data-rule="required" value="15" size="5" onkeyup="javascript:testNum(this);"></th>
                 <th title="后缀元素"><input type="text" name="editList[#index#].c_suffix"  value="" size="5"></th>
                 <th title="备注"><textarea name="editList[#index#].c_memo" data-toggle="autoheight" rows="1"></textarea></th>
@@ -66,6 +67,7 @@
                     <td ><%= item.c_format%></td>
                     <td ><%= item.c_style%></td>
                     <td data-val="<%= item.c_isrequired%>">Y</td>
+                    <td ><%= item.c_validate_rules%></td>
                     <td ><%= item.c_width%></td>
                     <td ><%= item.c_suffix%></td>
                     <td ><%= item.c_memo%></td>

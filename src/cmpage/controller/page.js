@@ -11,66 +11,68 @@
 import Base from './base.js';
 
 export default class extends Base {
-  /**
-   * 模块主界面，列表数据
-   * @return {ListView} []
-   */
-  async listAction(){
-    let http=this.http;
-    let vb={};
-    let module = this.model("cmpage/module");
+    /**
+    * 模块主界面，列表数据
+    * @return {ListView} []
+    */
+    async listAction(){
+        let vb={};
+        let module = this.model("cmpage/module");
 
-    let page ={};
-    page.query ={};
-    if(this.method() === 'get'){
-      page.modulename =http.get('modulename');
-      let md = await module.getModuleByName(page.modulename);
-      Object.assign(page,md);
-      page.pageIndex = 1;
-      page.pageSize = page.c_page_size;
-      //global.debug(http._get);
-      page.parmsUrl = JSON.stringify(http._get);
-      page.query = http._get;;
-    }else{
-      page.modulename= http.post('modulename');
-      let md = await module.getModuleByName(page.modulename);
-      Object.assign(page,md);
-      page.query = http._post;
-      page.pageIndex = http.post('pageIndex');
-      page.pageSize = http.post('pageSize');
-        page.parmsUrl = http.post('parmsUrl');
+        let page ={};
+        page.query ={};
+        page.modulename =(this.method() === 'get' ? this.get('modulename'):this.post('modulename'));
+        if(page.modulename.length >20){
+            let error = new Error(page.modulename + " 模块名错误！");
+            //将错误信息写到 http 对象上，用于模版里显示
+            this.http.error = error;
+            return think.statusAction(500, this.http);
+        }
+        let md = await module.getModuleByName(page.modulename);
+        Object.assign(page,md);
+
+        if(this.method() === 'get'){
+            page.pageIndex = 1;
+            page.pageSize = page.c_page_size;
+            //global.debug(http._get);
+            page.parmsUrl = JSON.stringify(this.get());
+            page.query = this.get();
+        }else{
+            page.pageIndex = this.post('pageCurrent');
+            page.pageSize = this.post('pageSize');
+            page.parmsUrl = this.post('parmsUrl');
+            page.query = this.post();
+        }
+
+        page.user = await this.session('user');
+        //    console.log(page);
+        if(think.isEmpty(page.id)){
+            let error = new Error(page.modulename + " 模块不存在！");
+            this.http.error = error;
+            return think.statusAction(500, this.http);
+        }
+
+        let model = this.model(think.isEmpty(page.c_path) ? 'common/page':page.c_path);
+        if(think.isEmpty(model)){
+            let error = new Error(page.modulename + " 的实现类不存在！");
+            this.http.error = error;
+            return think.statusAction(500, this.http);
+        }
+        vb.queryHtml = await model.htmlGetQuery(page);
+        //      global.debug(vb.queryHtml);
+        vb.otherHtml = await model.htmlGetOther(page);
+        vb.btnHeaderHtml = await model.htmlGetBtnHeader(page);
+        //console.log(vb.btnHeaderHtml);
+        let data = await model.getDataList(page);
+        //global.debug(data);
+        vb.count = data.count;
+        vb.listHtml = await model.htmlGetList(page,data.list);
+        //global.debug(vb.listHtml);
+
+        this.assign('vb',vb);
+        this.assign('page',page);
+        return this.display();
     }
-
-      page.user = await this.session('user');
-//    console.log(page);
-    if(think.isEmpty(page.id)){
-      let error = new Error(page.modulename + " 模块不存在！");
-      //将错误信息写到 http 对象上，用于模版里显示
-      this.http.error = error;
-      return think.statusAction(500, this.http);
-    }
-
-    let model = this.model(think.isEmpty(page.c_path) ? 'common/page':page.c_path);
-    if(think.isEmpty(model)){
-      let error = new Error(page.modulename + " 的实现类不存在！");
-      this.http.error = error;
-      return think.statusAction(500, this.http);
-    }
-    vb.queryHtml = await model.htmlGetQuery(page);
-//      global.debug(vb.queryHtml);
-    vb.otherHtml = await model.htmlGetOther(page);
-    vb.btnHeaderHtml = await model.htmlGetBtnHeader(page);
-    //console.log(vb.btnHeaderHtml);
-    let data = await model.getDataList(page);
-    //global.debug(data);
-    vb.count = data.count;
-    vb.listHtml = await model.htmlGetList(page,data.list);
-    //global.debug(vb.listHtml);
-
-    this.assign('vb',vb);
-    this.assign('page',page);
-    return this.display();
-  }
     /**
      * 模块主界面，导出excel文件
      * @return  {BinaryFile}
@@ -158,8 +160,7 @@ export default class extends Base {
      * @return {JSON}
      */
     async saveAction(){
-        let http = this.http;
-        let parms =this.http.post();
+        let parms =this.post();
         let user = await this.session('user');
 
         parms.c_user =user.id;

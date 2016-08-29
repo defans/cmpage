@@ -7,6 +7,7 @@
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
 import Base from './base.js';
+import request from 'request';
 
 export default class extends Base {
   /**
@@ -17,7 +18,8 @@ export default class extends Base {
     //auto render template file index_index.html
     let user = await this.session('user');
      // console.log(user);
-    let vb={groupName:user.groupName,version:'V0.8',userName:user.c_name,title:'cmpage by defans'};
+      let codeMd =await this.model('code').getCodeById(344);    //系统版本
+    let vb={groupName:user.groupName,version:codeMd.c_desc,userName:user.c_name,title:'cmpage by defans'};
     let menus = await this.model('code').getTreeList(1);
 
     vb.navList=[];  //主菜单
@@ -47,14 +49,15 @@ export default class extends Base {
 
     //用户登录界面
     async loginAction(){
-        let vb ={msg:'请选择您有权限登录的账套。'};
+        //let vb ={msg:'请选择您有权限登录的账套。'};
+        let vb ={msg:'演示用户：defans  密码：123456'};
         vb.groups = await this.model('code').getGroups();
         if(this.method() == 'get'){
             vb.loginName='';
-            global.debug(vb);
+           // global.debug(vb);
         }else{
             let user = await this.model('user').getUserByLogin(this.post('loginName'),this.post('loginPwd'));
-            global.debug(user);
+            //global.debug(user);
             if(!think.isEmpty(user)){
                 if(user.c_status != 0){
                     vb.loginName = this.post('loginName');
@@ -74,7 +77,8 @@ export default class extends Base {
                     user.urlLast = '/admin/index/index';
                     user.groupID = parseInt(this.post('loginGroup'));
                     user.groupName = await this.model('code').getNameById(user.groupID);
-
+                    user.groups = groups;
+                    //console.log(user);
                     await this.model('login').addLogin(user);
                     await this.session('user', user);
                     return this.redirect('/admin/index/index');
@@ -103,7 +107,6 @@ export default class extends Base {
   gitAction(){
     return this.display();
   }
-
     async loginPwdEditAction(){
         if(this.method() === 'get'){
             return this.display();
@@ -115,6 +118,47 @@ export default class extends Base {
         }
     }
 
+    async keepConnectDbAction(){
+        let cnt = await this.model('t_code').count();
+        if(cnt >0){
+            return this.json({statusCode:200, message:'DB is openning '})
+        }else{
+            return this.json({statusCode:200, message:'DB has closed '})
+        }
+
+    }
+    //开始定时器
+    timerStartAction(){
+        if(this.ip() != "127.0.0.1"){
+            return this.json({statusCode:300,message:"timer is not start! "+this.ip()});
+        }
+        if(!think.isObject(global.timer)){
+            global.timer = setInterval(function() {
+                request('http://127.0.0.1:8300/admin/index/keep_connect_db', function (error, response, body) {
+                    if (!error) {
+                        console.log(body);
+                    } else {
+                        //console.log("error: " + error);
+                    }
+                });
+            }, 600000);
+            return this.json({statusCode:200,message:"timer is start! "+this.ip()});
+        }
+        return this.json({statusCode:200,message:"timer has be started! "+this.ip()});
+    }
+
+    //停止定时器
+    timerStopAction(){
+        if(this.ip() != "127.0.0.1"){
+            return this.json({statusCode:300,message:"timer is not stop! "+this.ip()});
+        }
+        if(think.isObject(global.timer)){
+            clearInterval(global.timer);
+            global.timer = null;
+            return this.json({statusCode:200,message:"timer is stop! "+this.ip()});
+        }
+        return this.json({statusCode:300,message:"timer is not exist! "+this.ip()});
+    }
 
 
 }

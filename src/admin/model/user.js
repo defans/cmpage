@@ -23,7 +23,7 @@ export default class extends CMPage {
      */
     async pageSave(page,parms){
         //先保存t_emp
-        let md =global.objPropertysFromOtherObj({},parms,['c_name','c_sex','c_phone','c_email','c_qq','c_address','c_memo','c_birthday',
+        let md =global.objPropertysFromOtherObj({},parms,['c_name','c_sex','c_phone','c_email','c_qq','c_address','c_memo','c_birthday','c_dept',
             'c_user','c_time','c_group','c_province','c_city','c_country','c_manager']);
         //checkbox类型的值为false时，前端不传值，因此特殊处理
         md.c_sex = think.isEmpty(md.c_sex) ? false: md.c_sex;
@@ -50,14 +50,24 @@ export default class extends CMPage {
     }
     async getUserNameById(id){
         let users =await this.getUsers();
-        for(let user in users){
-            if(user.id === id){
+        for(let user of users){
+            if(user.id == id){
                 return user.c_name;
             }
         }
         return '';
     }
 
+    async getUserByLoginWithMd5(loginName,loginPwd){
+        let users =await this.getUsers();
+        //global.debug(users);
+        for(let user of users){
+            if(user.c_login_name == loginName && user.c_login_pwd == loginPwd.toLowerCase()){
+                return user;
+            }
+        }
+        return {};
+    }
     async getUserByLogin(loginName,loginPwd){
         let users =await this.getUsers();
         //global.debug(users);

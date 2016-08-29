@@ -1,0 +1,92 @@
+{
+	"html/login/login.html": {
+		"resources": [
+			"js/app.js",
+			"mui/css/mui.css",
+			"js/login/login.js",
+			"mui/js/mui.min.js",
+			"js/libs/md5.js",
+			"mui/js/mui.js",
+			"mui/css/mui.min.css",
+			"mui/fonts/mui.ttf",
+			"html/login/login.html"
+		],
+		"refer": [
+			"html/login/login.html",
+			"html/main.html"
+		]
+	},
+	"html/menu.html": {
+		"resources": [
+			"images/logo.png",
+			"js/menu.js",
+			"js/app.js",
+			"mui/js/mui.min.js",
+			"mui/css/mui.min.css",
+			"mui/fonts/mui.ttf"
+		]
+	},
+	"html/main.html": {
+		"resources": [
+			"js/main.js",
+			"js/libs/jquery-2.1.4.min.js",
+			"js/update.js",
+			"js/app.js",
+			"mui/js/mui.min.js",
+			"mui/css/mui.min.css",
+			"mui/fonts/mui.ttf",
+			"html/commpage/commpage-list.html"
+		],
+		"refer": [
+			"html/menu.html",
+			"html/commpage/commpage-list.html"
+		]
+	},
+	"html/commpage/commpage-list.html": {
+		"resources": [
+			"js/commpage/commpage-list.js",
+			"js/app.js",
+			"mui/js/mui.min.js",
+			"mui/css/mui.min.css",
+			"mui/fonts/mui.ttf"
+		],
+		"refer": [
+			"html/commpage/commpage-search.html",
+			"html/commpage/commpage-edit.html"
+		]
+	},
+	"html/commpage/commpage-search.html": {
+		"resources": [
+			"mui/js/mui.poppicker.js",
+			"js/commpage/commpage-search.js",
+			"mui/css/mui.listpicker.css",
+			"mui/js/city.data-3.js",
+			"mui/css/mui.dtpicker.css",
+			"mui/css/mui.poppicker.css",
+			"mui/js/mui.dtpicker.js",
+			"mui/js/mui.listpicker.js",
+			"js/app.js",
+			"mui/js/mui.min.js",
+			"js/libs/jquery-2.1.4.min.js",
+			"mui/css/mui.min.css",
+			"mui/fonts/mui.ttf"
+		]
+	},
+	"html/commpage/commpage-edit.html": {
+		"resources": [
+			"mui/js/mui.poppicker.js",
+			"js/commpage/commpage-edit.js",
+			"mui/css/mui.listpicker.css",
+			"mui/js/city.data-3.js",
+			"mui/css/mui.dtpicker.css",
+			"mui/css/mui.poppicker.css",
+			"mui/js/mui.dtpicker.js",
+			"mui/js/mui.listpicker.js",
+			"js/app.js",
+			"mui/js/mui.min.js",
+			"js/libs/jquery-2.1.4.min.js",
+			"mui/css/mui.min.css",
+			"mui/fonts/mui.ttf"
+		]
+	}
+}

@@ -42,7 +42,7 @@ export default class extends think.model.base {
                 }
                 else if (col.c_type === "select")
                 {
-                    let options = await this.getOptions(col);
+                    let options = await this.getOptions(col,true);
                     html.push(`<select name="${col.c_column}" data-toggle="selectpicker" > ${options} </select>`);
                 }
                 else if (col.c_type === "lookup")
@@ -81,13 +81,15 @@ export default class extends think.model.base {
   }
 
   /**
-   * 下拉框的选择集
+   * 下拉框的选择集,isBlank:是否可以为空, md.c_default为默认值
    */
-    async getOptions(md){
+    async getOptions(md, isBlank){
         let items = [];
         if (md.c_type == "select") {          //下拉框设置
             //global.debug(md.c_memo);
-            items.push('<option value="0"> </option>');
+            if(isBlank){
+                items.push('<option value="0"> </option>');
+            }
             if (/^select*/.test(md.c_memo)) {    //以select开头
                 //let sql = md.c_memo.replace(/#group#/,think.session('groupID')).replace(/##/,"'");
                 let sql = md.c_memo;
@@ -104,15 +106,15 @@ export default class extends think.model.base {
                 }else{
                     let its = md.c_memo.trim().split(':');        //设置如： admin/code:getParmsByPid:3
                     let parms = [];
-                    if(its.length === 3){
-                        let fnModel = this.model(its[0]);     //通过某个模块的某个方法取下拉设置
-                        if(think.isFunction(fnModel[its[1]])){
-                            //let func =fnModel[ its[1] ];
-                            parms = await fnModel[ its[1] ](its[2]);
-                            //global.debug(parms);
+                    let fnModel = this.model(its[0]);     //通过某个模块的某个方法取下拉设置
+                    if(think.isFunction(fnModel[its[1]])){
+                        if(its.length === 3){
+                                parms = await fnModel[ its[1] ](its[2]);
+                        }else{
+                            parms = await fnModel[ its[1] ]();
                         }
                     }
-                   // global.debug(parms);
+                    //global.debug(parms);
                     for (let parm of parms) {
                         items.push(`<option value='${parm.id}' "  ${parm.id == md.c_default ? "selected" : ""} >${parm.c_name}</option>`);
                     }
@@ -143,7 +145,14 @@ export default class extends think.model.base {
             if(its.length >1){
                 let fnModel = this.model(its[0]);     //通过某个模块的某个方法取下拉设置
                 if(think.isFunction(fnModel[its[1]])){
-                    return await fnModel[ its[1] ](value);
+                    let args =[];
+                    args.push(value);
+                    if(its.length > 2){
+                        for(let arg of its[2].split(',')){
+                            args.push(arg);
+                        }
+                    }
+                    return await fnModel[ its[1] ](...args);
                 }
             }
         }
@@ -423,7 +432,8 @@ export default class extends think.model.base {
                 fields.push(`${edit.c_desc} as ${edit.c_column}`);
             }
             //global.debug(fields);
-            let list = await this.query(`select ${fields.join(',')} from ${page.c_datasource} where id=${page.editID}`);
+            //let list = await this.query(`select ${fields.join(',')} from ${page.c_datasource} where id=${page.editID}`);
+            let list = await this.model(page.c_datasource).field(fields.join(',')).where({id:page.editID}).select();
             md =list[0];
         }else{
             md = await this.pageEditInit(pageEdits,page);
@@ -431,23 +441,24 @@ export default class extends think.model.base {
 //        global.debug(md);
         for(let col of pageEdits){
             if (!col.c_editable || col.c_column === "id" ) {  continue; }
+            let colValue = md[col.c_column];
+            if(col.c_coltype === 'timestamp'){  colValue = think.datetime(colValue); }
             if (col.c_type === "hidden" && col.c_column!=="c_city" && col.c_column!=="c_province") {
-                html.push(`<input name="${col.c_column}" type="hidden" value="${md[col.c_column]}" />`);
+                html.push(`<input name="${col.c_column}" type="hidden" value="${colValue}" />`);
                 continue;
             }
-            let colValue = md[col.c_column];
             col.c_format = col.c_format.trim();
             if(col.c_type !== "hidden"){
                 html.push(`<tr><td> <label class="control-label x85">${col.c_name}: </label>`);
             }
 
-            if (col.c_type === "datetime") {
-                html.push(`<input type="text" name="${col.c_column}" value="${think.datetime(colValue,col.c_format)}"
+            if (col.c_type === "datetime" ||col.c_type === "date") {
+                html.push(`<input type="text" name="${col.c_column}" value="${think.datetime(colValue,'YYYY-MM-DD')}"
                     ${col.c_type === "readonly" ? "disabled":""} data-toggle="datepicker" data-pattern="${think.isEmpty(col.c_format) ? 'yyyy-MM-dd':col.c_format}" data-rule="required;date" size="15" />`);
             } else if (col.c_type === "select" || col.c_type === "selectBlank" || col.c_type === "readonlyReplace") {
                 html.push(`<select name="${col.c_column}" data-toggle="selectpicker" ${col.c_isrequired ? "data-rule=required" : ""}>`);
                 col.c_default = colValue;
-                html.push(await this.getOptions(col));
+                html.push(await this.getOptions(col,false));
                 html.push('</select>');
             } else if (col.c_type === "textarea") {
                 html.push(`<textarea name="${col.c_column}" data-toggle="autoheight" cols="${col.c_width}" rows="1"  ${col.c_isrequired ? "data-rule=required" : ""}>${colValue}</textarea>`);
@@ -511,9 +522,10 @@ export default class extends think.model.base {
         if(parms.id == 0){
             //let id = await this.query(global.getInsertSql(md,page.c_table) +' returning id;');
             md.id = await this.model(page.c_table).add(md);
+            await this.model('admin/log').addLog(page.user, md,page.id, md.id, global.enumStatusExecute.SUCCESS.id, global.enumLogType.ADD.id);
         }else {
             await this.model(page.c_table).where({id:parseInt(parms.id)}).update(md);
-            //await this.query(global.getUpdateSql(md,page.c_table));
+            await this.model('admin/log').addLog(page.user, md,page.id, md.id, global.enumStatusExecute.FAIL.id,  global.enumLogType.UPDATE.id);
         }
         return md.id;
     }

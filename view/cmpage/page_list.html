@@ -7,7 +7,7 @@
 
         <% if (page.c_pager) {%>
             <input type="hidden" name="pageSize" value="<%= page.pageSize%>">
-            <input type="hidden" name="pageIndex" value="<%= page.pageIndex%>">
+            <input type="hidden" name="pageCurrent" value="<%= page.pageIndex%>">
             <input type="hidden" name="orderField" value="<%= page.orderField%>">
             <input type="hidden" name="orderDirection" value="<%= page.orderDirection%>">
         <% }%>

@@ -4,5 +4,6 @@
  */
 export default {
   //key: value
-    port: 8300
+    port: 8300,
+    auto_close_socket:true
 };

@@ -130,7 +130,7 @@ export default class extends think.model.base {
             let colmd = {c_module:md.id, c_column:col.column, c_coltype:col.type, c_scale:col.length, c_name:this.getColumnComment(comments,col.column),
                 c_desc : col.column,c_editable:true, c_type:(['id','c_time','c_user','c_group'].indexOf(col.column) !== -1 ? 'hidden':(col.type==='bool'? 'checkbox':'text')),
                 c_format:'', c_order:(k+1), c_width:35, c_style:'',
-                c_suffix:'', c_isshow:true,c_isrequired:false, c_user:0, c_time: think.datetime(), c_memo:'', c_mui:''};
+                c_suffix:'', c_isshow:true,c_isrequired:false, c_user:0, c_time: think.datetime(), c_memo:'', c_mui:'',c_validate_rules:''};
             model.add(colmd);
         }
         return {statusCode:200,message:''};
@@ -273,6 +273,15 @@ export default class extends think.model.base {
             return  this.query(`select * from t_module where id = ${moduleID}`);  //model('t_module').where({id:moduleID}).find(); //
         });
     }
+    async getModuleNameById(moduleID){
+        let md = await this.getModuleById(moduleID);
+        return !think.isEmpty(md) ? md[0].c_modulename: '';
+    }
+    async getModuleAliasById(moduleID){
+        let md = await this.getModuleById(moduleID);
+        return !think.isEmpty(md) ? md[0].c_alias: '';
+    }
+
     async getModuleByName(modulename){
         return await think.cache(`modulename${modulename}`, () => {
             return this.model('t_module').where({c_modulename:modulename,c_status:0}).find();  //query(`select * from t_module where c_modulename = '${modulename}' and c_status=0`);

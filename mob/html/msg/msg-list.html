@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../mui/css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.mui-popover {
+				height: 50px;
+			}
+			#topPopover {
+				position: fixed;
+				top: 16px;
+				right: 6px;
+			}
+			#topPopover .mui-popover-arrow {
+				left: auto;
+				right: 6px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view mui-table-list mui-table-view-chevron erp-msg-list">
+
+				</ul>
+			</div>
+		</div>
+		<div id="topPopover" class="mui-popover" style="width: 120px;">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view mui-table-bar erp-msg-menu">
+						<li class="mui-table-view-cell">
+							<a href="../commpage/commpage-search.html" class="mui-icon mui-icon-search">搜索</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script src="../../mui/js/mui.min.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="../../js/msg/msg-list.js"></script>
+
+</html>
