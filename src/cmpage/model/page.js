@@ -16,7 +16,7 @@ export default class extends think.model.base {
      */
     async htmlGetQuery(page){
         let html =[];
-        let pageQuerys = await this.model('module',{},'cmpage').getModuleQuery(page.id);
+        let pageQuerys = await global.model('cmpage/module').getModuleQuery(page.id);
         let provinceValue ='';
         let cityValue='';
         for(let col of pageQuerys){
@@ -53,18 +53,18 @@ export default class extends think.model.base {
                 else if (col.c_type === "provinceSelect")
                 {
                     html.push(`<select name="c_province" data-toggle="selectpicker"  data-nextselect="#city${page.c_modulename}Query"
-                        data-refurl="/cmpage/common/get_citys?province={value}">  ${await this.model('cmpage/area').getProvinceItems(col.c_default,true)} </select>`);
+                        data-refurl="/cmpage/utils/get_citys?province={value}">  ${await global.model('cmpage/area').getProvinceItems(col.c_default,true)} </select>`);
                     provinceValue = col.c_default;
                 }
                 else if (col.c_type === "citySelect")
                 {
                     html.push(`<select name="c_city" id="city${page.c_modulename}Query" data-toggle="selectpicker" data-nextselect="#country${page.c_modulename}Query"
-                        data-refurl="/cmpage/common/get_countrys?city={value}">${await this.model('cmpage/area').getCityItems(col.c_default,true,provinceValue )} </select>`);
+                        data-refurl="/cmpage/utils/get_countrys?city={value}">${await global.model('cmpage/area').getCityItems(col.c_default,true,provinceValue )} </select>`);
                     cityValue = col.c_default;
                 }
                 else if (col.c_type === "countrySelect")
                 {
-                    html.push(`<select name="c_country" id="country${page.c_modulename}Query" data-toggle="selectpicker" >${await this.model('cmpage/area').getCountryItems(col.c_default,true,cityValue)} </select>`);
+                    html.push(`<select name="c_country" id="country${page.c_modulename}Query" data-toggle="selectpicker" >${await global.model('cmpage/area').getCountryItems(col.c_default,true,cityValue)} </select>`);
                 }
                 else if( col.c_type !== "fixed")
                 {
@@ -106,10 +106,10 @@ export default class extends think.model.base {
                 }else{
                     let its = md.c_memo.trim().split(':');        //设置如： admin/code:getParmsByPid:3
                     let parms = [];
-                    let fnModel = this.model(its[0]);     //通过某个模块的某个方法取下拉设置
+                    let fnModel = global.model(its[0]);     //通过某个模块的某个方法取下拉设置
                     if(think.isFunction(fnModel[its[1]])){
                         if(its.length === 3){
-                                parms = await fnModel[ its[1] ](its[2]);
+                            parms = await fnModel[ its[1] ](its[2]);
                         }else{
                             parms = await fnModel[ its[1] ]();
                         }
@@ -143,7 +143,7 @@ export default class extends think.model.base {
         {
             let its = replaceItems.split(':');        //设置如： admin/code:getNameById
             if(its.length >1){
-                let fnModel = this.model(its[0]);     //通过某个模块的某个方法取下拉设置
+                let fnModel = global.model(its[0]);     //通过某个模块的某个方法取下拉设置
                 if(think.isFunction(fnModel[its[1]])){
                     let args =[];
                     args.push(value);
@@ -166,7 +166,7 @@ export default class extends think.model.base {
   async htmlGetBtnHeader(page){
       let html =[];
       let htmlRight =[];
-      let pageBtns = await this.model('module',{},'cmpage').getModuleBtn(page.id);
+      let pageBtns = await global.model('cmpage/module').getModuleBtn(page.id);
       for(let btn of pageBtns){
             if(btn.c_isshow ){
                 if(btn.c_location <6){
@@ -206,8 +206,9 @@ export default class extends think.model.base {
      */
   async htmlGetList(page,dataList) {
     let html = ['<thead> <tr >'];
-    let pageCols = await this.model('module',{},'cmpage').getModuleCol(page.id);
-    let pageBtns = await this.model('module',{},'cmpage').getModuleBtn(page.id);
+        let modelPage  =global.model('cmpage/module');
+    let pageCols = await modelPage.getModuleCol(page.id);
+    let pageBtns = await modelPage.getModuleBtn(page.id);
     let isShowBtn = false;
 
     for (let btn of pageBtns) {
@@ -245,11 +246,11 @@ export default class extends think.model.base {
                     if (!think.isEmpty(col.c_format)) {
                         if (col.c_coltype === "decimal") {
                             html.push(global.formatNumber(item[col.c_column], {pattern: col.c_format}));
-                        } else {
-                            html.push(item[col.c_column]);
+                        } else if(col.c_coltype === "timestamp" || col.c_coltype === "date") {
+                            html.push(global.datetime(item[col.c_column], col.c_format));
                         }
                     } else if (col.c_type === "checkbox") {
-                        html.push(`<input type="checkbox"  data-toggle="icheck" value="1" disabled  ${item[col.c_column] ? "checked" : ""} />`);
+                        html.push(`<input type="checkbox"  data-toggle="icheck" value="1" disabled  ${item[col.c_column] || item[col.c_column]===1 ? "checked" : ""} />`);
                     } else if (col.c_type === "replace" && !(/^select/.test(col.c_memo))) {
                         html.push(await this.getReplaceText(item[col.c_column], col.c_memo));
                     } else if (col.c_type === "html") {
@@ -262,15 +263,7 @@ export default class extends think.model.base {
                         data-id="gotoTabPage" data-icon="share" data-options="{mask:true,width:600,height:450}">${col.c_format}</a>`);
                     } else {
                         if (!think.isEmpty(col.c_column)) {
-                            if (col.c_coltype === "decimal") {
-                                html.push(global.formatNumber(item[col.c_column], {pattern: col.c_format}));
-                            } else if(col.c_coltype === "timestamp") {
-                                html.push(think.datetime(item[col.c_column]));
-                            } else if(col.c_coltype === "date") {
-                                html.push(think.datetime(item[col.c_column],"YYYY-MM-DD"));
-                            } else  {
-                                html.push(item[col.c_column]);
-                            }
+                            html.push(item[col.c_column]);
                         }
                     }
                 }
@@ -297,7 +290,7 @@ export default class extends think.model.base {
      * 取数据列表
      */
     async getDataList(page){
-        let pageCols = await this.model('module',{},'cmpage').getModuleCol(page.id);
+        let pageCols = await global.model('cmpage/module').getModuleCol(page.id);
         let data = {};
         let where=await this.getQueryWhere(page);
 
@@ -308,9 +301,10 @@ export default class extends think.model.base {
             return data;
         }
 
-        //      global.debug(where);
+        //global.debug(page);
         if(page.c_pager) {
-            data.list = await this.query(`select ${this.getListFields(pageCols)} from ${page.c_datasource} ${where} order by ${page.c_sort_by} limit ${page.c_page_size} offset ${page.c_page_size * (page.pageIndex - 1)}`);
+            data.list = await this.query(`select ${this.getListFields(pageCols)} from ${page.c_datasource} ${where} order by ${page.c_sort_by}
+                limit ${page.c_page_size} offset ${page.c_page_size * (page.pageIndex - 1)}`);
         }else {
             data.list = await this.query(`select ${this.getListFields(pageCols)} from ${page.c_datasource} ${where} order by ${page.c_sort_by} `);
         }
@@ -322,7 +316,7 @@ export default class extends think.model.base {
     */
     async getQueryWhere(page){
         let ret =[' where 1=1'];
-        let pageQuerys = await this.model('module',{},'cmpage').getModuleQuery(page.id);
+        let pageQuerys = await global.model('cmpage/module').getModuleQuery(page.id);
         for(let md of pageQuerys){
             if (md.c_type === "fixed"){         //如果是‘固定’，则直接增加c_memo中的设置值
                 let wh = ` (${md.c_memo.replace(/#userID#/,page.user.id).replace(/#groupID#/,page.user.groupID).split(/##/).join('\'')})`;
@@ -332,13 +326,14 @@ export default class extends think.model.base {
             }
             if (md.c_isshow) {
                 if(!think.isEmpty(page.query[md.c_column])){
-                    if(md.c_coltype === 'int4' && parseInt(page.query[md.c_column])===0){
+                    if((md.c_coltype === 'int' && parseInt(page.query[md.c_column])===0) || (md.c_type.indexOf('select') === 0 && page.query[md.c_column] == 0)){
                         continue;
                     }
+                    //console.log(md.c_column);
                     md.c_default = page.query[md.c_column];
                     let value = page.query[md.c_column].split('\'').join(' ').split('\"').join(' ').trim();
                     if((md.c_column ==='c_province' || md.c_column ==='c_city' || md.c_column ==='c_country') && value ==='-1'){    continue;   }
-                    ret.push(md.c_column + ' '+this.getOpValue(md.c_op, value, md.c_coltype));
+                    ret.push(md.c_desc + ' '+this.getOpValue(md.c_op, value, md.c_coltype));
                 }
             }
         }
@@ -382,7 +377,8 @@ export default class extends think.model.base {
     let fields = [];
     for(let col of pageCols){
       if (!col.c_isretrieve) continue;
-      if (col.c_type === "replace" && (col.c_isshow || col.c_isview) && (/^select\w+/.test(col.c_memo))) //以select开头
+      //if(col.c_column ==='c_user'){  console.log(col);}
+      if (col.c_type === "replace" && (col.c_isshow || col.c_isview) && (col.c_memo.indexOf('select')===0)) //以select开头
       {
         fields.push(`(${col.c_memo.replace(/##/,"\'")}) as ${col.c_column}`);
       }else {
@@ -390,6 +386,7 @@ export default class extends think.model.base {
       }
     }
 
+    //  global.debug(fields);
     return fields.join(',');
   }
 
@@ -402,11 +399,11 @@ export default class extends think.model.base {
             if(edit.c_column === 'id'){ continue; }
 
             let key = edit.c_column.trim();
-            if(edit.c_coltype === 'int4' || edit.c_coltype === 'integer' || edit.c_coltype === 'decimal') {
+            if(edit.c_coltype === 'int' || edit.c_coltype === 'float') {
                 md[key] = 0;
             }else if(edit.c_coltype === 'bool'){
-                md[key] = true;
-            }else if(edit.c_coltype === 'datetime' || edit.c_coltype === 'timestamp'){
+                md[key] = false;
+            }else if(edit.c_coltype === 'timestamp' ){
                 md[key] = think.datetime();
             }else if(edit.c_coltype === 'date'){
                 md[key] = think.datetime(new Date, "YYYY-MM-DD");
@@ -424,7 +421,7 @@ export default class extends think.model.base {
     async htmlGetEdit(page) {
         let html = ['<thead> <tr >'];
         //let pageEdits = await think.cache(`moduleEdit${page.id}`);
-      let pageEdits = await this.model('module',{},'cmpage').getModuleEdit(page.id);
+      let pageEdits = await global.model('cmpage/module').getModuleEdit(page.id);
         let md = {};
         if(page.editID >0) {
             let fields = [];
@@ -438,6 +435,14 @@ export default class extends think.model.base {
         }else{
             md = await this.pageEditInit(pageEdits,page);
         }
+        //对记录进行处理
+        for (let edit of pageEdits) {
+            if(edit.c_coltype ==='bool'){
+                md[edit.c_column] = think.isBoolean(md[edit.c_column]) ? md[edit.c_column] : (md[edit.c_column] === 1);
+            }
+        }
+
+        html.push(`<input name='old_record' type='hidden' value='${JSON.stringify(md)}' />`);
 //        global.debug(md);
         for(let col of pageEdits){
             if (!col.c_editable || col.c_column === "id" ) {  continue; }
@@ -453,9 +458,9 @@ export default class extends think.model.base {
             }
 
             if (col.c_type === "datetime" ||col.c_type === "date") {
-                html.push(`<input type="text" name="${col.c_column}" value="${think.datetime(colValue,'YYYY-MM-DD')}"
-                    ${col.c_type === "readonly" ? "disabled":""} data-toggle="datepicker" data-pattern="${think.isEmpty(col.c_format) ? 'yyyy-MM-dd':col.c_format}" data-rule="required;date" size="15" />`);
-            } else if (col.c_type === "select" || col.c_type === "selectBlank" || col.c_type === "readonlyReplace") {
+                html.push(`<input type="text" name="${col.c_column}" value="${ global.datetime(colValue,think.isEmpty(col.c_format) ? 'yyyy-MM-dd':col.c_format)}"
+                    ${col.c_type === "readonly" ? "disabled":""} data-toggle="datepicker" data-pattern="${think.isEmpty(col.c_format) ? 'yyyy-MM-dd':col.c_format}"  size="15" />`);
+            } else if (col.c_type === "select" || col.c_type === "selectBlank" ) {
                 html.push(`<select name="${col.c_column}" data-toggle="selectpicker" ${col.c_isrequired ? "data-rule=required" : ""}>`);
                 col.c_default = colValue;
                 html.push(await this.getOptions(col,false));
@@ -466,26 +471,28 @@ export default class extends think.model.base {
                 html.push(`<input name="${col.c_column}" type="lookup" size="${col.c_width}" value="${colValue}"   ${col.c_isrequired ? "data-rule=required" : ""}
                     data-width="800" data-height="600" data-toggle="lookup" data-title="${col.c_name} 选择" data-url="${this.getReplaceToSpecialChar(col.c_memo,page)}" readonly="readonly" />`);
             }else if (col.c_type == "areaSelect"){
-                html.push(`<select name="c_province" data-toggle="selectpicker"  data-nextselect="#city${page.c_modulename}" data-refurl="/cmpage/common/get_citys?province={value}" >`);
-                html.push(await this.model('cmpage/area').getProvinceItems(md['c_province'],true));
+                html.push(`<select name="c_province" data-toggle="selectpicker"  data-nextselect="#city${page.c_modulename}" data-refurl="/cmpage/utils/get_citys?province={value}" >`);
+                html.push(await global.model('cmpage/area').getProvinceItems(md['c_province'],true));
                 if(col.c_column ==='c_country'){
                     html.push(`</select> <select name="c_city" id="city${page.c_modulename}" data-toggle="selectpicker" data-nextselect="#country${page.c_modulename}"
-                        data-refurl="/cmpage/common/get_countrys?city={value}" >`);
-                    html.push(await this.model('cmpage/area').getCityItems(md['c_city'],true));
+                        data-refurl="/cmpage/utils/get_countrys?city={value}" >`);
+                    html.push(await global.model('cmpage/area').getCityItems(md['c_city'],true));
                     html.push(`</select> <select name="c_country" id="country${page.c_modulename}" data-toggle="selectpicker" data-rule="required" >`);
-                    html.push(await this.model('cmpage/area').getCountryItems(md['c_country'],true));
+                    html.push(await global.model('cmpage/area').getCountryItems(md['c_country'],true));
                 }else if(col.c_column === 'c_city'){
                     html.push(`</select> <select name="c_city" id="city${page.c_modulename}" data-toggle="selectpicker" data-nextselect="#country${page.c_modulename}" >`);
-                    html.push(await this.model('cmpage/area').getCityItems(md['c_city'],true));
+                    html.push(await global.model('cmpage/area').getCityItems(md['c_city'],true));
                 }
                 html.push('</select>');
             } else if(col.c_type === "kindeditor"){
-                html.push(`<div style="display: inline-block; vertical-align: middle;"> <textarea name="${col.c_column}" style="width: 960px;height:640;"
+                html.push(`<div style="display: inline-block; vertical-align: middle;"> <textarea name="${col.c_column}" style="width: 960px;height:640px;"
             data-toggle="kindeditor" data-minheight="460"> ${colValue}  </textarea> </div>`);
             } else if (col.c_type == "checkbox") {
                 html.push(`<input type="checkbox" name="${col.c_column}" data-toggle="icheck" value="1" data-label="${col.c_memo}"  ${colValue == "1" ? "checked" : ""} />`);
             }else if (col.c_type === "readonly") {
                 html.push(`<input name="${col.c_column}" type="text" size="${col.c_width}" value="${colValue}"  readonly="readonly"  />`); // style=background-color:#fde5d4;
+            }else if (col.c_type === "readonlyReplace") {
+                html.push(`<input name="${col.c_column}" type="text" size="${col.c_width}" value="${await this.getReplaceText(md[col.c_column], col.c_memo)}"  readonly="readonly"  />`); // style=background-color:#fde5d4;
             }else if(col.c_column !=='c_province' && col.c_column !=='c_city'){
                 html.push(`<input name="${col.c_column}" type="${col.c_type}" size="${col.c_width}" value="${colValue}"
                     ${col.c_isrequired ? "data-rule=required;" + col.c_memo : (think.isEmpty(col.c_memo) ? "" : "data-rule=" + col.c_memo)}  />`);
@@ -503,7 +510,7 @@ export default class extends think.model.base {
      * 如果是多个表的视图，则根据存在于page.c_table中的列更新表，一般需要在子类中继承
      */
     async pageSave(page,parms){
-        let model =this.model('module',{},'cmpage');
+        let model =global.model('cmpage/module');
         //page.parmsUrl = parms.parmsUrl;
         //page.editID = prams.id;
         let pageEdits = await model.getModuleEdit(page.id);
@@ -521,13 +528,46 @@ export default class extends think.model.base {
         //global.debug(JSON.stringify(md));
         if(parms.id == 0){
             //let id = await this.query(global.getInsertSql(md,page.c_table) +' returning id;');
-            md.id = await this.model(page.c_table).add(md);
-            await this.model('admin/log').addLog(page.user, md,page.id, md.id, global.enumStatusExecute.SUCCESS.id, global.enumLogType.ADD.id);
+            md.id = await this.model(page.c_table).add(global.checksql(md));
+            await this.pageSaveLog(page,parms,md,pageEdits,'add');
         }else {
-            await this.model(page.c_table).where({id:parseInt(parms.id)}).update(md);
-            await this.model('admin/log').addLog(page.user, md,page.id, md.id, global.enumStatusExecute.FAIL.id,  global.enumLogType.UPDATE.id);
+            await this.model(page.c_table).where({id:parseInt(parms.id)}).update(global.checksql(md));
+            md.id = parms.id;
+            await this.pageSaveLog(page,parms,md,pageEdits,'update');
         }
-        return md.id;
+        return md;
+    }
+
+    /**
+     * 保存后的操作日志记录,，通过重写可在子类中定制日志的格式
+     */
+    async pageSaveLog(page,parms,md,pageEdits,flag){
+        let log =[];
+        if(flag === 'add' ){
+            for(let edit of pageEdits){
+                if(edit.c_editable ) {
+                    log.push(`${edit.c_name}:${md[edit.c_column]}`);
+                }
+            }
+            await global.model('admin/log').addLog(page.user, log.join(', '),page.id, md.id, global.enumStatusExecute.SUCCESS.id, global.enumLogType.ADD.id);
+        }else if(flag === 'update'){
+            let oldMd = JSON.parse(parms.old_record);
+            log.push(`id:${md.id}`);
+            for(let edit of pageEdits){
+                if(edit.c_editable && edit.c_column !=='c_time') {
+                    if(edit.c_coltype === 'timestamp'){
+                        md[edit.c_column] =  global.datetime(md[edit.c_column],'yyyy-MM-dd HH:mm:ss');
+                        oldMd[edit.c_column] =  global.datetime(oldMd[edit.c_column],'yyyy-MM-dd HH:mm:ss');
+                    }
+                    if(md[edit.c_column] != oldMd[edit.c_column]) {
+                        log.push(`${edit.c_name}: ${oldMd[edit.c_column]} --> ${md[edit.c_column]}`);
+                    }else if(edit.c_column === 'c_name'){
+                        log.push(`c_name:${md.c_name}`);
+                    }
+                }
+            }
+            await global.model('admin/log').addLog(page.user, log.join(', '),page.id, md.id, global.enumStatusExecute.SUCCESS.id,  global.enumLogType.UPDATE.id);
+        }
     }
 
     //判断某个列是否存在于某个表中
@@ -543,6 +583,9 @@ export default class extends think.model.base {
     //替换备注设置中的特殊字符,需要组成SQL
     getReplaceToSpecialChar(memo,page){
         //let ret = memo.split('*').join('\&').split(/##/).join("\'");
+        if(think.isEmpty(memo)){
+            return '';
+        }
         let parms = memo.split('*');
         if(parms.length >1){
             for(let parm of parms){
@@ -565,13 +608,13 @@ export default class extends think.model.base {
   async htmlGetView(page) {
     let html = [];
     //let pageEdits = await think.cache(`moduleEdit${page.id}`);
-    let pageCols = await this.model('module',{},'cmpage').getModuleCol(page.id);
+    let pageCols = await global.model('cmpage/module').getModuleCol(page.id);
     if(page.viewID <=0){
       return '<tr><td>----</td><td>----</td><td>----</td><td>该数据不存在！</td><td>----</td><td>----</td><td>----</td></tr>';
     }
     let list = await this.query(`select ${this.getListFields(pageCols)} from ${page.c_datasource} where id=${page.viewID}`);
     let md =list[0];
-    //global.debug(md);
+        //global.debug(md);
     for(let col of pageCols){
       if (!col.c_isview ){
         continue;
@@ -585,9 +628,11 @@ export default class extends think.model.base {
       }else if (col.c_coltype === "decimal") {
         html.push(global.formatNumber(md[col.c_column], {pattern: col.c_format}));
       } else if(col.c_coltype === "timestamp") {
-        html.push(think.datetime(md[col.c_column]));
+        html.push(global.datetime(md[col.c_column],col.c_format));
       } else if(col.c_coltype === "date") {
-        html.push(think.datetime(md[col.c_column],'YYYY-MM-DD'));
+        html.push(global.datetime(md[col.c_column],'yyyy-MM-dd'));
+      } else if (col.c_type === "replace" && !(/^select/.test(col.c_memo))) {
+          html.push(await this.getReplaceText(md[col.c_column], col.c_memo));
       } else  {
         html.push(md[col.c_column]);
       }

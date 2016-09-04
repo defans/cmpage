@@ -19,14 +19,14 @@ export default class extends Base {
     let user = await this.session('user');
      // console.log(user);
       let codeMd =await this.model('code').getCodeById(344);    //系统版本
-    let vb={groupName:user.groupName,version:codeMd.c_desc,userName:user.c_name,title:'cmpage by defans'};
-    let menus = await this.model('code').getTreeList(1);
+    let vb={groupName:user.groupName,version:codeMd.c_desc,userName:user.c_name,title:'CmPage by defans'};
+    let menus = await this.model('privilege').userGetPrivilegeTree(user.id,user.c_role);
 
     vb.navList=[];  //主菜单
     vb.itemList=[]; //二级导航菜单
     vb.menuList=[];//叶子菜单
     menus.forEach(function(rec){
-        if(rec.c_type==='N'){
+        if(rec.c_type==='N' && rec.isAllow){
             if(rec.c_pid===1){
                 if(vb.navList.length===0){
                     rec.liStyle="class=active";
@@ -36,7 +36,7 @@ export default class extends Base {
                 vb.itemList.push(rec);
             }
         }else{
-            if(rec.c_type=='M'){
+            if(rec.c_type=='M' && rec.isAllow){
               vb.menuList.push(rec);
             }
         }

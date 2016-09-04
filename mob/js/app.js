@@ -4,8 +4,8 @@
 	 **/
 	owner.debug = function() {
 		//调试模式
-		return true;
-		//return false;
+		//return true;
+		return false;
 	}
 	
 	/**

@@ -77,7 +77,7 @@ export default class extends think.model.base {
         }
         let provinces = await this.getProvinces();
         for(let item of provinces){
-            html.push(`<option value="${item.c_ucode}" ${item.c_ucode === value ? "selected":""}>${item.c_name}</option>`);
+            html.push(`<option value="${item.c_ucode}" ${item.c_ucode == value ? "selected":""}>${item.c_name}</option>`);
         }
         return html.join('');
     }
@@ -93,7 +93,7 @@ export default class extends think.model.base {
         }
         let citys = await this.getCitys(province);
         for(let item of citys){
-            html.push(`<option value="${item.c_ucode}" ${item.c_ucode === value ? "selected":""}>${item.c_name}</option>`);
+            html.push(`<option value="${item.c_ucode}" ${item.c_ucode == value ? "selected":""}>${item.c_name}</option>`);
         }
         return html.join('');
     }
@@ -109,7 +109,7 @@ export default class extends think.model.base {
         }
         let countrys = await this.getCountrys(city);
         for(let item of countrys){
-            html.push(`<option value="${item.c_ucode}" ${item.c_ucode === value ? "selected":""}>${item.c_name}</option>`);
+            html.push(`<option value="${item.c_ucode}" ${item.c_ucode == value ? "selected":""}>${item.c_name}</option>`);
         }
         return html.join('');
     }

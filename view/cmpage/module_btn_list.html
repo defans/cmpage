@@ -45,7 +45,7 @@
                     <td ><%= item.c_location%> </td>
                     <td ><%= item.c_label%></td>
                     <td ><%= item.c_object%></td>
-                    <td data-val="<%= item.c_isshow%>">Y</td>
+                    <td data-val="<%= (item.c_isshow || item.c_isshow == 1 ? 'true':'false')%>">Y</td>
                     <td ><%= item.c_class%></td>
                     <td ><%= item.c_style%></td>
                     <td ><%= item.c_url%></td>

@@ -16,6 +16,16 @@ export default {
       password: 'defans',
       prefix: '',
       encoding: 'utf8'
+    },
+    postgresql: {
+      host: ["127.0.0.1"],
+      port: ["5432"],
+      database: 'cmpage',
+      user: 'postgres',
+      password: 'defans',
+      prefix: '',
+      encoding: 'utf8'
     }
+
   }
 };

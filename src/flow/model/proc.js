@@ -19,12 +19,32 @@ export default class extends CMPage {
     }
 
     /**
-     * 生成列表每一行的内容
+     * 初始化编辑页面的值
      */
-    async mobHtmlGetListRow(row,pageCols) {
-        return `<h5 style='color:black;font-weight:bold;'>${row["c_name"]} (${row["c_phone"]} / ${row["c_type"]})</h5>
-                <p>职业：${row["c_occupation"]} / 购买意向：<label style="color:orange">${row["c_buy_type"]}</label> </p>
-                <p style='color:#005094;'>地址：${row["c_address"]} / ${row["c_time"].substr(0,10)} </p>`;
+    async pageEditInit(pageEdits,page){
+        let md = await super.pageEditInit(pageEdits,page);
+        md.c_time_to = '2200-01-01 00:00:00';   //默认的截止日期
+
+        return md;
+    }
+
+    /**
+     * 编辑页面保存,
+     * 如果是多个表的视图，则根据存在于page.c_table中的列更新表，一般需要在子类中继承
+     */
+    async pageSave(page,parms){
+        let md = super.pageSave(page,parms);
+        if(parms.id ==0 ){
+            //根据模板的类型自动生成活动节点
+            await this.initActs(md);
+        }
+
+    }
+    /**
+     * 根据模板的类型自动生成活动节点
+     */
+    async initActs(proc){
+
     }
 
     ///**
@@ -92,26 +112,12 @@ export default class extends CMPage {
     //}
     //
     ///**
-    // * 初始化编辑页面的值
-    // */
-    //async pageEditInit(pageEdits,page){
-    //
-    //}
-    //
-    ///**
     // * 取编辑页面的设置，组合成列表数据的HTML输出
     // */
     //async htmlGetEdit(page) {
     //
     //}
-    //
-    ///**
-    // * 编辑页面保存,
-    // * 如果是多个表的视图，则根据存在于page.c_table中的列更新表，一般需要在子类中继承
-    // */
-    //async pageSave(page,parms){
-    //
-    //}
+
     //
     ///**
     // * 保存后的操作日志记录,，通过重写可在子类中定制日志的格式
@@ -132,7 +138,7 @@ export default class extends CMPage {
     //
     //}
 
-/**********************以下是 mob页面的几个方法，需要从 cmpage/page_mob 继承 ********************************************************/
+    /**********************以下是 mob页面的几个方法，需要从 cmpage/page_mob 继承 ********************************************************/
     ///**
     // * 取模块列表中的MUI设置，组合成HTML输出，一般在子类中通过重写这个方法来达到页面定制的效果
     // */

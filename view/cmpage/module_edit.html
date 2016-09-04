@@ -27,11 +27,11 @@
             <tr>
                 <td>
                     <label class="control-label x85">多行选择：</label>
-                    <input type="checkbox" name="c_multiselect"  data-toggle="icheck" data-label="是否多行选择"  <%= md.c_multiselect ? "checked":""%> >
+                    <input type="checkbox" name="c_multiselect"  data-toggle="icheck" data-label="是否多行选择"  <%= md.c_multiselect || md.c_multiselect===1 ? "checked":""%> >
                 </td>
                 <td>
                     <label class="control-label x85">分页：</label>
-                    <input type="checkbox" name="c_pager" data-toggle="icheck"   data-label="是否分页" <%= md.c_pager ? "checked":""%> >
+                    <input type="checkbox" name="c_pager" data-toggle="icheck"   data-label="是否分页" <%= md.c_pager ||md.c_pager===1 ? "checked":""%> >
                     <label  class="control-label x85">每页行数：</label>
                     <input type="text" name="c_page_size"  value="<%= md.c_page_size%>"  size="5">
                 </td>

@@ -18,7 +18,7 @@ export default class extends CMPage {
      */
     async htmlGetBtnList(rec,page,pageBtns){
       let html=[];
-      let pageCols = await this.model('module',{},'cmpage').getModuleCol(page.id);
+      let pageCols = await global.model('cmpage/module').getModuleCol(page.id);
       for(let col of pageCols){
         if (col.c_isview) {
           html.push(`${col.c_column}:'${rec[col.c_column]}'`);

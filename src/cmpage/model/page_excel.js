@@ -19,7 +19,7 @@ export default class extends think.model.base {
     async excelExport(data,page) {
         let conf = {};
         conf.stylesXmlFile = think.ROOT_PATH + "/www/static/css/excel_styles.xml";
-        let pageCols = await this.model('module').getModuleCol(page.id);
+        let pageCols = await global.model('cmpage/module').getModuleCol(page.id);
         //设置每列的属性
         conf.cols = [];
         for(let col of pageCols){
@@ -58,7 +58,7 @@ export default class extends think.model.base {
         } else if (col.c_type === "checkbox") {
             return item[col.c_column] ? "是" : "否";
         } else if (col.c_type === "replace" && !(/^select/.test(col.c_memo))) {
-            return await this.model('common/page').getReplaceText(item[col.c_column], col.c_memo);
+            return await this.model('cmpage/page').getReplaceText(item[col.c_column], col.c_memo);
         } else {
             if (!think.isEmpty(col.c_column)) {
                 if(col.c_coltype === "timestamp") {

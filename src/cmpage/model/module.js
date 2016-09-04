@@ -15,7 +15,7 @@ export default class extends think.model.base {
 
     //数据库中字段的类型
     colTypes(){
-        return ["varchar", "int4","integer","date","timestamp","bool","decimal","float" ];
+        return ["varchar", "int","date","timestamp","bool","float" ];
     }
     //分页列表中各项的显示类型
     showTypes(){
@@ -28,7 +28,7 @@ export default class extends think.model.base {
     }
     //编辑页面的控件类型
     editTypes(){
-        return [{value:"text",text:"文本"},{value:"textarea",text:"多行文本"},{value:"number",text:"数字"},{value:"datetime",text:"日期"},
+        return [{value:"text",text:"文本"},{value:"textarea",text:"多行文本"},{value:"number",text:"数字"},{value:"datetime",text:"日期时间"},
             {value:"checkbox",text:"是否选中"},{value:"select",text:"下拉选择"},{value:"selectBlank",text:"下拉可空"},{value:"lookup",text:"查找带回"},
             {value:"hidden",text:"隐藏"},{value:"areaSelect",text:"地区联动"},{value:"readonly",text:"只读"},{value:"readonlyReplace",text:"只读替换"},{value:"kindeditor",text:"富文本"}];
     }
@@ -46,27 +46,43 @@ export default class extends think.model.base {
     }
 
     //从数据源取字段名称和类型
-    async getAllColumns(table){
-        let sql=`SELECT
-                a.attnum,
-                a.attname AS column,
-                t.typname AS type,
-                case when a.attlen >0 then a.attlen else a.atttypmod end AS length,
-                a.attnotnull AS notnull,
-                col_description(a.attrelid,a.attnum) as comment
-        FROM
-                pg_class c,
-                pg_attribute a,
-                pg_type t
-        WHERE
-                c.relname = '${table}'
-                and a.attnum > 0
-                and a.attrelid = c.oid
-                and a.atttypid = t.oid `;
-        let list= await this.query(sql);
-
-        //let list =await this.model.getSchema(table);
-        return list;
+    async getAllColumns(table,path){
+        let thinkModule = think.isEmpty(path) ? 'common':path.split('/')[0];
+        let config = think.config("db",undefined,thinkModule);
+        let sql='';
+        if( config.type === 'postgresql'){
+            sql = `SELECT    a.attnum,  a.attname AS field,  t.typname AS type,   case when a.attlen >0 then a.attlen else a.atttypmod end AS length,  a.attnotnull AS notnull,  col_description(a.attrelid,a.attnum) as comment
+                FROM   pg_class c,   pg_attribute a,   pg_type t WHERE   c.relname = '${table}'  and a.attnum > 0  and a.attrelid = c.oid  and a.atttypid = t.oid `;;
+        }else
+        {
+            sql = `SHOW FULL COLUMNS FROM ${table}`;
+        }
+        let ret =[];
+        let list= await think.model('utils',config,thinkModule).query(sql);
+        if(config.type === 'postgresql'){
+            ret = list;
+        }else {
+            for(let col of list){
+                ret.push({column:col.Field, type:col.Type, comment:col.Comment})
+            }
+        }
+        for(let col of ret){
+            if(col.type === 'bit' || col.type === 'boolean' || col.type === 'tinyint(1)') {
+                col.type = 'bool';
+            }else if(col.type.indexOf('int') ===0 || col.type.indexOf('bigint') ===0 || col.type.indexOf('tinyint') ===0 ){
+                col.type = 'int';
+            }else if(col.type === 'date' ){
+                col.type = 'date';
+            }else if(col.type.indexOf('timestamp') === 0 || col.type === 'datetime' ){
+                col.type = 'timestamp';
+            }else if(col.type.indexOf('decimal') ===0 || col.type.indexOf('numeric') ===0 || col.type.indexOf('float') ===0
+                || col.type.indexOf('real') ===0 || col.type.indexOf('double') ===0){
+                col.type = 'float';
+            //}else {
+            //    col.type = 'varchar';
+            }
+        }
+        return ret;
     }
     //从table的字段列表中取字段说明
     getColumnComment(comments, column){
@@ -84,16 +100,13 @@ export default class extends think.model.base {
         }
         let md = await this.model('t_module').where({id:moduleID}).find();
         let model =this.model('t_module_col');
-//        let count=await model.query(`select count(*) from pg_class where relname='${md.c_datasource}'`);
-        let tableMd = await this.model('pg_class').where({relname:md.c_datasource}).find();
-        if(tableMd.length <=0){
-            return {statusCode:300,message:'该数据源不存在！'};
-        }
-        await model.execute('delete from t_module_col where c_module='+md.id);
-        let columns = await this.getAllColumns(md.c_datasource);
+
+        await model.where({c_module: md.id}).delete();
+        let columns = await this.getAllColumns(md.c_datasource,md.c_path);
+        if(columns.length ===0){    return {statusCode:200,message:'没有列数据，请确认数据连接是否正确。'}; }
         let comments = [];
         if(md.c_datasource !== md.c_table){
-            comments = await this.getAllColumns(md.c_table);;
+            comments = await this.getAllColumns(md.c_table,md.c_path);
         }else{
             Object.assign(comments,columns);
         }
@@ -102,7 +115,12 @@ export default class extends think.model.base {
                 c_desc : col.column, c_type:'text', c_format: "", c_order:(k+1), c_width:50, c_style:'',
                 c_isretrieve:true, c_isshow:(col.column !== 'id'),c_isview:(col.column !== 'id'), c_user:0, c_time: think.datetime(),
                 c_type_sum:'none', c_memo:'', c_mui:''};
-            model.add(colmd);
+            if(col.type === 'timestamp'){
+                colmd.c_format = 'yyyy-MM-dd HH:mm:ss';
+            }else if(col.type === 'date'){
+                colmd.c_format = 'yyyy-MM-dd';
+            }
+            await model.add(global.checksql(colmd));
         }
         return {statusCode:200,message:''};
     }
@@ -113,25 +131,28 @@ export default class extends think.model.base {
         }
         let md = await this.model('t_module').where({id:moduleID}).find();
         let model =this.model('t_module_edit');
-        let tableMd = await this.model('pg_class').where({relname:md.c_datasource}).find();
-        if(tableMd.length <=0){
-            return {statusCode:300,message:'该数据源不存在！'};
-        }
-        model.where({id: ["=", md.id]}).delete();
-        //await model.execute('delete from t_module_edit where c_module='+md.id);
-        let columns = await this.getAllColumns(md.c_datasource);
+
+        await model.where({c_module: md.id}).delete();
+        let columns = await this.getAllColumns(md.c_datasource,md.c_path);
+        if(columns.length ===0){    return {statusCode:200,message:'没有列数据，请确认数据连接是否正确。'}; }
         let comments = [];
         if(md.c_datasource !== md.c_table){
-            comments = await this.getAllColumns(md.c_table);;
+            comments = await this.getAllColumns(md.c_table,md.c_path);
         }else{
             Object.assign(comments,columns);
         }
         for (let [k,col] of columns.entries()) {
             let colmd = {c_module:md.id, c_column:col.column, c_coltype:col.type, c_scale:col.length, c_name:this.getColumnComment(comments,col.column),
-                c_desc : col.column,c_editable:true, c_type:(['id','c_time','c_user','c_group'].indexOf(col.column) !== -1 ? 'hidden':(col.type==='bool'? 'checkbox':'text')),
-                c_format:'', c_order:(k+1), c_width:35, c_style:'',
+                c_desc : col.column,c_editable:true, c_type:'text', c_format:'', c_order:(k+1), c_width:35, c_style:'',
                 c_suffix:'', c_isshow:true,c_isrequired:false, c_user:0, c_time: think.datetime(), c_memo:'', c_mui:'',c_validate_rules:''};
-            model.add(colmd);
+            if(['id','c_time','c_user','c_group'].indexOf(col.column) !== -1){
+                colmd.c_type ='hidden';
+            }else if(col.type==='bool'){
+                colmd.c_type = 'checkbox';
+            }else if(col.type==='timestamp' || col.type==='date'){
+                colmd.c_type = 'datetime';
+            }
+            await model.add(global.checksql(colmd));
         }
         return {statusCode:200,message:''};
     }
@@ -142,16 +163,12 @@ export default class extends think.model.base {
         }
         let md = await this.model('t_module').where({id:moduleID}).find();
         let model =this.model('t_module_query');
-        let tableMd = await this.model('pg_class').where({relname:md.c_datasource}).find();
-        if(tableMd.length <=0){
-            return {statusCode:300,message:'该数据源不存在！'};
-        }
-        model.where({c_module:md.id}).delete();
-        //await model.execute('delete from t_module_query where c_module='+md.id);
-        let columns = await this.getAllColumns(md.c_datasource);
+        await model.where({c_module: md.id}).delete();
+        let columns = await this.getAllColumns(md.c_datasource,md.c_path);
+        if(columns.length ===0){    return {statusCode:200,message:'没有列数据，请确认数据连接是否正确。'}; }
         let comments = [];
         if(md.c_datasource !== md.c_table){
-            comments = await this.getAllColumns(md.c_table);;
+            comments = await this.getAllColumns(md.c_table,md.c_path);
         }else{
             Object.assign(comments,columns);
         }
@@ -159,8 +176,7 @@ export default class extends think.model.base {
             let colmd = {c_module:md.id, c_column:col.column, c_coltype:col.type, c_scale:col.length, c_name:this.getColumnComment(comments,col.column),
                 c_desc : col.column,c_type:(col.column ==='id' ? 'hidden':'text'),c_default:'', c_format:'', c_order:(k+1), c_width:20, c_style:'',
                 c_suffix:'', c_isshow:false,c_panel_index:0, c_user:0, c_time: think.datetime(), c_memo:'', c_mui:''};
-            model.add(colmd);
-            //await model.execute(global.getInsertSql(colmd,'t_module_query'));
+            await model.add(global.checksql(colmd));
         }
         return {statusCode:200,message:''};
     }
@@ -171,40 +187,30 @@ export default class extends think.model.base {
         }
         let md = await this.model('t_module').where({id:moduleID}).find();
         let model =this.model('t_module_btn');
-        let tableMd = await this.model('pg_class').where({relname:md.c_datasource}).find();
-        if(tableMd.length <=0){
-            return {statusCode:300,message:'该数据源不存在！'};
-        }
-        model.where({c_module:md.id}).delete();
-        //await model.execute('delete from t_module_btn where c_module='+md.id);
+        await model.where({c_module: md.id}).delete();
 
         let colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'dialog',c_class:'btn btn-green', c_onclick:'', c_memo:'', c_mui:'',
             c_title:'新增',c_label:'新增',c_location:0,c_object:md.c_modulename+'.Add', c_url:`/cmpage/page/edit?modulename=${md.c_modulename}*id=0`,
             c_options:`{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:400 }`, c_icon:'plus'};
-        model.add(colmd);
-        //await model.execute(global.getInsertSql(colmd,'t_module_btn'));
+        await model.add(global.checksql(colmd));
 
         colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'#',c_class:'btn btn-orange', c_onclick:`return page${md.c_modulename}ExportData(this);`, c_memo:'', c_mui:'',
             c_title:'导出',c_label:'导出',c_location:5,c_object:md.c_modulename+'.ExportData', c_url:'#', c_options:'', c_icon:'file-excel-o'};
-        model.add(colmd);
-        //await model.execute(global.getInsertSql(colmd,'t_module_btn'));
+        await model.add(global.checksql(colmd));
 
         colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'dialog',c_class:'btn btn-default', c_onclick:'', c_memo:'', c_mui:'',
             c_title:'查看',c_label:'',c_location:11,c_object:md.c_modulename+'.View', c_url:`/cmpage/page/view?modulename=${md.c_modulename}*id=#id#`,
             c_options:`{id:##page${md.c_modulename}View##, mask:true, width:600, height:400 }`, c_icon:'info'};
-        model.add(colmd);
-        //await model.execute(global.getInsertSql(colmd,'t_module_btn'));
+        await model.add(global.checksql(colmd));
 
         colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'dialog',c_class:'btn btn-green', c_onclick:'', c_memo:'', c_mui:'',
             c_title:'编辑',c_label:'编辑',c_location:12,c_object:md.c_modulename+'.Edit', c_url:`/cmpage/page/edit?modulename=${md.c_modulename}*id=#id#`,
             c_options:`{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:400 }`, c_icon:'edit'};
-        model.add(colmd);
-        //await model.execute(global.getInsertSql(colmd,'t_module_btn'));
+        await model.add(global.checksql(colmd));
 
         colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'#',c_class:'btn btn-red', c_onclick:`return page${md.c_modulename}Del(#id#,this);`, c_memo:'', c_mui:'',
             c_title:'删除',c_label:'',c_location:13,c_object:md.c_modulename+'.Del', c_url:'#', c_options:'', c_icon:'times'};
-        model.add(colmd);
-        //await model.execute(global.getInsertSql(colmd,'t_module_btn'));
+        await model.add(global.checksql(colmd));
 
         return {statusCode:200,message:''};
     }
@@ -263,15 +269,22 @@ export default class extends think.model.base {
             return {statusCode: 300, message: `模块 ${modulename}_copy 已经存在！`};
         }
 
-        await this.query(`select f_module_copy('${modulename}')`);
+        if(think.config('db.type')==='postgresql'){
+            await this.query(`select p_module_copy('${modulename}')`);
+        }else{
+            await this.query(`call p_module_copy('${modulename}')`);
+        }
 
         return {statusCode: 200, message: `模块复制成功！`};
     }
     /*******************从缓存中取模块设置，如果没有，则刷新缓存********--begin--****************/
     async getModuleById(moduleID){
-        return await think.cache(`module${moduleID}`, () => {
+        let col= await think.cache(`module${moduleID}`, () => {
             return  this.query(`select * from t_module where id = ${moduleID}`);  //model('t_module').where({id:moduleID}).find(); //
         });
+        col.c_isquery = think.isBoolean(col.c_isquery) ? col.c_isquery : (col.c_isquery === 1);
+        col.c_pager = think.isBoolean(col.c_pager) ? col.c_pager : (col.c_pager === 1);
+        return col;
     }
     async getModuleNameById(moduleID){
         let md = await this.getModuleById(moduleID);
@@ -288,24 +301,43 @@ export default class extends think.model.base {
         });
     }
     async getModuleCol(moduleID){
-        return await think.cache(`moduleCol${moduleID}`, () => {
+        let cols = await think.cache(`moduleCol${moduleID}`, () => {
             return this.query(`select * from t_module_col where c_module = ${moduleID} order by c_order`);
         });
+        for(let col of cols){
+            col.c_isshow = think.isBoolean(col.c_isshow) ? col.c_isshow : (col.c_isshow === 1);
+            col.c_isretrieve = think.isBoolean(col.c_isretrieve) ? col.c_isretrieve : (col.c_isretrieve === 1);
+            col.c_isview = think.isBoolean(col.c_isview) ? col.c_isview : (col.c_isview === 1);
+        }
+        return cols;
     }
     async getModuleEdit(moduleID){
-        return await think.cache(`moduleEdit${moduleID}`, () => {
+        let cols = await think.cache(`moduleEdit${moduleID}`, () => {
             return this.query(`select * from t_module_edit where c_module = ${moduleID} order by c_order`);
         });
+        for(let col of cols){
+            col.c_isshow = think.isBoolean(col.c_isshow) ? col.c_isshow : (col.c_isshow === 1);
+            col.c_isrequired = think.isBoolean(col.c_isrequired) ? col.c_isrequired : (col.c_isrequired === 1);
+        }
+        return cols;
     }
     async getModuleQuery(moduleID){
-        return await think.cache(`moduleQuery${moduleID}`, () => {
+        let cols = await think.cache(`moduleQuery${moduleID}`, () => {
             return this.query(`select * from t_module_query where c_module = ${moduleID} order by c_order`);
         });
+        for(let col of cols){
+            col.c_isshow = think.isBoolean(col.c_isshow) ? col.c_isshow : (col.c_isshow === 1);
+        }
+        return cols;
     }
     async getModuleBtn(moduleID){
-        return await think.cache(`moduleBtn${moduleID}`, () => {
+        let cols = await think.cache(`moduleBtn${moduleID}`, () => {
             return this.query(`select * from t_module_btn where c_module = ${moduleID} order by c_location`);
         });
+        for(let col of cols){
+            col.c_isshow = think.isBoolean(col.c_isshow) ? col.c_isshow : (col.c_isshow === 1);
+        }
+        return cols;
     }
     /*******************从缓存中取模块设置，如果没有，则刷新缓存********--end--****************/
 

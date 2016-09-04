@@ -43,7 +43,7 @@ export default class extends Base {
       where += ` and c_datasource like '%${vb.where.c_datasource}%'`
     }
 
-    let list = await  this.model('t_module').where(where).order('c_time desc ').page(vb.currentPage,vb.numsPerPage).countSelect();
+    let list = await  this.model('t_module').where(where).order('c_modulename ').page(vb.currentPage,vb.numsPerPage).countSelect();
       for(let rec of list.data){
           rec.c_time= think.datetime(rec.c_time)
       }
@@ -66,13 +66,13 @@ export default class extends Base {
     md.c_pager = !think.isEmpty(parms.c_pager);
     md.c_time = think.datetime();
     md.c_status =0;
-    global.debug(md);
+    //global.debug(md);
 
     let model = this.model('t_module');
     if(parms.id ==0){
       let rec = await model.where({c_modulename:parms.c_modulename}).find();
       if(think.isEmpty(rec)){
-        md.id = await model.add(md);
+        md.id = await model.add(global.checksql(md));
       }else{
           md.id = rec.id;
           ret.statusCode = 300;
@@ -80,7 +80,7 @@ export default class extends Base {
       }
     }else if(parms.id >0){
         md.id = parms.id;
-        await model.where({id:parms.id}).update(md);
+        await model.where({id:parms.id}).update(global.checksql(md));
     }
 
       await think.cache(`module${md.id}`,null);
@@ -108,7 +108,7 @@ export default class extends Base {
    */
   async copyAction(){
     let modulename =this.http.get('modulename');
-    return await this.model('module').copyToNewModule(modulename);
+    return this.json(await this.model('module').copyToNewModule(modulename));
   }
 
   /**
@@ -123,7 +123,7 @@ export default class extends Base {
       //如果新增，则初始化
       md.c_modulename=http.get('modulename');
       md.c_datasource = md.c_table = http.get('datasource');
-      Object.assign(md, {id:0,c_multiselect:false, c_pager:true, c_page_size:20, c_sort_by:'id desc',c_edit_column:1, c_path:'common/page',c_alias:md.c_modulename });
+      Object.assign(md, {id:0,c_multiselect:false, c_pager:true, c_page_size:20, c_sort_by:'id desc',c_edit_column:1, c_path:'cmpage/page',c_alias:md.c_modulename });
     }else{
       let tmp = await  this.model("t_module").where({id: http.get('id')}).find();
       Object.assign(md,tmp);
@@ -207,11 +207,11 @@ export default class extends Base {
         md.c_type_sum = posts[`editList[${i}].c_type_sum`].trim();
         md.c_mui = posts[`editList[${i}].c_mui`];
         md.c_memo = posts[`editList[${i}].c_memo`];
-        global.debug(JSON.stringify(md));
+        //global.debug(JSON.stringify(md));
         if(think.isEmpty(posts[`editList[${i}].id`])){
-          await model.add(md);
+          await model.add(global.checksql(md));
         }else{
-          await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(md);
+          await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(global.checksql(md));
         }
 
       }
@@ -277,9 +277,9 @@ export default class extends Base {
         md.c_memo = posts[`editList[${i}].c_memo`];
         global.debug(JSON.stringify(md));
           if(think.isEmpty(posts[`editList[${i}].id`])){
-              await model.add(md);
+              await model.add(global.checksql(md));
           }else{
-              await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(md);
+              await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(global.checksql(md));
           }
 
       }
@@ -353,11 +353,11 @@ export default class extends Base {
         md.c_suffix = posts[`editList[${i}].c_suffix`];
         md.c_mui = posts[`editList[${i}].c_mui`];
         md.c_memo = posts[`editList[${i}].c_memo`];
-        global.debug(JSON.stringify(md));
+        //global.debug(md);
           if(think.isEmpty(posts[`editList[${i}].id`])){
-              await model.add(md);
+              await model.add(global.checksql(md));
           }else{
-              await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(md);
+              await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(global.checksql(md));
           }
 
       }
@@ -378,18 +378,19 @@ export default class extends Base {
 
     let vb={};
     vb.editList = await  this.model('t_module_btn').where({c_module:http.get('moduleid')}).order('c_location ').select();
-
+//console.log(vb.editList);
     this.assign("vb",vb);
     this.assign("md",md);
     return this.display();
   }
 
-  async btnResetAction(){
-    let model = this.model("module");
-    let ret = await model.resetModuleBtn(this.get('moduleid'));
+    async btnResetAction(){
+        let model = this.model("module");
+        let ret = await model.resetModuleBtn(this.get('moduleid'));
+        await think.cache(`moduleBtn${ this.get('moduleid')}`,null);
 
-    return this.json(ret);
-  }
+        return this.json(ret);
+    }
 
   async btnSaveAction(){
     let http = this.http;
@@ -416,9 +417,9 @@ export default class extends Base {
         md.c_memo = posts[`editList[${i}].c_memo`];
         global.debug(JSON.stringify(md));
           if(think.isEmpty(posts[`editList[${i}].id`])){
-              await model.add(md);
+              await model.add(global.checksql(md));
           }else{
-              await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(md);
+              await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(global.checksql(md));
           }
       }else{
         break;

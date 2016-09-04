@@ -46,7 +46,7 @@ export default class extends Base {
             return think.statusAction(500, this.http);
         }
 
-        let model = this.model(think.isEmpty(page.c_path) ? 'common/page_mob':(page.c_path ==='common/page' ? 'common/page_mob':page.c_path));
+        let model = this.model(think.isEmpty(page.c_path) ? 'cmpage/page_mob':(page.c_path ==='cmpage/page' ? 'cmpage/page_mob':page.c_path));
         if(think.isEmpty(model)){
             let error = new Error(page.modulename + " 的实现类不存在！");
             this.http.error = error;
@@ -74,9 +74,9 @@ export default class extends Base {
         let page = await this.model('cmpage/module').getModuleByName(this.post('modulename'));
         page.parmsUrl = JSON.stringify(this.post('parmsUrl'));
         page.editID = this.post("editID");
-        console.log(page);
+        //console.log(page);
         page.user = await this.session('user');
-        let model = this.model(think.isEmpty(page.c_path) ? 'common/page_mob':(page.c_path ==='common/page' ? 'common/page_mob':page.c_path));
+        let model = this.model(think.isEmpty(page.c_path) ? 'cmpage/page_mob':(page.c_path ==='cmpage/page' ? 'cmpage/page_mob':page.c_path));
         let editHtml =await model.mobHtmlGetEdit(page);
 
         return this.json({statusCode:200, editHtml:editHtml});
@@ -105,7 +105,7 @@ export default class extends Base {
         let page = await this.model('module').getModuleByName(parms.modulename);
         page.user = await this.session('user');
 
-        let model = this.model(think.isEmpty(page.c_path) ? 'common/page':page.c_path);
+        let model = this.model(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
         ret.editID = await model.pageSave(page,parms);
 
         return this.json(ret);
@@ -118,7 +118,7 @@ export default class extends Base {
     async viewAction() {
         let page = await this.model("cmpage/module").getModuleByName(this.get('modulename'));
         page.viewID =parseInt( this.get('id'));
-        let model = this.model(think.isEmpty(page.c_path) ? 'common/page':page.c_path);
+        let model = this.model(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
         let viewHtml = await model.htmlGetView(page)
 
         this.assign('viewHtml',viewHtml);

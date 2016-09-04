@@ -4,7 +4,7 @@
  * @type {Object}
  */
 export default {
-    type: 'postgresql',
+    type: 'mysql',
     log_sql: true,
     log_connect: true
 

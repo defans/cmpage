@@ -66,9 +66,9 @@
                     <td ><%= item.c_column%></td>
                     <td data-val="<%= item.c_coltype%>"><%= item.c_coltype%></td>
                     <td ><%= item.c_desc%></td>
-                    <td data-val="<%= item.c_isretrieve%>">Y</td>
-                    <td data-val="<%= item.c_isshow%>">Y</td>
-                    <td data-val="<%= item.c_isview%>">Y</td>
+                    <td data-val="<%= (item.c_isretrieve || item.c_isretrieve == 1 ? 'true':'false')%>">Y</td>
+                    <td data-val="<%= (item.c_isshow || item.c_isshow == 1 ? 'true':'false')%>">Y</td>
+                    <td data-val="<%= (item.c_isview || item.c_isview == 1 ? 'true':'false')%>">Y</td>
                     <td data-val="<%= item.c_type%>"><%= item.c_type%></td>
                     <td ><%= item.c_format%></td>
                     <td ><%= item.c_width%></td>

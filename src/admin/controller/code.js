@@ -26,13 +26,10 @@ export default class extends Base {
     return this.display();
   }
 
-
-
   //账套用户设置
   async groupUserMainAction(){
     let model = this.model('code');
     let treeList =await model.getTreeList(2,true);
-//    global.debug(JSON.stringify(vb));
     this.assign('treeList',treeList);
     return this.display();
   }
@@ -51,6 +48,30 @@ export default class extends Base {
         await this.model('t_group_user').where(` c_user in(${this.get('userIds')})`).delete();
         return this.json({statusCode:200,message:'用户删除成功!'});
     }
+
+    //团队用户设置
+    async teamUserMainAction(){
+        let model = this.model('code');
+        let treeList =await model.getTreeList(7,true);
+        this.assign('treeList',treeList);
+        return this.display();
+    }
+
+    //增加某团队的用户
+    async teamUserAddAction(){
+        let teamID = this.get('teamID');
+        let userIds = this.get('userIds').split(',');
+        for(let userID of userIds){
+            await this.model('t_team_user').add({c_team:teamID, c_user:userID});
+        }
+        return this.json({statusCode:200,message:'用户加入成功!'});
+    }
+    //删除某团队的用户
+    async teamUserDelAction(){
+        await this.model('t_team_user').where(` c_user in(${this.get('userIds')})`).delete();
+        return this.json({statusCode:200,message:'用户删除成功!'});
+    }
+
   //角色权限设置
   async rolePrivilegeAction(){
     let model = this.model('code');

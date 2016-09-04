@@ -11,19 +11,10 @@
  * }
  */
 
-import CMPage from './cmpage.js';
+import CMPageGlobal from './../../cmpage/global.js';
 
-let cmpage = new CMPage();
+let cmpageGlobal = new CMPageGlobal();
 
-Object.assign(global,cmpage);
+Object.assign(global,cmpageGlobal);
 
-global.enumStatusExecute = {
-        SUCCESS:{id:0,name:'执行成功'},
-        FAIL:{id:1,name:'执行失败'},
-        ERROR:{id:2,name:'执行错误'}
-    };
-
-global.enumLogType = {
-    ADD:{id:0,name:'新增'},
-    UPDATE:{id:1,name:'修改'}
-};
+cmpageGlobal.cmpageInit();

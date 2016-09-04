@@ -22,11 +22,22 @@ export default class extends think.model.base  {
             for(let p in obj){
                 //console.log(p);
                 if(obj[p].id == id){
-                    return obj[p].name;
+                    return obj[p].c_name;
                 }
             }
         }
         return '';
+    }
+    async getEnum(enumObj){
+        enumObj = (enumObj.indexOf('enum') !== 0 ? 'enum'+enumObj: enumObj);
+        let obj = global[enumObj];
+        let ret = [];
+        if(think.isObject(obj)){
+            for(let p in obj){
+                ret.push( obj[p]);
+            }
+        }
+        return ret;
     }
 
 }

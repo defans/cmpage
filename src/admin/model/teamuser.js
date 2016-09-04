@@ -20,19 +20,19 @@ export default class extends CMPage {
       let where =await super.getQueryWhere(page);
       //global.debug(where);
         let parms =JSON.parse(page.parmsUrl);
-      return where +' and c_group='+parms.c_group;
+      return where +' and c_team='+parms.c_team;
     }
     /**
     * 编辑页面保存
     */
     async htmlGetOther(page){
       let parms =JSON.parse(page.parmsUrl);
-      return `<a class="btn btn-green" href="/cmpage/page/list?modulename=GroupUserAdd&c_group=${parms.c_group}"
-                        data-toggle="dialog" data-options="{id:'pageGroupUserAdd', mask:true, width:800, height:600 }"
-                        data-on-close="pageGroupUserEdit_onClose" data-icon="plus">加入用户</a>
-                <a class="btn btn-red" href="#" onclick="return GroupUserDelIds(this,${ parms.c_group});"  data-icon="times">剔除</a>
+      return `<a class="btn btn-green" href="/cmpage/page/list?modulename=TeamUserAdd&c_team=${parms.c_team}"
+                        data-toggle="dialog" data-options="{id:'pageTeamUserAdd', mask:true, width:800, height:600 }"
+                        data-on-close="pageTeamUserEdit_onClose" data-icon="plus">加入用户</a>
+                <a class="btn btn-red" href="#" onclick="return TeamUserDelIds(this,${ parms.c_team});"  data-icon="times">剔除</a>
             <script type="text/javascript">
-            function GroupUserDelIds(obj, groupID) {
+            function TeamUserDelIds(obj, teamID) {
                 //alert($('[name="ids"]').val());
                 var ids = [];
                 $('[name="ids"]').each(function () {
@@ -48,9 +48,9 @@ export default class extends CMPage {
 
                 $(this).alertmsg("confirm", "是否确定要剔除选中的用户？", {
                     okCall: function () {
-                        var url = "/admin/code/group_user_del?userIds=" + ids.join(',');
+                        var url = "/admin/code/team_user_del?userIds=" + ids.join(',');
                         $(obj).bjuiajax('doAjax', { url: url, callback: function () {
-                            $("#btnSearchGroupUser").click();
+                            $("#btnSearchTeamUser").click();
                         }
                         });
                     }
@@ -65,32 +65,32 @@ export default class extends CMPage {
     /**
      * 取某个用户登录账套及其所有子帐套
      */
-    async getLoginGroups(userID,groupID){
+    async getLoginTeams(userID,teamID){
         //假设账套不超过3层
         let codeModel = this.model('code');
-        let cnt = await this.model('t_group_user').where({c_group:groupID, c_user:userID}).count();
+        let cnt = await this.model('t_team_user').where({c_team:teamID, c_user:userID}).count();
         if(cnt == 0){
-            let groupMd = await codeModel.getCodeById(groupID);
-            if(!groupMd || groupMd.c_pid==0){
+            let teamMd = await codeModel.getCodeById(teamID);
+            if(!teamMd || teamMd.c_pid==0){
                 return '';
             }
-            cnt = await this.model('t_group_user').where({c_group:groupMd.c_pid, c_user:userID}).count();
+            cnt = await this.model('t_team_user').where({c_team:teamMd.c_pid, c_user:userID}).count();
             if(cnt == 0) {
-                let groupMd = await codeModel.getCodeById(groupMd.c_pid);
-                if (!groupMd || groupMd.c_pid == 0) {
+                let teamMd = await codeModel.getCodeById(teamMd.c_pid);
+                if (!teamMd || teamMd.c_pid == 0) {
                     return '';
                 }
-                cnt = await this.model('t_group_user').where({c_group:groupMd.c_pid, c_user:userID}).count();
+                cnt = await this.model('t_team_user').where({c_team:teamMd.c_pid, c_user:userID}).count();
                 if(cnt ==0 ){
                     return '';
                 }
             }
         }
-        let groups = await codeModel.getTreeList(groupID);
-        global.debug(groups);
+        let teams = await codeModel.getTreeList(teamID);
+        //global.debug(teams);
         let ret = [];
-        ret.push(groupID);
-        for(let group of groups){ ret.push(group.id); }
+        ret.push(teamID);
+        for(let team of teams){ ret.push(team.id); }
 
         return ret.join(',');
     }

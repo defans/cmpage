@@ -10,7 +10,7 @@
 /**
  * 操作日志 model
  */
-import CMPage from '../../common/model/page.js';
+import CMPage from '../../cmpage/model/page.js';
 
 export default class extends CMPage {
     /**
@@ -29,11 +29,12 @@ export default class extends CMPage {
      */
     async addLog(user,msg,moduleID,linkID,logStatus,logType){
         //let user = await think.session('user');
+        msg = (msg.length >3800 ? msg.substr(0,3800):msg);
         msg  = think.isObject(msg) ? JSON.stringify(msg).replace(/\"/g,'').replace(/\\/g,'').replace(/,/g,',  ') : msg;
-        let md ={c_desc:(msg.length >3800 ? msg.substr(0,3800):msg), c_group:user.groupID, c_user:user.id, c_time:think.datetime(),c_module:moduleID,
+        let md ={c_desc:msg, c_group:user.groupID, c_user:user.id, c_time:think.datetime(),c_module:moduleID,
             c_type:(think.isEmpty(logType) ? 0: logType),c_status:(think.isEmpty(logStatus) ? 0: logStatus),c_link:(think.isEmpty(linkID) ? 0: linkID)};
 
-        return await this.model('t_log').add(md);
+        return await this.model('t_log').add(global.checksql(md));
     }
 
 

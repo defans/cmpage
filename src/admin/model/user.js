@@ -7,7 +7,7 @@
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
 
-import CMPage from '../../common/model/page.js';
+import CMPage from '../../cmpage/model/page.js';
 
 export default class extends CMPage {
     /**
@@ -29,20 +29,20 @@ export default class extends CMPage {
         md.c_sex = think.isEmpty(md.c_sex) ? false: md.c_sex;
         let userMd = { c_role:parms.c_role, c_login_name:parms.c_login_name, c_linktype:1, c_status:0 };
         if(parms.id ==0 ){
-            md.id = await this.model('t_emp').add(md);
+            md.id = await this.model('t_emp').add(global.checksql(md));
             userMd.c_link = md.id;
             userMd.c_login_pwd = think.md5('123456');
             userMd.c_guid =think.uuid(32);
-            userMd.id = await this.model('t_user').add(userMd);
+            userMd.id = await this.model('t_user').add(global.checksql(userMd));
         }else {
             console.log(md);
-            await this.model('t_emp').where({id:parms.c_link}).update(md);
-            await this.model('t_user').where({id:parms.id}).update(userMd);
+            await this.model('t_emp').where({id:parms.c_link}).update(global.checksql(md));
+            await this.model('t_user').where({id:parms.id}).update(global.checksql(userMd));
             userMd.id = parms.id;
         }
 
         await think.cache("users",null);  //清除users缓存
-        return userMd.id;
+        return userMd;
     }
 
     async getNameById(id){

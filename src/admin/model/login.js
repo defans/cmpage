@@ -10,7 +10,7 @@
 /**
  * model
  */
-import CMPage from '../../common/model/page.js';
+import CMPage from '../../cmpage/model/page.js';
 
 export default class extends CMPage {
     /**

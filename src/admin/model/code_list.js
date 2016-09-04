@@ -7,7 +7,7 @@
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
 
-import CMPage from '../../common/model/page.js';
+import CMPage from '../../cmpage/model/page.js';
 /**
  * 代码于参数设置，单层的CRUD操作
  */

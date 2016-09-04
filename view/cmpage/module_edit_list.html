@@ -61,12 +61,12 @@
                     <td ><%= item.c_column%></td>
                     <td data-val="<%= item.c_coltype%>"><%= item.c_coltype%></td>
                     <td ><%= item.c_desc%></td>
-                    <td data-val="<%= item.c_isshow%>">Y</td>
-                    <td data-val="<%= item.c_editable%>">Y</td>
+                    <td data-val="<%= (item.c_isshow || item.c_isshow == 1 ? 'true':'false')%>">Y</td>
+                    <td data-val="<%= (item.c_editable || item.c_editable == 1 ? 'true':'false')%>">Y</td>
                     <td data-val="<%= item.c_type%>"><%= item.c_type%></td>
                     <td ><%= item.c_format%></td>
                     <td ><%= item.c_style%></td>
-                    <td data-val="<%= item.c_isrequired%>">Y</td>
+                    <td data-val="<%= (item.c_isrequired || item.c_isrequired == 1 ? 'true':'false')%>">Y</td>
                     <td ><%= item.c_validate_rules%></td>
                     <td ><%= item.c_width%></td>
                     <td ><%= item.c_suffix%></td>

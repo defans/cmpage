@@ -51,8 +51,7 @@ export default class extends Base {
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-
-        let model = this.model(think.isEmpty(page.c_path) ? 'common/page':page.c_path);
+        let model = global.model(page.c_path);
         if(think.isEmpty(model)){
             let error = new Error(page.modulename + " 的实现类不存在！");
             this.http.error = error;
@@ -78,7 +77,7 @@ export default class extends Base {
      * @return  {BinaryFile}
      */
     async excelExportAction(){
-        let module = this.model("cmpage/module");
+        let module = global.model("cmpage/module");
         let page ={};
         page.query ={};
         page.modulename= this.get('modulename');
@@ -98,7 +97,7 @@ export default class extends Base {
             return think.statusAction(500, this.http);
         }
 
-        let model = this.model(think.isEmpty(page.c_path) ? 'common/page':page.c_path);
+        let model = global.model(page.c_path);
         if(think.isEmpty(model)){
             let error = new Error(page.modulename + " 的实现类不存在！");
             //将错误信息写到 http 对象上，用于模版里显示
@@ -107,7 +106,7 @@ export default class extends Base {
         }
         let data = await model.getDataList(page);
         //global.debug(data);
-        let excel = await this.model('excel').excelExport(data,page);
+        let excel = await global.model('cmpage/page_excel').excelExport(data,page);
         //global.debug(vb.listHtml);
         this.header('Content-Type', 'application/vnd.openxmlformats');
         //let filename=[{filename:(think.isEmpty(page.c_alias) ? page.modulename : page.c_alias)}];
@@ -120,12 +119,12 @@ export default class extends Base {
      * @return {EditView}
      */
     async editAction() {
-        let page = await this.model('cmpage/module').getModuleByName(this.get('modulename'));
+        let page = await global.model('cmpage/module').getModuleByName(this.get('modulename'));
         page.parmsUrl = JSON.stringify(this.get());
         page.editID = this.get("id");
         page.user = await this.session('user');
         //global.debug(page);
-        let model = this.model(think.isEmpty(page.c_path) ? 'common/page':page.c_path);
+        let model = global.model(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
         let editHtml =await model.htmlGetEdit(page);
 
         this.assign('editHtml',editHtml);
@@ -138,12 +137,12 @@ export default class extends Base {
      * @return {EditRecView}
      */
     async recEditAction() {
-        let page = await this.model('cmpage/module').getModuleByName(this.get('modulename'));
+        let page = await global.model('cmpage/module').getModuleByName(this.get('modulename'));
         page.parmsUrl = JSON.stringify(this.get());
         page.editID = this.get("id");
         page.user = await this.session('user');
         //global.debug(page);
-        let model = this.model(think.isEmpty(page.c_path) ? 'common/page':page.c_path);
+        let model = global.model(page.c_path);
         let editHtml =await model.htmlGetEdit(page);
         let tabsHtml = model.htmlGetTabs(page);
         let jsHtml = model.htmlGetJS(page);
@@ -172,7 +171,7 @@ export default class extends Base {
         let page = await this.model('module').getModuleByName(parms.modulename);
         page.user = await this.session('user');
 
-        let model = this.model(think.isEmpty(page.c_path) ? 'common/page':page.c_path);
+        let model = global.model(page.c_path);
         await model.pageSave(page,parms);
 
         return this.json(ret);
@@ -185,7 +184,7 @@ export default class extends Base {
     async viewAction() {
         let page = await this.model("cmpage/module").getModuleByName(this.get('modulename'));
         page.viewID =parseInt( this.get('id'));
-        let model = this.model(think.isEmpty(page.c_path) ? 'common/page':page.c_path);
+        let model = global.model(page.c_path);
         let viewHtml = await model.htmlGetView(page)
 
         this.assign('viewHtml',viewHtml);
@@ -224,7 +223,7 @@ export default class extends Base {
         }
         page.user = await this.session('user');
 
-        let model = this.model('common/lookup');
+        let model = global.model('cmpage/page_lookup');
         vb.queryHtml = await model.htmlGetQuery(page);
         //global.debug(vb.queryHtml);
         vb.otherHtml = await model.htmlGetOther(page);

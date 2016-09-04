@@ -43,12 +43,12 @@ export default class extends Base {
     async getMenusAction(){
         let user = await this.session('user');
          //console.log(user);
-        let menuList = await this.model('code').getTreeList(1147);
+        let menuList = await this.model('privilege').userGetPrivilegeTree(user.id,user.c_role, 1147);
         let btns = [];
         let navs = [];
         let k =0;
         for(let menu of menuList){
-            if(menu.c_type === 'N'){
+            if(menu.c_type === 'N' && menu.isAllow){
                 let nav ={id:menu.id, title:menu.c_name, modules:[]};
                 for(let item of menuList){
                     if(item.c_pid === nav.id && item.c_type === 'M'  && (menu.c_memo !== 'btn' || k >=3 )){
@@ -56,7 +56,7 @@ export default class extends Base {
                     }
                 }
                 navs.push(nav);
-            }else if(menu.c_type === 'M' && menu.c_memo === 'btn' && k <3){
+            }else if(menu.c_type === 'M' && menu.c_memo === 'btn' && k <3  && menu.isAllow){
                 k ++;
                 btns.push({title:menu.c_name, modulename:menu.c_object, parmsUrl:menu.c_other, url:menu.c_desc});
             }

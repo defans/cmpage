@@ -18,8 +18,9 @@ export default class extends CMPage {
      */
     async mobHtmlGetList(page,dataList) {
         let html = [];
-        let pageCols = await this.model('module',{},'cmpage').getModuleCol(page.id);
-        let pageBtns = await this.model('module',{},'cmpage').getModuleBtn(page.id);
+        let modelPage = global.model('cmpage/module');
+        let pageCols = await modelPage.getModuleCol(page.id);
+        let pageBtns = await modelPage.getModuleBtn(page.id);
 
         for(let row of dataList){
             //处理替换值
@@ -103,7 +104,7 @@ export default class extends CMPage {
         html.push("<input type='hidden' name='pageCurrent' value='1' />");
         html.push(`<input type='hidden' name='pageSize' value='${page.pageSize}' />`);
 
-        let pageQuerys = await this.model('module',{},'cmpage').getModuleQuery(page.id);
+        let pageQuerys = await global.model('cmpage/module').getModuleQuery(page.id);
         let provinceValue ='';
         let cityValue='';
 
@@ -122,7 +123,7 @@ export default class extends CMPage {
                     html.push("</select>");
                 }else if (md.c_type === "countrySelect"){
                     let countryValue = md.c_default;
-                    let areaModel = this.model('cmpage/area');
+                    let areaModel = global.model('cmpage/area');
                     let provinceName = await areaModel.getProvinceName(provinceValue);
                     let cityName = await areaModel.getCityName(cityValue);
                     let countryName = await areaModel.getCountryName(countryValue);
@@ -170,7 +171,7 @@ export default class extends CMPage {
      */
     async mobHtmlGetEdit(page) {
         let html =[];
-        let pageEdits = await this.model('module',{},'cmpage').getModuleEdit(page.id);
+        let pageEdits = await global.model('cmpage/module').getModuleEdit(page.id);
         let md = {};
         if(page.editID >0) {
             let fields = [];
@@ -184,7 +185,8 @@ export default class extends CMPage {
             md = await this.pageEditInit(pageEdits,page);
         }
 //        global.debug(md);
-        html.push(`<input type='hidden' name='modulename' value='${page.c_modulename}' />`)
+        html.push(`<input type='hidden' name='modulename' value='${page.c_modulename}' />`);
+        html.push(`<input name='old_record' type='hidden' value='${JSON.stringify(md)}' />`);
         for(let col of pageEdits){
             if (!col.c_editable  ) {  continue; }
             let colValue = md[col.c_column];
@@ -221,7 +223,7 @@ export default class extends CMPage {
             } else if (col.c_type === "checkbox") {
                 html.push(`<input type='checkbox' name='${col.c_column}' ${colValue ? " checked" : ""} />`);
             }else if (col.c_type == "areaSelect"){
-                let areaModel = this.model('cmpage/area');
+                let areaModel = global.model('cmpage/area');
                 html.push(`<button class='mui-btn mui-btn-block citypicker' style='width:65%; border:none; text-align:left; padding-left:0px;'
                     data-ref='${page.c_modulename}_c_country' type='button'>${await areaModel.getProvinceName(md['c_province'])}
                     ${await areaModel.getCityName(md['c_city'])} ${await areaModel.getCountryName(md['c_country'])} </button>
