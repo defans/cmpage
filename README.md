@@ -7,7 +7,7 @@
 2、在/src/common/config/db.js 中配置数据库连接参数<br>
 3、运行：npm install --registry=https://registry.npm.taobao.org --verbose <br>
 4、运行：npm start <br>
-5、手机端项目的目录：/mob，独立项目，非必需，请用HBuider打开，然后用USB连上手机就可以调试了，具体参见 http://www.dcloud.io/runtime.html, 也可以用手机扫描二维码(http://139.129.48.131:8300/admin/login),安装Andriod版本的DEMO。
+5、手机端项目的目录：/mob，独立项目，非必需，请用HBuider打开，然后用USB连上手机就可以调试了，具体参见 http://www.dcloud.io/runtime.html, 也可以用手机扫描二维码(http://139.129.48.131:8300/admin/index/login ),安装Andriod版本的DEMO。
 <br><br>
 演示地址： http://139.129.48.131:8300/admin <br>
 更新日志： http://139.129.48.131:8300/home/index/log <br>
