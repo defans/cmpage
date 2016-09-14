@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src\cmpage\controller\module.js</title>
+  
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-smart">
+ <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+               <a class="navbar-brand mainlogo" href="/static/doc/index.html">
+             
+            <img alt="" src="../assets/css/logo.png" title="">
+            
+                
+          </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                 <ul class="nav navbar-nav">
+                    
+                    <li><a href="/home/index/index">首页</a>
+                    </li>
+                    
+                    <li><a href="/static/doc/index.html">文档</a>
+                    </li>
+                    
+                    <li><a href="/admin/index/index">演示</a>
+                    </li>
+                    
+                    <li><a href="/home/index/log">日志</a>
+                    </li>
+                    
+                </ul>
+               <div class="navbar-form navbar-right filterAPi" autocomplete="off">
+                <input type="text" id='txtSearchAPI' class="form-control search-query" placeholder="Search for API" />
+                 <ul id="filterList" class="filterItems dropdown-menu" role="menu"></ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="sidebar">
+    <h3>Modules/Classes</h3>
+        <div id="api-tabview-filter">
+            <input id='txtSearch' type="search" class="form-control" placeholder="Type to filter Modules/Classes">
+        </div>
+        <dl id="sidebar_list">
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/admin.controller.html">admin.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/admin.controller.base.html">admin.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.code.html">admin.controller.code</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.index.html">admin.controller.index</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.mob.html">admin.controller.mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/admin.model.html">admin.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/admin.model.code.html">admin.model.code</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.code_list.html">admin.model.code_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.groupuser_add.html">admin.model.groupuser_add</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.log.html">admin.model.log</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.login.html">admin.model.login</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.privilege.html">admin.model.privilege</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.teamuser.html">admin.model.teamuser</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.teamuser_add.html">admin.model.teamuser_add</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.user.html">admin.model.user</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.controller.html">cmpage.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.base.html">cmpage.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.mob.html">cmpage.controller.mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.module.html">cmpage.controller.module</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.page.html">cmpage.controller.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.utils.html">cmpage.controller.utils</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.logic.html">cmpage.logic</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.logic.page.html">cmpage.logic.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.model.html">cmpage.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.area.html">cmpage.model.area</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_mob.html">cmpage.model.page_mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.utils.html">cmpage.model.utils</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.cmpage_global.html">cmpage.cmpage_global</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+        </dl>
+</div>
+   
+    <div class="stdoc-content">
+        <!--     <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+ -->
+        <div class="apidocs">
+            <div id="docs-main">
+                <div class="content">
+                    <div class="page-header">
+    <h1>src\cmpage\controller\module.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums" id='src_code'>
+&#x27;use strict&#x27;;
+// +----------------------------------------------------------------------
+// | CmPage [ 通用页面框架 ]
+// +----------------------------------------------------------------------
+// | Licensed under the Apache License, Version 2.0
+// +----------------------------------------------------------------------
+// | Author: defans &lt;defans@sina.cn&gt;
+// +----------------------------------------------------------------------
+/**
+ @module cmpage.controller
+ */
+
+/**
+ * 业务模块设置的URL接口
+ * @class cmpage.controller.module
+ */
+import Base from &#x27;./base.js&#x27;;
+
+export default class extends Base {
+
+  /**
+   * 模块主信息设置，分页列表，调用： /cmpage/module/list
+   * @method  list
+   * @return {promise}  HTML片段
+   */
+  async listAction(){
+    let http =this.http;
+    let vb={numsPerPage:20,currentPage:1,orderField:&quot;c_time&quot;,orderDirection:&quot;desc&quot;};  //初始化
+
+    if(http.method==&quot;GET&quot;)  //显示第一页
+    {
+      vb.where = http.get();
+    }else if(http.method==&quot;POST&quot;){
+      vb.where = http.post();
+    }
+    global.debug(vb);
+    let model = this.model(&quot;module&quot;);
+
+    let where=&#x27; c_status=0 &#x27;;
+    if(!think.isEmpty(vb.where.c_modulename)){
+      where += &#x60; and c_modulename like &#x27;%${vb.where.c_modulename}%&#x27;&#x60;
+    }
+    if(!think.isEmpty(vb.where.c_datasource)){
+      where += &#x60; and c_datasource like &#x27;%${vb.where.c_datasource}%&#x27;&#x60;
+    }
+
+    let list = await  this.model(&#x27;t_module&#x27;).where(where).order(&#x27;c_modulename &#x27;).page(vb.currentPage,vb.numsPerPage).countSelect();
+      for(let rec of list.data){
+          rec.c_time= think.datetime(rec.c_time)
+      }
+    Object.assign(vb,list);
+    //global.debug(vb);
+    this.assign(&quot;vb&quot;,vb);
+    return this.display();
+  }
+
+  /**
+   * 保存模块主信息记录， POST调用： /cmpage/module/save
+   * @method  save
+   * @return {Promise} []
+   */
+  async saveAction(){
+    let ret={statusCode:200,message:&#x27;保存成功!&#x27;,tabid: &#x27;pageModule&#x27;,data:{}};
+    let parms =this.http.post();
+    let md = global.objPropertysFromOtherObj({},parms,[&#x27;c_modulename&#x27;,&#x27;c_datasource&#x27;,&#x27;c_table&#x27;,&#x27;c_page_size&#x27;,&#x27;c_sort_by&#x27;,&#x27;c_type&#x27;,&#x27;c_other&#x27;,
+      &#x27;c_module_rec&#x27;,&#x27;c_edit_column&#x27;,&#x27;c_mui&#x27;,&#x27;c_memo&#x27;,&#x27;c_path&#x27;,&#x27;c_alias&#x27;]);
+    md.c_multiselect = !think.isEmpty(parms.c_multiselect);
+    md.c_pager = !think.isEmpty(parms.c_pager);
+    md.c_time = think.datetime();
+    md.c_status =0;
+    //global.debug(md);
+
+    let model = this.model(&#x27;t_module&#x27;);
+    if(parms.id ==0){
+      let rec = await model.where({c_modulename:parms.c_modulename}).find();
+      if(think.isEmpty(rec)){
+        md.id = await model.add(global.checksql(md));
+      }else{
+          md.id = rec.id;
+          ret.statusCode = 300;
+          ret.message = &#x27;该模块名称已经存在！&#x27;;
+      }
+    }else if(parms.id &gt;0){
+        md.id = parms.id;
+        await model.where({id:parms.id}).update(global.checksql(md));
+    }
+
+      await think.cache(&#x60;module${md.id}&#x60;,null);
+      await think.cache(&#x60;modulename${md.c_modulename}&#x60;,null);
+    return this.json(ret);
+  }
+
+    /**
+     * 复制模块设置， 调用： /cmpage/module/copy?modulename=xxx
+     * @method  copy
+     * @return {json} 复制是否成功的信息
+     */
+    async copyAction(){
+    let modulename =this.http.get(&#x27;modulename&#x27;);
+    return this.json(await this.model(&#x27;module&#x27;).copyToNewModule(modulename));
+  }
+
+    /**
+     * 模块主表编辑页面，调用：/cmpage/module/edit?id=xxx
+     * @method  edit
+     * @return {Promise} HTML页面
+     */
+  async editAction(){
+    let http =this.http;
+    let md={};
+    if(http.get(&#x27;id&#x27;)==&#x27;0&#x27;)
+    {
+      //如果新增，则初始化
+      md.c_modulename=http.get(&#x27;modulename&#x27;);
+      md.c_datasource = md.c_table = http.get(&#x27;datasource&#x27;);
+      Object.assign(md, {id:0,c_multiselect:false, c_pager:true, c_page_size:20, c_sort_by:&#x27;id desc&#x27;,c_edit_column:1, c_path:&#x27;cmpage/page&#x27;,c_alias:md.c_modulename });
+    }else{
+      let tmp = await  this.model(&quot;t_module&quot;).where({id: http.get(&#x27;id&#x27;)}).find();
+      Object.assign(md,tmp);
+    }
+    global.debug(JSON.stringify(md));
+
+    this.assign(&quot;md&quot;,md);
+    return this.display();
+  }
+
+    /**
+     * 模块主表编辑页面，调用：/cmpage/module/reset_module_cache
+     * @method  resetModuleCache
+     * @return {json}
+     */
+  async resetModuleCacheAction(){
+    let ret={statusCode:200,message:&#x27;缓存刷新成功!&#x27;,tabid: &#x27;&#x27;,data:{}};
+    await this.model(&#x27;module&#x27;).clearModuleCache();
+    await this.model(&#x27;admin/code&#x27;).clearCodeCache();
+
+    return this.json(ret);
+  }
+
+    /**
+     * 模块显示列编辑页面，调用：/cmpage/module/col_list?moduleid=xxx
+     * @method  colList
+     * @return {Promise} HTML页面
+     */
+  async colListAction(){
+    let http =this.http;
+
+    let md =await   this.model(&#x27;t_module&#x27;).where({id:http.get(&#x27;moduleid&#x27;)}).find();
+    global.debug(md);
+
+    let model = this.model(&quot;module&quot;);
+    let vb={};
+    vb.colTypes = model.colTypes();
+    vb.showTypes = model.showTypes();
+    vb.sumTypes = model.sumTypes();
+    vb.editList = await  this.model(&#x27;t_module_col&#x27;).where({c_module:http.get(&#x27;moduleid&#x27;)}).order(&#x27;c_order &#x27;).select();
+
+    this.assign(&quot;vb&quot;,vb);
+    this.assign(&quot;md&quot;,md);
+    return this.display();
+  }
+
+    /**
+     * 重新设置模块显示列，调用：/cmpage/module/col_reset?moduleid=xxx
+     * @method  colReset
+     * @return {json}
+     */
+  async colResetAction(){
+    let http = this.http;
+
+    let model = this.model(&quot;module&quot;);
+    let ret = await model.resetModuleCol(http.get(&#x27;moduleid&#x27;));
+
+    return this.json(ret);
+  }
+
+    /**
+     * 保存显示列设置， POST调用： /cmpage/module/col_save
+     * @method  col_save
+     * @return {json} 保存记录的状态信息
+     */
+  async colSaveAction(){
+    let http = this.http;
+    let model = this.model(&quot;t_module_col&quot;);
+    //let moduleID = http.get(&#x27;moduleid&#x27;);
+    //let posts = http.post();
+    let posts = http.post();
+
+    //global.debug(posts[&#x60;editList[0].c_name&#x60;]);
+    for(let i=0; i&lt; 100 ; i++){
+      if (!posts[&#x60;editList[${i}].c_order&#x60;]){
+        break;
+      }
+//      global.debug(posts[&#x60;editList[${i}].c_column&#x60;]);
+      if(!think.isEmpty(posts[&#x60;editList[${i}].c_column&#x60;])){
+        let md={c_time:think.datetime()};
+        md.c_module = posts[&#x27;c_module&#x27;];
+        md.c_order = posts[&#x60;editList[${i}].c_order&#x60;].trim();
+        md.c_column = posts[&#x60;editList[${i}].c_column&#x60;].trim();
+        md.c_coltype = posts[&#x60;editList[${i}].c_coltype&#x60;].trim();
+        md.c_name = posts[&#x60;editList[${i}].c_name&#x60;].trim();
+        md.c_desc = posts[&#x60;editList[${i}].c_desc&#x60;].trim();
+        md.c_isretrieve = !think.isEmpty(posts[&#x60;editList[${i}].c_isretrieve&#x60;]);
+        md.c_isshow = !think.isEmpty(posts[&#x60;editList[${i}].c_isshow&#x60;]);
+        md.c_isview = !think.isEmpty(posts[&#x60;editList[${i}].c_isview&#x60;]);
+        md.c_type = posts[&#x60;editList[${i}].c_type&#x60;].trim();
+        md.c_format = posts[&#x60;editList[${i}].c_format&#x60;].trim();
+        md.c_width = posts[&#x60;editList[${i}].c_width&#x60;];
+        md.c_style = posts[&#x60;editList[${i}].c_style&#x60;];
+        md.c_type_sum = posts[&#x60;editList[${i}].c_type_sum&#x60;].trim();
+        md.c_mui = posts[&#x60;editList[${i}].c_mui&#x60;];
+        md.c_memo = posts[&#x60;editList[${i}].c_memo&#x60;];
+        //global.debug(JSON.stringify(md));
+        if(think.isEmpty(posts[&#x60;editList[${i}].id&#x60;])){
+          await model.add(global.checksql(md));
+        }else{
+          await model.where({id: parseInt(posts[&#x60;editList[${i}].id&#x60;])}).update(global.checksql(md));
+        }
+
+      }
+    }
+      await think.cache(&#x60;moduleCol${ posts[&#x27;c_module&#x27;]}&#x60;,null);
+      return this.json({statusCode:200,message:&#x27;保存成功！&#x27;});
+  }
+
+    /**
+     * 模块显示列编辑页面，调用：/cmpage/module/edit_list?moduleid=xxx
+     * @method  editList
+     * @return {Promise} HTML页面
+     */
+  async editListAction(){
+    let http =this.http;
+
+    let md =await   this.model(&#x27;t_module&#x27;).where({id:http.get(&#x27;moduleid&#x27;)}).find();
+    let model = this.model(&quot;module&quot;);
+
+    let vb={};
+    vb.colTypes = model.colTypes();
+    vb.editTypes = model.editTypes();
+    vb.editList = await  this.model(&#x27;t_module_edit&#x27;).where({c_module:http.get(&#x27;moduleid&#x27;)}).order(&#x27;c_order &#x27;).select();
+
+    this.assign(&quot;vb&quot;,vb);
+    this.assign(&quot;md&quot;,md);
+    return this.display();
+  }
+
+    /**
+     * 重新设置模块编辑列，调用：/cmpage/module/edit_reset?moduleid=xxx
+     * @method  editReset
+     * @return {json}
+     */
+  async editResetAction(){
+    let model = this.model(&quot;module&quot;);
+    let ret = await model.resetModuleEdit(this.get(&#x27;moduleid&#x27;));
+
+    return this.json(ret);
+  }
+
+    /**
+     * 保存业务模块编辑列的设置， POST调用： /cmpage/module/edit_save
+     * @method  edit_save
+     * @return {json} 保存记录的状态信息
+     */
+    async editSaveAction(){
+    let http = this.http;
+    let model = this.model(&quot;t_module_edit&quot;);
+    let posts = http.post();
+
+    for(let i=0; i&lt; 100 ; i++){
+      if (!posts[&#x60;editList[${i}].c_order&#x60;]){
+        break;
+      }
+      if(!think.isEmpty(posts[&#x60;editList[${i}].c_column&#x60;])){
+        let md={c_time:think.datetime()};
+        md.c_module = posts[&#x27;c_module&#x27;];
+        md.c_order = posts[&#x60;editList[${i}].c_order&#x60;];
+        md.c_column = posts[&#x60;editList[${i}].c_column&#x60;].trim();
+        md.c_coltype = posts[&#x60;editList[${i}].c_coltype&#x60;].trim();
+        md.c_name = posts[&#x60;editList[${i}].c_name&#x60;].trim();
+        md.c_desc = posts[&#x60;editList[${i}].c_desc&#x60;].trim();
+        md.c_editable = !think.isEmpty(posts[&#x60;editList[${i}].c_editable&#x60;]);
+        md.c_isshow = !think.isEmpty(posts[&#x60;editList[${i}].c_isshow&#x60;]);
+        md.c_isrequired = !think.isEmpty(posts[&#x60;editList[${i}].c_isrequired&#x60;]);
+        md.c_type = posts[&#x60;editList[${i}].c_type&#x60;].trim();
+        md.c_format = posts[&#x60;editList[${i}].c_format&#x60;].trim();
+        md.c_width = posts[&#x60;editList[${i}].c_width&#x60;];
+        md.c_style = posts[&#x60;editList[${i}].c_style&#x60;].trim();
+        md.c_suffix = posts[&#x60;editList[${i}].c_suffix&#x60;];
+        md.c_validate_rules = posts[&#x60;editList[${i}].c_validate_rules&#x60;];
+        md.c_mui = posts[&#x60;editList[${i}].c_mui&#x60;];
+        md.c_memo = posts[&#x60;editList[${i}].c_memo&#x60;];
+        global.debug(JSON.stringify(md));
+          if(think.isEmpty(posts[&#x60;editList[${i}].id&#x60;])){
+              await model.add(global.checksql(md));
+          }else{
+              await model.where({id: parseInt(posts[&#x60;editList[${i}].id&#x60;])}).update(global.checksql(md));
+          }
+
+      }
+    }
+      await think.cache(&#x60;moduleEdit${ posts[&#x27;c_module&#x27;]}&#x60;,null);
+    return this.json({statusCode:200,message:&#x27;保存成功！&#x27;});
+  }
+
+    /**
+     * 模块查询列编辑页面，调用：/cmpage/module/query_list?moduleid=xxx
+     * @method  queryList
+     * @return {Promise} HTML页面
+     */
+  async queryListAction(){
+    let http =this.http;
+
+    let md =await   this.model(&#x27;t_module&#x27;).where({id:http.get(&#x27;moduleid&#x27;)}).find();
+    let model = this.model(&quot;module&quot;);
+
+    let vb={};
+    vb.colTypes = model.colTypes();
+    vb.queryTypes = model.queryTypes();
+    vb.operations = model.operations();
+    vb.editList = await  this.model(&#x27;t_module_query&#x27;).where({c_module:http.get(&#x27;moduleid&#x27;)}).order(&#x27;c_order &#x27;).select();
+
+    this.assign(&quot;vb&quot;,vb);
+    this.assign(&quot;md&quot;,md);
+    return this.display();
+  }
+
+    /**
+     * 重新设置模块查询列，调用：/cmpage/module/query_reset?moduleid=xxx
+     * @method  queryReset
+     * @return {json}
+     */
+    async queryResetAction(){
+    let http = this.http;
+
+    let model = this.model(&quot;module&quot;);
+    let ret = await model.resetModuleQuery(http.get(&#x27;moduleid&#x27;));
+
+    return this.json(ret);
+  }
+
+    /**
+     * 删除不显示的查询列设置， POST调用： /cmpage/module/query_delete_no_show
+     * @method  query_delete_no_show
+     * @return {json} 状态信息
+     */
+  async queryDeleteNoShowAction(){
+    let http = this.http;
+
+    let ret = await this.model(&#x27;t_module_query&#x27;).query(&#x60;delete from t_module_query where c_module=${http.get(&#x27;moduleid&#x27;)} and c_isshow=FALSE&#x60;);
+
+    return this.json(ret);
+  }
+
+    /**
+     * 保存业务模块查询列的设置， POST调用： /cmpage/module/query_save
+     * @method  query_save
+     * @return {json} 保存记录的状态信息
+     */
+  async querySaveAction(){
+    let http = this.http;
+    let model = this.model(&quot;t_module_query&quot;);
+    let posts = http.post();
+
+    for(let i=0; i&lt; 100 ; i++){
+      if (!posts[&#x60;editList[${i}].c_order&#x60;]){
+        break;
+      }
+      if(!think.isEmpty(posts[&#x60;editList[${i}].c_column&#x60;])){
+        let md={c_time:think.datetime()};
+        md.c_module = posts[&#x27;c_module&#x27;];
+        md.c_order = posts[&#x60;editList[${i}].c_order&#x60;];
+        md.c_column = posts[&#x60;editList[${i}].c_column&#x60;];
+        md.c_coltype = posts[&#x60;editList[${i}].c_coltype&#x60;];
+        md.c_name = posts[&#x60;editList[${i}].c_name&#x60;];
+        md.c_desc = posts[&#x60;editList[${i}].c_desc&#x60;];
+        md.c_op = posts[&#x60;editList[${i}].c_op&#x60;];
+        md.c_isshow = !think.isEmpty(posts[&#x60;editList[${i}].c_isshow&#x60;]);
+        md.c_default = posts[&#x60;editList[${i}].c_default&#x60;];
+        md.c_type = posts[&#x60;editList[${i}].c_type&#x60;];
+        md.c_format = posts[&#x60;editList[${i}].c_format&#x60;];
+        md.c_width = posts[&#x60;editList[${i}].c_width&#x60;];
+        md.c_style = posts[&#x60;editList[${i}].c_style&#x60;];
+        md.c_suffix = posts[&#x60;editList[${i}].c_suffix&#x60;];
+        md.c_mui = posts[&#x60;editList[${i}].c_mui&#x60;];
+        md.c_memo = posts[&#x60;editList[${i}].c_memo&#x60;];
+        //global.debug(md);
+          if(think.isEmpty(posts[&#x60;editList[${i}].id&#x60;])){
+              await model.add(global.checksql(md));
+          }else{
+              await model.where({id: parseInt(posts[&#x60;editList[${i}].id&#x60;])}).update(global.checksql(md));
+          }
+
+      }
+    }
+      await think.cache(&#x60;moduleQuery${ posts[&#x27;c_module&#x27;]}&#x60;,null);
+    return this.json({statusCode:200,message:&#x27;保存成功！&#x27;});
+  }
+
+    /**
+     * 模块按钮设置页面，调用：/cmpage/module/btn_list?moduleid=xxx
+     * @method  btnList
+     * @return {Promise} HTML页面
+     */
+  async btnListAction(){
+    let http =this.http;
+
+    let md =await   this.model(&#x27;t_module&#x27;).where({id:http.get(&#x27;moduleid&#x27;)}).find();
+    let model = this.model(&quot;module&quot;);
+
+    let vb={};
+    vb.editList = await  this.model(&#x27;t_module_btn&#x27;).where({c_module:http.get(&#x27;moduleid&#x27;)}).order(&#x27;c_location &#x27;).select();
+//console.log(vb.editList);
+    this.assign(&quot;vb&quot;,vb);
+    this.assign(&quot;md&quot;,md);
+    return this.display();
+  }
+
+    /**
+     * 重新设置模块按钮，调用：/cmpage/module/btn_reset?moduleid=xxx
+     * @method  btnReset
+     * @return {json}
+     */
+    async btnResetAction(){
+        let model = this.model(&quot;module&quot;);
+        let ret = await model.resetModuleBtn(this.get(&#x27;moduleid&#x27;));
+        await think.cache(&#x60;moduleBtn${ this.get(&#x27;moduleid&#x27;)}&#x60;,null);
+
+        return this.json(ret);
+    }
+
+    /**
+     * 保存业务模块的按钮设置， POST调用： /cmpage/module/btn_save
+     * @method  btn_save
+     * @return {json} 保存记录的状态信息
+     */
+  async btnSaveAction(){
+    let http = this.http;
+    let model = this.model(&quot;t_module_btn&quot;);
+    let posts = http.post();
+
+    for(let i=0; i&lt; 100 ; i++){
+      if(!think.isEmpty(posts[&#x60;editList[${i}].c_object&#x60;])){
+        let md={};
+        md.c_module = posts[&#x27;c_module&#x27;];
+        md.c_location = posts[&#x60;editList[${i}].c_location&#x60;];
+        md.c_label = posts[&#x60;editList[${i}].c_label&#x60;];
+        md.c_object = posts[&#x60;editList[${i}].c_object&#x60;];
+        md.c_isshow = !think.isEmpty(posts[&#x60;editList[${i}].c_isshow&#x60;]);
+        md.c_class = posts[&#x60;editList[${i}].c_class&#x60;];
+        md.c_style = posts[&#x60;editList[${i}].c_style&#x60;];
+        md.c_url = posts[&#x60;editList[${i}].c_url&#x60;];
+        md.c_opentype = posts[&#x60;editList[${i}].c_opentype&#x60;];
+        md.c_options = posts[&#x60;editList[${i}].c_options&#x60;];
+        md.c_title = posts[&#x60;editList[${i}].c_title&#x60;];
+        md.c_icon = posts[&#x60;editList[${i}].c_icon&#x60;];
+        md.c_onclick = posts[&#x60;editList[${i}].c_onclick&#x60;];
+        md.c_mui = posts[&#x60;editList[${i}].c_mui&#x60;];
+        md.c_memo = posts[&#x60;editList[${i}].c_memo&#x60;];
+        global.debug(JSON.stringify(md));
+          if(think.isEmpty(posts[&#x60;editList[${i}].id&#x60;])){
+              await model.add(global.checksql(md));
+          }else{
+              await model.where({id: parseInt(posts[&#x60;editList[${i}].id&#x60;])}).update(global.checksql(md));
+          }
+      }else{
+        break;
+      }
+    }
+      await think.cache(&#x60;moduleBtn${ posts[&#x27;c_module&#x27;]}&#x60;,null);
+    return this.json({statusCode:200,message:&#x27;保存成功！&#x27;});
+  }
+
+}
+
+    </pre>
+</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<a id="gotoTop" class='well well-small' href='#'>
+    Top
+</a>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/doc.js"></script>
+</body>
+</html>

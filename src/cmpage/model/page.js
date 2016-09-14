@@ -8,32 +8,59 @@
 // +----------------------------------------------------------------------
 
 /**
- * model 普通页面的输出
+ 业务模块配置和展示系统的 model 类，实现了cmpage的主要业务逻辑，包括PC端和移动端
+
+ 注意点 :
+ 1. 在业务模块主信息设置中配置实现类,如：cmpage/page 或 demo/customer，系统会调用该类来展现页面
+ 2. 具体的业务模块必须继承 cmpage/model/page.js 来增加新的逻辑
+ 3. 移动端、主从页、查找带回等页面都是从 cmpage/model/page.js 继承，具体的业务模块请适当选择基类
+ 4. 在其他模块如 demo 中可以配置新的数据库连接，实现了多数据库的应该
+ 5. 每个页面根据不同的HTML输出位置和处理数据的流程分成了若干方法，子类中通过重写相应的方法可以达到定制页面的效果
+
+ @module cmpage.model
+ */
+
+/**
+ * 普通页面的数据处理类，实现了具体的操作方法
+ * @class cmpage.model.page
  */
 export default class extends think.model.base {
+
     /**
      * 取查询项的设置，组合成HTML输出
+     * @method  htmlGetQuery
+     * @return {Array}  查询的HTML片段，包括 bjui-moreSearch 部分
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
     async htmlGetQuery(page){
         let html =[];
+        let html0 = [];
         let pageQuerys = await global.model('cmpage/module').getModuleQuery(page.id);
         let provinceValue ='';
         let cityValue='';
+        let k =0;
         for(let col of pageQuerys){
             if (col.c_isshow) {
+                if(k >2 && k !== -1){
+                    for(let h of html){    html0.push(h);       }
+                    html0.push('<button type="button" class="showMoreSearch" data-toggle="moresearch" data-name="custom"><i class="fa fa-angle-double-down"></i></button>');
+                    html =[];
+                    k = -1;
+                }
                 if(!think.isEmpty(page.query[col.c_column])){
                     col.c_default = page.query[col.c_column];
                 }
                 if(col.c_type !== "hidden" && col.c_type !== "provinceSelect" && col.c_type !== "citySelect" && col.c_type !== "countrySelect" && col.c_type !== "fixed")
                 {
                     html.push(`<label  >${col.c_name}</label>`);
+                    if(k !== -1){ k += 1; }
                 }
                 if (col.c_type === "hidden")
                 {
                     html.push(`<input name="${col.c_column}" type="hidden" value="${col.c_default}"   />`);
                 }else  if (col.c_coltype === "datetime" || col.c_coltype === "date" || col.c_coltype === "timestamp")
                 {
-                    html.push(`<input type="text" name="${col.c_column}" value="${col.c_default}" data-toggle="datepicker" data-rule="date" size="15" class="form-control" />`);
+                    html.push(`<input type="text" name="${col.c_column}" value="${col.c_default}" data-toggle="datepicker" data-rule="date" size="12" class="form-control" />`);
                 }
                 else if (col.c_coltype === "bool")
                 {
@@ -73,16 +100,20 @@ export default class extends think.model.base {
             }
         }
 
-        return html.join(' ');
+        return [html0.join(' '), html.join(' ')];
     }
 
   async htmlGetOther(page){
     return ``;
   }
 
-  /**
-   * 下拉框的选择集,isBlank:是否可以为空, md.c_default为默认值
-   */
+    /**
+     * 取下拉框的选项集
+     * @method  getOptions
+     * @return {Array}  查询的HTML片段，包括 bjui-moreSearch 部分
+     * @param   {object} md 下拉项的设置，其中md.c_default为默认值，可以在调用本方法前修改
+     * @param   {bool} [isBlank=false]   下拉项中是否增加空项，一般查询项是需要的
+     */
     async getOptions(md, isBlank){
         let items = [];
         if (md.c_type == "select") {          //下拉框设置
@@ -95,7 +126,7 @@ export default class extends think.model.base {
                 let sql = md.c_memo;
                 let list = await this.query(sql);
                 for(let rec of list) {
-                  items.push( `<option value='${rec.id}' ${rec.id === md.c_default ? "selected" : ""} >${rec.c_name} </option>`);
+                    items.push( `<option value='${rec.id}' ${rec.id === md.c_default ? "selected" : ""} >${rec.c_name} </option>`);
                 }
             }else {
                 if (/^\[{\w+/.test(md.c_memo)) {    //以 [ 开头       //设置如：[{##value##:true,##text##:##男##},{##value##:false,##text##:##女##}]
@@ -126,10 +157,13 @@ export default class extends think.model.base {
     }
 
     /**
-     * 取设置的替换值
-     * replaceItems:
-     * 1) code_XXXXX
-     * 2) [{##value##:true,##text##:##男##},{##value##:false,##text##:##女##}]
+     * 根据设置取显示的替换值
+     * @method  getReplaceText
+     * @return {Array}  查询的HTML片段，包括 bjui-moreSearch 部分
+     * @param   {string} value 当前值
+     * @param   {string} replaceItems  替换的设置值，支持两种方式
+     *                      1. 函数如：admin/code:getXXXXXX
+     *                      2. json如：[{##value##:true,##text##:##男##},{##value##:false,##text##:##女##}]
      */
     async getReplaceText(value,replaceItems){
         if (/^\[{\w+/.test(replaceItems)) {
@@ -160,10 +194,13 @@ export default class extends think.model.base {
         return "";
     }
 
-  /**
-  * 取顶部按钮的设置，组合成列表头的HTML输出
-  */
-  async htmlGetBtnHeader(page){
+    /**
+     * 取顶部按钮的设置，组合成HTML输出
+     * @method  htmlGetBtnHeader
+     * @return {string}  HTML片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    async htmlGetBtnHeader(page){
       let html =[];
       let htmlRight =[];
       let pageBtns = await global.model('cmpage/module').getModuleBtn(page.id);
@@ -183,9 +220,14 @@ export default class extends think.model.base {
       return html.join(' ')+(htmlRight.length >0 ? '<div class="pull-right">'+htmlRight.join(' ')+'</div>': '');
   }
 
-  /**
-   * 取列表中按钮的设置，组合成HTML输出
-   */
+    /**
+     * 取记录列表每一行的按钮设置，组合成HTML输出，子类中重写本方法可以定制每行按钮的输出效果
+     * @method  htmlGetBtnList
+     * @return {string}  HTML片段
+     * @param   {object} rec 每行的记录对象
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param   {object} pageBtns 按钮设置
+     */
   async htmlGetBtnList(rec,page,pageBtns){
     let html=[];
      for(let btn of pageBtns){
@@ -202,7 +244,11 @@ export default class extends think.model.base {
   }
 
     /**
-     * 取分页列表项的设置，组合成列表数据的HTML输出
+     * 取分页列表的设置，结合结果数据集，组合成HTML输出，一般不需要重新本方法
+     * @method  htmlGetList
+     * @return {string}  HTML片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param   {object} dataList 结果数据集，this.getDataList(page) 的返回值
      */
   async htmlGetList(page,dataList) {
     let html = ['<thead> <tr >'];
@@ -286,8 +332,12 @@ export default class extends think.model.base {
 
     return html.join(' ');
   }
+
     /**
-     * 取数据列表
+     * 取结果数据集，子类中重写本方法可以增加逻辑如：对结果集做进一步的数据处理等
+     * @method  getDataList
+     * @return {object} 结果集数据包 {count:xxx, list:[{record}]}
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
     async getDataList(page){
         let pageCols = await global.model('cmpage/module').getModuleCol(page.id);
@@ -312,8 +362,11 @@ export default class extends think.model.base {
     }
 
     /**
-    * 取查询项的设置，结合POST参数，得到Where字句
-    */
+     * 取查询项的设置，结合POST参数，得到Where字句，重写本方法可以定制或修改SQL的where子句
+     * @method  getQueryWhere
+     * @return {string} where 子句， 形如： where xxx and xxx
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
     async getQueryWhere(page){
         let ret =[' where 1=1'];
         let pageQuerys = await global.model('cmpage/module').getModuleQuery(page.id);
@@ -321,7 +374,7 @@ export default class extends think.model.base {
             if (md.c_type === "fixed"){         //如果是‘固定’，则直接增加c_memo中的设置值
                 let wh = ` (${md.c_memo.replace(/#userID#/,page.user.id).replace(/#groupID#/,page.user.groupID).split(/##/).join('\'')})`;
                 wh = wh.replace(/#value#/,page.parmsUrl[md.c_column]);
-                ret.push();
+                ret.push(wh);
                 continue;
             }
             if (md.c_isshow) {
@@ -340,9 +393,14 @@ export default class extends think.model.base {
         return ret.join(' and ');
     }
 
-  /**
-   * 把查询条件的操作符转换成SQL字句
-   */
+    /**
+     * 把查询条件的操作符转换成SQL片段，一般不需要重写本方法
+     * @method  getQueryWhere
+     * @return {string} where 子句， 形如：
+     * @param   {string} op 操作符
+     * @param   {string} value 操作值
+     * @param   {string} coltype    数据表中的字段类型，已作简化
+     */
   getOpValue(op,value,coltype){
   let ops = [ {op:"EQ",val:"= #value#"},{op:"NE",val:"<> #value#"},{op:"CN",val:"like #value#"},{op:"NC",val:"not like #value#"},{op:"IN",val:"in (#value#)"},
     {op:"NI",val:"not in (#value#)"},{op:"GE",val:">= #value#"},{op:"LE",val:"<= #value#"},{op:"GT",val:"> #value#"},{op:"LT",val:"< #value#"}];
@@ -370,10 +428,13 @@ export default class extends think.model.base {
   return "";
 }
 
-  /**
-   * 取得页面显示列表返回字段设置
-   */
-  getListFields(pageCols){
+    /**
+     * 根据设置取得页面显示列表返回的字段，一般不需要重写本方法
+     * @method  getListFields
+     * @return {string} fields 部分， 形如：id,c_name,xxx
+     * @param   {object} pageCols 业务模块的显示列设置
+     */
+    getListFields(pageCols){
     let fields = [];
     for(let col of pageCols){
       if (!col.c_isretrieve) continue;
@@ -391,7 +452,11 @@ export default class extends think.model.base {
   }
 
     /**
-     * 初始化编辑页面的值
+     * 新增的时候，初始化编辑页面的值，子类重写本方法可以定制新增页面的初始值
+     * @method  pageEditInit
+     * @return {object} 新增的记录对象
+     * @param   {object} pageEdits 业务模块的编辑列设置
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
     async pageEditInit(pageEdits,page){
         let md ={};
@@ -416,7 +481,35 @@ export default class extends think.model.base {
     }
 
     /**
+     * 根据 page.c_other的设置，对页面相关参数进行设置
+     * @method  getPageOther
+     * @return {object} 在page中增加相应属性并返回
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    getPageOther(page){
+        let ret = page;
+        ret.editHeaderHtml = '';
+        ret.editCloseBtn = true;
+        if(!think.isEmpty(page.c_other)){
+            let its = page.c_other.split(',');
+            for(let item of its){
+                let it = item.split(':');
+                if(it[0] ==='editTitle'){
+                    ret.editHeaderHtml = `<div class="bjui-pageHeader"><label data-height="30px" style="margin: 5px;">${it[1]}</label></div>`;
+                }else if(it[0] ==='editCloseBtn'){
+                    ret.editCloseBtn = (it[1] !== 'none');
+                }
+            }
+        }
+
+        return ret
+    }
+
+    /**
      * 取编辑页面的设置，组合成列表数据的HTML输出
+     * @method  htmlGetEdit
+     * @return {string} HTML页面片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
     async htmlGetEdit(page) {
         let html = ['<thead> <tr >'];
@@ -506,8 +599,12 @@ export default class extends think.model.base {
     }
 
     /**
-     * 编辑页面保存,
-     * 如果是多个表的视图，则根据存在于page.c_table中的列更新表，一般需要在子类中继承
+     * 编辑页面保存,<br/>
+     * 如果是多个表的数据产生的编辑页，则根据存在于page.c_table中的列更新表，一般需要在子类中继承，例如： admin/user:pageSave
+     * @method  pageSave
+     * @return {object} 记录对象
+     * @param  {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param  {object} parms 前端传入的FORM参数
      */
     async pageSave(page,parms){
         let model =global.model('cmpage/module');
@@ -540,6 +637,16 @@ export default class extends think.model.base {
 
     /**
      * 保存后的操作日志记录,，通过重写可在子类中定制日志的格式
+     */
+    /**
+     * 保存后的操作日志记录,，通过重写可在子类中定制日志的格式
+     * @method  pageSaveLog
+     * @return {无}
+     * @param  {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param  {object} parms 前端传入的FORM参数
+     * @param {object} md   记录对象
+     * @param {object} pageEdits    业务模块的编辑列设置
+     * @param {string} flag 操作的类型标志
      */
     async pageSaveLog(page,parms,md,pageEdits,flag){
         let log =[];
@@ -603,8 +710,11 @@ export default class extends think.model.base {
     }
 
     /**
-   * 取查看页面的设置，组合成列表数据的HTML输出
-   */
+     * 取查看页面的设置，组合成列表数据的HTML输出
+     * @method  htmlGetView
+     * @return {string} HTML页面片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
   async htmlGetView(page) {
     let html = [];
     //let pageEdits = await think.cache(`moduleEdit${page.id}`);

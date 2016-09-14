@@ -8,23 +8,35 @@
 // +----------------------------------------------------------------------
 
 /**
- * model
+ @module admin.model
+ */
+
+/**
+ * 登录用户的操作类，提供一些操作t_user,vw_user的方法
+ * @class admin.model.login
  */
 import CMPage from '../../cmpage/model/page.js';
 
 export default class extends CMPage {
     /**
-     * 取查询项的设置，结合POST参数，得到Where字句
+     * 重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句, 取当前用户的登录信息
+     * @method  getQueryWhere
+     * @return {string}  where条件子句
+     * @param {Object} page  页面设置主信息
      */
     async getQueryWhere(page){
         let where =await super.getQueryWhere(page);
-        //global.debug(where);
-        //let user = await think.session('user');
         where += ` and c_user=${page.user.id}`;
 
         return where ;
     }
 
+    /**
+     * 增加某个用户的登录信息
+     * @method  addLogin
+     * @return {int}  登录记录ID
+     * @param {object} user  登录用户对象
+     */
     async addLogin(user){
         //先保存t_login
         //let user = await think.session('user');
@@ -39,6 +51,11 @@ export default class extends CMPage {
         return login.id;
     }
 
+    /**
+     * 某个用户的退出登录信息
+     * @method  addLogin
+     * @param {object} user  登录用户对象
+     */
     async exitLogin(user){
         //let user = await think.session('user');
         let login =  await this.model('t_login').where({c_user:user.id}).find();

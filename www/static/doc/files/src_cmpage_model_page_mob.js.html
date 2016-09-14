@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src\cmpage\model\page_mob.js</title>
+  
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-smart">
+ <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+               <a class="navbar-brand mainlogo" href="/static/doc/index.html">
+             
+            <img alt="" src="../assets/css/logo.png" title="">
+            
+                
+          </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                 <ul class="nav navbar-nav">
+                    
+                    <li><a href="/home/index/index">首页</a>
+                    </li>
+                    
+                    <li><a href="/static/doc/index.html">文档</a>
+                    </li>
+                    
+                    <li><a href="/admin/index/index">演示</a>
+                    </li>
+                    
+                    <li><a href="/home/index/log">日志</a>
+                    </li>
+                    
+                </ul>
+               <div class="navbar-form navbar-right filterAPi" autocomplete="off">
+                <input type="text" id='txtSearchAPI' class="form-control search-query" placeholder="Search for API" />
+                 <ul id="filterList" class="filterItems dropdown-menu" role="menu"></ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="sidebar">
+    <h3>Modules/Classes</h3>
+        <div id="api-tabview-filter">
+            <input id='txtSearch' type="search" class="form-control" placeholder="Type to filter Modules/Classes">
+        </div>
+        <dl id="sidebar_list">
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/admin.controller.html">admin.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/admin.controller.base.html">admin.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.code.html">admin.controller.code</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.index.html">admin.controller.index</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.mob.html">admin.controller.mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/admin.model.html">admin.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/admin.model.code.html">admin.model.code</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.code_list.html">admin.model.code_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.groupuser_add.html">admin.model.groupuser_add</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.log.html">admin.model.log</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.login.html">admin.model.login</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.privilege.html">admin.model.privilege</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.teamuser.html">admin.model.teamuser</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.teamuser_add.html">admin.model.teamuser_add</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.user.html">admin.model.user</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.controller.html">cmpage.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.base.html">cmpage.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.mob.html">cmpage.controller.mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.module.html">cmpage.controller.module</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.page.html">cmpage.controller.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.utils.html">cmpage.controller.utils</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.logic.html">cmpage.logic</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.logic.page.html">cmpage.logic.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.model.html">cmpage.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.area.html">cmpage.model.area</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_mob.html">cmpage.model.page_mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.utils.html">cmpage.model.utils</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.cmpage_global.html">cmpage.cmpage_global</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+        </dl>
+</div>
+   
+    <div class="stdoc-content">
+        <!--     <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+ -->
+        <div class="apidocs">
+            <div id="docs-main">
+                <div class="content">
+                    <div class="page-header">
+    <h1>src\cmpage\model\page_mob.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums" id='src_code'>
+&#x27;use strict&#x27;;
+// +----------------------------------------------------------------------
+// | CmPage [ 通用页面框架 ]
+// +----------------------------------------------------------------------
+// | Licensed under the Apache License, Version 2.0
+// +----------------------------------------------------------------------
+// | Author: defans &lt;defans@sina.cn&gt;
+// +----------------------------------------------------------------------
+
+/**
+ * page_mob model 实现手机APP的模块接口
+ */
+/**
+ @module cmpage.model
+ */
+
+/**
+ * 实现了手机APP的模块接口，可继承本类对手机APP的业务模块做定制化的HTML输出和功能操作, 方法名加了mob做前导，以示区分
+ * @class cmpage.model.page_mob
+ */
+import CMPage from &#x27;./page.js&#x27;;
+
+export default class extends CMPage {
+
+    /**
+     * 取模块列表中的MUI设置，组合成HTML输出，一般在子类中通过重写这个方法来达到页面定制的效果
+     * @method  mobHtmlGetList
+     * @return  {string}  HTML片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param   {object} dataList 结果集对象
+     */
+    async mobHtmlGetList(page,dataList) {
+        let html = [];
+        let modelPage = global.model(&#x27;cmpage/module&#x27;);
+        let pageCols = await modelPage.getModuleCol(page.id);
+        let pageBtns = await modelPage.getModuleBtn(page.id);
+
+        for(let row of dataList){
+            //处理替换值
+            for(let col of pageCols){
+                if (col.c_type === &quot;replace&quot; &amp;&amp; !(/^select/.test(col.c_memo))) {
+                    row[col.c_column] = await this.getReplaceText(row[col.c_column], col.c_memo);
+                }else if(col.c_coltype === &#x27;timestamp&#x27;){
+                    row[col.c_column] = think.datetime(row[col.c_column]);
+                }
+            }
+            html.push(&#x27;&lt;li class=&quot;mui-table-view-cell mui-media&quot;&gt;&#x27;);
+
+            //加入按钮组
+            html.push(await this.mobHtmlGetListBtns(row,pageBtns,page));
+
+            //组合生成列表每项的内容
+            html.push(&quot;&lt;a class=\&quot;mui-slider-handle list-item\&quot; &gt;&quot;);
+            html.push(await this.mobHtmlGetListRow(row,pageCols));
+            html.push(&#x27;&lt;/a&gt; &lt;/li&gt;&#x27;);
+        }
+
+        return html.join(&#x27; &#x27;);
+    }
+
+    /**
+     * 生成列表每一行的按钮组HTML输出，一般在子类中通过重写这个方法来达到定制输出按钮的效果
+     * @method  mobHtmlGetListBtns
+     * @return  {string}  HTML片段
+     * @param   {object} row 记录对象
+     * @param   {object} pageBtns 业务模块的按钮设置
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    async mobHtmlGetListBtns(row,pageBtns,page) {
+        let html =[];
+        let mui = this.mobGetPageMuiSetting(page);
+        html.push(&#x27;&lt;div class=&quot;mui-slider-right mui-disabled&quot;&gt;&#x27;);
+        for(let btn of pageBtns){
+            if (btn.c_location &gt; 10 &amp;&amp; btn.c_isshow){
+                if (btn.c_object.indexOf(&quot;.Edit&quot;) &gt; 0)
+                    html.push(&#x60;&lt;a class=&#x27;mui-btn mui-btn-green list-btn&#x27; href=&#x27;${mui.editurl}&#x27;
+                            data-type=&#x27;view&#x27;  data-id=&#x27;${row[&#x27;id&#x27;]}&#x27; &gt;编辑&lt;/a&gt;&quot;&#x60;);
+                else if (btn.c_object.indexOf(&quot;.Del&quot;) &gt; 0)
+                    html.push(&#x60;&lt;a class=&#x27;mui-btn mui-btn-red list-btn&#x27; href=&#x27;/cmpage/page/delete?table=${page.c_datatable}&amp;id=${row[&#x27;id&#x27;]}&amp;flag=false&#x27;
+                            data-type=&#x27;action&#x27; &gt;删除&lt;/a&gt;&#x60;);
+            }
+        }
+        html.push(&#x27;&lt;/div&gt;&#x27;);
+        return html.join(&#x27; &#x27;);
+    }
+
+    /**
+     * 取模块的MUI设置，一般在子类中通过重写这个方法来增加MUI的配置信息，需要手机端做相应的逻辑实现
+     * @method  mobGetPageMuiSetting
+     * @return  {object}  MUI的配置对象
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    mobGetPageMuiSetting(page){
+        let mui = {editurl:&#x27;/html/commpage/commpage-edit.html&#x27;};
+        for(let item of page.c_mui.split(&#x27;,&#x27;)){
+            let its = item.split(&#x27;:&#x27;);
+            if(its[0] === &#x27;editurl&#x27;){
+                mui.editurl = its[1];
+            }
+        }
+        return mui;
+    }
+
+    /**
+     * 生成列表每一行的内容HTML输出，一般在子类中通过重写这个方法来达到定制分页列表的显示效果，例如： demo/customer:mobHtmlGetListRow
+     * @method  mobHtmlGetListRow
+     * @return  {string}  HTML片段
+     * @param   {object} row 记录对象
+     * @param   {object} pageCols 业务模块的显示列设置
+     */
+    async mobHtmlGetListRow(row,pageCols) {
+        let html =[];
+        for(let col of pageCols){
+            if (!think.isEmpty(col.c_mui)){
+                let its = col.c_mui.split(&#x27;,&#x27;);
+                html.push(&#x60;&lt;${its[0]}&gt; ${ its[1].replace(/#value#/, row[col.c_column]).replace(/#title#/, col.c_name.trim())} &lt;/${its[0]}&gt;&#x60;);
+            }
+        }
+        return html.join(&#x27; &#x27;);
+    }
+
+    /**
+     * 取业务模块中的查询列设置，组合成APP端HTML输出，为保持和PC端的一致性，一般不需要重写
+     * @method  mobHtmlGetQuery
+     * @return  {string}  HTML片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    async mobHtmlGetQuery(page){
+        let html =[];
+        html.push(&#x60;&lt;input type=&#x27;hidden&#x27; name=&#x27;modulename&#x27; value=&#x27;${page.c_modulename}&#x27; /&gt;&#x60;);
+        html.push(&#x60;&lt;input type=&#x27;hidden&#x27; name=&#x27;parmsUrl&#x27; value=&#x27;${page.parmsUrl}&#x27; /&gt;&#x60;);
+        html.push(&quot;&lt;input type=&#x27;hidden&#x27; name=&#x27;pageCurrent&#x27; value=&#x27;1&#x27; /&gt;&quot;);
+        html.push(&#x60;&lt;input type=&#x27;hidden&#x27; name=&#x27;pageSize&#x27; value=&#x27;${page.pageSize}&#x27; /&gt;&#x60;);
+
+        let pageQuerys = await global.model(&#x27;cmpage/module&#x27;).getModuleQuery(page.id);
+        let provinceValue =&#x27;&#x27;;
+        let cityValue=&#x27;&#x27;;
+
+        for(let md of pageQuerys){
+            if (md.c_isshow)
+            {
+                if (md.c_coltype === &quot;bool&quot;){
+                    html.push(&quot;&lt;div class=&#x27;mui-input-row mui-checkbox&#x27;&gt;&quot;);
+                    html.push(&#x60;&lt;label&gt;${md.c_name}:&lt;/label&gt;&#x60;);
+                    html.push(&#x60;&lt;input type=&#x27;checkbox&#x27; name=&#x27;${md.c_column}&#x27;${ md.c_default === &#x27;true&#x27; ? &quot; checked&quot; : &quot;&quot;} /&gt;&#x60;);
+                }else if (md.c_type === &quot;select&quot;){
+                    html.push(&quot;&lt;div class=&#x27;mui-input-row mui-select&#x27;&gt;&quot;);
+                    html.push(&#x60;&lt;label&gt;${md.c_name}:&lt;/label&gt;&#x60;);
+                    html.push(&#x60;&lt;select name=&#x27;${md.c_column}&#x27; &gt;&#x60;);
+                    html.push( await this.getOptions(md) );
+                    html.push(&quot;&lt;/select&gt;&quot;);
+                }else if (md.c_type === &quot;countrySelect&quot;){
+                    let countryValue = md.c_default;
+                    let areaModel = global.model(&#x27;cmpage/area&#x27;);
+                    let provinceName = await areaModel.getProvinceName(provinceValue);
+                    let cityName = await areaModel.getCityName(cityValue);
+                    let countryName = await areaModel.getCountryName(countryValue);
+                    html.push(&quot;&lt;div class=&#x27;mui-input-row&#x27;&gt;&quot;);
+                    html.push(&quot;&lt;label&gt;地区选择:&lt;/label&gt;&quot;);
+                    html.push(&#x60;&lt;button class=&#x27;mui-btn mui-btn-block citypicker&#x27; style=&#x27;width:65%; border:none; text-align:left; padding-left:0px; height:100%;&#x27;
+                        data-ref=&#x27;${page.c_modulename}_c_country&#x27; type=&#x27;button&#x27;&gt;${provinceName} ${cityName} ${countryName} &lt;/button&gt;
+                        &lt;input type=&#x27;hidden&#x27; id=&#x27;${page.c_modulename}_c_country&#x27; name=&#x27;c_country&#x27; value=&#x27;${provinceValue},${cityValue},${countryValue}&#x27; /&gt;&#x60;);
+                }else if (md.c_coltype == &quot;datetime&quot;){
+                    let dateTitle = md.c_default;    // DateTime.Parse(dr[edit.c_column].ToString()).ToString(md.c_format);
+                    let dateType = {type:&#x27;date&#x27;};
+                    if (md.c_format.indexOf(&quot;HH:&quot;) &gt;= 0){
+                        dateTitle = &quot;选择时间 ...&quot;;
+                        dateType =  {type:&#x27;time&#x27;};
+                        if (md.c_format.indexOf(&quot;yyyy-&quot;) &gt;=0){
+                            dateTitle = &quot;选择日期 ...&quot;;
+                            dateType = {};
+                        }
+                    }
+                    html.push(&quot;&lt;div class=&#x27;mui-input-row&#x27;&gt;&quot;);
+                    html.push(&#x60;&lt;label&gt;${md.c_name}:&lt;/label&gt;&#x60;);
+                    html.push(&#x60;&lt;button data-options=&#x27;${JSON.stringify(dateType)}&#x27; data-ref=&#x27;&quot; ${page.c_modulename + md.c_column}&#x27; class=&#x27;btn mui-btn mui-btn-block datepicker&#x27;
+                        style=&#x27;width:65%; border:none; text-align:left; padding-left:0px; height:100%;&#x27;&gt; ${dateTitle}&lt;/button&gt;
+                        &lt;input type=&#x27;hidden&#x27; id=&#x27;${page.c_modulename + md.c_column}&#x27; name=&#x27;${md.c_column}&#x27; value=&#x27;${ md.c_default}&#x27; /&gt;&#x60;);
+                }
+                else if (md.c_type == &quot;provinceSelect&quot;) {
+                    provinceValue = md.c_default;
+                }else if (md.c_type == &quot;citySelect&quot;) {
+                    cityValue = md.c_default;
+                }else{
+                    html.push(&quot;&lt;div class=&#x27;mui-input-row&#x27;&gt;&quot;);
+                    html.push(&#x60;&lt;label&gt;${md.c_name}:&lt;/label&gt;&#x60;);
+                    html.push(&#x60;&lt;input name=&#x27;${md.c_column}&#x27; type=&#x27;${md.c_type}&#x27; value=&#x27;${md.c_default}&#x27; class=&#x27;mui-input-clear&#x27;  /&gt;&#x60;);
+                }
+                if (md.c_type !== &quot;provinceSelect&quot; &amp;&amp; md.c_type !== &quot;citySelect&quot;) {
+                    html.push(&quot;&lt;/div&gt;&quot;);
+                }
+            }
+        }
+        return html.join(&#x27; &#x27;);
+    }
+
+    /**
+     * 取业务模块中的编辑列设置，组合成APP端HTML输出，为保持和PC端的一致性，一般不需要重写
+     * @method  mobHtmlGetEdit
+     * @return  {string}  HTML片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    async mobHtmlGetEdit(page) {
+        let html =[];
+        let pageEdits = await global.model(&#x27;cmpage/module&#x27;).getModuleEdit(page.id);
+        let md = {};
+        if(page.editID &gt;0) {
+            let fields = [];
+            for (let edit of pageEdits) {
+                fields.push(&#x60;${edit.c_desc} as ${edit.c_column}&#x60;);
+            }
+            //global.debug(fields);
+            let list = await this.model(page.c_datasource).field(fields.join(&#x27;,&#x27;)).where({id:page.editID}).select();
+            md =list[0];
+        }else{
+            md = await this.pageEditInit(pageEdits,page);
+        }
+//        global.debug(md);
+        html.push(&#x60;&lt;input type=&#x27;hidden&#x27; name=&#x27;modulename&#x27; value=&#x27;${page.c_modulename}&#x27; /&gt;&#x60;);
+        html.push(&#x60;&lt;input name=&#x27;old_record&#x27; type=&#x27;hidden&#x27; value=&#x27;${JSON.stringify(md)}&#x27; /&gt;&#x60;);
+        for(let col of pageEdits){
+            if (!col.c_editable  ) {  continue; }
+            let colValue = md[col.c_column];
+            if(col.c_coltype === &#x27;timestamp&#x27;){  colValue = think.datetime(colValue); }
+            if (col.c_type === &quot;hidden&quot; &amp;&amp; col.c_column!==&quot;c_city&quot; &amp;&amp; col.c_column!==&quot;c_province&quot;) {
+                html.push(&#x60;&lt;input name=&quot;${col.c_column}&quot; type=&quot;hidden&quot; value=&quot;${colValue}&quot; /&gt;&#x60;);
+                continue;
+            }
+            col.c_format = col.c_format.trim();
+            if(col.c_type !== &quot;hidden&quot;){
+                html.push(&#x60;&lt;div class=&#x27;mui-input-row ${col.c_type === &quot;select&quot; ? &quot;mui-select&quot; : (col.c_coltype === &quot;bool&quot; ? &quot;mui-checkbox&quot;:&quot;&quot;)}&#x27;&gt;&#x60;);
+                html.push(&#x60;&lt;label&gt;${col.c_name.trim()}:&lt;/label&gt;&#x60;);
+            }
+            if (col.c_type === &quot;datetime&quot; ||col.c_type === &quot;date&quot;) {
+                let dateTitle = colValue;
+                let dateType = {type:&#x27;date&#x27;};
+                if (md.c_format.indexOf(&quot;HH:&quot;) &gt;= 0){
+                    dateTitle = think.isEmpty(dateTitle) ? &quot;选择时间 ...&quot;: dateTitle;
+                    dateType =  {type:&#x27;time&#x27;};
+                    if (md.c_format.indexOf(&quot;yyyy-&quot;) &gt;=0){
+                        dateTitle = think.isEmpty(dateTitle) ? &quot;选择日期 ...&quot;: dateTitle;
+                        dateType = {};
+                    }
+                }
+                html.push(&#x60;&lt;button data-options=&#x27;${JSON.stringify(dateType)}&#x27; data-ref=&#x27;&quot; ${page.c_modulename + md.c_column}&#x27; class=&#x27;btn mui-btn mui-btn-block datepicker&#x27;
+                        style=&#x27;width:65%; border:none; text-align:left; padding-left:0px; height:100%;&#x27;&gt; ${dateTitle}&lt;/button&gt;
+                        &lt;input type=&#x27;hidden&#x27; id=&#x27;${page.c_modulename + md.c_column}&#x27; name=&#x27;${md.c_column}&#x27; value=&#x27;${ md.c_default}&#x27; /&gt;&#x60;);
+            } else if (col.c_type === &quot;select&quot; || col.c_type === &quot;selectBlank&quot; || col.c_type === &quot;readonlyReplace&quot;) {
+                col.c_default = colValue;
+                let isBlank = (col.c_type === &quot;selectBlank&quot; || col.c_type === &quot;readonlyReplace&quot;);
+                html.push(&#x60;&lt;select name=&quot;${col.c_column}&quot; &gt; ${await this.getOptions(col,isBlank )} &lt;/select&gt;&#x60;);
+            } else if (col.c_type === &quot;textarea&quot;) {
+                html.push(&#x60;&lt;textarea name=&quot;${col.c_column}&quot; rows=&quot;4&quot; &gt;${colValue}&lt;/textarea&gt;&#x60;);
+            } else if (col.c_type === &quot;checkbox&quot;) {
+                html.push(&#x60;&lt;input type=&#x27;checkbox&#x27; name=&#x27;${col.c_column}&#x27; ${colValue ? &quot; checked&quot; : &quot;&quot;} /&gt;&#x60;);
+            }else if (col.c_type == &quot;areaSelect&quot;){
+                let areaModel = global.model(&#x27;cmpage/area&#x27;);
+                html.push(&#x60;&lt;button class=&#x27;mui-btn mui-btn-block citypicker&#x27; style=&#x27;width:65%; border:none; text-align:left; padding-left:0px;&#x27;
+                    data-ref=&#x27;${page.c_modulename}_c_country&#x27; type=&#x27;button&#x27;&gt;${await areaModel.getProvinceName(md[&#x27;c_province&#x27;])}
+                    ${await areaModel.getCityName(md[&#x27;c_city&#x27;])} ${await areaModel.getCountryName(md[&#x27;c_country&#x27;])} &lt;/button&gt;
+                    &lt;input type=&#x27;hidden&#x27; id=&#x27;${page.c_modulename}_c_country&#x27; name=&#x27;c_country&#x27; value=&#x27;${md[&#x27;c_province&#x27;]},${md[&#x27;c_city&#x27;]},${md[&#x27;c_country&#x27;]}&#x27; /&gt;&#x60;);
+            }else if (col.c_type === &quot;readonly&quot;) {
+                html.push(&#x60;&lt;input name=&quot;${col.c_column}&quot; class=&#x27;mui-input-clear mui-input&#x27; type=&quot;text&quot; value=&quot;${colValue}&quot;  readonly=&quot;readonly&quot;  /&gt;&#x60;);
+            }else if(col.c_column !==&#x27;c_province&#x27; &amp;&amp; col.c_column !==&#x27;c_city&#x27;){
+                html.push(&#x60;&lt;input type=&#x27;text&#x27; name=&#x27;${col.c_column}&#x27; class=&#x27;mui-input-clear mui-input&#x27; placeholder=&#x27;请输入${col.c_name}&#x27; value=&#x27;${colValue}&#x27; /&gt;&#x60;);
+            }
+            html.push(&#x27;&lt;/div&gt;&#x27;);
+        }
+        return html.join(&#x27; &#x27;);
+    }
+
+}
+
+
+    </pre>
+</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<a id="gotoTop" class='well well-small' href='#'>
+    Top
+</a>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/doc.js"></script>
+</body>
+</html>

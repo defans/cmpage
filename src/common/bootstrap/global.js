@@ -11,7 +11,7 @@
  * }
  */
 
-import CMPageGlobal from './../../cmpage/global.js';
+import CMPageGlobal from './../../cmpage/cmpage_global.js';
 
 let cmpageGlobal = new CMPageGlobal();
 

@@ -7,14 +7,22 @@
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
 
+/**
+ @module cmpage.controller
+ */
 
+/**
+ * 业务模块展示及常用操作的URL接口
+ * @class cmpage.controller.page
+ */
 import Base from './base.js';
 
 export default class extends Base {
     /**
-    * 模块主界面，列表数据
-    * @return {ListView} []
-    */
+     * 业务模块展示的主界面，分页列表，一般调用： /cmpage/page/list?modulename=xxx
+     * @method  list
+     * @return {promise}  HTML片段
+     */
     async listAction(){
         let vb={};
         let module = this.model("cmpage/module");
@@ -72,9 +80,11 @@ export default class extends Base {
         this.assign('page',page);
         return this.display();
     }
+
     /**
-     * 模块主界面，导出excel文件
-     * @return  {BinaryFile}
+     * 模块主界面，导出excel文件，一般调用： /cmpage/page/excel_export?modulename=xxx
+     * @method  excelExport
+     * @return {file}  excel文件
      */
     async excelExportAction(){
         let module = global.model("cmpage/module");
@@ -115,8 +125,9 @@ export default class extends Base {
     }
 
     /**
-     * 模块编辑界面，数据展示
-     * @return {EditView}
+     * 业务模块的编辑页面，一般调用： /cmpage/page/edit?modulename=xxx
+     * @method  edit
+     * @return {promise}  HTML片段
      */
     async editAction() {
         let page = await global.model('cmpage/module').getModuleByName(this.get('modulename'));
@@ -128,13 +139,14 @@ export default class extends Base {
         let editHtml =await model.htmlGetEdit(page);
 
         this.assign('editHtml',editHtml);
-        this.assign('page',page);
+        this.assign('page',model.getPageOther(page));
         return this.display();
     }
 
     /**
-     * 主从页模块编辑界面，数据展示
-     * @return {EditRecView}
+     * 业务模块的编辑页面，主从页面，一般调用： /cmpage/page/rec_edit?modulename=xxx
+     * @method  recEdit
+     * @return {promise}  HTML片段
      */
     async recEditAction() {
         let page = await global.model('cmpage/module').getModuleByName(this.get('modulename'));
@@ -155,8 +167,9 @@ export default class extends Base {
     }
 
     /**
-     * 模块编辑界面，保存记录
-     * @return {JSON}
+     * 保存业务模块记录信息， POST调用： /cmpage/page/save
+     * @method  save
+     * @return {json}
      */
     async saveAction(){
         let parms =this.post();
@@ -178,8 +191,9 @@ export default class extends Base {
     }
 
     /**
-     * 模块查看界面
-     * @return {NormalView} []
+     * 业务模块的查看页面，一般调用： /cmpage/page/view?modulename=xxx
+     * @method  view
+     * @return {promise}  HTML片段
      */
     async viewAction() {
         let page = await this.model("cmpage/module").getModuleByName(this.get('modulename'));
@@ -193,8 +207,9 @@ export default class extends Base {
     }
 
     /**
-     * 查找带回的模块界面，列表数据
-     * @return {ListView} []
+     * 查找带回页面，一般调用： /cmpage/page/lookup?modulename=xxx&multiselect=false
+     * @method  lookup
+     * @return {promise}  分页列表数据，字段是否返回的设置 c_isview (模块显示列设置)
      */
     async lookupAction(){
         let http=this.http;

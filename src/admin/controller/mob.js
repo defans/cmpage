@@ -6,12 +6,22 @@
 // +----------------------------------------------------------------------
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
+/**
+ @module admin.controller
+ */
+
+/**
+ * 移动端APP的admin模块的RUL接口，包括用户登录、取菜单、版本信息等
+ * 由于移动端和PC端的表现方式和功能有所差别，因此部分URL接口单独实现
+ * @class admin.controller.mob
+ */
 import Base from './base.js';
 
 export default class extends Base {
-    /**
-     * get version action 取APP版本信息
-     * @return {json}
+     /**
+     *  取APP的版本信息，用户比较APP的版本，并自动更新资源包
+     * @method getVersion
+     * @return {json} 版本信息，包括新版资源包的URL
      */
     async getVersionAction(){
         let md = await this.model('code').getCodeById(345);
@@ -19,8 +29,9 @@ export default class extends Base {
     }
 
     /**
-     * get groups action 取账套列表
-     * @return {json}
+     * 取账套列表
+     * @method getGroups
+     * @return {json}   HTML片段，用于下拉选择登陆账套等
      */
     async getGroupsAction(){
         let list = await this.model('code').getGroups();
@@ -37,8 +48,9 @@ export default class extends Base {
     }
 
     /**
-     * get version action 取APP版本信息
-     * @return {json}
+     * 取APP菜单和按钮的列表
+     * @method getMenus
+     * @return {json}  备注中设置'btn'的为按钮，其他为菜单
      */
     async getMenusAction(){
         let user = await this.session('user');
@@ -66,7 +78,8 @@ export default class extends Base {
     }
 
   /**
-   * login action 用户登录
+   * 用户登录,包括验证账套、角色等
+   * @method    login
    * @return {json}
    */
     async loginAction(){
@@ -74,7 +87,7 @@ export default class extends Base {
         let vb ={msg:'演示用户：defans  密码：123456'};
         vb.groups = await this.model('code').getGroups();
 
-        let user = await this.model('user').getUserByLoginWithMd5(this.post('loginName'),this.post('loginPwd'));
+        let user = await this.model('user').getUserByLogin(this.post('loginName'),this.post('loginPwd'),true);
         //global.debug(user);
         if(!think.isEmpty(user)){
             if(user.c_status != 0){
@@ -99,12 +112,22 @@ export default class extends Base {
         }
     }
 
+    /**
+     * 退出登录,同时注销session 设置
+     * @method    exitLogin
+     * @return {json}
+     */
     async exitLoginAction(){
         await this.model('login').exitLogin(await this.session('user'));
         await this.session('user',null);
         return this.redirect('/admin/index/login');
     }
 
+    /**
+     * 修改用户密码
+     * @method   loginPwdEdit
+     * @return {json}
+     */
     async loginPwdEditAction(){
         if(this.method() === 'get'){
             return this.display();

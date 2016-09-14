@@ -8,13 +8,21 @@
 // +----------------------------------------------------------------------
 
 /**
- * model
+ @module admin.model
+ */
+
+/**
+ * 账套与用户操作类，并配合界面操作输出相应HTML，
+ * @class admin.model.groupuser
  */
 import CMPage from '../../cmpage/model/page.js';
 
 export default class extends CMPage {
     /**
-     * 取查询项的设置，结合POST参数，得到Where字句
+     * 重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句
+     * @method  getQueryWhere
+     * @return {string}  where条件子句
+     * @param {Object} page  页面设置主信息
      */
     async getQueryWhere(page){
       let where =await super.getQueryWhere(page);
@@ -23,8 +31,11 @@ export default class extends CMPage {
       return where +' and c_group='+parms.c_group;
     }
     /**
-    * 编辑页面保存
-    */
+     * 重写父类的 htmlGetOther 方法，输出额外的按钮和js函数
+     * @method  htmlGetOther
+     * @return {string}  html片段
+     * @param {Object} page  页面设置主信息
+     */
     async htmlGetOther(page){
       let parms =JSON.parse(page.parmsUrl);
       return `<a class="btn btn-green" href="/cmpage/page/list?modulename=GroupUserAdd&c_group=${parms.c_group}"
@@ -64,6 +75,10 @@ export default class extends CMPage {
 
     /**
      * 取某个用户登录账套及其所有子帐套
+     * @method  getLoginGroups
+     * @return {string}  账套ID组成的字符串，如： 1,2,3
+     * @param {int} userID  用户ID
+     * @param {int} groupID  当前登录的账套ID
      */
     async getLoginGroups(userID,groupID){
         //假设账套不超过3层

@@ -8,13 +8,21 @@
 // +----------------------------------------------------------------------
 
 /**
- * model
+ @module admin.model
+ */
+
+/**
+ * 加入账套的待选择列表
+ * @class admin.model.teamuser_add
  */
 import CMPage from '../../cmpage/model/page.js';
 
 export default class extends CMPage {
     /**
-     * 取查询项的设置，结合POST参数，得到Where字句
+     * 重写父类的 getQueryWhere 方法，增加页面模块的条件设置，剔除已经加入该团队的用户，组合成新的Where子句
+     * @method  getQueryWhere
+     * @return {string}  where条件子句
+     * @param {Object} page  页面设置主信息
      */
     async getQueryWhere(page){
       let where =await super.getQueryWhere(page);
@@ -22,6 +30,12 @@ export default class extends CMPage {
       return where +` and id not in(select c_user from t_team_user where c_team=${parmsUrl.c_team}) `;
     }
 
+    /**
+     * 重写父类的 htmlGetOther 方法，输出额外的按钮和js函数，
+     * @method  htmlGetOther
+     * @return {string}  html片段
+     * @param {Object} page  页面设置主信息
+     */
     async htmlGetOther(page) {
         let parmsUrl =JSON.parse(page.parmsUrl);
         return `<a class="btn btn-green" href="#" onclick="return TeamUserAddIds(this,${parmsUrl.c_team});" data-icon="plus">加入</a>

@@ -1,6 +1,7 @@
 
+<%- page.editHeaderHtml%>
+<form id="edit<%= page.c_modulename%>Form" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
 <div class="bjui-pageContent">
-    <form id="edit<%= page.c_modulename%>Form" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
         <input id="<%= page.c_modulename%>ID" name="id" type="hidden" value="<%= page.editID%>" />
         <input name="modulename" type="hidden" value="<%= page.c_modulename%>" />
         <input name="parmsUrl" type="hidden" value="<%= page.parmsUrl%>" />
@@ -9,11 +10,12 @@
             <%- editHtml%>
             </tbody>
         </table>
-    </form>
 </div>
 <div class="bjui-pageFooter" >
     <ul>
-        <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
+        <% if(page.editCloseBtn){ %>
+            <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
+        <% }%>
         <li ><button type="submit" class="btn-green"  data-icon="save">保存</button></li>
         <!--<li class="left"><button type="button" class="btn-default" data-icon="arrow-left" onclick="return <%= page.c_modulename%>gotoEdit(@ViewBag.prevEdit);"-->
                                  <!--@(ViewBag.prevEdit > 0 ? "":"disabled")>上一条</button></li>-->
@@ -21,6 +23,7 @@
                                  <!--@(ViewBag.nextEdit > 0 ? "":"disabled")>下一条</button></li>-->
     </ul>
 </div>
+</form>
 
 <script type="text/javascript">
     function <%= page.c_modulename%>gotoEdit(editID){

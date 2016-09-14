@@ -7,9 +7,6 @@
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
 
-/**
- * model
- */
 
 export default class extends think.model.base {
 
@@ -174,7 +171,7 @@ export default class extends think.model.base {
         }
         for (let [k,col] of columns.entries()) {
             let colmd = {c_module:md.id, c_column:col.column, c_coltype:col.type, c_scale:col.length, c_name:this.getColumnComment(comments,col.column),
-                c_desc : col.column,c_type:(col.column ==='id' ? 'hidden':'text'),c_default:'', c_format:'', c_order:(k+1), c_width:20, c_style:'',
+                c_desc : col.column,c_type:(col.column ==='id' ? 'hidden':'text'),c_default:'', c_format:'', c_order:(k+1), c_width:12, c_style:'',
                 c_suffix:'', c_isshow:false,c_panel_index:0, c_user:0, c_time: think.datetime(), c_memo:'', c_mui:''};
             await model.add(global.checksql(colmd));
         }

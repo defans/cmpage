@@ -8,13 +8,24 @@
 // +----------------------------------------------------------------------
 
 /**
- * lookup model 实现查找带回的功能
+ @module cmpage.model
+ */
+
+/**
+ * 实现了查找带回的功能，可继承本类做定制化的查找带回页面，调用： /cmpage/page/lookup?modulename=XXX*multiselect=false
+ * @class cmpage.model.page_lookup
  */
 import CMPage from './page.js';
 
 export default class extends CMPage {
+
     /**
-     * 取列表中按钮的设置，组合成HTML输出
+     * 取列表中按钮的设置，组合成HTML输出,<br/> 重写父类的方法，子类中也可重写本方法，更改返回的字段和值等
+     * @method  htmlGetBtnList
+     * @return  {string}  HTML片段
+     * @param   {object} rec 每行的记录对象
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param   {object} pageBtns 按钮设置
      */
     async htmlGetBtnList(rec,page,pageBtns){
       let html=[];
@@ -28,6 +39,12 @@ export default class extends CMPage {
       return ` <a href="javascript:;" data-toggle="lookupback" data-args="{${html.join(',')}}" class="btn btn-blue" title="选择本项" data-icon="check">选择</a>`;
     }
 
+    /**
+     * 顶部按钮不需要显示，<br/> 重写父类的方法，子类中也可重写本方法，增加其他按钮
+     * @method  htmlGetBtnHeader
+     * @return {string}  HTML片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
     async htmlGetBtnHeader(page){
         return ' ';
     }

@@ -6,21 +6,22 @@
 // +----------------------------------------------------------------------
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
+/**
+ @module cmpage.controller
+ */
 
+/**
+ * 业务模块设置的URL接口
+ * @class cmpage.controller.module
+ */
 import Base from './base.js';
 
 export default class extends Base {
-  /**
-   * 通用模块设置
-   */
-  indexAction(){
-    //auto render template file index_index.html
-    return this.display();
-  }
 
-  /************** 模块主信息设置 *******************************
-   * 分页列表 action
-   * @return {Promise} []
+  /**
+   * 模块主信息设置，分页列表，调用： /cmpage/module/list
+   * @method  list
+   * @return {promise}  HTML片段
    */
   async listAction(){
     let http =this.http;
@@ -54,13 +55,14 @@ export default class extends Base {
   }
 
   /**
-   * 保存记录 action
+   * 保存模块主信息记录， POST调用： /cmpage/module/save
+   * @method  save
    * @return {Promise} []
    */
   async saveAction(){
     let ret={statusCode:200,message:'保存成功!',tabid: 'pageModule',data:{}};
     let parms =this.http.post();
-    let md = global.objPropertysFromOtherObj({},parms,['c_modulename','c_datasource','c_table','c_page_size','c_sort_by','c_type',
+    let md = global.objPropertysFromOtherObj({},parms,['c_modulename','c_datasource','c_table','c_page_size','c_sort_by','c_type','c_other',
       'c_module_rec','c_edit_column','c_mui','c_memo','c_path','c_alias']);
     md.c_multiselect = !think.isEmpty(parms.c_multiselect);
     md.c_pager = !think.isEmpty(parms.c_pager);
@@ -88,33 +90,21 @@ export default class extends Base {
     return this.json(ret);
   }
 
-  /**
-   * 删除记录
-   * flag: boolean ,true表示实际删除
-   */
-  async deleteAction(){
-    if(this.http.get('table') === 't_module'){
-      let id =this.http.get('id');
-      await this.model('t_module').query(`update t_module set c_status=-1,c_modulename=c_modulename||'-1' where id=${id}`);
-      return this.json({statusCode:200,message:'',data:{}});
-    }else{
-      return await super.deleteAction();
-    }
-  }
-
-  /**
-   * 复制模块
-   * flag: boolean ,true表示实际删除
-   */
-  async copyAction(){
+    /**
+     * 复制模块设置， 调用： /cmpage/module/copy?modulename=xxx
+     * @method  copy
+     * @return {json} 复制是否成功的信息
+     */
+    async copyAction(){
     let modulename =this.http.get('modulename');
     return this.json(await this.model('module').copyToNewModule(modulename));
   }
 
-  /**
-   * 模块主表编辑页面 action
-   * @return {Promise} []
-   */
+    /**
+     * 模块主表编辑页面，调用：/cmpage/module/edit?id=xxx
+     * @method  edit
+     * @return {Promise} HTML页面
+     */
   async editAction(){
     let http =this.http;
     let md={};
@@ -134,9 +124,11 @@ export default class extends Base {
     return this.display();
   }
 
-  /**
-   * 刷新MODULE缓存 action
-   */
+    /**
+     * 模块主表编辑页面，调用：/cmpage/module/reset_module_cache
+     * @method  resetModuleCache
+     * @return {json}
+     */
   async resetModuleCacheAction(){
     let ret={statusCode:200,message:'缓存刷新成功!',tabid: '',data:{}};
     await this.model('module').clearModuleCache();
@@ -145,10 +137,11 @@ export default class extends Base {
     return this.json(ret);
   }
 
-  /***************** 显示列设置 *******************************
-   * 模块显示列编辑页面 action
-   * @return {Promise} []
-   */
+    /**
+     * 模块显示列编辑页面，调用：/cmpage/module/col_list?moduleid=xxx
+     * @method  colList
+     * @return {Promise} HTML页面
+     */
   async colListAction(){
     let http =this.http;
 
@@ -167,6 +160,11 @@ export default class extends Base {
     return this.display();
   }
 
+    /**
+     * 重新设置模块显示列，调用：/cmpage/module/col_reset?moduleid=xxx
+     * @method  colReset
+     * @return {json}
+     */
   async colResetAction(){
     let http = this.http;
 
@@ -176,6 +174,11 @@ export default class extends Base {
     return this.json(ret);
   }
 
+    /**
+     * 保存显示列设置， POST调用： /cmpage/module/col_save
+     * @method  col_save
+     * @return {json} 保存记录的状态信息
+     */
   async colSaveAction(){
     let http = this.http;
     let model = this.model("t_module_col");
@@ -220,10 +223,11 @@ export default class extends Base {
       return this.json({statusCode:200,message:'保存成功！'});
   }
 
-  /***************** 编辑列设置 *******************************
-   * 模块编辑列编辑页面 action
-   * @return {Promise} []
-   */
+    /**
+     * 模块显示列编辑页面，调用：/cmpage/module/edit_list?moduleid=xxx
+     * @method  editList
+     * @return {Promise} HTML页面
+     */
   async editListAction(){
     let http =this.http;
 
@@ -240,6 +244,11 @@ export default class extends Base {
     return this.display();
   }
 
+    /**
+     * 重新设置模块编辑列，调用：/cmpage/module/edit_reset?moduleid=xxx
+     * @method  editReset
+     * @return {json}
+     */
   async editResetAction(){
     let model = this.model("module");
     let ret = await model.resetModuleEdit(this.get('moduleid'));
@@ -247,7 +256,12 @@ export default class extends Base {
     return this.json(ret);
   }
 
-  async editSaveAction(){
+    /**
+     * 保存业务模块编辑列的设置， POST调用： /cmpage/module/edit_save
+     * @method  edit_save
+     * @return {json} 保存记录的状态信息
+     */
+    async editSaveAction(){
     let http = this.http;
     let model = this.model("t_module_edit");
     let posts = http.post();
@@ -288,10 +302,11 @@ export default class extends Base {
     return this.json({statusCode:200,message:'保存成功！'});
   }
 
-  /***************** 查询列设置 *******************************
-   * 模块查询列的设置页面 action
-   * @return {Promise} []
-   */
+    /**
+     * 模块查询列编辑页面，调用：/cmpage/module/query_list?moduleid=xxx
+     * @method  queryList
+     * @return {Promise} HTML页面
+     */
   async queryListAction(){
     let http =this.http;
 
@@ -309,7 +324,12 @@ export default class extends Base {
     return this.display();
   }
 
-  async queryResetAction(){
+    /**
+     * 重新设置模块查询列，调用：/cmpage/module/query_reset?moduleid=xxx
+     * @method  queryReset
+     * @return {json}
+     */
+    async queryResetAction(){
     let http = this.http;
 
     let model = this.model("module");
@@ -318,6 +338,11 @@ export default class extends Base {
     return this.json(ret);
   }
 
+    /**
+     * 删除不显示的查询列设置， POST调用： /cmpage/module/query_delete_no_show
+     * @method  query_delete_no_show
+     * @return {json} 状态信息
+     */
   async queryDeleteNoShowAction(){
     let http = this.http;
 
@@ -326,6 +351,11 @@ export default class extends Base {
     return this.json(ret);
   }
 
+    /**
+     * 保存业务模块查询列的设置， POST调用： /cmpage/module/query_save
+     * @method  query_save
+     * @return {json} 保存记录的状态信息
+     */
   async querySaveAction(){
     let http = this.http;
     let model = this.model("t_module_query");
@@ -366,10 +396,11 @@ export default class extends Base {
     return this.json({statusCode:200,message:'保存成功！'});
   }
 
-  /***************** 模块按钮设置 *******************************
-   * 模块按钮的设置页面 action
-   * @return {Promise} []
-   */
+    /**
+     * 模块按钮设置页面，调用：/cmpage/module/btn_list?moduleid=xxx
+     * @method  btnList
+     * @return {Promise} HTML页面
+     */
   async btnListAction(){
     let http =this.http;
 
@@ -384,6 +415,11 @@ export default class extends Base {
     return this.display();
   }
 
+    /**
+     * 重新设置模块按钮，调用：/cmpage/module/btn_reset?moduleid=xxx
+     * @method  btnReset
+     * @return {json}
+     */
     async btnResetAction(){
         let model = this.model("module");
         let ret = await model.resetModuleBtn(this.get('moduleid'));
@@ -392,6 +428,11 @@ export default class extends Base {
         return this.json(ret);
     }
 
+    /**
+     * 保存业务模块的按钮设置， POST调用： /cmpage/module/btn_save
+     * @method  btn_save
+     * @return {json} 保存记录的状态信息
+     */
   async btnSaveAction(){
     let http = this.http;
     let model = this.model("t_module_btn");

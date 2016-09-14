@@ -6,13 +6,22 @@
 // +----------------------------------------------------------------------
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
+/**
+    @module admin.controller
+ */
+
+/**
+ * admin.controller的index类，提供了PC端后台管理系统的用户登录、菜单显示等URL接口
+ * @class admin.controller.index
+ */
 import Base from './base.js';
 import request from 'request';
 
 export default class extends Base {
   /**
-   * index action
-   * @return {Promise} []
+   * 系统首页，加载符合权限的菜单、加载前端BJUI框架等
+   * @method  index
+   * @return {Promise}
    */
   async indexAction(){
     //auto render template file index_index.html
@@ -47,7 +56,12 @@ export default class extends Base {
     return this.display();
   }
 
-    //用户登录界面
+    /**
+     * 用户登录界面，get方式显示登录页面，post方式执行用户登录，如果成功则将用户信息写入session并引导到index页面,
+     * 期间判断是否有权限登录所选择的账套
+     * @method  login
+     * @return {Promise}
+     */
     async loginAction(){
         //let vb ={msg:'请选择您有权限登录的账套。'};
         let vb ={msg:'演示用户：defans  密码：123456'};
@@ -95,18 +109,22 @@ export default class extends Base {
         return this.display();
     }
 
+    /**
+     * 用户登出，清除session中的用户信息并引导至用户登录页面
+     * @method  exitLogin
+     * @return {Promise}
+     */
     async exitLoginAction(){
         await this.model('login').exitLogin(await this.session('user'));
         await this.session('user',null);
         return this.redirect('/admin/index/login');
     }
 
-    homeAction(){
-    return this.display();
-  }
-  gitAction(){
-    return this.display();
-  }
+    /**
+     * 用户密码修改页面，get方式显示编辑页面，post方式执行密码修改
+     * @method  loginPwdEdit
+     * @return {Promise}
+     */
     async loginPwdEditAction(){
         if(this.method() === 'get'){
             return this.display();
@@ -160,5 +178,11 @@ export default class extends Base {
         return this.json({statusCode:300,message:"timer is not exist! "+this.ip()});
     }
 
+    homeAction(){
+        return this.display();
+    }
+    gitAction(){
+        return this.display();
+    }
 
 }

@@ -10,11 +10,24 @@
 /**
  * page_mob model 实现手机APP的模块接口
  */
+/**
+ @module cmpage.model
+ */
+
+/**
+ * 实现了手机APP的模块接口，可继承本类对手机APP的业务模块做定制化的HTML输出和功能操作, 方法名加了mob做前导，以示区分
+ * @class cmpage.model.page_mob
+ */
 import CMPage from './page.js';
 
 export default class extends CMPage {
+
     /**
      * 取模块列表中的MUI设置，组合成HTML输出，一般在子类中通过重写这个方法来达到页面定制的效果
+     * @method  mobHtmlGetList
+     * @return  {string}  HTML片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param   {object} dataList 结果集对象
      */
     async mobHtmlGetList(page,dataList) {
         let html = [];
@@ -46,11 +59,16 @@ export default class extends CMPage {
     }
 
     /**
-     * 生成列表每一行的按钮组
+     * 生成列表每一行的按钮组HTML输出，一般在子类中通过重写这个方法来达到定制输出按钮的效果
+     * @method  mobHtmlGetListBtns
+     * @return  {string}  HTML片段
+     * @param   {object} row 记录对象
+     * @param   {object} pageBtns 业务模块的按钮设置
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
     async mobHtmlGetListBtns(row,pageBtns,page) {
         let html =[];
-        let mui = this.getPageMuiSetting(page);
+        let mui = this.mobGetPageMuiSetting(page);
         html.push('<div class="mui-slider-right mui-disabled">');
         for(let btn of pageBtns){
             if (btn.c_location > 10 && btn.c_isshow){
@@ -67,9 +85,12 @@ export default class extends CMPage {
     }
 
     /**
-     * 取模块的MUI设置
+     * 取模块的MUI设置，一般在子类中通过重写这个方法来增加MUI的配置信息，需要手机端做相应的逻辑实现
+     * @method  mobGetPageMuiSetting
+     * @return  {object}  MUI的配置对象
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    getPageMuiSetting(page){
+    mobGetPageMuiSetting(page){
         let mui = {editurl:'/html/commpage/commpage-edit.html'};
         for(let item of page.c_mui.split(',')){
             let its = item.split(':');
@@ -81,7 +102,11 @@ export default class extends CMPage {
     }
 
     /**
-     * 生成列表每一行的内容
+     * 生成列表每一行的内容HTML输出，一般在子类中通过重写这个方法来达到定制分页列表的显示效果，例如： demo/customer:mobHtmlGetListRow
+     * @method  mobHtmlGetListRow
+     * @return  {string}  HTML片段
+     * @param   {object} row 记录对象
+     * @param   {object} pageCols 业务模块的显示列设置
      */
     async mobHtmlGetListRow(row,pageCols) {
         let html =[];
@@ -95,7 +120,10 @@ export default class extends CMPage {
     }
 
     /**
-     * 生成查询页面
+     * 取业务模块中的查询列设置，组合成APP端HTML输出，为保持和PC端的一致性，一般不需要重写
+     * @method  mobHtmlGetQuery
+     * @return  {string}  HTML片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
     async mobHtmlGetQuery(page){
         let html =[];
@@ -167,7 +195,10 @@ export default class extends CMPage {
     }
 
     /**
-     * 生成APP端编辑页面
+     * 取业务模块中的编辑列设置，组合成APP端HTML输出，为保持和PC端的一致性，一般不需要重写
+     * @method  mobHtmlGetEdit
+     * @return  {string}  HTML片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
     async mobHtmlGetEdit(page) {
         let html =[];

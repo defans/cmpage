@@ -7,14 +7,23 @@
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
 
+/**
+ @module cmpage.controller
+ */
 
+/**
+ * 工具集、其他URL接口
+ * @class cmpage.controller.utils
+ */
 import Base from './base.js';
 
 export default class extends Base {
-  /**
-   * 清除缓存
-   * @return {Promise} []
-   */
+
+    /**
+     * 清除缓存， 调用： /cmpage/utils/clear_cache
+     * @method  clearCache
+     * @return {json}
+     */
     async clearCacheAction(){
         //auto render template file index_index.html
         await this.model('admin/code').clearCodeCache();
@@ -24,8 +33,11 @@ export default class extends Base {
         return this.json({statusCode:200, message:'Cache is clear!'});
     }
 
-    /*********************************** 地区联动选择--begin-- ************************/
-    //根据省份取城市列表
+    /**
+     * 根据省份取城市列表， 调用： /cmpage/utils/get_citys?province=xxx
+     * @method  get_citys
+     * @return {json}
+     */
     async getCitysAction(){
         let citys = await this.model('area').getCitys(this.get('province'));
         let ret =[{value:'-1', label:'请选择'}];
@@ -34,7 +46,11 @@ export default class extends Base {
         }
         return this.json(ret);
     }
-    //根据城市取区县列表
+    /**
+     * 根据城市取区县列表， 调用： /cmpage/utils/get_countrys?city=xxx
+     * @method  get_countrys
+     * @return {json}
+     */
     async getCountrysAction(){
         let countrys = await this.model('area').getCountrys(this.get('city'));
         let ret =[{value:'-1', label:'请选择'}];
@@ -43,7 +59,5 @@ export default class extends Base {
         }
         return this.json(ret);
     }
-
-    /*********************************** 地区联动选择--end-- ************************/
 
 }

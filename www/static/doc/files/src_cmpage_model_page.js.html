@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src\cmpage\model\page.js</title>
+  
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-smart">
+ <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+               <a class="navbar-brand mainlogo" href="/static/doc/index.html">
+             
+            <img alt="" src="../assets/css/logo.png" title="">
+            
+                
+          </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                 <ul class="nav navbar-nav">
+                    
+                    <li><a href="/home/index/index">首页</a>
+                    </li>
+                    
+                    <li><a href="/static/doc/index.html">文档</a>
+                    </li>
+                    
+                    <li><a href="/admin/index/index">演示</a>
+                    </li>
+                    
+                    <li><a href="/home/index/log">日志</a>
+                    </li>
+                    
+                </ul>
+               <div class="navbar-form navbar-right filterAPi" autocomplete="off">
+                <input type="text" id='txtSearchAPI' class="form-control search-query" placeholder="Search for API" />
+                 <ul id="filterList" class="filterItems dropdown-menu" role="menu"></ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="sidebar">
+    <h3>Modules/Classes</h3>
+        <div id="api-tabview-filter">
+            <input id='txtSearch' type="search" class="form-control" placeholder="Type to filter Modules/Classes">
+        </div>
+        <dl id="sidebar_list">
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/admin.controller.html">admin.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/admin.controller.base.html">admin.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.code.html">admin.controller.code</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.index.html">admin.controller.index</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.mob.html">admin.controller.mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/admin.model.html">admin.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/admin.model.code.html">admin.model.code</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.code_list.html">admin.model.code_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.groupuser_add.html">admin.model.groupuser_add</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.log.html">admin.model.log</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.login.html">admin.model.login</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.privilege.html">admin.model.privilege</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.teamuser.html">admin.model.teamuser</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.teamuser_add.html">admin.model.teamuser_add</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.user.html">admin.model.user</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.controller.html">cmpage.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.base.html">cmpage.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.mob.html">cmpage.controller.mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.module.html">cmpage.controller.module</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.page.html">cmpage.controller.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.utils.html">cmpage.controller.utils</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.logic.html">cmpage.logic</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.logic.page.html">cmpage.logic.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.model.html">cmpage.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.area.html">cmpage.model.area</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_mob.html">cmpage.model.page_mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.utils.html">cmpage.model.utils</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.cmpage_global.html">cmpage.cmpage_global</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+        </dl>
+</div>
+   
+    <div class="stdoc-content">
+        <!--     <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+ -->
+        <div class="apidocs">
+            <div id="docs-main">
+                <div class="content">
+                    <div class="page-header">
+    <h1>src\cmpage\model\page.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums" id='src_code'>
+&#x27;use strict&#x27;;
+// +----------------------------------------------------------------------
+// | CmPage [ 通用页面框架 ]
+// +----------------------------------------------------------------------
+// | Licensed under the Apache License, Version 2.0
+// +----------------------------------------------------------------------
+// | Author: defans &lt;defans@sina.cn&gt;
+// +----------------------------------------------------------------------
+
+/**
+ 业务模块配置和展示系统的 model 类，实现了cmpage的主要业务逻辑，包括PC端和移动端
+
+ 注意点 :
+ 1. 在业务模块主信息设置中配置实现类,如：cmpage/page 或 demo/customer，系统会调用该类来展现页面
+ 2. 具体的业务模块必须继承 cmpage/model/page.js 来增加新的逻辑
+ 3. 移动端、主从页、查找带回等页面都是从 cmpage/model/page.js 继承，具体的业务模块请适当选择基类
+ 4. 在其他模块如 demo 中可以配置新的数据库连接，实现了多数据库的应该
+ 5. 每个页面根据不同的HTML输出位置和处理数据的流程分成了若干方法，子类中通过重写相应的方法可以达到定制页面的效果
+
+ @module cmpage.model
+ */
+
+/**
+ * 普通页面的数据处理类，实现了具体的操作方法
+ * @class cmpage.model.page
+ */
+export default class extends think.model.base {
+
+    /**
+     * 取查询项的设置，组合成HTML输出
+     * @method  htmlGetQuery
+     * @return {Array}  查询的HTML片段，包括 bjui-moreSearch 部分
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    async htmlGetQuery(page){
+        let html =[];
+        let html0 = [];
+        let pageQuerys = await global.model(&#x27;cmpage/module&#x27;).getModuleQuery(page.id);
+        let provinceValue =&#x27;&#x27;;
+        let cityValue=&#x27;&#x27;;
+        let k =0;
+        for(let col of pageQuerys){
+            if (col.c_isshow) {
+                if(k &gt;2 &amp;&amp; k !== -1){
+                    for(let h of html){    html0.push(h);       }
+                    html0.push(&#x27;&lt;button type=&quot;button&quot; class=&quot;showMoreSearch&quot; data-toggle=&quot;moresearch&quot; data-name=&quot;custom&quot;&gt;&lt;i class=&quot;fa fa-angle-double-down&quot;&gt;&lt;/i&gt;&lt;/button&gt;&#x27;);
+                    html =[];
+                    k = -1;
+                }
+                if(!think.isEmpty(page.query[col.c_column])){
+                    col.c_default = page.query[col.c_column];
+                }
+                if(col.c_type !== &quot;hidden&quot; &amp;&amp; col.c_type !== &quot;provinceSelect&quot; &amp;&amp; col.c_type !== &quot;citySelect&quot; &amp;&amp; col.c_type !== &quot;countrySelect&quot; &amp;&amp; col.c_type !== &quot;fixed&quot;)
+                {
+                    html.push(&#x60;&lt;label  &gt;${col.c_name}&lt;/label&gt;&#x60;);
+                    if(k !== -1){ k += 1; }
+                }
+                if (col.c_type === &quot;hidden&quot;)
+                {
+                    html.push(&#x60;&lt;input name=&quot;${col.c_column}&quot; type=&quot;hidden&quot; value=&quot;${col.c_default}&quot;   /&gt;&#x60;);
+                }else  if (col.c_coltype === &quot;datetime&quot; || col.c_coltype === &quot;date&quot; || col.c_coltype === &quot;timestamp&quot;)
+                {
+                    html.push(&#x60;&lt;input type=&quot;text&quot; name=&quot;${col.c_column}&quot; value=&quot;${col.c_default}&quot; data-toggle=&quot;datepicker&quot; data-rule=&quot;date&quot; size=&quot;12&quot; class=&quot;form-control&quot; /&gt;&#x60;);
+                }
+                else if (col.c_coltype === &quot;bool&quot;)
+                {
+                    html.push(&#x60;&lt;input type=&quot;checkbox&quot; name=&quot;${col.c_column}&quot; data-toggle=&quot;icheck&quot; value=&quot;true&quot; data-label=&quot;是&quot;
+                        ${col.c_default ? &quot;checked=checked&quot; : &quot;&quot;} class=&quot;form-control&quot; /&gt;&#x60;);
+                }
+                else if (col.c_type === &quot;select&quot;)
+                {
+                    let options = await this.getOptions(col,true);
+                    html.push(&#x60;&lt;select name=&quot;${col.c_column}&quot; data-toggle=&quot;selectpicker&quot; &gt; ${options} &lt;/select&gt;&#x60;);
+                }
+                else if (col.c_type === &quot;lookup&quot;)
+                {
+                    html.push(&#x60;&lt;input name=&quot;${col.c_column}&quot; type=&quot;lookup&quot; size=&quot;${col.c_width}&quot; value=&quot;&quot;  data-width=&quot;800&quot; data-height=&quot;600&quot;
+                        data-toggle=&quot;lookup&quot; data-title=&quot;${col.c_name} 选择&quot; data-url=&quot;${this.getReplaceToSpecialChar(col.c_memo,page)}&quot; readonly=&quot;readonly&quot; /&gt;&#x60;);
+                }
+                else if (col.c_type === &quot;provinceSelect&quot;)
+                {
+                    html.push(&#x60;&lt;select name=&quot;c_province&quot; data-toggle=&quot;selectpicker&quot;  data-nextselect=&quot;#city${page.c_modulename}Query&quot;
+                        data-refurl=&quot;/cmpage/utils/get_citys?province={value}&quot;&gt;  ${await global.model(&#x27;cmpage/area&#x27;).getProvinceItems(col.c_default,true)} &lt;/select&gt;&#x60;);
+                    provinceValue = col.c_default;
+                }
+                else if (col.c_type === &quot;citySelect&quot;)
+                {
+                    html.push(&#x60;&lt;select name=&quot;c_city&quot; id=&quot;city${page.c_modulename}Query&quot; data-toggle=&quot;selectpicker&quot; data-nextselect=&quot;#country${page.c_modulename}Query&quot;
+                        data-refurl=&quot;/cmpage/utils/get_countrys?city={value}&quot;&gt;${await global.model(&#x27;cmpage/area&#x27;).getCityItems(col.c_default,true,provinceValue )} &lt;/select&gt;&#x60;);
+                    cityValue = col.c_default;
+                }
+                else if (col.c_type === &quot;countrySelect&quot;)
+                {
+                    html.push(&#x60;&lt;select name=&quot;c_country&quot; id=&quot;country${page.c_modulename}Query&quot; data-toggle=&quot;selectpicker&quot; &gt;${await global.model(&#x27;cmpage/area&#x27;).getCountryItems(col.c_default,true,cityValue)} &lt;/select&gt;&#x60;);
+                }
+                else if( col.c_type !== &quot;fixed&quot;)
+                {
+                    html.push(&#x60;&lt;input name=&quot;${col.c_column}&quot; type=&quot;${col.c_type}&quot; size=&quot;${col.c_width}&quot; value=&quot;${col.c_default}&quot; data-rule=&quot;${col.c_memo}&quot; class=&quot;form-control&quot;  /&gt;&#x60;);
+                }
+            }
+        }
+
+        return [html0.join(&#x27; &#x27;), html.join(&#x27; &#x27;)];
+    }
+
+  async htmlGetOther(page){
+    return &#x60;&#x60;;
+  }
+
+    /**
+     * 取下拉框的选项集
+     * @method  getOptions
+     * @return {Array}  查询的HTML片段，包括 bjui-moreSearch 部分
+     * @param   {object} md 下拉项的设置，其中md.c_default为默认值，可以在调用本方法前修改
+     * @param   {bool} [isBlank=false]   下拉项中是否增加空项，一般查询项是需要的
+     */
+    async getOptions(md, isBlank){
+        let items = [];
+        if (md.c_type == &quot;select&quot;) {          //下拉框设置
+            //global.debug(md.c_memo);
+            if(isBlank){
+                items.push(&#x27;&lt;option value=&quot;0&quot;&gt; &lt;/option&gt;&#x27;);
+            }
+            if (/^select*/.test(md.c_memo)) {    //以select开头
+                //let sql = md.c_memo.replace(/#group#/,think.session(&#x27;groupID&#x27;)).replace(/##/,&quot;&#x27;&quot;);
+                let sql = md.c_memo;
+                let list = await this.query(sql);
+                for(let rec of list) {
+                    items.push( &#x60;&lt;option value=&#x27;${rec.id}&#x27; ${rec.id === md.c_default ? &quot;selected&quot; : &quot;&quot;} &gt;${rec.c_name} &lt;/option&gt;&#x60;);
+                }
+            }else {
+                if (/^\[{\w+/.test(md.c_memo)) {    //以 [ 开头       //设置如：[{##value##:true,##text##:##男##},{##value##:false,##text##:##女##}]
+                    let its = (think.isString(md.c_memo) ? JSON.parse(md.c_memo.replace(/##/ig,&#x27;\&quot;&#x27;)) : []);
+                    for (let it of its) {
+                        items.push(&#x60;&lt;option value=&#x27;${it.value}&#x27; ${it.value === md.c_default ? &quot;selected&quot; : &quot;&quot;} &gt;${it.text} &lt;/option&gt;&#x60;);
+                    }
+                }else{
+                    let its = md.c_memo.trim().split(&#x27;:&#x27;);        //设置如： admin/code:getParmsByPid:3
+                    let parms = [];
+                    let fnModel = global.model(its[0]);     //通过某个模块的某个方法取下拉设置
+                    if(think.isFunction(fnModel[its[1]])){
+                        if(its.length === 3){
+                            parms = await fnModel[ its[1] ](its[2]);
+                        }else{
+                            parms = await fnModel[ its[1] ]();
+                        }
+                    }
+                    //global.debug(parms);
+                    for (let parm of parms) {
+                        items.push(&#x60;&lt;option value=&#x27;${parm.id}&#x27; &quot;  ${parm.id == md.c_default ? &quot;selected&quot; : &quot;&quot;} &gt;${parm.c_name}&lt;/option&gt;&#x60;);
+                    }
+                }
+            }
+        }
+//        global.debug(items.join(&#x27; &#x27;));
+        return items.join(&#x27; &#x27;);
+    }
+
+    /**
+     * 根据设置取显示的替换值
+     * @method  getReplaceText
+     * @return {Array}  查询的HTML片段，包括 bjui-moreSearch 部分
+     * @param   {string} value 当前值
+     * @param   {string} replaceItems  替换的设置值，支持两种方式
+     *                      1. 函数如：admin/code:getXXXXXX
+     *                      2. json如：[{##value##:true,##text##:##男##},{##value##:false,##text##:##女##}]
+     */
+    async getReplaceText(value,replaceItems){
+        if (/^\[{\w+/.test(replaceItems)) {
+            let items = (think.isString(replaceItems) ? JSON.parse(replaceItems.replace(/##/ig,&#x27;\&quot;&#x27;)):replaceItems);
+            for(let item of items){
+                if(item.value === value){
+                    return item.text;
+                }
+            }
+        }else
+        {
+            let its = replaceItems.split(&#x27;:&#x27;);        //设置如： admin/code:getNameById
+            if(its.length &gt;1){
+                let fnModel = global.model(its[0]);     //通过某个模块的某个方法取下拉设置
+                if(think.isFunction(fnModel[its[1]])){
+                    let args =[];
+                    args.push(value);
+                    if(its.length &gt; 2){
+                        for(let arg of its[2].split(&#x27;,&#x27;)){
+                            args.push(arg);
+                        }
+                    }
+                    return await fnModel[ its[1] ](...args);
+                }
+            }
+        }
+
+        return &quot;&quot;;
+    }
+
+    /**
+     * 取顶部按钮的设置，组合成HTML输出
+     * @method  htmlGetBtnHeader
+     * @return {string}  HTML片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    async htmlGetBtnHeader(page){
+      let html =[];
+      let htmlRight =[];
+      let pageBtns = await global.model(&#x27;cmpage/module&#x27;).getModuleBtn(page.id);
+      for(let btn of pageBtns){
+            if(btn.c_isshow ){
+                if(btn.c_location &lt;6){
+                    html.push(&#x60;&lt;a class=&quot;${btn.c_class}&quot; data-toggle=&quot;${btn.c_opentype}&quot; data-options=&quot;${this.getReplaceToSpecialChar(btn.c_options,page)}&quot;  data-on-close=&quot;page${page.c_modulename}Edit_onClose&quot;
+                      data-icon=&quot;${btn.c_icon}&quot; href=&quot;${this.getReplaceToSpecialChar(btn.c_url,page)}&quot; data-title=&quot;${btn.c_title}&quot; data-on-load=&quot;pageRecList_load&quot;
+                      onclick=&quot;${this.getReplaceToSpecialChar(btn.c_onclick,page)}&quot;&gt;${btn.c_label}&lt;/a&gt;&#x60;);
+                }else if(btn.c_location &gt;5 &amp;&amp; btn.c_location &lt;10){      //靠右放置
+                    htmlRight.push(&#x60;&lt;a class=&quot;${btn.c_class}&quot; data-toggle=&quot;${btn.c_opentype}&quot; data-options=&quot;${this.getReplaceToSpecialChar(btn.c_options,page)}&quot;  data-on-close=&quot;page${page.c_modulename}Edit_onClose&quot;
+                      data-icon=&quot;${btn.c_icon}&quot; href=&quot;${this.getReplaceToSpecialChar(btn.c_url,page)}&quot; data-title=&quot;${btn.c_title}&quot; data-on-load=&quot;pageRecList_load&quot;
+                      onclick=&quot;${this.getReplaceToSpecialChar(btn.c_onclick,page)}&quot;&gt;${btn.c_label}&lt;/a&gt;&#x60;);
+                }
+            }
+      }
+      return html.join(&#x27; &#x27;)+(htmlRight.length &gt;0 ? &#x27;&lt;div class=&quot;pull-right&quot;&gt;&#x27;+htmlRight.join(&#x27; &#x27;)+&#x27;&lt;/div&gt;&#x27;: &#x27;&#x27;);
+  }
+
+    /**
+     * 取记录列表每一行的按钮设置，组合成HTML输出，子类中重写本方法可以定制每行按钮的输出效果
+     * @method  htmlGetBtnList
+     * @return {string}  HTML片段
+     * @param   {object} rec 每行的记录对象
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param   {object} pageBtns 按钮设置
+     */
+  async htmlGetBtnList(rec,page,pageBtns){
+    let html=[];
+     for(let btn of pageBtns){
+       if (btn.c_isshow &amp;&amp; btn.c_location &gt; 10 ) {
+         let btnUrl = this.getReplaceToSpecialChar(btn.c_url.replace(/#id#/,rec[&#x27;id&#x27;]),page);
+         let btnClick = this.getReplaceToSpecialChar(btn.c_onclick.replace(/#id#/,rec[&#x27;id&#x27;]),page);
+         let options = this.getReplaceToSpecialChar(btn.c_options,page);
+         html.push(&#x60; &lt;a type=&quot;button&quot; class=&quot;${btn.c_class}&quot; data-toggle=&quot;${btn.c_opentype}&quot; data-options=&quot;${options}&quot; title=&quot;${btn.c_title}&quot;
+                         data-on-load=&quot;pageRecList_load&quot;  data-on-close=&quot;page${page.c_modulename}Edit_onClose&quot; data-icon=&quot;${btn.c_icon}&quot; href=&quot;${btnUrl}&quot;
+         onclick=&quot;${btnClick}&quot; data-title=&quot;${btn.c_title}&quot;  style=&quot;${btn.c_style}&quot; &gt;${btn.c_label}&lt;/a&gt; &#x60;);
+       }
+     }
+    return html.join(&#x27; &#x27;);
+  }
+
+    /**
+     * 取分页列表的设置，结合结果数据集，组合成HTML输出，一般不需要重新本方法
+     * @method  htmlGetList
+     * @return {string}  HTML片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param   {object} dataList 结果数据集，this.getDataList(page) 的返回值
+     */
+  async htmlGetList(page,dataList) {
+    let html = [&#x27;&lt;thead&gt; &lt;tr &gt;&#x27;];
+        let modelPage  =global.model(&#x27;cmpage/module&#x27;);
+    let pageCols = await modelPage.getModuleCol(page.id);
+    let pageBtns = await modelPage.getModuleBtn(page.id);
+    let isShowBtn = false;
+
+    for (let btn of pageBtns) {
+      if (btn.c_location &gt; 9) {
+        isShowBtn = true;
+        break;
+      }
+    }
+
+    for (let col of pageCols) {
+        if (col.c_isshow) {
+            html.push(&#x60;&lt;th width=&quot;${col.c_width}&quot; style=&quot;text-align:center;&quot;&gt;${col.c_name} &lt;/th&gt;&#x60;);
+        }
+    }
+    if (page.c_multiselect) {
+        html.push(&#x27;&lt;th width=&quot;26&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;checkboxCtrl&quot; data-group=&quot;ids&quot; data-toggle=&quot;icheck&quot;&gt;&lt;/th&gt;&#x27;);
+    }
+    if (isShowBtn) {
+        html.push(&#x27;&lt;th width=&quot;100&quot; &gt;操作&lt;/th&gt;&#x27;);
+    }
+    html.push(&#x27;&lt;/tr&gt; &lt;/thead&gt;&#x27;);
+
+    //数据列
+//    let dataList = await this.getDataList(page,pageCols);
+//    global.debug(dataList);
+
+    html.push(&#x27;&lt;tbody&gt;&#x27;);
+    for (let item of dataList) {
+        html.push(&#x60;&lt;tr data-id=&quot;${item[&#x27;id&#x27;]}&quot; onclick=&quot;$(&#x27;#idSelect${page.c_modulename}&#x27;).val(${item[&#x27;id&#x27;]});&quot; &gt;&#x60;);
+        for (let col of pageCols) {
+            if (col.c_isshow) {
+//                global.debug(col);
+                html.push(&#x60;&lt;td style=&quot;${item[&quot;id&quot;] === 0 ? &quot;font-weight:bold;&quot; + col.c_style : col.c_style}&quot; &gt;&#x60;);
+                if (item[&quot;id&quot;] !== 0 &amp;&amp; col.c_type_sum === &quot;none&quot;) {
+                    if (!think.isEmpty(col.c_format)) {
+                        if (col.c_coltype === &quot;decimal&quot;) {
+                            html.push(global.formatNumber(item[col.c_column], {pattern: col.c_format}));
+                        } else if(col.c_coltype === &quot;timestamp&quot; || col.c_coltype === &quot;date&quot;) {
+                            html.push(global.datetime(item[col.c_column], col.c_format));
+                        }
+                    } else if (col.c_type === &quot;checkbox&quot;) {
+                        html.push(&#x60;&lt;input type=&quot;checkbox&quot;  data-toggle=&quot;icheck&quot; value=&quot;1&quot; disabled  ${item[col.c_column] || item[col.c_column]===1 ? &quot;checked&quot; : &quot;&quot;} /&gt;&#x60;);
+                    } else if (col.c_type === &quot;replace&quot; &amp;&amp; !(/^select/.test(col.c_memo))) {
+                        html.push(await this.getReplaceText(item[col.c_column], col.c_memo));
+                    } else if (col.c_type === &quot;html&quot;) {
+                        html.push(item[col.c_column]);
+                    } else if (col.c_type === &quot;navtab&quot;) {
+                        html.push(&#x60;&lt;a href=&quot;${item[col.c_column]}&quot; class=&quot;btn btn-blue&quot; data-toggle=&quot;navtab&quot; ${col.c_memo.replace(/#id#/, item[&quot;id&quot;]).split(/##/).join( &quot;\&#x27;&quot;)}
+                        data-id=&quot;gotoTabPage&quot; data-icon=&quot;share&quot; data-on-load=&quot;pageRecList_load&quot;&gt;${col.c_format}&lt;/a&gt;&#x60;);
+                    } else if (col.c_type == &quot;dialog&quot;) {
+                        html.push(&#x60;&lt;a href=&quot;${item[col.c_column]}&quot; class=&quot;btn btn-blue&quot; data-toggle=&quot;navtab&quot; ${col.c_memo.replace(/#id#/, item[&quot;id&quot;]).split(/##/).join( &quot;\&#x27;&quot;)}
+                        data-id=&quot;gotoTabPage&quot; data-icon=&quot;share&quot; data-options=&quot;{mask:true,width:600,height:450}&quot;&gt;${col.c_format}&lt;/a&gt;&#x60;);
+                    } else {
+                        if (!think.isEmpty(col.c_column)) {
+                            html.push(item[col.c_column]);
+                        }
+                    }
+                }
+                html.push(&#x27;&lt;/td&gt;&#x27;)
+            }
+        }
+        if (page.c_multiselect) {
+            html.push(&#x60;&lt;td&gt;&lt;input type=&quot;checkbox&quot; name=&quot;ids&quot; data-toggle=&quot;icheck&quot; value=&quot;${item[&quot;id&quot;]}&quot;&gt;&lt;/td&gt;&#x60;);
+        }
+        if (isShowBtn) {
+            html.push(&#x27;&lt;td &gt;&#x27;);
+            let btnHtml =await this.htmlGetBtnList(item, page,pageBtns);
+//            global.debug(btnHtml);
+            html.push(btnHtml);
+            html.push(&#x27;&lt;/td &gt;&#x27;);
+        }
+        html.push(&#x27;&lt;/tr &gt;&#x27;);
+    }
+    html.push(&#x27;&lt;/tbody &gt;&#x27;);
+
+    return html.join(&#x27; &#x27;);
+  }
+
+    /**
+     * 取结果数据集，子类中重写本方法可以增加逻辑如：对结果集做进一步的数据处理等
+     * @method  getDataList
+     * @return {object} 结果集数据包 {count:xxx, list:[{record}]}
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    async getDataList(page){
+        let pageCols = await global.model(&#x27;cmpage/module&#x27;).getModuleCol(page.id);
+        let data = {};
+        let where=await this.getQueryWhere(page);
+
+        let cnt = await this.query(&#x60;select count(id) as count from ${page.c_datasource} ${where} &#x60;);
+        data.count = cnt[0].count;
+        if(data.count ==0 ) {
+            data.list = [];
+            return data;
+        }
+
+        //global.debug(page);
+        if(page.c_pager) {
+            data.list = await this.query(&#x60;select ${this.getListFields(pageCols)} from ${page.c_datasource} ${where} order by ${page.c_sort_by}
+                limit ${page.c_page_size} offset ${page.c_page_size * (page.pageIndex - 1)}&#x60;);
+        }else {
+            data.list = await this.query(&#x60;select ${this.getListFields(pageCols)} from ${page.c_datasource} ${where} order by ${page.c_sort_by} &#x60;);
+        }
+        return data;
+    }
+
+    /**
+     * 取查询项的设置，结合POST参数，得到Where字句，重写本方法可以定制或修改SQL的where子句
+     * @method  getQueryWhere
+     * @return {string} where 子句， 形如： where xxx and xxx
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    async getQueryWhere(page){
+        let ret =[&#x27; where 1=1&#x27;];
+        let pageQuerys = await global.model(&#x27;cmpage/module&#x27;).getModuleQuery(page.id);
+        for(let md of pageQuerys){
+            if (md.c_type === &quot;fixed&quot;){         //如果是‘固定’，则直接增加c_memo中的设置值
+                let wh = &#x60; (${md.c_memo.replace(/#userID#/,page.user.id).replace(/#groupID#/,page.user.groupID).split(/##/).join(&#x27;\&#x27;&#x27;)})&#x60;;
+                wh = wh.replace(/#value#/,page.parmsUrl[md.c_column]);
+                ret.push(wh);
+                continue;
+            }
+            if (md.c_isshow) {
+                if(!think.isEmpty(page.query[md.c_column])){
+                    if((md.c_coltype === &#x27;int&#x27; &amp;&amp; parseInt(page.query[md.c_column])===0) || (md.c_type.indexOf(&#x27;select&#x27;) === 0 &amp;&amp; page.query[md.c_column] == 0)){
+                        continue;
+                    }
+                    //console.log(md.c_column);
+                    md.c_default = page.query[md.c_column];
+                    let value = page.query[md.c_column].split(&#x27;\&#x27;&#x27;).join(&#x27; &#x27;).split(&#x27;\&quot;&#x27;).join(&#x27; &#x27;).trim();
+                    if((md.c_column ===&#x27;c_province&#x27; || md.c_column ===&#x27;c_city&#x27; || md.c_column ===&#x27;c_country&#x27;) &amp;&amp; value ===&#x27;-1&#x27;){    continue;   }
+                    ret.push(md.c_desc + &#x27; &#x27;+this.getOpValue(md.c_op, value, md.c_coltype));
+                }
+            }
+        }
+        return ret.join(&#x27; and &#x27;);
+    }
+
+    /**
+     * 把查询条件的操作符转换成SQL片段，一般不需要重写本方法
+     * @method  getQueryWhere
+     * @return {string} where 子句， 形如：
+     * @param   {string} op 操作符
+     * @param   {string} value 操作值
+     * @param   {string} coltype    数据表中的字段类型，已作简化
+     */
+  getOpValue(op,value,coltype){
+  let ops = [ {op:&quot;EQ&quot;,val:&quot;= #value#&quot;},{op:&quot;NE&quot;,val:&quot;&lt;&gt; #value#&quot;},{op:&quot;CN&quot;,val:&quot;like #value#&quot;},{op:&quot;NC&quot;,val:&quot;not like #value#&quot;},{op:&quot;IN&quot;,val:&quot;in (#value#)&quot;},
+    {op:&quot;NI&quot;,val:&quot;not in (#value#)&quot;},{op:&quot;GE&quot;,val:&quot;&gt;= #value#&quot;},{op:&quot;LE&quot;,val:&quot;&lt;= #value#&quot;},{op:&quot;GT&quot;,val:&quot;&gt; #value#&quot;},{op:&quot;LT&quot;,val:&quot;&lt; #value#&quot;}];
+  let val = value;
+
+  if (coltype === &quot;varchar&quot; || coltype === &quot;date&quot; || coltype === &quot;timestamp&quot;){
+    if (op === &quot;CN&quot; || op === &quot;NC&quot;){
+      val = &#x60;&#x27;%${val}%&#x27;&#x60;;
+    }else if (op === &quot;IN&quot; || op === &quot;NI&quot;){//每项分别加单引号
+      let str = val.Split(&#x27;,&#x27;);
+      let sArr=[];
+      for (let s of str){
+        sArr.push(&#x60;&#x27;${s}&#x27;&#x60;);
+      }
+      val = sArr.join(&#x27;,&#x27;);
+    }else{
+      val = &#x60;&#x27;${val}&#x27;&#x60;;
+    }
+  }
+  for (let operate of ops){
+    if (operate.op === op){
+      return operate.val.replace(/#value#/,val);
+    }
+  }
+  return &quot;&quot;;
+}
+
+    /**
+     * 根据设置取得页面显示列表返回的字段，一般不需要重写本方法
+     * @method  getListFields
+     * @return {string} fields 部分， 形如：id,c_name,xxx
+     * @param   {object} pageCols 业务模块的显示列设置
+     */
+    getListFields(pageCols){
+    let fields = [];
+    for(let col of pageCols){
+      if (!col.c_isretrieve) continue;
+      //if(col.c_column ===&#x27;c_user&#x27;){  console.log(col);}
+      if (col.c_type === &quot;replace&quot; &amp;&amp; (col.c_isshow || col.c_isview) &amp;&amp; (col.c_memo.indexOf(&#x27;select&#x27;)===0)) //以select开头
+      {
+        fields.push(&#x60;(${col.c_memo.replace(/##/,&quot;\&#x27;&quot;)}) as ${col.c_column}&#x60;);
+      }else {
+        fields.push(&#x60;${col.c_desc} as ${col.c_column}&#x60;);
+      }
+    }
+
+    //  global.debug(fields);
+    return fields.join(&#x27;,&#x27;);
+  }
+
+    /**
+     * 新增的时候，初始化编辑页面的值，子类重写本方法可以定制新增页面的初始值
+     * @method  pageEditInit
+     * @return {object} 新增的记录对象
+     * @param   {object} pageEdits 业务模块的编辑列设置
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    async pageEditInit(pageEdits,page){
+        let md ={};
+        for(let edit of pageEdits){
+            if(edit.c_column === &#x27;id&#x27;){ continue; }
+
+            let key = edit.c_column.trim();
+            if(edit.c_coltype === &#x27;int&#x27; || edit.c_coltype === &#x27;float&#x27;) {
+                md[key] = 0;
+            }else if(edit.c_coltype === &#x27;bool&#x27;){
+                md[key] = false;
+            }else if(edit.c_coltype === &#x27;timestamp&#x27; ){
+                md[key] = think.datetime();
+            }else if(edit.c_coltype === &#x27;date&#x27;){
+                md[key] = think.datetime(new Date, &quot;YYYY-MM-DD&quot;);
+            }else {
+                md[key] = &#x27;&#x27;;
+            }
+        }
+        //console.log(md);
+        return md
+    }
+
+    /**
+     * 根据 page.c_other的设置，对页面相关参数进行设置
+     * @method  getPageOther
+     * @return {object} 在page中增加相应属性并返回
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    getPageOther(page){
+        let ret = page;
+        ret.editHeaderHtml = &#x27;&#x27;;
+        ret.editCloseBtn = true;
+        if(!think.isEmpty(page.c_other)){
+            let its = page.c_other.split(&#x27;,&#x27;);
+            for(let item of its){
+                let it = item.split(&#x27;:&#x27;);
+                if(it[0] ===&#x27;editTitle&#x27;){
+                    ret.editHeaderHtml = &#x60;&lt;div class=&quot;bjui-pageHeader&quot;&gt;&lt;label data-height=&quot;30px&quot; style=&quot;margin: 5px;&quot;&gt;${it[1]}&lt;/label&gt;&lt;/div&gt;&#x60;;
+                }else if(it[0] ===&#x27;editCloseBtn&#x27;){
+                    ret.editCloseBtn = (it[1] !== &#x27;none&#x27;);
+                }
+            }
+        }
+
+        return ret
+    }
+
+    /**
+     * 取编辑页面的设置，组合成列表数据的HTML输出
+     * @method  htmlGetEdit
+     * @return {string} HTML页面片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    async htmlGetEdit(page) {
+        let html = [&#x27;&lt;thead&gt; &lt;tr &gt;&#x27;];
+        //let pageEdits = await think.cache(&#x60;moduleEdit${page.id}&#x60;);
+      let pageEdits = await global.model(&#x27;cmpage/module&#x27;).getModuleEdit(page.id);
+        let md = {};
+        if(page.editID &gt;0) {
+            let fields = [];
+            for (let edit of pageEdits) {
+                fields.push(&#x60;${edit.c_desc} as ${edit.c_column}&#x60;);
+            }
+            //global.debug(fields);
+            //let list = await this.query(&#x60;select ${fields.join(&#x27;,&#x27;)} from ${page.c_datasource} where id=${page.editID}&#x60;);
+            let list = await this.model(page.c_datasource).field(fields.join(&#x27;,&#x27;)).where({id:page.editID}).select();
+            md =list[0];
+        }else{
+            md = await this.pageEditInit(pageEdits,page);
+        }
+        //对记录进行处理
+        for (let edit of pageEdits) {
+            if(edit.c_coltype ===&#x27;bool&#x27;){
+                md[edit.c_column] = think.isBoolean(md[edit.c_column]) ? md[edit.c_column] : (md[edit.c_column] === 1);
+            }
+        }
+
+        html.push(&#x60;&lt;input name=&#x27;old_record&#x27; type=&#x27;hidden&#x27; value=&#x27;${JSON.stringify(md)}&#x27; /&gt;&#x60;);
+//        global.debug(md);
+        for(let col of pageEdits){
+            if (!col.c_editable || col.c_column === &quot;id&quot; ) {  continue; }
+            let colValue = md[col.c_column];
+            if(col.c_coltype === &#x27;timestamp&#x27;){  colValue = think.datetime(colValue); }
+            if (col.c_type === &quot;hidden&quot; &amp;&amp; col.c_column!==&quot;c_city&quot; &amp;&amp; col.c_column!==&quot;c_province&quot;) {
+                html.push(&#x60;&lt;input name=&quot;${col.c_column}&quot; type=&quot;hidden&quot; value=&quot;${colValue}&quot; /&gt;&#x60;);
+                continue;
+            }
+            col.c_format = col.c_format.trim();
+            if(col.c_type !== &quot;hidden&quot;){
+                html.push(&#x60;&lt;tr&gt;&lt;td&gt; &lt;label class=&quot;control-label x85&quot;&gt;${col.c_name}: &lt;/label&gt;&#x60;);
+            }
+
+            if (col.c_type === &quot;datetime&quot; ||col.c_type === &quot;date&quot;) {
+                html.push(&#x60;&lt;input type=&quot;text&quot; name=&quot;${col.c_column}&quot; value=&quot;${ global.datetime(colValue,think.isEmpty(col.c_format) ? &#x27;yyyy-MM-dd&#x27;:col.c_format)}&quot;
+                    ${col.c_type === &quot;readonly&quot; ? &quot;disabled&quot;:&quot;&quot;} data-toggle=&quot;datepicker&quot; data-pattern=&quot;${think.isEmpty(col.c_format) ? &#x27;yyyy-MM-dd&#x27;:col.c_format}&quot;  size=&quot;15&quot; /&gt;&#x60;);
+            } else if (col.c_type === &quot;select&quot; || col.c_type === &quot;selectBlank&quot; ) {
+                html.push(&#x60;&lt;select name=&quot;${col.c_column}&quot; data-toggle=&quot;selectpicker&quot; ${col.c_isrequired ? &quot;data-rule=required&quot; : &quot;&quot;}&gt;&#x60;);
+                col.c_default = colValue;
+                html.push(await this.getOptions(col,false));
+                html.push(&#x27;&lt;/select&gt;&#x27;);
+            } else if (col.c_type === &quot;textarea&quot;) {
+                html.push(&#x60;&lt;textarea name=&quot;${col.c_column}&quot; data-toggle=&quot;autoheight&quot; cols=&quot;${col.c_width}&quot; rows=&quot;1&quot;  ${col.c_isrequired ? &quot;data-rule=required&quot; : &quot;&quot;}&gt;${colValue}&lt;/textarea&gt;&#x60;);
+            } else if (col.c_type === &quot;lookup&quot;) {
+                html.push(&#x60;&lt;input name=&quot;${col.c_column}&quot; type=&quot;lookup&quot; size=&quot;${col.c_width}&quot; value=&quot;${colValue}&quot;   ${col.c_isrequired ? &quot;data-rule=required&quot; : &quot;&quot;}
+                    data-width=&quot;800&quot; data-height=&quot;600&quot; data-toggle=&quot;lookup&quot; data-title=&quot;${col.c_name} 选择&quot; data-url=&quot;${this.getReplaceToSpecialChar(col.c_memo,page)}&quot; readonly=&quot;readonly&quot; /&gt;&#x60;);
+            }else if (col.c_type == &quot;areaSelect&quot;){
+                html.push(&#x60;&lt;select name=&quot;c_province&quot; data-toggle=&quot;selectpicker&quot;  data-nextselect=&quot;#city${page.c_modulename}&quot; data-refurl=&quot;/cmpage/utils/get_citys?province={value}&quot; &gt;&#x60;);
+                html.push(await global.model(&#x27;cmpage/area&#x27;).getProvinceItems(md[&#x27;c_province&#x27;],true));
+                if(col.c_column ===&#x27;c_country&#x27;){
+                    html.push(&#x60;&lt;/select&gt; &lt;select name=&quot;c_city&quot; id=&quot;city${page.c_modulename}&quot; data-toggle=&quot;selectpicker&quot; data-nextselect=&quot;#country${page.c_modulename}&quot;
+                        data-refurl=&quot;/cmpage/utils/get_countrys?city={value}&quot; &gt;&#x60;);
+                    html.push(await global.model(&#x27;cmpage/area&#x27;).getCityItems(md[&#x27;c_city&#x27;],true));
+                    html.push(&#x60;&lt;/select&gt; &lt;select name=&quot;c_country&quot; id=&quot;country${page.c_modulename}&quot; data-toggle=&quot;selectpicker&quot; data-rule=&quot;required&quot; &gt;&#x60;);
+                    html.push(await global.model(&#x27;cmpage/area&#x27;).getCountryItems(md[&#x27;c_country&#x27;],true));
+                }else if(col.c_column === &#x27;c_city&#x27;){
+                    html.push(&#x60;&lt;/select&gt; &lt;select name=&quot;c_city&quot; id=&quot;city${page.c_modulename}&quot; data-toggle=&quot;selectpicker&quot; data-nextselect=&quot;#country${page.c_modulename}&quot; &gt;&#x60;);
+                    html.push(await global.model(&#x27;cmpage/area&#x27;).getCityItems(md[&#x27;c_city&#x27;],true));
+                }
+                html.push(&#x27;&lt;/select&gt;&#x27;);
+            } else if(col.c_type === &quot;kindeditor&quot;){
+                html.push(&#x60;&lt;div style=&quot;display: inline-block; vertical-align: middle;&quot;&gt; &lt;textarea name=&quot;${col.c_column}&quot; style=&quot;width: 960px;height:640px;&quot;
+            data-toggle=&quot;kindeditor&quot; data-minheight=&quot;460&quot;&gt; ${colValue}  &lt;/textarea&gt; &lt;/div&gt;&#x60;);
+            } else if (col.c_type == &quot;checkbox&quot;) {
+                html.push(&#x60;&lt;input type=&quot;checkbox&quot; name=&quot;${col.c_column}&quot; data-toggle=&quot;icheck&quot; value=&quot;1&quot; data-label=&quot;${col.c_memo}&quot;  ${colValue == &quot;1&quot; ? &quot;checked&quot; : &quot;&quot;} /&gt;&#x60;);
+            }else if (col.c_type === &quot;readonly&quot;) {
+                html.push(&#x60;&lt;input name=&quot;${col.c_column}&quot; type=&quot;text&quot; size=&quot;${col.c_width}&quot; value=&quot;${colValue}&quot;  readonly=&quot;readonly&quot;  /&gt;&#x60;); // style=background-color:#fde5d4;
+            }else if (col.c_type === &quot;readonlyReplace&quot;) {
+                html.push(&#x60;&lt;input name=&quot;${col.c_column}&quot; type=&quot;text&quot; size=&quot;${col.c_width}&quot; value=&quot;${await this.getReplaceText(md[col.c_column], col.c_memo)}&quot;  readonly=&quot;readonly&quot;  /&gt;&#x60;); // style=background-color:#fde5d4;
+            }else if(col.c_column !==&#x27;c_province&#x27; &amp;&amp; col.c_column !==&#x27;c_city&#x27;){
+                html.push(&#x60;&lt;input name=&quot;${col.c_column}&quot; type=&quot;${col.c_type}&quot; size=&quot;${col.c_width}&quot; value=&quot;${colValue}&quot;
+                    ${col.c_isrequired ? &quot;data-rule=required;&quot; + col.c_memo : (think.isEmpty(col.c_memo) ? &quot;&quot; : &quot;data-rule=&quot; + col.c_memo)}  /&gt;&#x60;);
+            }
+            if (col.c_type !== &quot;areaSelect&quot;){
+                html.push(col.c_suffix);
+            }
+            html.push(&#x27;&lt;/td&gt;&lt;/tr&gt;&#x27;);
+        }
+        return html.join(&#x27; &#x27;);
+    }
+
+    /**
+     * 编辑页面保存,&lt;br/&gt;
+     * 如果是多个表的数据产生的编辑页，则根据存在于page.c_table中的列更新表，一般需要在子类中继承，例如： admin/user:pageSave
+     * @method  pageSave
+     * @return {object} 记录对象
+     * @param  {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param  {object} parms 前端传入的FORM参数
+     */
+    async pageSave(page,parms){
+        let model =global.model(&#x27;cmpage/module&#x27;);
+        //page.parmsUrl = parms.parmsUrl;
+        //page.editID = prams.id;
+        let pageEdits = await model.getModuleEdit(page.id);
+        //let colList = await model.getAllColumns(page.c_table);
+        let md = {};
+        for(let edit of pageEdits){
+            if(edit.c_editable &amp;&amp; edit.c_column.indexOf(&#x27;c_&#x27;)===0 ) {      //&amp;&amp; this.isExistColumn(edit.c_column,colList)
+                if(edit.c_type === &#x27;checkbox&#x27;){
+                    md[edit.c_column] = think.isEmpty(parms[edit.c_column]) ? false : parms[edit.c_column];
+                }else{
+                    md[edit.c_column] = parms[edit.c_column];
+                }
+            }
+        }
+        //global.debug(JSON.stringify(md));
+        if(parms.id == 0){
+            //let id = await this.query(global.getInsertSql(md,page.c_table) +&#x27; returning id;&#x27;);
+            md.id = await this.model(page.c_table).add(global.checksql(md));
+            await this.pageSaveLog(page,parms,md,pageEdits,&#x27;add&#x27;);
+        }else {
+            await this.model(page.c_table).where({id:parseInt(parms.id)}).update(global.checksql(md));
+            md.id = parms.id;
+            await this.pageSaveLog(page,parms,md,pageEdits,&#x27;update&#x27;);
+        }
+        return md;
+    }
+
+    /**
+     * 保存后的操作日志记录,，通过重写可在子类中定制日志的格式
+     */
+    /**
+     * 保存后的操作日志记录,，通过重写可在子类中定制日志的格式
+     * @method  pageSaveLog
+     * @return {无}
+     * @param  {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param  {object} parms 前端传入的FORM参数
+     * @param {object} md   记录对象
+     * @param {object} pageEdits    业务模块的编辑列设置
+     * @param {string} flag 操作的类型标志
+     */
+    async pageSaveLog(page,parms,md,pageEdits,flag){
+        let log =[];
+        if(flag === &#x27;add&#x27; ){
+            for(let edit of pageEdits){
+                if(edit.c_editable ) {
+                    log.push(&#x60;${edit.c_name}:${md[edit.c_column]}&#x60;);
+                }
+            }
+            await global.model(&#x27;admin/log&#x27;).addLog(page.user, log.join(&#x27;, &#x27;),page.id, md.id, global.enumStatusExecute.SUCCESS.id, global.enumLogType.ADD.id);
+        }else if(flag === &#x27;update&#x27;){
+            let oldMd = JSON.parse(parms.old_record);
+            log.push(&#x60;id:${md.id}&#x60;);
+            for(let edit of pageEdits){
+                if(edit.c_editable &amp;&amp; edit.c_column !==&#x27;c_time&#x27;) {
+                    if(edit.c_coltype === &#x27;timestamp&#x27;){
+                        md[edit.c_column] =  global.datetime(md[edit.c_column],&#x27;yyyy-MM-dd HH:mm:ss&#x27;);
+                        oldMd[edit.c_column] =  global.datetime(oldMd[edit.c_column],&#x27;yyyy-MM-dd HH:mm:ss&#x27;);
+                    }
+                    if(md[edit.c_column] != oldMd[edit.c_column]) {
+                        log.push(&#x60;${edit.c_name}: ${oldMd[edit.c_column]} --&gt; ${md[edit.c_column]}&#x60;);
+                    }else if(edit.c_column === &#x27;c_name&#x27;){
+                        log.push(&#x60;c_name:${md.c_name}&#x60;);
+                    }
+                }
+            }
+            await global.model(&#x27;admin/log&#x27;).addLog(page.user, log.join(&#x27;, &#x27;),page.id, md.id, global.enumStatusExecute.SUCCESS.id,  global.enumLogType.UPDATE.id);
+        }
+    }
+
+    //判断某个列是否存在于某个表中
+    isExistColumn(column, list){
+        for(let col of list){
+            if(col.column === column){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //替换备注设置中的特殊字符,需要组成SQL
+    getReplaceToSpecialChar(memo,page){
+        //let ret = memo.split(&#x27;*&#x27;).join(&#x27;\&amp;&#x27;).split(/##/).join(&quot;\&#x27;&quot;);
+        if(think.isEmpty(memo)){
+            return &#x27;&#x27;;
+        }
+        let parms = memo.split(&#x27;*&#x27;);
+        if(parms.length &gt;1){
+            for(let parm of parms){
+                if(parm.indexOf(&#x27;[[&#x27;)==0){      // [[ 开头表示从parmsUrl中取值
+                    let key =parm.substr(2,parm.length -2).trim();
+                    let parmsUrl = JSON.parse(page.parmsUrl);
+                    let val = parmsUrl[&#x60;${key}&#x60;];
+                    parms[parms.indexOf(parm)] = &#x60;${key}=${val}&#x60;;
+                    //console.log(parms);
+                }
+            }
+        }
+        //let ret = memo.replace(/\*/ig,&#x27;\&amp;&#x27;).replace(/##/ig,&quot;\&#x27;&quot;);
+        return parms.join(&#x27;\&amp;&#x27;).split(/##/).join(&quot;\&#x27;&quot;);;
+    }
+
+    /**
+     * 取查看页面的设置，组合成列表数据的HTML输出
+     * @method  htmlGetView
+     * @return {string} HTML页面片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+  async htmlGetView(page) {
+    let html = [];
+    //let pageEdits = await think.cache(&#x60;moduleEdit${page.id}&#x60;);
+    let pageCols = await global.model(&#x27;cmpage/module&#x27;).getModuleCol(page.id);
+    if(page.viewID &lt;=0){
+      return &#x27;&lt;tr&gt;&lt;td&gt;----&lt;/td&gt;&lt;td&gt;----&lt;/td&gt;&lt;td&gt;----&lt;/td&gt;&lt;td&gt;该数据不存在！&lt;/td&gt;&lt;td&gt;----&lt;/td&gt;&lt;td&gt;----&lt;/td&gt;&lt;td&gt;----&lt;/td&gt;&lt;/tr&gt;&#x27;;
+    }
+    let list = await this.query(&#x60;select ${this.getListFields(pageCols)} from ${page.c_datasource} where id=${page.viewID}&#x60;);
+    let md =list[0];
+        //global.debug(md);
+    for(let col of pageCols){
+      if (!col.c_isview ){
+        continue;
+      }
+      html.push(&#x60;&lt;tr&gt;&lt;td ${think.isEmpty(col.c_style) ? &quot;&quot;:&quot;style=&quot; + col.c_style}&gt;
+        &lt;label class=&quot;control-label x85&quot;&gt;${col.c_name}: &lt;/label&gt;&#x60;);
+      if (col.c_type === &quot;checkbox&quot;){
+        html.push(&#x60;&lt;input type=&quot;checkbox&quot;  data-toggle=&quot;icheck&quot; value=&quot;1&quot; disabled  ${md[col.c_column] ? &quot;checked&quot; : &quot;&quot;} /&gt;&#x60;);
+      }else if (col.c_type === &quot;kindeditor&quot;) {
+        html.push(&#x60;&lt;div style=&quot;display: inline-block; vertical-align: middle;&quot;&gt;${md[col.c_column]} &lt;/div&gt;&#x60;);
+      }else if (col.c_coltype === &quot;decimal&quot;) {
+        html.push(global.formatNumber(md[col.c_column], {pattern: col.c_format}));
+      } else if(col.c_coltype === &quot;timestamp&quot;) {
+        html.push(global.datetime(md[col.c_column],col.c_format));
+      } else if(col.c_coltype === &quot;date&quot;) {
+        html.push(global.datetime(md[col.c_column],&#x27;yyyy-MM-dd&#x27;));
+      } else if (col.c_type === &quot;replace&quot; &amp;&amp; !(/^select/.test(col.c_memo))) {
+          html.push(await this.getReplaceText(md[col.c_column], col.c_memo));
+      } else  {
+        html.push(md[col.c_column]);
+      }
+      html.push(&#x27;&lt;/td&gt;&lt;/tr&gt;&#x27;);
+    }
+    return html.join(&#x27; &#x27;);
+  }
+}
+
+    </pre>
+</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<a id="gotoTop" class='well well-small' href='#'>
+    Top
+</a>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/doc.js"></script>
+</body>
+</html>

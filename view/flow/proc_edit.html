@@ -1,7 +1,124 @@
 
-<iframe id="mapiframe" width="85%" height="100%" frameborder="0" src="/flow/index/proc_design"></iframe>
+<!--<iframe id="mapiframe" width="70%" height="100%" frameborder="0" src="/flow/proc/design?proc_id=<%= page.editID%>"></iframe>-->
 
-<div id="UserList" data-toggle="autoajaxload" data-url="/flow/proc/act_edit" style="float:right; display:block; overflow:auto;
-    width:15%; height:100%; border:solid 1px #CCC; line-height:21px; background:#fff" class="bjui-layout">
+<div id="flowMap"  style="float:left;display:block; overflow:auto; width:70%; height:100%; border:solid 1px #CCC; line-height:21px; background:#fff"
+     data-toggle="autoajaxload" data-url="/flow/proc/design?proc_id=<%= page.editID%>" >
+    <!--#include virtual="codeList" -->
+</div>
+
+<div style="float:right; display:block; overflow:auto; width:30%; height:100%; border:solid 1px #CCC; line-height:21px; background:#fff" class="bjui-layout">
+
+    <div id="procEdit" style="display:block; overflow:auto; width:100%; height:100%;  border:solid 1px #CCC; line-height:21px; background:#fff">
+        <div class="bjui-pageHeader">
+            <label id="procHeader" data-height="30px" style="margin: 5px;">流程模板的主信息</label>
+        </div>
+            <div class="bjui-pageContent">
+                <form id="procEditForm" style="display:block;margin-top:20px;" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
+                    <input id="FwProcID" name="id" type="hidden" value="<%= page.editID%>" />
+                    <input name="modulename" type="hidden" value="FwProc" />
+                    <input name="parmsUrl" type="hidden" value="<%= page.parmsUrl%>" />
+                    <table class="table table-condensed table-hover" width="100%">
+                        <tbody>
+                        <%- procEditHtml%>
+                        </tbody>
+                    </table>
+                </form>
+                <form id="actEditForm" style="display:none;margin-top:20px;" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
+                    <input id="FwActID" name="id" type="hidden" value="0" />
+                    <input name="modulename" type="hidden" value="FwAct" />
+                    <input name="parmsUrl" type="hidden" value="{}" />
+                    <table class="table table-condensed table-hover" width="100%">
+                        <tbody>
+                        <%- actEditHtml%>
+                        </tbody>
+                    </table>
+                </form>
+                <form id="pathEditForm" style="display:none;margin-top:20px;" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
+                    <input id="FwActPathID" name="id" type="hidden" value="0" />
+                    <input name="modulename" type="hidden" value="FwActPath" />
+                    <input name="parmsUrl" type="hidden" value="{}" />
+                    <table class="table table-condensed table-hover" width="100%">
+                        <tbody>
+                        <tr><td>
+                            <label>路径名称：</label>
+                            <input type="text" name="c_name"  size="22"  data-rule="required"/>
+                        </td></tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="bjui-pageFooter" >
+                <ul>
+                    <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
+                    <li><button type="button" class="btn btn-green" onclick="return fwSaveForm();" data-icon="save">保存</button></li>
+                </ul>
+            </div>
+    </div>
 
 </div>
+
+<script>
+    var fwCurrentForm ='proc';
+    var fwCurrentRect = null;
+    var fwCurrentSrc = null;
+    var acts =[];
+    function actDeleteConfirm(obj,src){
+        $(this).alertmsg("confirm", "是否确定要删除？ ",{
+            okCall:function(){
+                alert(src.getDataId());
+                obj.trigger('removerect',[src]);
+                $('#actEditForm').hide();
+                $('#procEditForm').show();
+//                $(obj).bjuiajax('doAjax', { url: url ,callback:function(data){
+//                    $(this).alertmsg(data.statusCode=="200" ? "info":"error",data.message);
+//                    $('#btnSearch<%= page.c_modulename%>').click();
+//                }});
+            }
+        });
+    }
+    function actShow(obj,src){
+//        $(this).alertmsg("confirm", "是否确定要？ "+data,{
+//            okCall:function(){
+//                obj.trigger('textchange',['testttt',srcID]);
+////                $(obj).bjuiajax('doAjax', { url: url ,callback:function(data){
+////                    $(this).alertmsg(data.statusCode=="200" ? "info":"error",data.message);
+////                    $('#btnSearch<%= page.c_modulename%>').click();
+////                }});
+//            }
+//        });        //$(this).bjuiajax('doLoad', {target:$("#actEdit"), url:"/cmpage/page/edit?modulename=FwAct&id=0" });
+//        obj.trigger('textchange',['testttt',srcID]);
+        //alert(data);
+        fwCurrentRect =obj;
+        fwCurrentSrc = src;
+        $('#procEditForm').hide();
+        $('#pathEditForm').hide();
+        $('#actEditForm').show();
+        $('#procHeader').text('流程模板的活动节点');
+        fwCurrentForm = 'act';
+    }
+    function pathShow(obj,src){
+        //alert(data);
+        fwCurrentRect =obj;
+        fwCurrentSrc = src;
+        $('#procEditForm').hide();
+        $('#actEditForm').hide();
+        $('#pathEditForm').show();
+        $('#procHeader').text('流程模板的路径信息');
+        fwCurrentForm = 'path';
+    }
+    function procShow(){
+        $('#actEditForm').hide();
+        $('#pathEditForm').hide();
+        $('#procEditForm').show();
+        $('#procHeader').text('流程模板的主信息');
+        fwCurrentForm = 'proc';
+    }
+    function fwSaveForm(){
+        //alert(fwCurrentForm);
+        fwCurrentRect.trigger('textchange',['testttt',fwCurrentSrc]);
+    }
+
+    function flowOnClose(){
+        alert('da');
+    }
+</script>

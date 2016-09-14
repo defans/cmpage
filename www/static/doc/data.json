@@ -1,0 +1,3526 @@
+{
+    "project": {
+        "name": "",
+        "description": "<h2>CmPage</h2> <p>信息管理系统的NodeJS开源框架</p><p>其UI框架采用BJUI，后端采用ThinkJS，数据库采用MySql，手机端采用MUI</p><br><p>本框架通过配置模块的显示列、编辑列、查询列、按钮等，可以从数据库的表或者视图取数据，生成页面，通过Url: /cmpage/page/list?modulename=User 可以访问User模块，实现了常用的分页列表、新增、编辑、查看、删除、条件查询等功能, 手机端页面功能类似</p><p>运行步骤简述如下（具体参照 thinkjs.org）： </p><p> 1、Mysql数据库备份文件（/db/cmpage_my.sql）  </p><p> 2、在/src/common/config/db.js 中配置数据库连接参数 </p><p> 3、运行：npm install --registry=https://registry.npm.taobao.org --verbose </p><p> 4、运行：npm start 5、手机端项目的目录：/mob，独立项目，非必需，请用HBuider打开，然后用USB连上手机就可以调试了，具体参见 http://www.dcloud.io/runtime.html, 也可以用手机扫描二维码(http://139.129.48.131:8300/admin/index/login ),安装Andriod版本的DEMO。</p><br>",
+        "version": "1.0.7",
+        "url": "/static/doc/index.html",
+        "navs": [
+            {
+                "name": "首页",
+                "url": "/home/index/index"
+            },
+            {
+                "name": "文档",
+                "url": "/static/doc/index.html"
+            },
+            {
+                "name": "演示",
+                "url": "/admin/index/index"
+            },
+            {
+                "name": "日志",
+                "url": "/home/index/log"
+            }
+        ]
+    },
+    "files": {
+        "src\\admin\\controller\\base.js": {
+            "name": "src\\admin\\controller\\base.js",
+            "modules": {
+                "admin.controller": 1
+            },
+            "classes": {
+                "admin.controller.base": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\admin\\controller\\code.js": {
+            "name": "src\\admin\\controller\\code.js",
+            "modules": {},
+            "classes": {
+                "admin.controller.code": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\admin\\controller\\index.js": {
+            "name": "src\\admin\\controller\\index.js",
+            "modules": {},
+            "classes": {
+                "admin.controller.index": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\admin\\controller\\mob.js": {
+            "name": "src\\admin\\controller\\mob.js",
+            "modules": {},
+            "classes": {
+                "admin.controller.mob": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\admin\\model\\code.js": {
+            "name": "src\\admin\\model\\code.js",
+            "modules": {
+                "admin.model": 1
+            },
+            "classes": {
+                "admin.model.code": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\admin\\model\\code_list.js": {
+            "name": "src\\admin\\model\\code_list.js",
+            "modules": {},
+            "classes": {
+                "admin.model.code_list": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\admin\\model\\groupuser.js": {
+            "name": "src\\admin\\model\\groupuser.js",
+            "modules": {},
+            "classes": {
+                "admin.model.groupuser": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\admin\\model\\groupuser_add.js": {
+            "name": "src\\admin\\model\\groupuser_add.js",
+            "modules": {},
+            "classes": {
+                "admin.model.groupuser_add": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\admin\\model\\log.js": {
+            "name": "src\\admin\\model\\log.js",
+            "modules": {},
+            "classes": {
+                "admin.model.log": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\admin\\model\\login.js": {
+            "name": "src\\admin\\model\\login.js",
+            "modules": {},
+            "classes": {
+                "admin.model.login": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\admin\\model\\privilege.js": {
+            "name": "src\\admin\\model\\privilege.js",
+            "modules": {},
+            "classes": {
+                "admin.model.privilege": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\admin\\model\\teamuser.js": {
+            "name": "src\\admin\\model\\teamuser.js",
+            "modules": {},
+            "classes": {
+                "admin.model.teamuser": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\admin\\model\\teamuser_add.js": {
+            "name": "src\\admin\\model\\teamuser_add.js",
+            "modules": {},
+            "classes": {
+                "admin.model.teamuser_add": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\admin\\model\\user.js": {
+            "name": "src\\admin\\model\\user.js",
+            "modules": {},
+            "classes": {
+                "admin.model.user": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\config\\config.js": {
+            "name": "src\\cmpage\\config\\config.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\config\\db.js": {
+            "name": "src\\cmpage\\config\\db.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\controller\\base.js": {
+            "name": "src\\cmpage\\controller\\base.js",
+            "modules": {
+                "cmpage.controller": 1
+            },
+            "classes": {
+                "cmpage.controller.base": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\controller\\mob.js": {
+            "name": "src\\cmpage\\controller\\mob.js",
+            "modules": {},
+            "classes": {
+                "cmpage.controller.mob": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\controller\\module.js": {
+            "name": "src\\cmpage\\controller\\module.js",
+            "modules": {},
+            "classes": {
+                "cmpage.controller.module": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\controller\\page.js": {
+            "name": "src\\cmpage\\controller\\page.js",
+            "modules": {},
+            "classes": {
+                "cmpage.controller.page": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\controller\\utils.js": {
+            "name": "src\\cmpage\\controller\\utils.js",
+            "modules": {},
+            "classes": {
+                "cmpage.controller.utils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\logic\\page.js": {
+            "name": "src\\cmpage\\logic\\page.js",
+            "modules": {
+                "cmpage.logic": 1
+            },
+            "classes": {
+                "cmpage.logic.page": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\model\\area.js": {
+            "name": "src\\cmpage\\model\\area.js",
+            "modules": {
+                "cmpage.model": 1
+            },
+            "classes": {
+                "cmpage.model.area": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\model\\module.js": {
+            "name": "src\\cmpage\\model\\module.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\model\\page.js": {
+            "name": "src\\cmpage\\model\\page.js",
+            "modules": {},
+            "classes": {
+                "cmpage.model.page": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\model\\page_excel.js": {
+            "name": "src\\cmpage\\model\\page_excel.js",
+            "modules": {},
+            "classes": {
+                "cmpage.model.page_excel": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\model\\page_lookup.js": {
+            "name": "src\\cmpage\\model\\page_lookup.js",
+            "modules": {},
+            "classes": {
+                "cmpage.model.page_lookup": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\model\\page_mob.js": {
+            "name": "src\\cmpage\\model\\page_mob.js",
+            "modules": {},
+            "classes": {
+                "cmpage.model.page_mob": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\model\\page_rec.js": {
+            "name": "src\\cmpage\\model\\page_rec.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\model\\utils.js": {
+            "name": "src\\cmpage\\model\\utils.js",
+            "modules": {},
+            "classes": {
+                "cmpage.model.utils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\cmpage_global.js": {
+            "name": "src\\cmpage\\cmpage_global.js",
+            "modules": {},
+            "classes": {
+                "cmpage.cmpage_global": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "admin.controller": {
+            "name": "admin.controller",
+            "submodules": {},
+            "classes": {
+                "admin.controller.base": 1,
+                "admin.controller.code": 1,
+                "admin.controller.index": 1,
+                "admin.controller.mob": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\admin\\controller\\mob.js",
+            "line": 13,
+            "description": "用户及权限系统的controller模块，实现了对外的URL接口，包括PC端和移动端\n\n 注意点 :\n 1. base.js继承自 think.controller.base;\n 2. 其他controller 继承自 base.js;\n 3. 移动端APP的菜单是单独设置的，要单独配置各个角色和用户的权限；\n 4. 移动端和PC端的版本是分开设置的;"
+        },
+        "admin.model": {
+            "name": "admin.model",
+            "submodules": {},
+            "classes": {
+                "admin.model.code": 1,
+                "admin.model.code_list": 1,
+                "admin.model.groupuser": 1,
+                "admin.model.groupuser_add": 1,
+                "admin.model.log": 1,
+                "admin.model.login": 1,
+                "admin.model.privilege": 1,
+                "admin.model.teamuser": 1,
+                "admin.model.teamuser_add": 1,
+                "admin.model.user": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\admin\\model\\user.js",
+            "line": 13,
+            "description": "用户及权限系统模块的model部分，实现了实现了相关的数据操作和逻辑处理\n\n注意点 :\n1. 用户界面显示的类继承自cmpage/page;\n2. 树形结构的参数设置统一存放于t_code表中；\n3. 账套用户和团队用户的设置相仿，逻辑相似；"
+        },
+        "cmpage.controller": {
+            "name": "cmpage.controller",
+            "submodules": {},
+            "classes": {
+                "cmpage.controller.base": 1,
+                "cmpage.controller.mob": 1,
+                "cmpage.controller.module": 1,
+                "cmpage.controller.page": 1,
+                "cmpage.controller.utils": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\cmpage\\controller\\utils.js",
+            "line": 14,
+            "description": "业务模块配置和展示系统的controller模块，实现了对外的URL接口，包括PC端和移动端\n\n注意点 :\n1. base.js继承自 think.controller.base;\n2. 其他controller 继承自 base.js;\n3. 具体的业务模块可以继承并扩展 cmpage/model/page.js 来实现业务逻辑\n4. 移动端、主从页、查找带回等页面都是从 cmpage/model/page.js 继承，具体的业务模块请适当选择基类\n5. 使用cmpage的页面统一从 controller/page.js 提供URL接口调用，也可继承并重写相应方法来增加逻辑（但一般从model/page.js继承即可）"
+        },
+        "cmpage.logic": {
+            "name": "cmpage.logic",
+            "submodules": {},
+            "classes": {
+                "cmpage.logic.page": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\cmpage\\logic\\page.js",
+            "line": 21,
+            "description": "业务模块配置和展示系统的logic，实现了对前端传入的参数校验\n\n注意点 :\n1. 校验的错误提示已改为中文，配置在 common/config/zh-cn.js\n2. 一般不实现业务逻辑\n3. 由于cmpage的模块都是统一的URL接口，因此都可以按配置实现校验"
+        },
+        "cmpage.model": {
+            "name": "cmpage.model",
+            "submodules": {},
+            "classes": {
+                "cmpage.model.area": 1,
+                "cmpage.model.page": 1,
+                "cmpage.model.page_excel": 1,
+                "cmpage.model.page_lookup": 1,
+                "cmpage.model.page_mob": 1,
+                "cmpage.model.utils": 1,
+                "cmpage.cmpage_global": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 7
+        }
+    },
+    "classes": {
+        "admin.controller.base": {
+            "name": "admin.controller.base",
+            "shortname": "admin.controller.base",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.controller",
+            "namespace": "",
+            "file": "src\\admin\\controller\\base.js",
+            "line": 21,
+            "description": "admin.controller的基类，用于admin模块下的其他controller类的继承，\n提供一些子类的公共方法"
+        },
+        "admin.controller.code": {
+            "name": "admin.controller.code",
+            "shortname": "admin.controller.code",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.controller",
+            "namespace": "",
+            "file": "src\\admin\\controller\\code.js",
+            "line": 13,
+            "description": "代码与参数模块的RUL接口，包括常用参数设置、权限相关配置"
+        },
+        "admin.controller.index": {
+            "name": "admin.controller.index",
+            "shortname": "admin.controller.index",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.controller",
+            "namespace": "",
+            "file": "src\\admin\\controller\\index.js",
+            "line": 13,
+            "description": "admin.controller的index类，提供了PC端后台管理系统的用户登录、菜单显示等URL接口"
+        },
+        "admin.controller.mob": {
+            "name": "admin.controller.mob",
+            "shortname": "admin.controller.mob",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.controller",
+            "namespace": "",
+            "file": "src\\admin\\controller\\mob.js",
+            "line": 13,
+            "description": "移动端APP的admin模块的RUL接口，包括用户登录、取菜单、版本信息等\n由于移动端和PC端的表现方式和功能有所差别，因此部分URL接口单独实现"
+        },
+        "admin.model.code": {
+            "name": "admin.model.code",
+            "shortname": "admin.model.code",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.model",
+            "namespace": "",
+            "file": "src\\admin\\model\\code.js",
+            "line": 20,
+            "description": "代码于参数设置的操作类，提供一些操作t_code表的方法"
+        },
+        "admin.model.code_list": {
+            "name": "admin.model.code_list",
+            "shortname": "admin.model.code_list",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.model",
+            "namespace": "",
+            "file": "src\\admin\\model\\code_list.js",
+            "line": 13,
+            "description": "代码于参数设置的页面展示及操作类，单层的CRUD，配合 cmpage/controller/page.js 中的相关调用，继承自 cmpage/model/page.js"
+        },
+        "admin.model.groupuser": {
+            "name": "admin.model.groupuser",
+            "shortname": "admin.model.groupuser",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.model",
+            "namespace": "",
+            "file": "src\\admin\\model\\groupuser.js",
+            "line": 14,
+            "description": "账套与用户操作类，并配合界面操作输出相应HTML，"
+        },
+        "admin.model.groupuser_add": {
+            "name": "admin.model.groupuser_add",
+            "shortname": "admin.model.groupuser_add",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.model",
+            "namespace": "",
+            "file": "src\\admin\\model\\groupuser_add.js",
+            "line": 14,
+            "description": "加入账套的待选择列表"
+        },
+        "admin.model.log": {
+            "name": "admin.model.log",
+            "shortname": "admin.model.log",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.model",
+            "namespace": "",
+            "file": "src\\admin\\model\\log.js",
+            "line": 14,
+            "description": "系统操作的日志模块"
+        },
+        "admin.model.login": {
+            "name": "admin.model.login",
+            "shortname": "admin.model.login",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.model",
+            "namespace": "",
+            "file": "src\\admin\\model\\login.js",
+            "line": 14,
+            "description": "登录用户的操作类，提供一些操作t_user,vw_user的方法"
+        },
+        "admin.model.privilege": {
+            "name": "admin.model.privilege",
+            "shortname": "admin.model.privilege",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.model",
+            "namespace": "",
+            "file": "src\\admin\\model\\privilege.js",
+            "line": 14,
+            "description": "登录用户的操作类，提供一些操作t_user,vw_user的方法"
+        },
+        "admin.model.teamuser": {
+            "name": "admin.model.teamuser",
+            "shortname": "admin.model.teamuser",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.model",
+            "namespace": "",
+            "file": "src\\admin\\model\\teamuser.js",
+            "line": 13,
+            "description": "账套与用户操作类，并配合界面操作输出相应HTML，"
+        },
+        "admin.model.teamuser_add": {
+            "name": "admin.model.teamuser_add",
+            "shortname": "admin.model.teamuser_add",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.model",
+            "namespace": "",
+            "file": "src\\admin\\model\\teamuser_add.js",
+            "line": 14,
+            "description": "加入账套的待选择列表"
+        },
+        "admin.model.user": {
+            "name": "admin.model.user",
+            "shortname": "admin.model.user",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.model",
+            "namespace": "",
+            "file": "src\\admin\\model\\user.js",
+            "line": 13,
+            "description": "登录用户的操作类，提供一些操作t_user,vw_user的方法"
+        },
+        "cmpage.controller.base": {
+            "name": "cmpage.controller.base",
+            "shortname": "cmpage.controller.base",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.controller",
+            "namespace": "",
+            "file": "src\\cmpage\\controller\\base.js",
+            "line": 23,
+            "description": "cmpage.controller的基类，用于cmpage模块下的其他controller类的继承，\n提供一些子类的公共方法"
+        },
+        "cmpage.controller.mob": {
+            "name": "cmpage.controller.mob",
+            "shortname": "cmpage.controller.mob",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.controller",
+            "namespace": "",
+            "file": "src\\cmpage\\controller\\mob.js",
+            "line": 14,
+            "description": "移动端，业务模块展示及常用操作的URL接口"
+        },
+        "cmpage.controller.module": {
+            "name": "cmpage.controller.module",
+            "shortname": "cmpage.controller.module",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.controller",
+            "namespace": "",
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 13,
+            "description": "业务模块设置的URL接口"
+        },
+        "cmpage.controller.page": {
+            "name": "cmpage.controller.page",
+            "shortname": "cmpage.controller.page",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.controller",
+            "namespace": "",
+            "file": "src\\cmpage\\controller\\page.js",
+            "line": 14,
+            "description": "业务模块展示及常用操作的URL接口"
+        },
+        "cmpage.controller.utils": {
+            "name": "cmpage.controller.utils",
+            "shortname": "cmpage.controller.utils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.controller",
+            "namespace": "",
+            "file": "src\\cmpage\\controller\\utils.js",
+            "line": 14,
+            "description": "工具集、其他URL接口"
+        },
+        "cmpage.logic.page": {
+            "name": "cmpage.logic.page",
+            "shortname": "cmpage.logic.page",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.logic",
+            "namespace": "",
+            "file": "src\\cmpage\\logic\\page.js",
+            "line": 21,
+            "description": "调用 cmpage/controller/page.js 的一些URL接口之前\n提供 thinkjs 的校验"
+        },
+        "cmpage.model.area": {
+            "name": "cmpage.model.area",
+            "shortname": "cmpage.model.area",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.model",
+            "namespace": "",
+            "file": "src\\cmpage\\model\\area.js",
+            "line": 14,
+            "description": "全国行政区划的操作类，如果内容作调整后，手机端APP部分也应该做调整，因为数据是预存在APP端的"
+        },
+        "cmpage.model.page": {
+            "name": "cmpage.model.page",
+            "shortname": "cmpage.model.page",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.model",
+            "namespace": "",
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 23,
+            "description": "普通页面的数据处理类，实现了具体的操作方法"
+        },
+        "cmpage.model.page_excel": {
+            "name": "cmpage.model.page_excel",
+            "shortname": "cmpage.model.page_excel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.model",
+            "namespace": "",
+            "file": "src\\cmpage\\model\\page_excel.js",
+            "line": 14,
+            "description": "实现了excel导出等处理，可继承本类做定制化的excel文件导出"
+        },
+        "cmpage.model.page_lookup": {
+            "name": "cmpage.model.page_lookup",
+            "shortname": "cmpage.model.page_lookup",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.model",
+            "namespace": "",
+            "file": "src\\cmpage\\model\\page_lookup.js",
+            "line": 14,
+            "description": "实现了查找带回的功能，可继承本类做定制化的查找带回页面，调用： /cmpage/page/lookup?modulename=XXX*multiselect=false"
+        },
+        "cmpage.model.page_mob": {
+            "name": "cmpage.model.page_mob",
+            "shortname": "cmpage.model.page_mob",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.model",
+            "namespace": "",
+            "file": "src\\cmpage\\model\\page_mob.js",
+            "line": 17,
+            "description": "实现了手机APP的模块接口，可继承本类对手机APP的业务模块做定制化的HTML输出和功能操作, 方法名加了mob做前导，以示区分"
+        },
+        "cmpage.model.utils": {
+            "name": "cmpage.model.utils",
+            "shortname": "cmpage.model.utils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.model",
+            "namespace": "",
+            "file": "src\\cmpage\\model\\utils.js",
+            "line": 14,
+            "description": "工具类，提供一些公用的方法"
+        },
+        "cmpage.cmpage_global": {
+            "name": "cmpage.cmpage_global",
+            "shortname": "cmpage.cmpage_global",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.model",
+            "namespace": "",
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 7,
+            "description": "cmpage的全局方法和变量设置，置入（Object.assign）thinkjs 的 global 中"
+        }
+    },
+    "classitems": [
+        {
+            "file": "src\\admin\\controller\\base.js",
+            "line": 27,
+            "description": "本模块的所有action执行前的检查项",
+            "itemtype": "method",
+            "name": "__before",
+            "return": {
+                "description": "当前用户未登录时，返回错误信息或者引导到登录页面",
+                "type": "Promise"
+            },
+            "class": "admin.controller.base",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 20,
+            "description": "取代码树，输入根节点ID为参数 <br/>\n点击某个节点，右侧显示其子节点列表，增删改后更新左侧树 <br/>\nRUL调用如：/admin/code_tree?rootid=1 <br/>",
+            "itemtype": "method",
+            "name": "codeTree",
+            "return": {
+                "description": "t_code记录对象的数组，多层",
+                "type": "Json"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 38,
+            "description": "账套用户设置的主界面",
+            "itemtype": "method",
+            "name": "groupUserMain",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 50,
+            "description": "增加某帐套的用户",
+            "itemtype": "method",
+            "name": "groupUserAdd",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 63,
+            "description": "删除某帐套的用户",
+            "itemtype": "method",
+            "name": "groupUserDel",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 73,
+            "description": "团队用户设置的主界面",
+            "itemtype": "method",
+            "name": "teamUserMain",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 85,
+            "description": "增加某团队的用户",
+            "itemtype": "method",
+            "name": "teamUserAdd",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 98,
+            "description": "删除某团队的用户",
+            "itemtype": "method",
+            "name": "teamUserDel",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 108,
+            "description": "角色权限设置主界面",
+            "itemtype": "method",
+            "name": "rolePrivilege",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 121,
+            "description": "某个角色的权限集合展示，树状结构",
+            "itemtype": "method",
+            "name": "roleGetPrivilegeTree",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 133,
+            "description": "保存某个角色的权限设置",
+            "itemtype": "method",
+            "name": "roleSavePrivilege",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 146,
+            "description": "代码树，输入根节点ID为参数 ------- 以下3个操作已废弃，改用 codeTreeAction -----------\n直接通过树增删改节点\n/admin/code?rootid=1",
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\index.js",
+            "line": 21,
+            "description": "系统首页，加载符合权限的菜单、加载前端BJUI框架等",
+            "itemtype": "method",
+            "name": "index",
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "admin.controller.index",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\index.js",
+            "line": 59,
+            "description": "用户登录界面，get方式显示登录页面，post方式执行用户登录，如果成功则将用户信息写入session并引导到index页面,\n期间判断是否有权限登录所选择的账套",
+            "itemtype": "method",
+            "name": "login",
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "admin.controller.index",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\index.js",
+            "line": 112,
+            "description": "用户登出，清除session中的用户信息并引导至用户登录页面",
+            "itemtype": "method",
+            "name": "exitLogin",
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "admin.controller.index",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\index.js",
+            "line": 123,
+            "description": "用户密码修改页面，get方式显示编辑页面，post方式执行密码修改",
+            "itemtype": "method",
+            "name": "loginPwdEdit",
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "admin.controller.index",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\mob.js",
+            "line": 21,
+            "description": "取APP的版本信息，用户比较APP的版本，并自动更新资源包",
+            "itemtype": "method",
+            "name": "getVersion",
+            "return": {
+                "description": "版本信息，包括新版资源包的URL",
+                "type": "Json"
+            },
+            "class": "admin.controller.mob",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\mob.js",
+            "line": 31,
+            "description": "取账套列表",
+            "itemtype": "method",
+            "name": "getGroups",
+            "return": {
+                "description": "HTML片段，用于下拉选择登陆账套等",
+                "type": "Json"
+            },
+            "class": "admin.controller.mob",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\mob.js",
+            "line": 50,
+            "description": "取APP菜单和按钮的列表",
+            "itemtype": "method",
+            "name": "getMenus",
+            "return": {
+                "description": "备注中设置'btn'的为按钮，其他为菜单",
+                "type": "Json"
+            },
+            "class": "admin.controller.mob",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\mob.js",
+            "line": 80,
+            "description": "用户登录,包括验证账套、角色等",
+            "itemtype": "method",
+            "name": "login",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.mob",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\mob.js",
+            "line": 115,
+            "description": "退出登录,同时注销session 设置",
+            "itemtype": "method",
+            "name": "exitLogin",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.mob",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\mob.js",
+            "line": 126,
+            "description": "修改用户密码",
+            "itemtype": "method",
+            "name": "loginPwdEdit",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.mob",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 26,
+            "description": "用递归法从t_code缓存中返回所有子节点",
+            "itemtype": "method",
+            "name": "getTreeList",
+            "return": {
+                "description": "所有子节点组成的数组",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "rootID",
+                    "description": "根节点的ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "selfContains",
+                    "description": "是否加入自身节点",
+                    "type": "Bool",
+                    "optional": true
+                }
+            ],
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 63,
+            "description": "根据参数ID取参数的名称，一般用于页面模块配置中的‘替换’调用: admin/cdoe:getNameById",
+            "itemtype": "method",
+            "name": "getNameById",
+            "return": {
+                "description": "参数名称",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "参数ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 78,
+            "description": "根据参数ID取参数的记录对象",
+            "itemtype": "method",
+            "name": "getCodeById",
+            "return": {
+                "description": "参数对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "参数ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 93,
+            "description": "根据父节点ID取参数列表",
+            "itemtype": "method",
+            "name": "getCodesByPid",
+            "return": {
+                "description": "参数列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "pid",
+                    "description": "父节点ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 109,
+            "description": "根据根节点ID取参数列表，树状",
+            "itemtype": "method",
+            "name": "getCodesByRoot",
+            "return": {
+                "description": "参数列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "rootID",
+                    "description": "根节点ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 125,
+            "description": "根据参数值取性别，一般用于页面模块配置中的‘替换’调用: admin/cdoe:getSexName",
+            "itemtype": "method",
+            "name": "getSexName",
+            "return": {
+                "description": "性别",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "value",
+                    "description": "默认值",
+                    "type": "Bool",
+                    "optional": true
+                }
+            ],
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 134,
+            "description": "取参数列表，带Parm的这几个方法一般是用户业务相关的参数，根节点ID === 4，用缓存",
+            "itemtype": "method",
+            "name": "getParms",
+            "return": {
+                "description": "参数列表",
+                "type": "Array"
+            },
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 144,
+            "description": "根据父节点ID取参数列表",
+            "itemtype": "method",
+            "name": "getParmsByPid",
+            "return": {
+                "description": "参数列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "pid",
+                    "description": "父节点ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 162,
+            "description": "根据父节点的c_object值取参数列表",
+            "itemtype": "method",
+            "name": "getParmsByPobj",
+            "return": {
+                "description": "参数列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "pobj",
+                    "description": "父节点的c_object",
+                    "type": "String"
+                }
+            ],
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 172,
+            "description": "根据参数ID取参数的记录对象",
+            "itemtype": "method",
+            "name": "getParmById",
+            "return": {
+                "description": "参数对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "参数ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 187,
+            "description": "根据参数的c_object值取参数的记录对象",
+            "itemtype": "method",
+            "name": "getParmById",
+            "return": {
+                "description": "参数对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "参数的c_object",
+                    "type": "String"
+                }
+            ],
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 203,
+            "description": "清空t_code表的相关缓存",
+            "itemtype": "method",
+            "name": "clearCodeCache",
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 216,
+            "description": "取账套列表，树状，可以用于页面模块配置中的‘下拉框选择’调用: admin/cdoe:getGroups",
+            "itemtype": "method",
+            "name": "getGroups",
+            "return": {
+                "description": "账套列表",
+                "type": "Array"
+            },
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 227,
+            "description": "取角色列表，可以用于页面模块配置中的‘下拉框选择’调用: admin/cdoe:getRoles",
+            "itemtype": "method",
+            "name": "getRoles",
+            "return": {
+                "description": "角色列表",
+                "type": "Array"
+            },
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 238,
+            "description": "取仓库列表，可以用于页面模块配置中的‘下拉框选择’调用: admin/cdoe:getStocks",
+            "itemtype": "method",
+            "name": "getStocks",
+            "return": {
+                "description": "仓库列表",
+                "type": "Array"
+            },
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 249,
+            "description": "取部门列表，树状，可以用于页面模块配置中的‘下拉框选择’调用: admin/cdoe:getDepts",
+            "itemtype": "method",
+            "name": "getDepts",
+            "return": {
+                "description": "部门列表",
+                "type": "Array"
+            },
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code.js",
+            "line": 260,
+            "description": "取t_code全表记录，缓存",
+            "itemtype": "method",
+            "name": "getCodes",
+            "return": {
+                "description": "t_code记录列表",
+                "type": "Array"
+            },
+            "class": "admin.model.code",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code_list.js",
+            "line": 19,
+            "description": "重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句",
+            "itemtype": "method",
+            "name": "getQueryWhere",
+            "return": {
+                "description": "where条件子句",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.code_list",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code_list.js",
+            "line": 31,
+            "description": "重写父类的 pageEditInit 方法，对初始化编辑页面的值进行修改",
+            "itemtype": "method",
+            "name": "pageEditInit",
+            "return": {
+                "description": "where条件子句",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "pageEdits",
+                    "description": "编辑页面的设置信息",
+                    "type": "Object"
+                },
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.code_list",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\code_list.js",
+            "line": 50,
+            "description": "重写父类的 pageSave 方法，保存参数后清除code表的缓存",
+            "itemtype": "method",
+            "name": "pageSave",
+            "return": {
+                "description": "保存的数据表记录的对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                },
+                {
+                    "name": "parms",
+                    "description": "编辑页面传回的FORM参数",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.code_list",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\groupuser.js",
+            "line": 21,
+            "description": "重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句",
+            "itemtype": "method",
+            "name": "getQueryWhere",
+            "return": {
+                "description": "where条件子句",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.groupuser",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\groupuser.js",
+            "line": 33,
+            "description": "重写父类的 htmlGetOther 方法，输出额外的按钮和js函数",
+            "itemtype": "method",
+            "name": "htmlGetOther",
+            "return": {
+                "description": "html片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.groupuser",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\groupuser.js",
+            "line": 76,
+            "description": "取某个用户登录账套及其所有子帐套",
+            "itemtype": "method",
+            "name": "getLoginGroups",
+            "return": {
+                "description": "账套ID组成的字符串，如： 1,2,3",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "userID",
+                    "description": "用户ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "groupID",
+                    "description": "当前登录的账套ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "admin.model.groupuser",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\groupuser_add.js",
+            "line": 21,
+            "description": "重写父类的 getQueryWhere 方法，增加页面模块的条件设置，剔除已经加入该账套的用户，组合成新的Where子句",
+            "itemtype": "method",
+            "name": "getQueryWhere",
+            "return": {
+                "description": "where条件子句",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.groupuser_add",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\groupuser_add.js",
+            "line": 32,
+            "description": "重写父类的 htmlGetOther 方法，输出额外的按钮和js函数，",
+            "itemtype": "method",
+            "name": "htmlGetOther",
+            "return": {
+                "description": "html片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.groupuser_add",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\log.js",
+            "line": 21,
+            "description": "重写父类的 getQueryWhere 方法，增加页面模块的条件设置，剔除已经加入该账套的用户，组合成新的Where子句",
+            "itemtype": "method",
+            "name": "getQueryWhere",
+            "return": {
+                "description": "where条件子句",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.log",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\log.js",
+            "line": 35,
+            "description": "增加操作日志",
+            "itemtype": "method",
+            "name": "addLog",
+            "return": {
+                "description": "日志记录ID",
+                "type": "Int"
+            },
+            "params": [
+                {
+                    "name": "user",
+                    "description": "用户对象",
+                    "type": "Int"
+                },
+                {
+                    "name": "msg",
+                    "description": "日志内容",
+                    "type": "String"
+                },
+                {
+                    "name": "moduleID",
+                    "description": "业务模块ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "linkID",
+                    "description": "关联的记录ID",
+                    "type": "Int",
+                    "optional": true
+                },
+                {
+                    "name": "logStatus",
+                    "description": "日志状态， global.enum",
+                    "type": "Int",
+                    "optional": true
+                },
+                {
+                    "name": "logType",
+                    "description": "日志类型，global.enum",
+                    "type": "Int",
+                    "optional": true
+                }
+            ],
+            "class": "admin.model.log",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\login.js",
+            "line": 21,
+            "description": "重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句, 取当前用户的登录信息",
+            "itemtype": "method",
+            "name": "getQueryWhere",
+            "return": {
+                "description": "where条件子句",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.login",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\login.js",
+            "line": 34,
+            "description": "增加某个用户的登录信息",
+            "itemtype": "method",
+            "name": "addLogin",
+            "return": {
+                "description": "登录记录ID",
+                "type": "Int"
+            },
+            "params": [
+                {
+                    "name": "user",
+                    "description": "登录用户对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.login",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\login.js",
+            "line": 54,
+            "description": "某个用户的退出登录信息",
+            "itemtype": "method",
+            "name": "addLogin",
+            "params": [
+                {
+                    "name": "user",
+                    "description": "登录用户对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.login",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\privilege.js",
+            "line": 20,
+            "description": "保存某个角色的权限设置",
+            "itemtype": "method",
+            "name": "roleSavePrivilege",
+            "return": {
+                "description": "保存的记录条数",
+                "type": "Int"
+            },
+            "params": [
+                {
+                    "name": "parms",
+                    "description": "前端递交的参数，包括roleID, 用户ID（多个，以逗号分隔）",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.privilege",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\privilege.js",
+            "line": 34,
+            "description": "某个角色的权限树",
+            "itemtype": "method",
+            "name": "roleGetPrivilegeTree",
+            "return": {
+                "description": "权限记录的数组",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "roleID",
+                    "description": "角色ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "rootID",
+                    "description": "权限树的根节点ID，可以是权限树的子树的根节点",
+                    "type": "RootID"
+                }
+            ],
+            "class": "admin.model.privilege",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\privilege.js",
+            "line": 57,
+            "description": "某个用户定制的的权限树，如果没有则返回该用户所属角色的权限树",
+            "itemtype": "method",
+            "name": "userGetPrivilegeTree",
+            "return": {
+                "description": "权限记录的数组",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "userID",
+                    "description": "用户ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "roleID",
+                    "description": "角色ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "rootID",
+                    "description": "权限树的根节点ID，可以是权限树的子树的根节点",
+                    "type": "RootID"
+                }
+            ],
+            "class": "admin.model.privilege",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\teamuser.js",
+            "line": 20,
+            "description": "重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句",
+            "itemtype": "method",
+            "name": "getQueryWhere",
+            "return": {
+                "description": "where条件子句",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.teamuser",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\teamuser.js",
+            "line": 32,
+            "description": "重写父类的 htmlGetOther 方法，输出额外的按钮和js函数",
+            "itemtype": "method",
+            "name": "htmlGetOther",
+            "return": {
+                "description": "html片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.teamuser",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\teamuser_add.js",
+            "line": 21,
+            "description": "重写父类的 getQueryWhere 方法，增加页面模块的条件设置，剔除已经加入该团队的用户，组合成新的Where子句",
+            "itemtype": "method",
+            "name": "getQueryWhere",
+            "return": {
+                "description": "where条件子句",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.teamuser_add",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\teamuser_add.js",
+            "line": 33,
+            "description": "重写父类的 htmlGetOther 方法，输出额外的按钮和js函数，",
+            "itemtype": "method",
+            "name": "htmlGetOther",
+            "return": {
+                "description": "html片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.teamuser_add",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\user.js",
+            "line": 20,
+            "description": "重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句, c_linktype==1表示关联的是集团用户: c_link = t_emp.id",
+            "itemtype": "method",
+            "name": "getQueryWhere",
+            "return": {
+                "description": "where条件子句",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.user",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\user.js",
+            "line": 31,
+            "description": "重写父类的 pageSave 方法，保存参数后清除user的缓存",
+            "itemtype": "method",
+            "name": "pageSave",
+            "return": {
+                "description": "保存的数据表记录的对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                },
+                {
+                    "name": "parms",
+                    "description": "编辑页面传回的FORM参数",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.user",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\user.js",
+            "line": 62,
+            "description": "根据用户ID取用户名称，一般用于页面模块配置中的‘替换’调用: admin/user:getNameById",
+            "itemtype": "method",
+            "name": "getNameById",
+            "return": {
+                "description": "参数名称",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "参数ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "admin.model.user",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\user.js",
+            "line": 78,
+            "description": "根据用户登录名和密码取用户记录对象，",
+            "itemtype": "method",
+            "name": "getUserByLogin",
+            "return": {
+                "description": "用户信息",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "loginName",
+                    "description": "登录名",
+                    "type": "String"
+                },
+                {
+                    "name": "loginPwd",
+                    "description": "登录密码",
+                    "type": "String"
+                },
+                {
+                    "name": "isMd5",
+                    "description": "是否是MD5加密过的",
+                    "type": "Bool"
+                }
+            ],
+            "class": "admin.model.user",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\user.js",
+            "line": 98,
+            "description": "取vw_user的记录，缓存， 按名称排序",
+            "itemtype": "method",
+            "name": "getUsers",
+            "return": {
+                "description": "vw_user记录列表",
+                "type": "Array"
+            },
+            "class": "admin.model.user",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\cmpage\\config\\config.js",
+            "line": 2,
+            "description": "config",
+            "class": "cmpage.controller.base",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\cmpage\\config\\db.js",
+            "line": 2,
+            "description": "db config",
+            "type": "{Object}",
+            "class": "cmpage.controller.base",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\cmpage\\controller\\base.js",
+            "line": 29,
+            "description": "删除记录的URL接口，调用： /cmpage/xxx/delete?id=xxx",
+            "itemtype": "method",
+            "name": "delete",
+            "return": {
+                "description": "删除成功状态",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.base",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\base.js",
+            "line": 51,
+            "description": "本模块的所有action执行前的检查项",
+            "itemtype": "method",
+            "name": "__before",
+            "return": {
+                "description": "当前用户未登录时，返回错误信息或者引导到登录页面",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.base",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\mob.js",
+            "line": 21,
+            "description": "业务模块展示的主界面，分页列表，POST调用： /cmpage/mob/list",
+            "itemtype": "method",
+            "name": "list",
+            "return": {
+                "description": "包含HTML片段",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.mob",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\mob.js",
+            "line": 77,
+            "description": "业务模块的编辑页面，调用： /cmpage/mob/edit",
+            "itemtype": "method",
+            "name": "edit",
+            "return": {
+                "description": "包含HTML片段",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.mob",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\mob.js",
+            "line": 94,
+            "description": "保存业务模块记录信息， POST调用： /cmpage/mob/save",
+            "itemtype": "method",
+            "name": "save",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.mob",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\mob.js",
+            "line": 124,
+            "description": "业务模块的查看页面，一般调用： /cmpage/mob/view",
+            "itemtype": "method",
+            "name": "view",
+            "return": {
+                "description": "HTML片段",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.mob",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 21,
+            "description": "模块主信息设置，分页列表，调用： /cmpage/module/list",
+            "itemtype": "method",
+            "name": "list",
+            "return": {
+                "description": "HTML片段",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 57,
+            "description": "保存模块主信息记录， POST调用： /cmpage/module/save",
+            "itemtype": "method",
+            "name": "save",
+            "return": {
+                "description": "[]",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 93,
+            "description": "复制模块设置， 调用： /cmpage/module/copy?modulename=xxx",
+            "itemtype": "method",
+            "name": "copy",
+            "return": {
+                "description": "复制是否成功的信息",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 103,
+            "description": "模块主表编辑页面，调用：/cmpage/module/edit?id=xxx",
+            "itemtype": "method",
+            "name": "edit",
+            "return": {
+                "description": "HTML页面",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 127,
+            "description": "模块主表编辑页面，调用：/cmpage/module/reset_module_cache",
+            "itemtype": "method",
+            "name": "resetModuleCache",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 140,
+            "description": "模块显示列编辑页面，调用：/cmpage/module/col_list?moduleid=xxx",
+            "itemtype": "method",
+            "name": "colList",
+            "return": {
+                "description": "HTML页面",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 163,
+            "description": "重新设置模块显示列，调用：/cmpage/module/col_reset?moduleid=xxx",
+            "itemtype": "method",
+            "name": "colReset",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 177,
+            "description": "保存显示列设置， POST调用： /cmpage/module/col_save",
+            "itemtype": "method",
+            "name": "col_save",
+            "return": {
+                "description": "保存记录的状态信息",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 226,
+            "description": "模块显示列编辑页面，调用：/cmpage/module/edit_list?moduleid=xxx",
+            "itemtype": "method",
+            "name": "editList",
+            "return": {
+                "description": "HTML页面",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 247,
+            "description": "重新设置模块编辑列，调用：/cmpage/module/edit_reset?moduleid=xxx",
+            "itemtype": "method",
+            "name": "editReset",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 259,
+            "description": "保存业务模块编辑列的设置， POST调用： /cmpage/module/edit_save",
+            "itemtype": "method",
+            "name": "edit_save",
+            "return": {
+                "description": "保存记录的状态信息",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 305,
+            "description": "模块查询列编辑页面，调用：/cmpage/module/query_list?moduleid=xxx",
+            "itemtype": "method",
+            "name": "queryList",
+            "return": {
+                "description": "HTML页面",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 327,
+            "description": "重新设置模块查询列，调用：/cmpage/module/query_reset?moduleid=xxx",
+            "itemtype": "method",
+            "name": "queryReset",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 341,
+            "description": "删除不显示的查询列设置， POST调用： /cmpage/module/query_delete_no_show",
+            "itemtype": "method",
+            "name": "query_delete_no_show",
+            "return": {
+                "description": "状态信息",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 354,
+            "description": "保存业务模块查询列的设置， POST调用： /cmpage/module/query_save",
+            "itemtype": "method",
+            "name": "query_save",
+            "return": {
+                "description": "保存记录的状态信息",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 399,
+            "description": "模块按钮设置页面，调用：/cmpage/module/btn_list?moduleid=xxx",
+            "itemtype": "method",
+            "name": "btnList",
+            "return": {
+                "description": "HTML页面",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 418,
+            "description": "重新设置模块按钮，调用：/cmpage/module/btn_reset?moduleid=xxx",
+            "itemtype": "method",
+            "name": "btnReset",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\module.js",
+            "line": 431,
+            "description": "保存业务模块的按钮设置， POST调用： /cmpage/module/btn_save",
+            "itemtype": "method",
+            "name": "btn_save",
+            "return": {
+                "description": "保存记录的状态信息",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.module",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\page.js",
+            "line": 21,
+            "description": "业务模块展示的主界面，分页列表，一般调用： /cmpage/page/list?modulename=xxx",
+            "itemtype": "method",
+            "name": "list",
+            "return": {
+                "description": "HTML片段",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.page",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\page.js",
+            "line": 84,
+            "description": "模块主界面，导出excel文件，一般调用： /cmpage/page/excel_export?modulename=xxx",
+            "itemtype": "method",
+            "name": "excelExport",
+            "return": {
+                "description": "excel文件",
+                "type": "File"
+            },
+            "class": "cmpage.controller.page",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\page.js",
+            "line": 127,
+            "description": "业务模块的编辑页面，一般调用： /cmpage/page/edit?modulename=xxx",
+            "itemtype": "method",
+            "name": "edit",
+            "return": {
+                "description": "HTML片段",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.page",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\page.js",
+            "line": 146,
+            "description": "业务模块的编辑页面，主从页面，一般调用： /cmpage/page/rec_edit?modulename=xxx",
+            "itemtype": "method",
+            "name": "recEdit",
+            "return": {
+                "description": "HTML片段",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.page",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\page.js",
+            "line": 169,
+            "description": "保存业务模块记录信息， POST调用： /cmpage/page/save",
+            "itemtype": "method",
+            "name": "save",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.page",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\page.js",
+            "line": 193,
+            "description": "业务模块的查看页面，一般调用： /cmpage/page/view?modulename=xxx",
+            "itemtype": "method",
+            "name": "view",
+            "return": {
+                "description": "HTML片段",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.page",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\page.js",
+            "line": 209,
+            "description": "查找带回页面，一般调用： /cmpage/page/lookup?modulename=xxx&multiselect=false",
+            "itemtype": "method",
+            "name": "lookup",
+            "return": {
+                "description": "分页列表数据，字段是否返回的设置 c_isview (模块显示列设置)",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.page",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\utils.js",
+            "line": 22,
+            "description": "清除缓存， 调用： /cmpage/utils/clear_cache",
+            "itemtype": "method",
+            "name": "clearCache",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.utils",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\utils.js",
+            "line": 36,
+            "description": "根据省份取城市列表， 调用： /cmpage/utils/get_citys?province=xxx",
+            "itemtype": "method",
+            "name": "get_citys",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.utils",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\utils.js",
+            "line": 49,
+            "description": "根据城市取区县列表， 调用： /cmpage/utils/get_countrys?city=xxx",
+            "itemtype": "method",
+            "name": "get_countrys",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.utils",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\logic\\page.js",
+            "line": 27,
+            "description": "调用 cmpage/page/save 之前系统自动调用本方法验证表单数据",
+            "itemtype": "method",
+            "name": "save",
+            "return": {
+                "description": "如有错误，返回错误信息",
+                "type": "Json"
+            },
+            "class": "cmpage.logic.page",
+            "module": "cmpage.logic"
+        },
+        {
+            "file": "src\\cmpage\\model\\area.js",
+            "line": 20,
+            "description": "取省份记录， 缓存, 可以用于页面模块配置中的‘下拉框选择’调用: cmpage/area:getProvinces",
+            "itemtype": "method",
+            "name": "getProvinces",
+            "return": {
+                "description": "省份记录列表",
+                "type": "Array"
+            },
+            "class": "cmpage.model.area",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\area.js",
+            "line": 31,
+            "description": "根据省份编码取省份名称，一般用于页面模块配置中的‘替换’调用: cmpage/area:getProvinceName",
+            "itemtype": "method",
+            "name": "getProvinceName",
+            "return": {
+                "description": "名称",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "province",
+                    "description": "编码",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.model.area",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\area.js",
+            "line": 50,
+            "description": "根据城市编码取城市名称，一般用于页面模块配置中的‘替换’调用: cmpage/area:getCityName",
+            "itemtype": "method",
+            "name": "getCityName",
+            "return": {
+                "description": "名称",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "city",
+                    "description": "编码",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.model.area",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\area.js",
+            "line": 69,
+            "description": "根据区县编码取区县名称，一般用于页面模块配置中的‘替换’调用: cmpage/area:getCountryName",
+            "itemtype": "method",
+            "name": "getCountryName",
+            "return": {
+                "description": "名称",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "country",
+                    "description": "编码",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.model.area",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\area.js",
+            "line": 88,
+            "description": "取城市记录， 缓存, 可以用于页面模块配置中的‘下拉框选择’调用: cmpage/area:getCitys",
+            "itemtype": "method",
+            "name": "getCitys",
+            "return": {
+                "description": "城市记录列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "province",
+                    "description": "省份编码",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.model.area",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\area.js",
+            "line": 100,
+            "description": "取区县记录， 缓存, 可以用于页面模块配置中的‘下拉框选择’调用: cmpage/area:getCountrys",
+            "itemtype": "method",
+            "name": "getCountrys",
+            "return": {
+                "description": "区县记录列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "province",
+                    "description": "城市编码",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.model.area",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\area.js",
+            "line": 112,
+            "description": "取省份信息，组成省份选择的下拉项HTML",
+            "itemtype": "method",
+            "name": "getProvinceItems",
+            "return": {
+                "description": "下拉项的HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "value",
+                    "description": "省份编码，当前值",
+                    "type": "String"
+                },
+                {
+                    "name": "hasEmptyItem",
+                    "description": "是否有空项，一般查询HTML输出时用到",
+                    "type": "Bool"
+                }
+            ],
+            "class": "cmpage.model.area",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\area.js",
+            "line": 132,
+            "description": "取城市信息，组成城市选择的下拉项HTML",
+            "itemtype": "method",
+            "name": "getCityItems",
+            "return": {
+                "description": "下拉项的HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "value",
+                    "description": "城市编码，当前值",
+                    "type": "String"
+                },
+                {
+                    "name": "hasEmptyItem",
+                    "description": "是否有空项，一般查询HTML输出时用到",
+                    "type": "Bool"
+                },
+                {
+                    "name": "provinceValue",
+                    "description": "当前省份编码",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.model.area",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\area.js",
+            "line": 157,
+            "description": "取区县信息，组成区县选择的下拉项HTML",
+            "itemtype": "method",
+            "name": "getCountryItems",
+            "return": {
+                "description": "下拉项的HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "value",
+                    "description": "城市编码，当前值",
+                    "type": "String"
+                },
+                {
+                    "name": "hasEmptyItem",
+                    "description": "是否有空项，一般查询HTML输出时用到",
+                    "type": "Bool"
+                },
+                {
+                    "name": "cityValue",
+                    "description": "当前城市编码",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.model.area",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\module.js",
+            "line": 277,
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\module.js",
+            "line": 339,
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 29,
+            "description": "取查询项的设置，组合成HTML输出",
+            "itemtype": "method",
+            "name": "htmlGetQuery",
+            "return": {
+                "description": "查询的HTML片段，包括 bjui-moreSearch 部分",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 110,
+            "description": "取下拉框的选项集",
+            "itemtype": "method",
+            "name": "getOptions",
+            "return": {
+                "description": "查询的HTML片段，包括 bjui-moreSearch 部分",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "md",
+                    "description": "下拉项的设置，其中md.c_default为默认值，可以在调用本方法前修改",
+                    "type": "Object"
+                },
+                {
+                    "name": "isBlank",
+                    "description": "下拉项中是否增加空项，一般查询项是需要的",
+                    "type": "Bool",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 159,
+            "description": "根据设置取显示的替换值",
+            "itemtype": "method",
+            "name": "getReplaceText",
+            "return": {
+                "description": "查询的HTML片段，包括 bjui-moreSearch 部分",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "value",
+                    "description": "当前值",
+                    "type": "String"
+                },
+                {
+                    "name": "replaceItems",
+                    "description": "替换的设置值，支持两种方式\n                     1. 函数如：admin/code:getXXXXXX\n                     2. json如：[{##value##:true,##text##:##男##},{##value##:false,##text##:##女##}]",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 197,
+            "description": "取顶部按钮的设置，组合成HTML输出",
+            "itemtype": "method",
+            "name": "htmlGetBtnHeader",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 223,
+            "description": "取记录列表每一行的按钮设置，组合成HTML输出，子类中重写本方法可以定制每行按钮的输出效果",
+            "itemtype": "method",
+            "name": "htmlGetBtnList",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "rec",
+                    "description": "每行的记录对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                },
+                {
+                    "name": "pageBtns",
+                    "description": "按钮设置",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 246,
+            "description": "取分页列表的设置，结合结果数据集，组合成HTML输出，一般不需要重新本方法",
+            "itemtype": "method",
+            "name": "htmlGetList",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                },
+                {
+                    "name": "dataList",
+                    "description": "结果数据集，this.getDataList(page) 的返回值",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 336,
+            "description": "取结果数据集，子类中重写本方法可以增加逻辑如：对结果集做进一步的数据处理等",
+            "itemtype": "method",
+            "name": "getDataList",
+            "return": {
+                "description": "结果集数据包 {count:xxx, list:[{record}]}",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 364,
+            "description": "取查询项的设置，结合POST参数，得到Where字句，重写本方法可以定制或修改SQL的where子句",
+            "itemtype": "method",
+            "name": "getQueryWhere",
+            "return": {
+                "description": "where 子句， 形如： where xxx and xxx",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 396,
+            "description": "把查询条件的操作符转换成SQL片段，一般不需要重写本方法",
+            "itemtype": "method",
+            "name": "getQueryWhere",
+            "return": {
+                "description": "where 子句， 形如：",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "op",
+                    "description": "操作符",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "操作值",
+                    "type": "String"
+                },
+                {
+                    "name": "coltype",
+                    "description": "数据表中的字段类型，已作简化",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 431,
+            "description": "根据设置取得页面显示列表返回的字段，一般不需要重写本方法",
+            "itemtype": "method",
+            "name": "getListFields",
+            "return": {
+                "description": "fields 部分， 形如：id,c_name,xxx",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "pageCols",
+                    "description": "业务模块的显示列设置",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 454,
+            "description": "新增的时候，初始化编辑页面的值，子类重写本方法可以定制新增页面的初始值",
+            "itemtype": "method",
+            "name": "pageEditInit",
+            "return": {
+                "description": "新增的记录对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "pageEdits",
+                    "description": "业务模块的编辑列设置",
+                    "type": "Object"
+                },
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 483,
+            "description": "根据 page.c_other的设置，对页面相关参数进行设置",
+            "itemtype": "method",
+            "name": "getPageOther",
+            "return": {
+                "description": "在page中增加相应属性并返回",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 508,
+            "description": "取编辑页面的设置，组合成列表数据的HTML输出",
+            "itemtype": "method",
+            "name": "htmlGetEdit",
+            "return": {
+                "description": "HTML页面片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 601,
+            "description": "编辑页面保存,<br/>\n如果是多个表的数据产生的编辑页，则根据存在于page.c_table中的列更新表，一般需要在子类中继承，例如： admin/user:pageSave",
+            "itemtype": "method",
+            "name": "pageSave",
+            "return": {
+                "description": "记录对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                },
+                {
+                    "name": "parms",
+                    "description": "前端传入的FORM参数",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 638,
+            "description": "保存后的操作日志记录,，通过重写可在子类中定制日志的格式",
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 641,
+            "description": "保存后的操作日志记录,，通过重写可在子类中定制日志的格式",
+            "itemtype": "method",
+            "name": "pageSaveLog",
+            "return": {
+                "description": "",
+                "type": "无"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                },
+                {
+                    "name": "parms",
+                    "description": "前端传入的FORM参数",
+                    "type": "Object"
+                },
+                {
+                    "name": "md",
+                    "description": "记录对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "pageEdits",
+                    "description": "业务模块的编辑列设置",
+                    "type": "Object"
+                },
+                {
+                    "name": "flag",
+                    "description": "操作的类型标志",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 712,
+            "description": "取查看页面的设置，组合成列表数据的HTML输出",
+            "itemtype": "method",
+            "name": "htmlGetView",
+            "return": {
+                "description": "HTML页面片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_excel.js",
+            "line": 22,
+            "description": "根据查询结果集和模块的列设置把数据导出成excel文件",
+            "itemtype": "method",
+            "name": "excelExport",
+            "return": {
+                "description": "excel文件格式的对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "data",
+                    "description": "结果记录集对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page_excel",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_excel.js",
+            "line": 54,
+            "description": "根据业务模块显示列的设置信息得到某一列的excel样式",
+            "itemtype": "method",
+            "name": "getColStyle",
+            "return": {
+                "description": "excel列的样式对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "col",
+                    "description": "业务模块显示列的设置,某个字段",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page_excel",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_excel.js",
+            "line": 70,
+            "description": "根据业务模块显示列的设置信息得到某一行某一列的值，子类中重写本方法，可以定制输出值",
+            "itemtype": "method",
+            "name": "getColData",
+            "return": {
+                "description": "excel列的样式对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "item",
+                    "description": "记录对象，一条",
+                    "type": "Object"
+                },
+                {
+                    "name": "col",
+                    "description": "业务模块显示列的设置,某个字段",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page_excel",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_lookup.js",
+            "line": 22,
+            "description": "取列表中按钮的设置，组合成HTML输出,<br/> 重写父类的方法，子类中也可重写本方法，更改返回的字段和值等",
+            "itemtype": "method",
+            "name": "htmlGetBtnList",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "rec",
+                    "description": "每行的记录对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                },
+                {
+                    "name": "pageBtns",
+                    "description": "按钮设置",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page_lookup",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_lookup.js",
+            "line": 42,
+            "description": "顶部按钮不需要显示，<br/> 重写父类的方法，子类中也可重写本方法，增加其他按钮",
+            "itemtype": "method",
+            "name": "htmlGetBtnHeader",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page_lookup",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_mob.js",
+            "line": 10,
+            "description": "page_mob model 实现手机APP的模块接口",
+            "class": "cmpage.model.page_mob",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_mob.js",
+            "line": 25,
+            "description": "取模块列表中的MUI设置，组合成HTML输出，一般在子类中通过重写这个方法来达到页面定制的效果",
+            "itemtype": "method",
+            "name": "mobHtmlGetList",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                },
+                {
+                    "name": "dataList",
+                    "description": "结果集对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page_mob",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_mob.js",
+            "line": 61,
+            "description": "生成列表每一行的按钮组HTML输出，一般在子类中通过重写这个方法来达到定制输出按钮的效果",
+            "itemtype": "method",
+            "name": "mobHtmlGetListBtns",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "row",
+                    "description": "记录对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "pageBtns",
+                    "description": "业务模块的按钮设置",
+                    "type": "Object"
+                },
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page_mob",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_mob.js",
+            "line": 87,
+            "description": "取模块的MUI设置，一般在子类中通过重写这个方法来增加MUI的配置信息，需要手机端做相应的逻辑实现",
+            "itemtype": "method",
+            "name": "mobGetPageMuiSetting",
+            "return": {
+                "description": "MUI的配置对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page_mob",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_mob.js",
+            "line": 104,
+            "description": "生成列表每一行的内容HTML输出，一般在子类中通过重写这个方法来达到定制分页列表的显示效果，例如： demo/customer:mobHtmlGetListRow",
+            "itemtype": "method",
+            "name": "mobHtmlGetListRow",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "row",
+                    "description": "记录对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "pageCols",
+                    "description": "业务模块的显示列设置",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page_mob",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_mob.js",
+            "line": 122,
+            "description": "取业务模块中的查询列设置，组合成APP端HTML输出，为保持和PC端的一致性，一般不需要重写",
+            "itemtype": "method",
+            "name": "mobHtmlGetQuery",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page_mob",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_mob.js",
+            "line": 197,
+            "description": "取业务模块中的编辑列设置，组合成APP端HTML输出，为保持和PC端的一致性，一般不需要重写",
+            "itemtype": "method",
+            "name": "mobHtmlGetEdit",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page_mob",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_rec.js",
+            "line": 10,
+            "description": "page_rec model 实现主从表页面的编辑和查看",
+            "class": "cmpage.model.utils",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_rec.js",
+            "line": 16,
+            "description": "取列表中按钮的设置，组合成HTML输出",
+            "class": "cmpage.model.utils",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\utils.js",
+            "line": 20,
+            "description": "从global的enum设置中提取name值, 一般用于页面模块配置中的‘替换’调用: cmpage/utils:getEnumName",
+            "itemtype": "method",
+            "name": "getEnumName",
+            "return": {
+                "description": "enum值的名称",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "enum值",
+                    "type": "Int"
+                },
+                {
+                    "name": "enumObj",
+                    "description": "enum对象，在 cmpage/cmpage_global.js中配置",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.utils",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\utils.js",
+            "line": 40,
+            "description": "从global的enum设置中提取name值, 一般用于页面模块配置中的‘下拉框选择’调用: cmpage/utils:getEnum",
+            "itemtype": "method",
+            "name": "getEnum",
+            "return": {
+                "description": "enum值组成的数组",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "enumObj",
+                    "description": "enum对象，在 cmpage/cmpage_global.js中配置",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.utils",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 16,
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 58,
+            "description": "有小数的格式化输出",
+            "itemtype": "method",
+            "name": "formatNumber",
+            "return": {
+                "description": "格式化输出",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "mum",
+                    "description": "需要格式化的数值",
+                    "type": "Float"
+                },
+                {
+                    "name": "opt",
+                    "description": "格式化配置对象，一般中业务模块的列设置中制定格式如： #####0.00",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 76,
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 86,
+            "description": "拷贝对象的某些属性到另一个对象",
+            "itemtype": "method",
+            "name": "objPropertysFromOtherObj",
+            "return": {
+                "description": "新的对象，其属性集是源对象的子集",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "fromObj",
+                    "description": "源对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "arrProps",
+                    "description": "需要COPY的熟悉数组",
+                    "type": "Array"
+                }
+            ],
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 102,
+            "description": "进行CRUD之前转换成合适的值，用来匹配 thinkjs 的CRUD方法",
+            "itemtype": "method",
+            "name": "checksql",
+            "return": {
+                "description": "新的对象，其属性已做SQL特性匹配",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "fromObj",
+                    "description": "记录对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 119,
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 128,
+            "description": "通过形如：demo/customer 参数返回model，数据库配置采用model所在模块的配置",
+            "itemtype": "method",
+            "name": "model",
+            "return": {
+                "description": "thinkjs.model 对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "path",
+                    "description": "业务模块的实现类设置",
+                    "type": "String"
+                },
+                {
+                    "name": "defaultPath",
+                    "description": "业务模块默认的实现类",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 147,
+            "description": "时间格式化输出",
+            "itemtype": "method",
+            "name": "model",
+            "return": {
+                "description": "格式化输出",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "date",
+                    "description": "需要格式化的日期对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "format",
+                    "description": "格式： 如： yyyy-MM-dd HH:mm:ss",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 165,
+            "description": "cmpage的全局变量初始化，如enum等",
+            "itemtype": "method",
+            "name": "cmpageInit",
+            "return": {
+                "description": "",
+                "type": "无"
+            },
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 283,
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type\n代码树，输入根节点ID为参数 ------- 以下3个操作已废弃，改用 codeTreeAction -----------\n直接通过树增删改节点\n/admin/code?rootid=1",
+            "line": " src\\admin\\controller\\code.js:146"
+        },
+        {
+            "message": "Missing item type\nconfig",
+            "line": " src\\cmpage\\config\\config.js:2"
+        },
+        {
+            "message": "Missing item type\ndb config",
+            "line": " src\\cmpage\\config\\db.js:2"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\cmpage\\model\\module.js:277"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\cmpage\\model\\module.js:339"
+        },
+        {
+            "message": "Missing item type\n保存后的操作日志记录,，通过重写可在子类中定制日志的格式",
+            "line": " src\\cmpage\\model\\page.js:638"
+        },
+        {
+            "message": "Missing item type\npage_mob model 实现手机APP的模块接口",
+            "line": " src\\cmpage\\model\\page_mob.js:10"
+        },
+        {
+            "message": "Missing item type\npage_rec model 实现主从表页面的编辑和查看",
+            "line": " src\\cmpage\\model\\page_rec.js:10"
+        },
+        {
+            "message": "Missing item type\n取列表中按钮的设置，组合成HTML输出",
+            "line": " src\\cmpage\\model\\page_rec.js:16"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\cmpage\\cmpage_global.js:16"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\cmpage\\cmpage_global.js:76"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\cmpage\\cmpage_global.js:119"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\cmpage\\cmpage_global.js:283"
+        }
+    ]
+}

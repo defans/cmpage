@@ -6,12 +6,22 @@
 // +----------------------------------------------------------------------
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
+/**
+ @module admin.model
+ */
 
+/**
+ * 登录用户的操作类，提供一些操作t_user,vw_user的方法
+ * @class admin.model.user
+ */
 import CMPage from '../../cmpage/model/page.js';
 
 export default class extends CMPage {
     /**
-     * 取查询项的设置，结合POST参数，得到Where字句
+     * 重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句, c_linktype==1表示关联的是集团用户: c_link = t_emp.id
+     * @method  getQueryWhere
+     * @return {string}  where条件子句
+     * @param {Object} page  页面设置主信息
      */
     async getQueryWhere(page){
         let where =await super.getQueryWhere(page);
@@ -19,7 +29,11 @@ export default class extends CMPage {
         return where +' and c_status<>-1 and c_linktype=1';
     }
     /**
-     * 编辑页面保存
+     * 重写父类的 pageSave 方法，保存参数后清除user的缓存
+     * @method  pageSave
+     * @return {Object}  保存的数据表记录的对象
+     * @param {Object} page  页面设置主信息
+     * @param {Object} parms  编辑页面传回的FORM参数
      */
     async pageSave(page,parms){
         //先保存t_emp
@@ -45,10 +59,13 @@ export default class extends CMPage {
         return userMd;
     }
 
+    /**
+     * 根据用户ID取用户名称，一般用于页面模块配置中的‘替换’调用: admin/user:getNameById
+     * @method  getNameById
+     * @return {string}  参数名称
+     * @param {int} id  参数ID
+     */
     async getNameById(id){
-        return await this.getUserNameById(id);
-    }
-    async getUserNameById(id){
         let users =await this.getUsers();
         for(let user of users){
             if(user.id == id){
@@ -58,28 +75,31 @@ export default class extends CMPage {
         return '';
     }
 
-    async getUserByLoginWithMd5(loginName,loginPwd){
+    /**
+     * 根据用户登录名和密码取用户记录对象，
+     * @method  getUserByLogin
+     * @return {object}  用户信息
+     * @param {string} loginName  登录名
+     * @param {string} loginPwd  登录密码
+     * @param {bool} isMd5  是否是MD5加密过的
+     */
+    async getUserByLogin(loginName,loginPwd, isMd5){
         let users =await this.getUsers();
+        let pwd = isMd5 ? loginPwd.toLowerCase() : think.md5(loginPwd).toLowerCase()
         //global.debug(users);
         for(let user of users){
-            if(user.c_login_name == loginName && user.c_login_pwd == loginPwd.toLowerCase()){
-                return user;
-            }
-        }
-        return {};
-    }
-    async getUserByLogin(loginName,loginPwd){
-        let users =await this.getUsers();
-        //global.debug(users);
-        for(let user of users){
-            if(user.c_login_name == loginName && user.c_login_pwd == think.md5(loginPwd).toLowerCase()){
+            if(user.c_login_name == loginName && user.c_login_pwd == pwd){
                 return user;
             }
         }
         return {};
     }
 
-
+    /**
+     * 取vw_user的记录，缓存， 按名称排序
+     * @method  getUsers
+     * @return {Array}  vw_user记录列表
+     */
     async getUsers(){
         return await think.cache("users", () => {
             return this.model('vw_user').order('c_name').select();

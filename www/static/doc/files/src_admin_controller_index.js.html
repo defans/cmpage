@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src\admin\controller\index.js</title>
+  
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-smart">
+ <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+               <a class="navbar-brand mainlogo" href="/static/doc/index.html">
+             
+            <img alt="" src="../assets/css/logo.png" title="">
+            
+                
+          </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                 <ul class="nav navbar-nav">
+                    
+                    <li><a href="/home/index/index">首页</a>
+                    </li>
+                    
+                    <li><a href="/static/doc/index.html">文档</a>
+                    </li>
+                    
+                    <li><a href="/admin/index/index">演示</a>
+                    </li>
+                    
+                    <li><a href="/home/index/log">日志</a>
+                    </li>
+                    
+                </ul>
+               <div class="navbar-form navbar-right filterAPi" autocomplete="off">
+                <input type="text" id='txtSearchAPI' class="form-control search-query" placeholder="Search for API" />
+                 <ul id="filterList" class="filterItems dropdown-menu" role="menu"></ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="sidebar">
+    <h3>Modules/Classes</h3>
+        <div id="api-tabview-filter">
+            <input id='txtSearch' type="search" class="form-control" placeholder="Type to filter Modules/Classes">
+        </div>
+        <dl id="sidebar_list">
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/admin.controller.html">admin.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/admin.controller.base.html">admin.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.code.html">admin.controller.code</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.index.html">admin.controller.index</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.mob.html">admin.controller.mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/admin.model.html">admin.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/admin.model.code.html">admin.model.code</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.code_list.html">admin.model.code_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.groupuser_add.html">admin.model.groupuser_add</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.log.html">admin.model.log</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.login.html">admin.model.login</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.privilege.html">admin.model.privilege</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.teamuser.html">admin.model.teamuser</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.teamuser_add.html">admin.model.teamuser_add</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.user.html">admin.model.user</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.controller.html">cmpage.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.base.html">cmpage.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.mob.html">cmpage.controller.mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.module.html">cmpage.controller.module</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.page.html">cmpage.controller.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.utils.html">cmpage.controller.utils</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.logic.html">cmpage.logic</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.logic.page.html">cmpage.logic.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.model.html">cmpage.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.area.html">cmpage.model.area</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_mob.html">cmpage.model.page_mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.utils.html">cmpage.model.utils</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.cmpage_global.html">cmpage.cmpage_global</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+        </dl>
+</div>
+   
+    <div class="stdoc-content">
+        <!--     <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+ -->
+        <div class="apidocs">
+            <div id="docs-main">
+                <div class="content">
+                    <div class="page-header">
+    <h1>src\admin\controller\index.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums" id='src_code'>
+&#x27;use strict&#x27;;
+// +----------------------------------------------------------------------
+// | CmPage [ 通用页面框架 ]
+// +----------------------------------------------------------------------
+// | Licensed under the Apache License, Version 2.0
+// +----------------------------------------------------------------------
+// | Author: defans &lt;defans@sina.cn&gt;
+// +----------------------------------------------------------------------
+/**
+    @module admin.controller
+ */
+
+/**
+ * admin.controller的index类，提供了PC端后台管理系统的用户登录、菜单显示等URL接口
+ * @class admin.controller.index
+ */
+import Base from &#x27;./base.js&#x27;;
+import request from &#x27;request&#x27;;
+
+export default class extends Base {
+  /**
+   * 系统首页，加载符合权限的菜单、加载前端BJUI框架等
+   * @method  index
+   * @return {Promise}
+   */
+  async indexAction(){
+    //auto render template file index_index.html
+    let user = await this.session(&#x27;user&#x27;);
+     // console.log(user);
+      let codeMd =await this.model(&#x27;code&#x27;).getCodeById(344);    //系统版本
+    let vb={groupName:user.groupName,version:codeMd.c_desc,userName:user.c_name,title:&#x27;CmPage by defans&#x27;};
+    let menus = await this.model(&#x27;privilege&#x27;).userGetPrivilegeTree(user.id,user.c_role);
+
+    vb.navList=[];  //主菜单
+    vb.itemList=[]; //二级导航菜单
+    vb.menuList=[];//叶子菜单
+    menus.forEach(function(rec){
+        if(rec.c_type===&#x27;N&#x27; &amp;&amp; rec.isAllow){
+            if(rec.c_pid===1){
+                if(vb.navList.length===0){
+                    rec.liStyle=&quot;class=active&quot;;
+                }
+                vb.navList.push(rec);
+            }else{
+                vb.itemList.push(rec);
+            }
+        }else{
+            if(rec.c_type==&#x27;M&#x27; &amp;&amp; rec.isAllow){
+              vb.menuList.push(rec);
+            }
+        }
+    });
+
+    // global.debug(vb.itemList);
+    this.assign(&#x27;vb&#x27;,vb);
+    return this.display();
+  }
+
+    /**
+     * 用户登录界面，get方式显示登录页面，post方式执行用户登录，如果成功则将用户信息写入session并引导到index页面,
+     * 期间判断是否有权限登录所选择的账套
+     * @method  login
+     * @return {Promise}
+     */
+    async loginAction(){
+        //let vb ={msg:&#x27;请选择您有权限登录的账套。&#x27;};
+        let vb ={msg:&#x27;演示用户：defans  密码：123456&#x27;};
+        vb.groups = await this.model(&#x27;code&#x27;).getGroups();
+        if(this.method() == &#x27;get&#x27;){
+            vb.loginName=&#x27;&#x27;;
+           // global.debug(vb);
+        }else{
+            let user = await this.model(&#x27;user&#x27;).getUserByLogin(this.post(&#x27;loginName&#x27;),this.post(&#x27;loginPwd&#x27;));
+            //global.debug(user);
+            if(!think.isEmpty(user)){
+                if(user.c_status != 0){
+                    vb.loginName = this.post(&#x27;loginName&#x27;);
+                    vb.msg = &#x27;请等候管理员审核，谢谢！&#x27;;
+                    this.assign(&#x27;vb&#x27;,vb);
+                    return this.display();
+                }
+                //判断是否有权限登录所选择的账套
+                let groups = this.model(&#x27;groupuser&#x27;).getLoginGroups(this.post(&#x27;loginGroup&#x27;), user.id);
+                if(think.isEmpty(groups)){
+                    vb.loginName = this.post(&#x27;loginName&#x27;);
+                    vb.msg = &#x27;对不起，您不能登录该账套！&#x27;;
+                    this.assign(&#x27;vb&#x27;,vb);
+                    return this.display();
+                }else {
+                    user.ip = this.ip();
+                    user.urlLast = &#x27;/admin/index/index&#x27;;
+                    user.groupID = parseInt(this.post(&#x27;loginGroup&#x27;));
+                    user.groupName = await this.model(&#x27;code&#x27;).getNameById(user.groupID);
+                    user.groups = groups;
+                    //console.log(user);
+                    await this.model(&#x27;login&#x27;).addLogin(user);
+                    await this.session(&#x27;user&#x27;, user);
+                    return this.redirect(&#x27;/admin/index/index&#x27;);
+                }
+            }else{
+                vb.loginName = this.post(&#x27;loginName&#x27;);
+                vb.msg = &#x27;用户名或密码错误！&#x27;;
+                this.assign(&#x27;vb&#x27;,vb);
+                return this.display();
+            }
+        }
+        vb.msgCount = 0;
+        this.assign(&#x27;vb&#x27;,vb);
+        return this.display();
+    }
+
+    /**
+     * 用户登出，清除session中的用户信息并引导至用户登录页面
+     * @method  exitLogin
+     * @return {Promise}
+     */
+    async exitLoginAction(){
+        await this.model(&#x27;login&#x27;).exitLogin(await this.session(&#x27;user&#x27;));
+        await this.session(&#x27;user&#x27;,null);
+        return this.redirect(&#x27;/admin/index/login&#x27;);
+    }
+
+    /**
+     * 用户密码修改页面，get方式显示编辑页面，post方式执行密码修改
+     * @method  loginPwdEdit
+     * @return {Promise}
+     */
+    async loginPwdEditAction(){
+        if(this.method() === &#x27;get&#x27;){
+            return this.display();
+        }else{
+            let user = await this.session(&#x27;user&#x27;);
+            await this.model(&#x27;t_user&#x27;).where({id:user.id}).update({c_login_pwd:think.md5(this.post(&#x27;newPwd&#x27;))});
+            await this.cache(&quot;users&quot;,null);  //清除users缓存
+            return this.json({statusCode:200, message:&#x27;密码已修改，请牢记！&#x27;});
+        }
+    }
+
+    async keepConnectDbAction(){
+        let cnt = await this.model(&#x27;t_code&#x27;).count();
+        if(cnt &gt;0){
+            return this.json({statusCode:200, message:&#x27;DB is openning &#x27;})
+        }else{
+            return this.json({statusCode:200, message:&#x27;DB has closed &#x27;})
+        }
+
+    }
+    //开始定时器
+    timerStartAction(){
+        if(this.ip() != &quot;127.0.0.1&quot;){
+            return this.json({statusCode:300,message:&quot;timer is not start! &quot;+this.ip()});
+        }
+        if(!think.isObject(global.timer)){
+            global.timer = setInterval(function() {
+                request(&#x27;http://127.0.0.1:8300/admin/index/keep_connect_db&#x27;, function (error, response, body) {
+                    if (!error) {
+                        console.log(body);
+                    } else {
+                        //console.log(&quot;error: &quot; + error);
+                    }
+                });
+            }, 600000);
+            return this.json({statusCode:200,message:&quot;timer is start! &quot;+this.ip()});
+        }
+        return this.json({statusCode:200,message:&quot;timer has be started! &quot;+this.ip()});
+    }
+
+    //停止定时器
+    timerStopAction(){
+        if(this.ip() != &quot;127.0.0.1&quot;){
+            return this.json({statusCode:300,message:&quot;timer is not stop! &quot;+this.ip()});
+        }
+        if(think.isObject(global.timer)){
+            clearInterval(global.timer);
+            global.timer = null;
+            return this.json({statusCode:200,message:&quot;timer is stop! &quot;+this.ip()});
+        }
+        return this.json({statusCode:300,message:&quot;timer is not exist! &quot;+this.ip()});
+    }
+
+    homeAction(){
+        return this.display();
+    }
+    gitAction(){
+        return this.display();
+    }
+
+}
+    </pre>
+</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<a id="gotoTop" class='well well-small' href='#'>
+    Top
+</a>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/doc.js"></script>
+</body>
+</html>

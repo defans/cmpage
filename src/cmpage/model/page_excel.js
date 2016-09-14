@@ -8,13 +8,23 @@
 // +----------------------------------------------------------------------
 
 /**
- * excel model
+ @module cmpage.model
+ */
+
+/**
+ * 实现了excel导出等处理，可继承本类做定制化的excel文件导出
+ * @class cmpage.model.page_excel
  */
 var nodeExcel = require('excel-export');
 
 export default class extends think.model.base {
+
     /**
      * 根据查询结果集和模块的列设置把数据导出成excel文件
+     * @method  excelExport
+     * @return {object}  excel文件格式的对象
+     * @param   {object} data  结果记录集对象
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
     async excelExport(data,page) {
         let conf = {};
@@ -41,7 +51,12 @@ export default class extends think.model.base {
         return nodeExcel.execute(conf);
     }
 
-    //得到某一列的excel样式设置
+    /**
+     * 根据业务模块显示列的设置信息得到某一列的excel样式
+     * @method  getColStyle
+     * @return {object}  excel列的样式对象
+     * @param   {object} col  业务模块显示列的设置,某个字段
+     */
     getColStyle(col){
         let ret = {};
         if(['decimal','int4','integer','float'].indexOf(col.c_coltype) !== -1){
@@ -51,7 +66,14 @@ export default class extends think.model.base {
         }
         return ret;
     }
-    //得到某一行某一列的值
+
+    /**
+     * 根据业务模块显示列的设置信息得到某一行某一列的值，子类中重写本方法，可以定制输出值
+     * @method  getColData
+     * @return {object}  excel列的样式对象
+     * @param   {object} item  记录对象，一条
+     * @param   {object} col  业务模块显示列的设置,某个字段
+     */
     async getColData(item,col){
         if (!think.isEmpty(col.c_format) && col.c_coltype === "decimal") {
             return global.formatNumber(item[col.c_column], {pattern: col.c_format});

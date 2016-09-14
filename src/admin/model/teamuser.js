@@ -6,15 +6,22 @@
 // +----------------------------------------------------------------------
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
+/**
+ @module admin.model
+ */
 
 /**
- * model
+ * 账套与用户操作类，并配合界面操作输出相应HTML，
+ * @class admin.model.teamuser
  */
 import CMPage from '../../cmpage/model/page.js';
 
 export default class extends CMPage {
     /**
-     * 取查询项的设置，结合POST参数，得到Where字句
+     * 重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句
+     * @method  getQueryWhere
+     * @return {string}  where条件子句
+     * @param {Object} page  页面设置主信息
      */
     async getQueryWhere(page){
       let where =await super.getQueryWhere(page);
@@ -23,8 +30,11 @@ export default class extends CMPage {
       return where +' and c_team='+parms.c_team;
     }
     /**
-    * 编辑页面保存
-    */
+     * 重写父类的 htmlGetOther 方法，输出额外的按钮和js函数
+     * @method  htmlGetOther
+     * @return {string}  html片段
+     * @param {Object} page  页面设置主信息
+     */
     async htmlGetOther(page){
       let parms =JSON.parse(page.parmsUrl);
       return `<a class="btn btn-green" href="/cmpage/page/list?modulename=TeamUserAdd&c_team=${parms.c_team}"
@@ -62,36 +72,5 @@ export default class extends CMPage {
         `;
     }
 
-    /**
-     * 取某个用户登录账套及其所有子帐套
-     */
-    async getLoginTeams(userID,teamID){
-        //假设账套不超过3层
-        let codeModel = this.model('code');
-        let cnt = await this.model('t_team_user').where({c_team:teamID, c_user:userID}).count();
-        if(cnt == 0){
-            let teamMd = await codeModel.getCodeById(teamID);
-            if(!teamMd || teamMd.c_pid==0){
-                return '';
-            }
-            cnt = await this.model('t_team_user').where({c_team:teamMd.c_pid, c_user:userID}).count();
-            if(cnt == 0) {
-                let teamMd = await codeModel.getCodeById(teamMd.c_pid);
-                if (!teamMd || teamMd.c_pid == 0) {
-                    return '';
-                }
-                cnt = await this.model('t_team_user').where({c_team:teamMd.c_pid, c_user:userID}).count();
-                if(cnt ==0 ){
-                    return '';
-                }
-            }
-        }
-        let teams = await codeModel.getTreeList(teamID);
-        //global.debug(teams);
-        let ret = [];
-        ret.push(teamID);
-        for(let team of teams){ ret.push(team.id); }
 
-        return ret.join(',');
-    }
 }

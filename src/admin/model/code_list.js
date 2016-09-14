@@ -6,14 +6,21 @@
 // +----------------------------------------------------------------------
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
-
-import CMPage from '../../cmpage/model/page.js';
 /**
- * 代码于参数设置，单层的CRUD操作
+ @module admin.model
  */
+
+/**
+ * 代码于参数设置的页面展示及操作类，单层的CRUD，配合 cmpage/controller/page.js 中的相关调用，继承自 cmpage/model/page.js
+ * @class admin.model.code_list
+ */
+import CMPage from '../../cmpage/model/page.js';
 export default class extends CMPage {
     /**
-     * 取查询项的设置，结合POST参数，得到Where字句
+     * 重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句
+     * @method  getQueryWhere
+     * @return {string}  where条件子句
+     * @param {Object} page  页面设置主信息
      */
     async getQueryWhere(page){
         let where =await super.getQueryWhere(page);
@@ -22,7 +29,11 @@ export default class extends CMPage {
         return where +' and c_pid='+parmsUrl.c_pid;
     }
     /**
-     * 初始化编辑页面的值
+     * 重写父类的 pageEditInit 方法，对初始化编辑页面的值进行修改
+     * @method  pageEditInit
+     * @return {string}  where条件子句
+     * @param {Object} pageEdits  编辑页面的设置信息
+     * @param {Object} page  页面设置主信息
      */
     async pageEditInit(pageEdits,page){
         let md = await super.pageEditInit(pageEdits,page);
@@ -36,6 +47,13 @@ export default class extends CMPage {
         //console.log(md);
         return md;
     }
+    /**
+     * 重写父类的 pageSave 方法，保存参数后清除code表的缓存
+     * @method  pageSave
+     * @return {Object}  保存的数据表记录的对象
+     * @param {Object} page  页面设置主信息
+     * @param {Object} parms  编辑页面传回的FORM参数
+     */
     async pageSave(page,parms){
         let ret = await super.pageSave(page, parms);
         this.model('code').clearCodeCache();

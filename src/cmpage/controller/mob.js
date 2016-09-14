@@ -7,14 +7,22 @@
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
 
+/**
+ @module cmpage.controller
+ */
 
+/**
+ * 移动端，业务模块展示及常用操作的URL接口
+ * @class cmpage.controller.mob
+ */
 import Base from './base.js';
 
 export default class extends Base {
     /**
-    * 模块主界面，列表数据
-    * @return {JSON}
-    */
+     * 业务模块展示的主界面，分页列表，POST调用： /cmpage/mob/list
+     * @method  list
+     * @return {json}  包含HTML片段
+     */
     async listAction(){
         let vb={};
         let module = this.model("cmpage/module");
@@ -67,8 +75,9 @@ export default class extends Base {
 
 
     /**
-     * APP端模块编辑界面，数据展示
-     * @return {JSON}
+     * 业务模块的编辑页面，调用： /cmpage/mob/edit
+     * @method  edit
+     * @return {json}  包含HTML片段
      */
     async editAction() {
         let page = await this.model('cmpage/module').getModuleByName(this.post('modulename'));
@@ -83,8 +92,9 @@ export default class extends Base {
     }
 
     /**
-     * 模块编辑界面，保存记录
-     * @return {JSON}
+     * 保存业务模块记录信息， POST调用： /cmpage/mob/save
+     * @method  save
+     * @return {json}
      */
     async saveAction(){
         let parms =this.post();
@@ -112,8 +122,9 @@ export default class extends Base {
     }
 
     /**
-     * APP端模块查看界面
-     * @return {JSON}
+     * 业务模块的查看页面，一般调用： /cmpage/mob/view
+     * @method  view
+     * @return {promise}  HTML片段
      */
     async viewAction() {
         let page = await this.model("cmpage/module").getModuleByName(this.get('modulename'));

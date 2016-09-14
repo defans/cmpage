@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src\cmpage\cmpage_global.js</title>
+  
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-smart">
+ <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+               <a class="navbar-brand mainlogo" href="/static/doc/index.html">
+             
+            <img alt="" src="../assets/css/logo.png" title="">
+            
+                
+          </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                 <ul class="nav navbar-nav">
+                    
+                    <li><a href="/home/index/index">首页</a>
+                    </li>
+                    
+                    <li><a href="/static/doc/index.html">文档</a>
+                    </li>
+                    
+                    <li><a href="/admin/index/index">演示</a>
+                    </li>
+                    
+                    <li><a href="/home/index/log">日志</a>
+                    </li>
+                    
+                </ul>
+               <div class="navbar-form navbar-right filterAPi" autocomplete="off">
+                <input type="text" id='txtSearchAPI' class="form-control search-query" placeholder="Search for API" />
+                 <ul id="filterList" class="filterItems dropdown-menu" role="menu"></ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="sidebar">
+    <h3>Modules/Classes</h3>
+        <div id="api-tabview-filter">
+            <input id='txtSearch' type="search" class="form-control" placeholder="Type to filter Modules/Classes">
+        </div>
+        <dl id="sidebar_list">
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/admin.controller.html">admin.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/admin.controller.base.html">admin.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.code.html">admin.controller.code</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.index.html">admin.controller.index</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.mob.html">admin.controller.mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/admin.model.html">admin.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/admin.model.code.html">admin.model.code</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.code_list.html">admin.model.code_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.groupuser_add.html">admin.model.groupuser_add</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.log.html">admin.model.log</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.login.html">admin.model.login</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.privilege.html">admin.model.privilege</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.teamuser.html">admin.model.teamuser</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.teamuser_add.html">admin.model.teamuser_add</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.user.html">admin.model.user</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.controller.html">cmpage.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.base.html">cmpage.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.mob.html">cmpage.controller.mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.module.html">cmpage.controller.module</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.page.html">cmpage.controller.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.utils.html">cmpage.controller.utils</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.logic.html">cmpage.logic</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.logic.page.html">cmpage.logic.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.model.html">cmpage.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.area.html">cmpage.model.area</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_mob.html">cmpage.model.page_mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.utils.html">cmpage.model.utils</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.cmpage_global.html">cmpage.cmpage_global</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+        </dl>
+</div>
+   
+    <div class="stdoc-content">
+        <!--     <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+ -->
+        <div class="apidocs">
+            <div id="docs-main">
+                <div class="content">
+                    <div class="page-header">
+    <h1>src\cmpage\cmpage_global.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums" id='src_code'>
+&#x27;use strict&#x27;;
+
+/**
+ @module cmpage.model
+ */
+
+/**
+ * cmpage的全局方法和变量设置，置入（Object.assign）thinkjs 的 global 中
+ * @class cmpage.cmpage_global
+ */
+
+import moment from &#x27;moment&#x27;;
+
+export default class extends think.base {
+
+    /************************************数字值的格式化输出 **************************************/
+    _format = function(pattern,num,z){
+        let j = pattern.length &gt;= num.length ? pattern.length : num.length ;
+        let p = pattern.split(&quot;&quot;);
+        let n = num.split(&quot;&quot;);
+        let bool = true,nn =&quot;&quot;;
+        for(let i=0;i&lt;j;i++){
+            let x = n[n.length-j+i];
+            let y = p[p.length-j+i];
+            if( z == 0){
+                if(bool){
+                    if( ( x &amp;&amp; y &amp;&amp; (x !=&quot;0&quot;|| y ==&quot;0&quot;)) || ( x &amp;&amp; x !=&quot;0&quot;&amp;&amp; !y ) || ( y &amp;&amp; y ==&quot;0&quot;&amp;&amp; !x ) ){
+                        nn += x ? x :&quot;0&quot;;
+                        bool = false;
+                    }
+                } else {
+                    nn += x ? x :&quot;0&quot;;
+                }
+            } else {
+                if( y &amp;&amp; ( y ==&quot;0&quot;|| ( y ==&quot;#&quot;&amp;&amp; x ) ))
+                    nn += x ? x :&quot;0&quot;;
+            }
+        }
+        return nn;
+    };
+    _formatNumber = function(numChar,pattern){
+        let patterns = pattern.split(&quot;.&quot;);
+        let numChars = numChar.split(&quot;.&quot;);
+        let z = patterns[0].indexOf(&quot;,&quot;) == -1 ? -1 : patterns[0].length - patterns[0].indexOf(&quot;,&quot;) ;
+        let num1 = this._format(patterns[0].replace(&quot;,&quot;),numChars[0],0);
+        let num2 = this._format(patterns[1]?patterns[1].split(&#x27;&#x27;).reverse().join(&#x27;&#x27;):&quot;&quot;, numChars[1]?numChars[1].split(&#x27;&#x27;).reverse().join(&#x27;&#x27;):&quot;&quot;,1);
+        num1 = num1.split(&quot;&quot;).reverse().join(&#x27;&#x27;);
+        let reCat = eval(&quot;/[0-9]{&quot;+ (z-1) +&quot;,&quot;+ (z-1) +&quot;}/gi&quot;);
+        let arrdata = z &gt; -1 ? num1.match(reCat) : undefined ;
+        if( arrdata &amp;&amp; arrdata.length &gt; 0 ){
+            let w = num1.replace(arrdata.join(&#x27;&#x27;),&#x27;&#x27;);
+            num1 = arrdata.join(&#x27;,&#x27;) + ( w ==&quot;&quot;?&quot;&quot;:&quot;,&quot;) + w ;
+        }
+        num1 = num1.split(&quot;&quot;).reverse().join(&quot;&quot;);
+        return (num1 ==&quot;&quot;?&quot;0&quot;: num1) + (num2 !=&quot;&quot;?&quot;.&quot;+ num2.split(&quot;&quot;).reverse().join(&#x27;&#x27;) :&quot;&quot;);
+    };
+
+    /**
+     * 有小数的格式化输出
+     * @method  formatNumber
+     * @return  {string}  格式化输出
+     * @param   {float} mum 需要格式化的数值
+     * @param   {object} opt 格式化配置对象，一般中业务模块的列设置中制定格式如： #####0.00
+     */
+    formatNumber = function(num,opt){
+        if(think.isEmpty(opt.pattern)){
+            return num.toString();
+        }
+        let reCat = /[0#,.]{1,}/gi;
+        let zeroExc = opt.zeroExc == undefined ? true : opt.zeroExc ;
+        let pattern = opt.pattern.match(reCat)[0];
+        let numChar = num.toString();
+        return !(zeroExc &amp;&amp; numChar == 0) ? opt.pattern.replace(pattern,this._formatNumber(numChar,pattern)) : opt.pattern.replace(pattern,&quot;0&quot;);
+    };
+
+    /***************************对象处理 **************************************/
+    //取对象的所有属性描述
+    getOwnPropertyDescriptors = function(obj) {
+        let result = {};
+        for (let key of Reflect.ownKeys(obj)) {
+            result[key] = Object.getOwnPropertyDescriptor(obj, key);
+        }
+        return result;
+    };
+
+    /**
+     * 拷贝对象的某些属性到另一个对象
+     * @method  objPropertysFromOtherObj
+     * @return  {object}  新的对象，其属性集是源对象的子集
+     * @param   {object} fromObj 源对象
+     * @param   {Array} arrProps 需要COPY的熟悉数组
+     */
+    objPropertysFromOtherObj = function(toObj, fromObj, arrProps){
+        let ret = {};
+        Object.assign(ret,toObj);
+        for(let key of arrProps){
+            ret[key] = fromObj[key];
+        }
+        return ret;
+    };
+
+    /**
+     * 进行CRUD之前转换成合适的值，用来匹配 thinkjs 的CRUD方法
+     * @method  checksql
+     * @return  {object}  新的对象，其属性已做SQL特性匹配
+     * @param   {object} fromObj 记录对象
+     */
+    checksql = (obj) =&gt;{
+//        let ret = {};
+        for (let key of Reflect.ownKeys(obj)) {
+            let val =obj[key];
+            if(think.isBoolean(val) &amp;&amp; think.config(&quot;db.type&quot;)===&#x27;mysql&#x27;){
+                obj[key] = val ? 1: 0;
+            }
+        }
+        return obj;
+    };
+
+    /***************************其他的全局方法 **************************************/
+    debug = (msg)=&gt;{
+        if(think.env === &#x27;development&#x27;)
+            console.log(think.isObject(msg) ? JSON.stringify(msg).replace(/\&quot;/g,&#x27;&#x27;).replace(/\\/g,&#x27;&#x27;).replace(/,/g,&#x27;,  &#x27;) : msg);
+    };
+    log = (msg)=&gt;{
+        console.log(msg);
+    };
+
+    /**
+     * 通过形如：demo/customer 参数返回model，数据库配置采用model所在模块的配置
+     * @method  model
+     * @return  {object}  thinkjs.model 对象
+     * @param   {string} path 业务模块的实现类设置
+     * @param   {string} defaultPath 业务模块默认的实现类
+     */
+    model = (path, defaultPath) =&gt;{
+        defaultPath = think.isEmpty(defaultPath) ? &#x27;cmpage/page&#x27;:defaultPath;
+        path = think.isEmpty(path) ? defaultPath : path;
+        //console.log(path);
+        let ps = path.split(&#x27;/&#x27;);
+        let config =think.config(&#x27;db&#x27;,undefined,ps[0]);
+        if(think.isEmpty(config)){
+            config =think.config(&#x27;db&#x27;,undefined,&#x27;common&#x27;);
+        }
+        return think.model(ps[1],config, ps[0]);
+    };
+
+    /**
+     * 时间格式化输出
+     * @method  model
+     * @return  {string}  格式化输出
+     * @param   {object} date 需要格式化的日期对象
+     * @param   {string} format 格式： 如： yyyy-MM-dd HH:mm:ss
+     */
+    datetime = (date,format) =&gt; {
+        if(think.isEmpty(format)){
+            format = &#x27;YYYY-MM-DD&#x27;;
+        }
+        if(think.isEmpty(date)){
+            return moment().format(format.replace(/yyyy-MM-dd/,&#x27;YYYY-MM-DD&#x27;).trim());
+        }else{
+            return moment(date).format(format.replace(/yyyy-MM-dd/,&#x27;YYYY-MM-DD&#x27;).trim());
+        }
+    };
+
+    /**
+     * cmpage的全局变量初始化，如enum等
+     * @method  cmpageInit
+     * @return  {无}
+     */
+    cmpageInit = () =&gt;{
+        //用 c_ 开头,值&gt;0 ,是为了和数据库中一致
+        global.enumStatusExecute = {
+            SUCCESS: {id:1, c_name:&#x27;执行成功&#x27;},
+            FAIL: {id:2, c_name:&#x27;执行失败&#x27;},
+            ERROR: {id:3, c_name:&#x27;执行错误&#x27;}
+        };
+
+        global.enumLogType = {
+            ADD: {id:1, c_name:&#x27;新增&#x27;},
+            UPDATE: {id:2, c_name:&#x27;修改&#x27;}
+        };
+
+        //工作流相关参数
+        global.enumProcType = {
+            NORMAL: {id:1, c_name:&#x27;常规类型&#x27;},
+            APPROVE: {id:2, c_name:&#x27;审核类型&#x27;}
+        };
+        global.enumProcWayCreate = {
+            MAN: {id:1, c_name:&#x27;手动执行&#x27;},
+            TRIGGER: {id:2, c_name:&#x27;自动触发&#x27;},
+            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+        };
+        global.enumProcAssignType = {
+            ALL: {id:1, c_name:&#x27;所有人&#x27;},
+            DEPT: {id:2, c_name:&#x27;部门&#x27;},
+            ROLE: {id:3, c_name:&#x27;角色&#x27;},
+            TEAM: {id:4, c_name:&#x27;团队&#x27;},
+            USER: {id:5, c_name:&#x27;用户&#x27;},
+            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+        };
+        global.enumActType = {
+            NORMAL_MAN: {id:1, c_name:&#x27;人为参与&#x27;},
+            NORMAL_AUTO: {id:2, c_name:&#x27;自动执行&#x27;},
+            BEGIN: {id:3, c_name:&#x27;开始节点&#x27;},
+            DUMMY: {id:4, c_name:&#x27;哑活动&#x27;},
+            END: {id:9, c_name:&#x27;结束节点&#x27;}
+        };
+        global.enumActFromRule = {
+            ORDER: {id:1, c_name:&#x27;顺序&#x27;},
+            AND_JOIN: {id:2, c_name:&#x27;与汇聚&#x27;},
+            OR_JOIN: {id:3, c_name:&#x27;或汇聚&#x27;},
+            VOTES_JOIN: {id:4, c_name:&#x27;投票汇聚&#x27;},
+            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+        };
+        global.enumActToRule = {
+            ORDER: {id:1, c_name:&#x27;顺序&#x27;},
+            AND_SPLIT: {id:2, c_name:&#x27;与分支&#x27;},
+            OR_SPLIT: {id:3, c_name:&#x27;或分支&#x27;},
+            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+        };
+        global.enumActCcRule = {
+            NO: {id:1, c_name:&#x27;不通知&#x27;},
+            MAN: {id:2, c_name:&#x27;手动通知&#x27;},
+            AUTO: {id:3, c_name:&#x27;自动发送&#x27;},
+            MAN_AND_AUTO: {id:4, c_name:&#x27;手动和自动&#x27;},
+            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+        };
+        global.enumActJumpRule = {
+            NO: {id:1, c_name:&#x27;不能跳转&#x27;},
+            FORWARD: {id:2, c_name:&#x27;向前跳转&#x27;},
+            BACK: {id:3, c_name:&#x27;向后跳转&#x27;},
+            ANY: {id:4, c_name:&#x27;任意跳转&#x27;},
+            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+        };
+        global.enumActBackRule = {
+            NO: {id:1, c_name:&#x27;不能回退&#x27;},
+            PREV: {id:2, c_name:&#x27;退到上一步&#x27;},
+            ANY: {id:4, c_name:&#x27;退到任意步&#x27;},
+            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+        };
+        global.enumActAssignType = {
+            DEPT: {id:2, c_name:&#x27;部门&#x27;},
+            ROLE: {id:3, c_name:&#x27;角色&#x27;},
+            TEAM: {id:4, c_name:&#x27;团队&#x27;},
+            USER: {id:5, c_name:&#x27;用户&#x27;},
+            SELF: {id:6, c_name:&#x27;发起人自己&#x27;},
+            PREV: {id:7, c_name:&#x27;上一步执行人&#x27;},
+            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+        };
+        global.enumActAssignWay = {
+            ALL: {id:1, c_name:&#x27;所有人&#x27;},
+            LEAST_WORKING_LIST: {id:2, c_name:&#x27;最少工作量&#x27;},   //任务将分配给指定群体中的工作量最少的人员，工作量的多少可以通过TO_DO_TASK_LIST的统计数据得到
+            FCFA: {id:3, c_name:&#x27;先来先分配&#x27;},   //（First Coming First Assigning）
+            PRIORITY: {id:4, c_name:&#x27;优先数大者&#x27;},   //基于优先数分配（c_type==ROLE），每个角色中的人员都有一个优先数，数大者得
+            ROUND_ROBIN: {id:5, c_name:&#x27;令牌轮转&#x27;},    //轮转法（c_type==ROLE），ROUND_ROBIN_TOKEN为轮转令牌，任务将分配给携有轮转令牌的人员
+            SELECT: {id:6, c_name:&#x27;提供选择&#x27;}   //，上一个活动的执行人来选择
+        };
+        global.enumActAssignTypeExe = {
+            EXE: {id:1, c_name:&#x27;执行&#x27;},
+            EXE_AND_BEFORE_CC: {id:2, c_name:&#x27;执行并事前通知&#x27;},
+            AFTER_CC: {id:3, c_name:&#x27;事后通知&#x27;}
+        };
+        global.enumTaskStatus = {
+            INIT: {id:1, c_name:&#x27;初始化&#x27;},
+            RUN: {id:2, c_name:&#x27;运行中&#x27;},
+            SUSPEND: {id:3, c_name:&#x27;挂起&#x27;},
+            TERMINATE: {id:4, c_name:&#x27;终止&#x27;},
+            END: {id:9, c_name:&#x27;完成&#x27;}
+        };
+        global.enumTaskActStatus = {
+            NO_BEGIN: {id:1, c_name:&#x27;未开始&#x27;},
+            INIT: {id:2, c_name:&#x27;初始化&#x27;},
+            WAIT: {id:2, c_name:&#x27;等待中&#x27;},
+            RUN: {id:4, c_name:&#x27;运行中&#x27;},
+            SUSPEND: {id:5, c_name:&#x27;挂起&#x27;},
+            PENDING: {id:6, c_name:&#x27;汇聚中&#x27;},
+            TERMINATE: {id:7, c_name:&#x27;终止&#x27;},
+            END: {id:9, c_name:&#x27;完成&#x27;}
+        };
+
+    };
+
+    /***************************根据参数对象生成新增和修改的SQL语句 ************ 已经废弃 **************************/
+    //parseValue = function(value){
+    //    if (think.isString(value)) {
+    //        value = &#x27;\&#x27;&#x27; + value + &#x27;\&#x27;&#x27;;
+    //    }else if(think.isArray(value)){
+    //        if (/^exp$/.test(value[0])) {
+    //            value = value[1];
+    //        }else{
+    //            value = value.map(item =&gt; this.parseValue(item));
+    //        }
+    //    }else if(think.isBoolean(value)){
+    //        value = value ? &#x27;TRUE&#x27; : &#x27;FALSE&#x27;;
+    //    }else if (value === null) {
+    //        value = &#x27;null&#x27;;
+    //    }
+    //    return value;
+    //};
+    //
+    ///**
+    // * data: {c_id:0,c_name:&#x27;testName&#x27;, ...}
+    // * table: 表名
+    // */
+    //getInsertSql = function(data, table){
+    //    let values = [];
+    //    let fields = [];
+    //    for(let key in data){
+    //        if(/^c_\w+/.test(key) &amp;&amp; key !=&#x27;c_id&#x27;) {
+    //            let val = data[key];
+    //            val = this.parseValue(val);
+    //            values.push(val);
+    //            fields.push(key);
+    //        }
+    //    }
+    //    let sql =  &#x27;INSERT INTO &#x27; + table + &#x27; (&#x27; + fields.join(&#x27;,&#x27;) + &#x27;)&#x27;;
+    //    sql += &#x27; VALUES (&#x27; + values.join(&#x27;,&#x27;) + &#x27;)&#x27;;
+    //    return sql;
+    //};
+    //
+    //getUpdateSql = function(data, table){
+    //    let sql =&#x27;&#x27;;
+    //    if(data.c_id &gt;0) {
+    //        let fields = [];
+    //        for (let key in data) {
+    //            if (/^c_\w+/.test(key) &amp;&amp; key != &#x27;c_id&#x27;) {
+    //                let val = data[key];
+    //                val = this.parseValue(val);
+    //                fields.push(key + &#x27;=&#x27; + val);
+    //            }
+    //        }
+    //        sql = &#x27;UPDATE &#x27; + table +&#x27; SET &#x27;+ fields.join(&#x27;,&#x27;) +&#x27; WHERE c_id=&#x27;+data.c_id;
+    //    }
+    //    return sql;
+    //};
+
+}
+    </pre>
+</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<a id="gotoTop" class='well well-small' href='#'>
+    Top
+</a>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/doc.js"></script>
+</body>
+</html>

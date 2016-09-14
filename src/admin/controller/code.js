@@ -6,15 +6,24 @@
 // +----------------------------------------------------------------------
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
+/**
+ @module admin.controller
+ */
 
+/**
+ * 代码与参数模块的RUL接口，包括常用参数设置、权限相关配置
+ * @class admin.controller.code
+ */
 import Base from './base.js';
 
 export default class extends Base {
-  /**
-   * 代码树，输入根节点ID为参数
-   * 点击某个节点，右侧显示其子节点列表，增删改后更新左侧树
-   * /admin/code_tree?rootid=1
-   */
+    /**
+     * 取代码树，输入根节点ID为参数 <br/>
+     * 点击某个节点，右侧显示其子节点列表，增删改后更新左侧树 <br/>
+     * RUL调用如：/admin/code_tree?rootid=1 <br/>
+     * @method codeTree
+     * @return {json}   t_code记录对象的数组，多层
+     */
   async codeTreeAction(){
     let vb={};
     vb.rootID=this.http.get('rootid');
@@ -26,7 +35,11 @@ export default class extends Base {
     return this.display();
   }
 
-  //账套用户设置
+    /**
+     * 账套用户设置的主界面
+     * @method groupUserMain
+     * @return {json}
+     */
   async groupUserMainAction(){
     let model = this.model('code');
     let treeList =await model.getTreeList(2,true);
@@ -34,7 +47,11 @@ export default class extends Base {
     return this.display();
   }
 
-    //增加某帐套的用户
+    /**
+     * 增加某帐套的用户
+     * @method groupUserAdd
+     * @return {json}
+     */
     async groupUserAddAction(){
         let groupID = this.get('groupID');
         let userIds = this.get('userIds').split(',');
@@ -43,13 +60,21 @@ export default class extends Base {
         }
         return this.json({statusCode:200,message:'用户加入成功!'});
     }
-    //删除某帐套的用户
+    /**
+     * 删除某帐套的用户
+     * @method groupUserDel
+     * @return {json}
+     */
     async groupUserDelAction(){
         await this.model('t_group_user').where(` c_user in(${this.get('userIds')})`).delete();
         return this.json({statusCode:200,message:'用户删除成功!'});
     }
 
-    //团队用户设置
+    /**
+     * 团队用户设置的主界面
+     * @method teamUserMain
+     * @return {json}
+     */
     async teamUserMainAction(){
         let model = this.model('code');
         let treeList =await model.getTreeList(7,true);
@@ -57,7 +82,11 @@ export default class extends Base {
         return this.display();
     }
 
-    //增加某团队的用户
+    /**
+     * 增加某团队的用户
+     * @method teamUserAdd
+     * @return {json}
+     */
     async teamUserAddAction(){
         let teamID = this.get('teamID');
         let userIds = this.get('userIds').split(',');
@@ -66,13 +95,21 @@ export default class extends Base {
         }
         return this.json({statusCode:200,message:'用户加入成功!'});
     }
-    //删除某团队的用户
+    /**
+     * 删除某团队的用户
+     * @method teamUserDel
+     * @return {json}
+     */
     async teamUserDelAction(){
         await this.model('t_team_user').where(` c_user in(${this.get('userIds')})`).delete();
         return this.json({statusCode:200,message:'用户删除成功!'});
     }
 
-  //角色权限设置
+    /**
+     * 角色权限设置主界面
+     * @method rolePrivilege
+     * @return {json}
+     */
   async rolePrivilegeAction(){
     let model = this.model('code');
     let treeList =await model.getTreeList(3,true);
@@ -81,7 +118,11 @@ export default class extends Base {
     return this.display();
   }
 
-  //某个角色权限数展示
+    /**
+     * 某个角色的权限集合展示，树状结构
+     * @method roleGetPrivilegeTree
+     * @return {json}
+     */
   async roleGetPrivilegeTreeAction(){
     let roleID = this.http.post('roleID');
     let treeList =await this.model('privilege').roleGetPrivilegeTree(roleID);
@@ -89,7 +130,11 @@ export default class extends Base {
     return this.json(treeList);
   }
 
- //保存某个角色的权限设置
+    /**
+     * 保存某个角色的权限设置
+     * @method roleSavePrivilege
+     * @return {json}
+     */
   async roleSavePrivilegeAction(){
     let parms =this.http.post();
     //global.debug(rec);
