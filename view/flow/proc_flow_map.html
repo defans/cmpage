@@ -1,0 +1,179 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script src="/static/bjui/js/jquery-1.7.2.min.js"></script>
+    <!--<link type="text/css" href="/static/css/index.css"  rel="stylesheet" />-->
+
+    <link type="text/css" href="/static/fw/lib/jquery-ui-1.8.4.custom/css/smoothness/jquery-ui-1.8.4.custom.css"  rel="stylesheet" />
+    <script type="text/javascript" src="/static/fw/lib/jquery-ui-1.8.4.custom/js/jquery-ui-1.8.4.custom.min.js"></script>
+
+    <!--<link type="text/css" href="/static/fw/lib/jquery-ui-1.12.1.custom/jquery-ui.min.css"  rel="stylesheet" />-->
+    <!--<script type="text/javascript" src="/static/fw/lib/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>-->
+
+    <script type="text/javascript" src="/static/fw/lib/raphael-min.js"></script>
+    <script type="text/javascript" src="/static/fw/myflow.js"></script>
+
+    <!--<script type="text/javascript" src="myflow.editors.js"></script>-->
+<style type="text/css">
+    .flow_map {
+        margin: 0;
+        pading: 0;
+        text-align: left;
+        font-family: Arial, sans-serif, Helvetica, Tahoma;
+        font-size: 12px;
+        line-height: 1.5;
+        color: black;
+        background-image: url(/static/fw/img/bg.png);
+    }
+
+    .flow_node {
+        width: 70px;
+        text-align: center;
+        vertical-align: middle;
+        border: 1px solid #fff;
+    }
+
+    .flow_mover {
+        border: 1px solid #ddd;
+        background-color: #ddd;
+    }
+
+    .flow_selected {
+        background-color: #ddd;
+    }
+
+    .flow_state {
+
+    }
+</style>
+
+</head>
+<body>
+<div id="myflow_tools" style="position: absolute; top: 10px; left: 10px; background-color: #fff; width: 70px; cursor: default; padding: 3px;font-size: small;" class="ui-widget-content">
+<input id="fwProcID" type="hidden" value="<%= procID%>" />
+    <div id="myflow_tools_handle" style="text-align: center;height:22px;" class="ui-widget-header">工具集</div>
+
+    <!--<div class="flow_node" id="myflow_save"><img src="/static/fw/img/save.gif" />&nbsp;&nbsp;保存</div>-->
+    <div class="flow_node selectable" id="pointer" ><img src="/static/fw/img/select16.gif" />&nbsp;选择</div>
+    <div >
+        <hr />
+    </div>
+    <div class="flow_node selectable" id="path" ><img src="/static/fw/img/16/flow_sequence.png" />&nbsp;路径</div>
+    <div >
+        <hr />
+    </div>
+    <div class="flow_node flow_state" id="start" type="start" ><img
+            src="/static/fw/img/16/start_event_empty.png" />&nbsp;开始</div>
+    <div class="flow_node flow_state" id="state" type="state"><img
+            src="/static/fw/img/16/task_empty.png" />&nbsp;状态</div>
+    <div class="flow_node flow_state" id="task" type="task"><img
+            src="/static/fw/img/16/task_empty.png" />&nbsp;任务</div>
+    <div class="flow_node flow_state" id="fork" type="fork"><img
+            src="/static/fw/img/16/gateway_parallel.png" />&nbsp;分支</div>
+    <div class="flow_node flow_state" id="join" type="join"><img
+            src="/static/fw/img/16/gateway_parallel.png" />&nbsp;合并</div>
+    <div class="flow_node flow_state" id="end" type="end"><img
+            src="/static/fw/img/16/end_event_terminate.png" />&nbsp;结束</div>
+    <div class="flow_node flow_state" id="end-cancel" type="end-cancel"><img
+            src="/static/fw/img/16/end_event_cancel.png" />&nbsp;取消</div>
+    <div class="flow_node flow_state" id="end-error" type="end-error"><img
+            src="/static/fw/img/16/end_event_error.png" />&nbsp;错误</div>
+</div>
+
+
+<div id="myflow" class="flow_map"></div>
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+    $(function() {
+        var myflow = $.myflow;
+
+        $.extend(true,myflow.config.rect,{
+            attr : {
+                r : 8,
+                fill : '#F6F7FF',
+                stroke : '#03689A',
+                "stroke-width" : 2
+            },margin:0
+        });
+
+        $.extend(true,myflow.config.tools.states,{
+            start : {
+                showType: 'image',
+                type : 'start',
+                name : {text:'<<start>>'},
+                text : {text:'开始'},
+                img : {src : '/static/fw/img/48/start_event_empty.png',width : 48, height:48},
+                attr : {width:50 ,heigth:50 }
+            },
+            end : {showType: 'image',type : 'end',
+                name : {text:'<<end>>'},
+                text : {text:'结束'},
+                img : {src : '/static/fw/img/48/end_event_terminate.png',width : 48, height:48},
+                attr : {width:50 ,heigth:50 }
+            },
+            'end-cancel' : {showType: 'image',type : 'end-cancel',
+                name : {text:'<<end-cancel>>'},
+                text : {text:'取消'},
+                img : {src : '/static/fw/img/48/end_event_cancel.png',width : 48, height:48},
+                attr : {width:50 ,heigth:50 }
+            },
+            'end-error' : {showType: 'image',type : 'end-error',
+                name : {text:'<<end-error>>'},
+                text : {text:'错误'},
+                img : {src : '/static/fw/img/48/end_event_error.png',width : 48, height:48},
+                attr : {width:50 ,heigth:50 }
+            },
+            state : {showType: 'text',type : 'state',
+                name : {text:'<<state>>'},
+                text : {text:'状态'},
+                img : {src : '/static/fw/img/48/task_empty.png',width : 48, height:48}
+            },
+            fork : {showType: 'image',type : 'fork',
+                name : {text:'<<fork>>'},
+                text : {text:'分支'},
+                img : {src : '/static/fw/img/48/gateway_parallel.png',width :48, height:48},
+                attr : {width:50 ,heigth:50 }
+            },
+            join : {showType: 'image',type : 'join',
+                name : {text:'<<join>>'},
+                text : {text:'合并'},
+                img : {src : '/static/fw/img/48/gateway_parallel.png',width :48, height:48},
+                attr : {width:50 ,heigth:50 }
+            },
+            task : {showType: 'text',type : 'task',
+                name : {text:'<<task>>'},
+                text : {text:'任务'},
+                img : {src : '/static/fw/img/48/task_empty.png',width :48, height:48}
+            },
+            decision : {showType: 'image',type : 'decision',
+                name : {text:'<<decision>>'},
+                text : {text:'决定'},
+                img : {src : '/static/fw/img/48/gateway_parallel.png',width :48, height:48},
+                attr : {width:50 ,heigth:50 }
+            }
+        });
+
+        $('#myflow')
+                .myflow(
+                        {
+                            basePath : "",
+                            restore : eval("(<%- flowMap%>)"),
+                            //restore : eval("({states:{rect4:{type:'start',text:{text:'开始'}, attr:{ x:409, y:10, width:50, height:50}, props:{text:{value:'开始'},temp1:{value:''},temp2:{value:''}}},rect5:{type:'task',text:{text:'任务1'}, attr:{ x:386, y:116, width:100, height:50}, props:{text:{value:'任务1'},assignee:{value:''},form:{value:''},desc:{value:''}}},rect6:{type:'fork',text:{text:'分支'}, attr:{ x:410, y:209, width:50, height:50}, props:{text:{value:'分支'},temp1:{value:''},temp2:{value:''}}},rect7:{type:'task',text:{text:'任务2'}, attr:{ x:192, y:317, width:100, height:50}, props:{text:{value:'任务2'},assignee:{value:''},form:{value:''},desc:{value:''}}},rect8:{type:'task',text:{text:'任务3'}, attr:{ x:385, y:317, width:100, height:50}, props:{text:{value:'任务3'},assignee:{value:''},form:{value:''},desc:{value:''}}},rect9:{type:'task',text:{text:'任务4'}, attr:{ x:556, y:320, width:100, height:50}, props:{text:{value:'任务4'},assignee:{value:''},form:{value:''},desc:{value:''}}},rect10:{type:'join',text:{text:'合并'}, attr:{ x:410, y:416, width:50, height:50}, props:{text:{value:'合并'},temp1:{value:''},temp2:{value:''}}},rect11:{type:'end',text:{text:'结束'}, attr:{ x:409, y:633, width:50, height:50}, props:{text:{value:'结束'},temp1:{value:''},temp2:{value:''}}},rect12:{type:'task',text:{text:'任务5'}, attr:{ x:384, y:528, width:100, height:50}, props:{text:{value:'任务5'},assignee:{value:''},form:{value:''},desc:{value:''}}}},paths:{path13:{from:'rect4',to:'rect5', dots:[],text:{text:'TO 任务1'},textPos:{x:37,y:-4}, props:{text:{value:''}}},path14:{from:'rect5',to:'rect6', dots:[],text:{text:'TO 分支'},textPos:{x:56,y:-1}, props:{text:{value:''}}},path15:{from:'rect6',to:'rect8', dots:[],text:{text:'TO 任务3'},textPos:{x:24,y:-5}, props:{text:{value:''}}},path16:{from:'rect8',to:'rect10', dots:[],text:{text:'TO 合并'},textPos:{x:41,y:8}, props:{text:{value:''}}},path17:{from:'rect10',to:'rect12', dots:[],text:{text:'TO 任务5'},textPos:{x:36,y:-5}, props:{text:{value:''}}},path18:{from:'rect12',to:'rect11', dots:[],text:{text:'TO 结束'},textPos:{x:32,y:0}, props:{text:{value:''}}},path19:{from:'rect6',to:'rect7', dots:[{x:244,y:232}],text:{text:'TO 任务2'},textPos:{x:0,y:-10}, props:{text:{value:'TO 任务2'}}},path20:{from:'rect7',to:'rect10', dots:[{x:242,y:435}],text:{text:'TO 合并'},textPos:{x:-3,y:17}, props:{text:{value:'TO 合并'}}},path21:{from:'rect6',to:'rect9', dots:[{x:607,y:234}],text:{text:'TO 任务4'},textPos:{x:0,y:-10}, props:{text:{value:'TO 任务4'}}},path22:{from:'rect9',to:'rect10', dots:[{x:607,y:439}],text:{text:'TO 合并'},textPos:{x:-8,y:16}, props:{text:{value:'TO 合并'}}}},props:{props:{name:{value:'新建流程'},key:{value:''},desc:{value:''}}}})"),
+                            tools : {}
+                        });
+
+    });
+
+    function flowSave(){
+        $('#fwProcID').trigger('save_map');
+    }
+</script>

@@ -322,6 +322,90 @@
                     </ul>
                 </dd>
              
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/flow.controller.html">flow.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/flow.controller.act.html">flow.controller.act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.base.html">flow.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/flow.model.html">flow.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/flow.model.act.html">flow.model.act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.act_path.html">flow.model.act_path</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
         </dl>
 </div>
    
@@ -374,7 +458,16 @@
 
 
 <div class="moduledesc well well-small sign-left3">
-    <div class="stdoc-code"></div>
+    <div class="stdoc-code"><p>业务模块配置和展示系统的 model 类，实现了cmpage的主要业务逻辑，包括PC端和移动端</p>
+<p>注意点 :</p>
+<ol>
+<li>在业务模块主信息设置中配置实现类,如：cmpage/page 或 demo/customer，系统会调用该类来展现页面</li>
+<li>具体的业务模块必须继承 cmpage/model/page.js 来增加新的逻辑</li>
+<li>移动端、主从页、查找带回等页面都是从 cmpage/model/page.js 继承，具体的业务模块请适当选择基类</li>
+<li>在其他模块如 demo 中可以配置新的数据库连接，实现了多数据库的应该</li>
+<li>每个页面根据不同的HTML输出位置和处理数据的流程分成了若干方法，子类中通过重写相应的方法可以达到定制页面的效果</li>
+</ol>
+</div>
 </div>
 
 

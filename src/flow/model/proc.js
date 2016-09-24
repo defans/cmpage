@@ -7,94 +7,122 @@
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
 
-import CMPage from '../../cmpage/model/page_mob.js';
-
-export default class extends CMPage {
+/**
+ * 提供工作流控制的相关方法，对外提供统一归口的调用<br/>
+ * 根据流程模板中的实现类设置，调用具体业务相关的类来实现具体功能
+ * @class flow.model.proc
+ */
+export default class extends think.model.base {
     /**
-     * 取查询项的设置，结合POST参数，得到Where字句
+     * 一个新的流程实例
+     * @method  fwStart
+     * @return {object}  流程实例对象
+     * @params {int} procID 流程模板ID
+     * @params {object} [user] 流程发起人
      */
-    async getQueryWhere(page){
-        let where =await super.getQueryWhere(page);
-        return where +' and c_status<>-1';
-    }
-
-    /**
-     * 初始化编辑页面的值
-     */
-    async pageEditInit(pageEdits,page){
-        let md = await super.pageEditInit(pageEdits,page);
-        md.c_time_to = '2099-12-31 00:00:00';   //默认的截止日期
-        md.c_class = 'flow/proc'; //默认的实现类
-
-        return md;
-    }
-    /**
-     * 根据 page.c_other的设置，对页面相关参数进行设置
-     */
-    getPageOther(page){
-        let ret = page;
-        //console.log(ret);
-        ret.editCloseBtn =true;
-        if(page.editID == 0){
-            return ret;
-        }else{
-            return super.getPageOther(page);
+    async fwStart(procID,user){
+        if(think.isEmpty(user)){
+            user = await think.session('user');
         }
+        let proc =await this.getProcById(procID);
+
+        let taskModel = this.model(proc.c_class);
+
+        return await taskModel.fwStart(proc,user);
+
     }
 
+    /**
+     * 运行一个流程实例(任务)
+     * @method  fwRun
+     * @return {object}  流程实例对象
+     * @params {int} taskID 任务对象ID
+     * @params {object} user 流程执行人
+     */
+    async fwRun(taskID,user){
+        let parms = await this.fwGetProcParms(taskID,user);
+        let taskModel = this.model(parms[1].c_class);
+        return await taskModel.fwRun(...parms);
+    }
 
     /**
-     * 编辑页面保存,
-     * 如果是多个表的视图，则根据存在于page.c_table中的列更新表，一般需要在子类中继承
+     * 挂起一个流程实例(任务)
+     * @method  fwSuspend
+     * @return {object}  流程实例对象
+     * @params {int} taskID 任务对象ID
+     * @params {object} user 流程执行人
      */
-    async pageSave(page,parms){
-        let md = super.pageSave(page,parms);
-        if(parms.id ==0 ){
-            //根据模板的类型自动生成活动节点
-            await this.initActs(md);
+    async fwSuspend(taskID,user){
+        let parms = await this.fwGetProcParms(taskID,user);
+        let taskModel = this.model(parms[1].c_class);
+        return await taskModel.fwSuspend(...parms);
+    }
+
+    /**
+     * 终止一个流程实例(任务)
+     * @method  fwTerminate
+     * @return {object}  流程实例对象
+     * @params {int} taskID 任务对象ID
+     * @params {object} user 流程执行人
+     */
+    async fwTerminate(taskID,user){
+        let parms = await this.fwGetProcParms(taskID,user);
+        let taskModel = this.model(parms[1].c_class);
+        return await taskModel.fwTerminate(...parms);
+    }
+
+    /**
+     * 正常结束一个流程实例(任务)
+     * @method  fwEnd
+     * @return {object}  流程实例对象
+     * @params {int} taskID 任务对象ID
+     * @params {object} user 流程执行人
+     */
+    async fwEnd(taskID,user){
+        let parms = await this.fwGetProcParms(taskID,user);
+        let taskModel = this.model(parms[1].c_class);
+        return await taskModel.fwEnd(...parms);
+    }
+
+    /**
+     * 取流程模板的参数，供其他方法调用
+     * @method  fwGetActParms
+     * @return {Array} 其他方法调用的参数列表
+     * @params {int} taskID 模板实例（任务）ID
+     * @params {object} user 流程执行人
+     */
+    async fwGetProcParms(taskID,user){
+        if(think.isEmpty(user)){
+            user = await think.session('user');
         }
+        let task = this.model('fw_task').where({id:taskID}).find();
+        let proc =await this.getProcById(task.c_proc);
 
-    }
-    /**
-     * 根据模板的类型自动生成活动节点
-     */
-    async initActs(proc){
-
+        return [task,proc,user];
     }
 
     /**
-     * 取模板的流程图数据
-     * @method  getStocks
-     * @return {Array}  仓库列表
-     * @param {int} procID  流程模板ID
+     * 根据ID取流程模板的设置，供其他方法调用，子类不需要重写
+     * @method  getActById
+     * @return {object} 流程模板对象
+     * @params {int} id 流程模板ID
      */
-    async getFlowMap(procID){
-        let rects = {};
-        let paths = {};
-
-        if(procID > 0){
-            let acts = await this.model('fw_act').where({c_proc:procID,c_status:0}).select();
-            for(let act of acts){
-                let rect =JSON.parse(act.c_map);
-                rect.text.text = act.c_name;
-                rect.data_id = act.id;
-                rects[act.c_map_id] = rect;
+    async getProcById(id){
+        let list =await this.getProcs();
+        for(let md of list){
+            if(md.id === id){
+                return md;
             }
-            let ps = await this.model('fw_act_path').where({c_proc:procID,c_status:0}).select();
-            for(let p of ps){
-                let path =JSON.parse(p.c_map);
-                path.text.text = p.c_name;
-                //path.from = `rect${p.c_from}`;
-                //path.to = `rect${p.c_to}`;
-                path.data_id = p.id;
-                paths[p.c_map_id] = path;
-            }
         }
-        let ret = {states:rects, paths:paths, props:{props:{}}};
-        return JSON.stringify(ret);
+        return {};
     }
 
-
+    /**
+     * 根据ID取流程模板的名称，一般用于页面模块配置中的‘替换’调用: flow/proc:getNameById
+     * @method  getNameById
+     * @return {string}  模板名称
+     * @param {int} id  模板ID
+     */
     async getNameById(id){
         let list =await this.getProcs();
         for(let md of list){
@@ -106,7 +134,8 @@ export default class extends CMPage {
     }
     async getProcs(){
         return await think.cache("procProcs", () => {
-            return this.query('select * from fw_proc order by id ');
+            return this.query('select id,c_name,c_desc,c_type,c_class,c_no_format,c_way_create,c_time_from,c_time_to,' +
+                'c_status,c_user,c_time,c_group  from fw_proc order by id ');
         });
     }
 

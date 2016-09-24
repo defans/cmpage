@@ -73,6 +73,20 @@ export default class extends think.base {
         return !(zeroExc && numChar == 0) ? opt.pattern.replace(pattern,this._formatNumber(numChar,pattern)) : opt.pattern.replace(pattern,"0");
     };
 
+    /**
+     * 取两个整数间的随机证书
+     * @method  formatNumber
+     * @return  {string}  格式化输出
+     * @param   {float} mum 需要格式化的数值
+     * @param   {object} opt 格式化配置对象，一般中业务模块的列设置中制定格式如： #####0.00
+     */
+    getRandomNum = function(Min,Max)
+    {
+        var Range = Max - Min;
+        var Rand = Math.random();
+        return(Min + Math.round(Rand * Range));
+    }
+
     /***************************对象处理 **************************************/
     //取对象的所有属性描述
     getOwnPropertyDescriptors = function(obj) {
@@ -84,9 +98,10 @@ export default class extends think.base {
     };
 
     /**
-     * 拷贝对象的某些属性到另一个对象
+     * 在目标对象上增加另一个对象的某些属性，如有重叠，则覆盖其值
      * @method  objPropertysFromOtherObj
      * @return  {object}  新的对象，其属性集是源对象的子集
+     * @param   {object} toObj 目标对象
      * @param   {object} fromObj 源对象
      * @param   {Array} arrProps 需要COPY的熟悉数组
      */
@@ -97,6 +112,37 @@ export default class extends think.base {
             ret[key] = fromObj[key];
         }
         return ret;
+    };
+    /**
+     * 对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象
+     * @method  objToString
+     * @return  {string}  序列化后的字符串
+     * @param   {object} obj 源对象
+     */
+    objToString = function(obj){
+        let ret = [];
+        for(let key in obj){
+            if(think.isDate(obj[key])){
+                ret.push(`${key}:'${think.datetime(obj[key])}'`);
+            }else if(think.isString(obj[key])) {
+                ret.push(`${key}:'${obj[key]}'`);
+            }else if(think.isObject(obj[key])) {
+                ret.push(`${key}:${ this.objToString(obj[key]) }`);
+            }else if(think.isArray(obj[key])) {
+                let tmp = '';
+                for(let item of obj[key]){
+                    if(think.isObject(item)){
+                        tmp += this.objToString(item);
+                    }else{
+                        tmp += item;
+                    }
+                }
+                ret.push(`${key}:[${tmp}]`);
+            }else {
+                ret.push(`${key}:${obj[key]}`);
+            }
+        }
+        return "{"+ret.join(', ')+"}";
     };
 
     /**
@@ -119,7 +165,7 @@ export default class extends think.base {
     /***************************其他的全局方法 **************************************/
     debug = (msg)=>{
         if(think.env === 'development')
-            console.log(think.isObject(msg) ? JSON.stringify(msg).replace(/\"/g,'').replace(/\\/g,'').replace(/,/g,',  ') : msg);
+            console.log(think.isObject(msg) ? JSON.stringify(msg).replace(/"/g,'').replace(/\\/g,'').replace(/,/g,',  ') : msg);
     };
     log = (msg)=>{
         console.log(msg);
@@ -201,7 +247,7 @@ export default class extends think.base {
         global.enumActType = {
             NORMAL_MAN: {id:1, c_name:'人为参与'},
             NORMAL_AUTO: {id:2, c_name:'自动执行'},
-            BEGIN: {id:3, c_name:'开始节点'},
+            START: {id:3, c_name:'开始节点'},
             DUMMY: {id:4, c_name:'哑活动'},
             END: {id:9, c_name:'结束节点'}
         };
@@ -266,6 +312,15 @@ export default class extends think.base {
             SUSPEND: {id:3, c_name:'挂起'},
             TERMINATE: {id:4, c_name:'终止'},
             END: {id:9, c_name:'完成'}
+        };
+        global.enumTaskPriority = {
+            NOMAL: {id:1, c_name:'一般'},
+            HIGH: {id:2, c_name:'高'},
+            HIGHER: {id:3, c_name:'很高'},
+            HIGHEST: {id:4, c_name:'最高'},
+            LOW: {id:5, c_name:'低'},
+            LOWER: {id:6, c_name:'很低'},
+            LOWEST: {id:7, c_name:'最低'}
         };
         global.enumTaskActStatus = {
             NO_BEGIN: {id:1, c_name:'未开始'},

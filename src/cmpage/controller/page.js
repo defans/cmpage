@@ -185,7 +185,7 @@ export default class extends Base {
         page.user = await this.session('user');
 
         let model = global.model(page.c_path);
-        await model.pageSave(page,parms);
+        ret.data = await model.pageSave(page,parms);
 
         return this.json(ret);
     }

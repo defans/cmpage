@@ -304,6 +304,103 @@
             },
             "fors": {},
             "namespaces": {}
+        },
+        "src\\flow\\config\\config.js": {
+            "name": "src\\flow\\config\\config.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\controller\\act.js": {
+            "name": "src\\flow\\controller\\act.js",
+            "modules": {
+                "flow.controller": 1
+            },
+            "classes": {
+                "flow.controller.act": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\controller\\base.js": {
+            "name": "src\\flow\\controller\\base.js",
+            "modules": {},
+            "classes": {
+                "flow.controller.base": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\controller\\proc.js": {
+            "name": "src\\flow\\controller\\proc.js",
+            "modules": {},
+            "classes": {
+                "flow.controller.proc": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\logic\\index.js": {
+            "name": "src\\flow\\logic\\index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\model\\act.js": {
+            "name": "src\\flow\\model\\act.js",
+            "modules": {
+                "flow.model": 1
+            },
+            "classes": {
+                "flow.model.act": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\model\\act_path.js": {
+            "name": "src\\flow\\model\\act_path.js",
+            "modules": {},
+            "classes": {
+                "flow.model.act_path": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\model\\proc.js": {
+            "name": "src\\flow\\model\\proc.js",
+            "modules": {},
+            "classes": {
+                "flow.model.proc": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\model\\proc_list.js": {
+            "name": "src\\flow\\model\\proc_list.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\model\\task.js": {
+            "name": "src\\flow\\model\\task.js",
+            "modules": {},
+            "classes": {
+                "flow.model.task": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\model\\task_act.js": {
+            "name": "src\\flow\\model\\task_act.js",
+            "modules": {},
+            "classes": {
+                "flow.model.task_act": 1
+            },
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {
@@ -391,7 +488,40 @@
             "namespaces": {},
             "tag": "module",
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 7
+            "line": 7,
+            "description": "业务模块配置和展示系统的 model 类，实现了cmpage的主要业务逻辑，包括PC端和移动端\n\n注意点 :\n1. 在业务模块主信息设置中配置实现类,如：cmpage/page 或 demo/customer，系统会调用该类来展现页面\n2. 具体的业务模块必须继承 cmpage/model/page.js 来增加新的逻辑\n3. 移动端、主从页、查找带回等页面都是从 cmpage/model/page.js 继承，具体的业务模块请适当选择基类\n4. 在其他模块如 demo 中可以配置新的数据库连接，实现了多数据库的应该\n5. 每个页面根据不同的HTML输出位置和处理数据的流程分成了若干方法，子类中通过重写相应的方法可以达到定制页面的效果"
+        },
+        "flow.controller": {
+            "name": "flow.controller",
+            "submodules": {},
+            "classes": {
+                "flow.controller.act": 1,
+                "flow.controller.base": 1,
+                "flow.controller.proc": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\flow\\controller\\proc.js",
+            "line": 3,
+            "description": "流程模板配置和引擎调用接口的controller模块，实现了对外的URL接口，包括PC端和移动端\n\n注意点 :\n1. base.js继承自 think.controller.base;\n2. 其他controller 继承自 base.js;\n3. 具体的业务模块可以继承并扩展 flow/model/act.js 来实现增加标准以外的逻辑\n4. 可以根据具体的业务模块选择适当基类，例如审核类:flow/model/act_appr.js\n5. 使用flow的页面统一从 controller/act.js, proc.js 提供的URL接口调用，也可继承并重写相应方法来增加逻辑（但一般从model/act.js, proc.js继承即可）"
+        },
+        "flow.model": {
+            "name": "flow.model",
+            "submodules": {},
+            "classes": {
+                "flow.model.act": 1,
+                "flow.model.act_path": 1,
+                "flow.model.proc": 1,
+                "flow.model.task": 1,
+                "flow.model.task_act": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 10,
+            "description": "流程模板配置和引擎调用接口的逻辑实现类\n\n注意点 :\n1. 工作流方法调用统一归口到proc.js 和 act.js ;\n2. 根据流程模板设置的实现类，proc.js 和 act.js 会调用该类\n3. 具体的业务逻辑实现类可以继承并扩展 task.js 和 task_act.js等 来实现增加标准以外的业务逻辑\n4. 可以根据具体的业务模块选择适当基类，例如审核类:flow/model/task_act_appr.js\n5. 原则上：业务无关的流程控制逻辑放于 proc.js 和 act.js ，业务相关的流程控制放于task_xxx.js 中"
         }
     },
     "classes": {
@@ -686,7 +816,7 @@
             "module": "cmpage.model",
             "namespace": "",
             "file": "src\\cmpage\\model\\area.js",
-            "line": 14,
+            "line": 23,
             "description": "全国行政区划的操作类，如果内容作调整后，手机端APP部分也应该做调整，因为数据是预存在APP端的"
         },
         "cmpage.model.page": {
@@ -700,7 +830,7 @@
             "module": "cmpage.model",
             "namespace": "",
             "file": "src\\cmpage\\model\\page.js",
-            "line": 23,
+            "line": 15,
             "description": "普通页面的数据处理类，实现了具体的操作方法"
         },
         "cmpage.model.page_excel": {
@@ -772,6 +902,118 @@
             "file": "src\\cmpage\\cmpage_global.js",
             "line": 7,
             "description": "cmpage的全局方法和变量设置，置入（Object.assign）thinkjs 的 global 中"
+        },
+        "flow.controller.act": {
+            "name": "flow.controller.act",
+            "shortname": "flow.controller.act",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "flow.controller",
+            "namespace": "",
+            "file": "src\\flow\\controller\\act.js",
+            "line": 15,
+            "description": "提供工作流模板的活动节点设置的URL接口<br/>\n提供工作流引擎的活动节点运转相关的URL调用接口"
+        },
+        "flow.controller.base": {
+            "name": "flow.controller.base",
+            "shortname": "flow.controller.base",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "flow.controller",
+            "namespace": "",
+            "file": "src\\flow\\controller\\base.js",
+            "line": 7,
+            "description": "flow.controller的基类，用于flow模块下的其他controller类的继承，\n提供一些子类的公共方法"
+        },
+        "flow.controller.proc": {
+            "name": "flow.controller.proc",
+            "shortname": "flow.controller.proc",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "flow.controller",
+            "namespace": "",
+            "file": "src\\flow\\controller\\proc.js",
+            "line": 3,
+            "description": "提供工作流模板设计的URL接口<br/>\n提供工作流引擎的URL调用接口"
+        },
+        "flow.model.act": {
+            "name": "flow.model.act",
+            "shortname": "flow.model.act",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "flow.model",
+            "namespace": "",
+            "file": "src\\flow\\model\\act.js",
+            "line": 22,
+            "description": "提供工作流的活动节点运转的相关方法，对外提供统一归口的调用<br/>\n根据活动节点中的实现类设置，调用具体业务相关的类来实现节点的具体功能"
+        },
+        "flow.model.act_path": {
+            "name": "flow.model.act_path",
+            "shortname": "flow.model.act_path",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "flow.model",
+            "namespace": "",
+            "file": "src\\flow\\model\\act_path.js",
+            "line": 10,
+            "description": "提供工作流的活动路径的相关方法，注意供act、task_act及其继承类的调用 <br/>\n一般不需要继承，也没有相关联的业务类"
+        },
+        "flow.model.proc": {
+            "name": "flow.model.proc",
+            "shortname": "flow.model.proc",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "flow.model",
+            "namespace": "",
+            "file": "src\\flow\\model\\proc.js",
+            "line": 10,
+            "description": "提供工作流控制的相关方法，对外提供统一归口的调用<br/>\n根据流程模板中的实现类设置，调用具体业务相关的类来实现具体功能"
+        },
+        "flow.model.task": {
+            "name": "flow.model.task",
+            "shortname": "flow.model.task",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "flow.model",
+            "namespace": "",
+            "file": "src\\flow\\model\\task.js",
+            "line": 10,
+            "description": "提供工作流控制的相关方法，业务相关，供flow/model/proc.js的方法进行调用<br/>\n具体的业务相关的工作流子类可以继承本类，来增加定制的业务逻辑"
+        },
+        "flow.model.task_act": {
+            "name": "flow.model.task_act",
+            "shortname": "flow.model.task_act",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "flow.model",
+            "namespace": "",
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 10,
+            "description": "提供工作流的活动节点运转的相关方法，业务相关，供flow/model/act.js的方法进行调用<br/>\n具体的业务相关的工作流活动的子类可以继承本类，来增加定制的业务逻辑"
         }
     },
     "classitems": [
@@ -2383,7 +2625,7 @@
         },
         {
             "file": "src\\cmpage\\model\\area.js",
-            "line": 20,
+            "line": 29,
             "description": "取省份记录， 缓存, 可以用于页面模块配置中的‘下拉框选择’调用: cmpage/area:getProvinces",
             "itemtype": "method",
             "name": "getProvinces",
@@ -2396,7 +2638,7 @@
         },
         {
             "file": "src\\cmpage\\model\\area.js",
-            "line": 31,
+            "line": 40,
             "description": "根据省份编码取省份名称，一般用于页面模块配置中的‘替换’调用: cmpage/area:getProvinceName",
             "itemtype": "method",
             "name": "getProvinceName",
@@ -2416,7 +2658,7 @@
         },
         {
             "file": "src\\cmpage\\model\\area.js",
-            "line": 50,
+            "line": 59,
             "description": "根据城市编码取城市名称，一般用于页面模块配置中的‘替换’调用: cmpage/area:getCityName",
             "itemtype": "method",
             "name": "getCityName",
@@ -2436,7 +2678,7 @@
         },
         {
             "file": "src\\cmpage\\model\\area.js",
-            "line": 69,
+            "line": 78,
             "description": "根据区县编码取区县名称，一般用于页面模块配置中的‘替换’调用: cmpage/area:getCountryName",
             "itemtype": "method",
             "name": "getCountryName",
@@ -2456,7 +2698,7 @@
         },
         {
             "file": "src\\cmpage\\model\\area.js",
-            "line": 88,
+            "line": 97,
             "description": "取城市记录， 缓存, 可以用于页面模块配置中的‘下拉框选择’调用: cmpage/area:getCitys",
             "itemtype": "method",
             "name": "getCitys",
@@ -2476,7 +2718,7 @@
         },
         {
             "file": "src\\cmpage\\model\\area.js",
-            "line": 100,
+            "line": 109,
             "description": "取区县记录， 缓存, 可以用于页面模块配置中的‘下拉框选择’调用: cmpage/area:getCountrys",
             "itemtype": "method",
             "name": "getCountrys",
@@ -2496,7 +2738,7 @@
         },
         {
             "file": "src\\cmpage\\model\\area.js",
-            "line": 112,
+            "line": 121,
             "description": "取省份信息，组成省份选择的下拉项HTML",
             "itemtype": "method",
             "name": "getProvinceItems",
@@ -2521,7 +2763,7 @@
         },
         {
             "file": "src\\cmpage\\model\\area.js",
-            "line": 132,
+            "line": 141,
             "description": "取城市信息，组成城市选择的下拉项HTML",
             "itemtype": "method",
             "name": "getCityItems",
@@ -2551,7 +2793,7 @@
         },
         {
             "file": "src\\cmpage\\model\\area.js",
-            "line": 157,
+            "line": 166,
             "description": "取区县信息，组成区县选择的下拉项HTML",
             "itemtype": "method",
             "name": "getCountryItems",
@@ -2593,7 +2835,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 29,
+            "line": 21,
             "description": "取查询项的设置，组合成HTML输出",
             "itemtype": "method",
             "name": "htmlGetQuery",
@@ -2613,7 +2855,27 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 110,
+            "line": 98,
+            "description": "输出额外的按钮和js函数",
+            "itemtype": "method",
+            "name": "htmlGetOther",
+            "return": {
+                "description": "html片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 108,
             "description": "取下拉框的选项集",
             "itemtype": "method",
             "name": "getOptions",
@@ -2640,7 +2902,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 159,
+            "line": 157,
             "description": "根据设置取显示的替换值",
             "itemtype": "method",
             "name": "getReplaceText",
@@ -2665,7 +2927,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 197,
+            "line": 195,
             "description": "取顶部按钮的设置，组合成HTML输出",
             "itemtype": "method",
             "name": "htmlGetBtnHeader",
@@ -2685,7 +2947,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 223,
+            "line": 221,
             "description": "取记录列表每一行的按钮设置，组合成HTML输出，子类中重写本方法可以定制每行按钮的输出效果",
             "itemtype": "method",
             "name": "htmlGetBtnList",
@@ -2715,7 +2977,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 246,
+            "line": 244,
             "description": "取分页列表的设置，结合结果数据集，组合成HTML输出，一般不需要重新本方法",
             "itemtype": "method",
             "name": "htmlGetList",
@@ -2740,7 +3002,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 336,
+            "line": 334,
             "description": "取结果数据集，子类中重写本方法可以增加逻辑如：对结果集做进一步的数据处理等",
             "itemtype": "method",
             "name": "getDataList",
@@ -2760,7 +3022,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 364,
+            "line": 362,
             "description": "取查询项的设置，结合POST参数，得到Where字句，重写本方法可以定制或修改SQL的where子句",
             "itemtype": "method",
             "name": "getQueryWhere",
@@ -2780,37 +3042,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 396,
-            "description": "把查询条件的操作符转换成SQL片段，一般不需要重写本方法",
-            "itemtype": "method",
-            "name": "getQueryWhere",
-            "return": {
-                "description": "where 子句， 形如：",
-                "type": "String"
-            },
-            "params": [
-                {
-                    "name": "op",
-                    "description": "操作符",
-                    "type": "String"
-                },
-                {
-                    "name": "value",
-                    "description": "操作值",
-                    "type": "String"
-                },
-                {
-                    "name": "coltype",
-                    "description": "数据表中的字段类型，已作简化",
-                    "type": "String"
-                }
-            ],
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
-        },
-        {
-            "file": "src\\cmpage\\model\\page.js",
-            "line": 431,
+            "line": 422,
             "description": "根据设置取得页面显示列表返回的字段，一般不需要重写本方法",
             "itemtype": "method",
             "name": "getListFields",
@@ -2830,7 +3062,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 454,
+            "line": 445,
             "description": "新增的时候，初始化编辑页面的值，子类重写本方法可以定制新增页面的初始值",
             "itemtype": "method",
             "name": "pageEditInit",
@@ -2855,7 +3087,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 483,
+            "line": 474,
             "description": "根据 page.c_other的设置，对页面相关参数进行设置",
             "itemtype": "method",
             "name": "getPageOther",
@@ -2875,7 +3107,32 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 508,
+            "line": 499,
+            "description": "取当前记录对象，用于新增和修改的编辑页面展示",
+            "itemtype": "method",
+            "name": "getDataRecord",
+            "return": {
+                "description": "当前记录对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                },
+                {
+                    "name": "pageEdits",
+                    "description": "页面编辑列的设置",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 526,
             "description": "取编辑页面的设置，组合成列表数据的HTML输出",
             "itemtype": "method",
             "name": "htmlGetEdit",
@@ -2967,7 +3224,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 712,
+            "line": 718,
             "description": "取查看页面的设置，组合成列表数据的HTML输出",
             "itemtype": "method",
             "name": "htmlGetView",
@@ -3351,7 +3608,7 @@
         {
             "file": "src\\cmpage\\cmpage_global.js",
             "line": 86,
-            "description": "拷贝对象的某些属性到另一个对象",
+            "description": "在目标对象上增加另一个对象的某些属性，如有重叠，则覆盖其值",
             "itemtype": "method",
             "name": "objPropertysFromOtherObj",
             "return": {
@@ -3359,6 +3616,11 @@
                 "type": "Object"
             },
             "params": [
+                {
+                    "name": "toObj",
+                    "description": "目标对象",
+                    "type": "Object"
+                },
                 {
                     "name": "fromObj",
                     "description": "源对象",
@@ -3376,6 +3638,26 @@
         {
             "file": "src\\cmpage\\cmpage_global.js",
             "line": 102,
+            "description": "对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象",
+            "itemtype": "method",
+            "name": "objToString",
+            "return": {
+                "description": "序列化后的字符串",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "源对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 134,
             "description": "进行CRUD之前转换成合适的值，用来匹配 thinkjs 的CRUD方法",
             "itemtype": "method",
             "name": "checksql",
@@ -3395,13 +3677,13 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 119,
+            "line": 151,
             "class": "cmpage.cmpage_global",
             "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 128,
+            "line": 160,
             "description": "通过形如：demo/customer 参数返回model，数据库配置采用model所在模块的配置",
             "itemtype": "method",
             "name": "model",
@@ -3426,7 +3708,7 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 147,
+            "line": 179,
             "description": "时间格式化输出",
             "itemtype": "method",
             "name": "model",
@@ -3451,7 +3733,7 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 165,
+            "line": 197,
             "description": "cmpage的全局变量初始化，如enum等",
             "itemtype": "method",
             "name": "cmpageInit",
@@ -3464,12 +3746,1461 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 283,
+            "line": 315,
             "class": "cmpage.cmpage_global",
             "module": "cmpage.model"
+        },
+        {
+            "file": "src\\flow\\config\\config.js",
+            "line": 2,
+            "description": "config",
+            "class": "flow.controller.act",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\flow\\controller\\act.js",
+            "line": 24,
+            "description": "编辑流程节点内容， GET调用： /flow/act/edit?id=xxx",
+            "itemtype": "method",
+            "name": "edit",
+            "return": {
+                "description": "act编辑页面的HTML片段",
+                "type": "Json"
+            },
+            "class": "flow.controller.act",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\act.js",
+            "line": 39,
+            "description": "删除流程节点并删除相关的路径信息， GET调用： /flow/act/delete?id=xxx",
+            "itemtype": "method",
+            "name": "delete",
+            "return": {
+                "description": "删除状态",
+                "type": "Json"
+            },
+            "class": "flow.controller.act",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\base.js",
+            "line": 13,
+            "description": "本模块的所有action执行前的检查项",
+            "itemtype": "method",
+            "name": "__before",
+            "return": {
+                "description": "当前用户未登录时，返回错误信息或者引导到登录页面",
+                "type": "Promise"
+            },
+            "class": "flow.controller.base",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\proc.js",
+            "line": 12,
+            "description": "启动一个新的流程实例, GET调用：/flow/proc/start?proc_id=xxx",
+            "itemtype": "method",
+            "name": "start",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Json"
+            },
+            "class": "flow.controller.proc",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\proc.js",
+            "line": 26,
+            "description": "重新运行一个流程实例, GET调用：/flow/proc/run?task_id=xxx",
+            "itemtype": "method",
+            "name": "run",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Json"
+            },
+            "class": "flow.controller.proc",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\proc.js",
+            "line": 40,
+            "description": "挂起一个流程实例, GET调用：/flow/proc/suspend?task_id=xxx",
+            "itemtype": "method",
+            "name": "suspend",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Json"
+            },
+            "class": "flow.controller.proc",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\proc.js",
+            "line": 54,
+            "description": "终止一个流程实例, GET调用：/flow/proc/terminate?task_id=xxx",
+            "itemtype": "method",
+            "name": "terminate",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Json"
+            },
+            "class": "flow.controller.proc",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\proc.js",
+            "line": 69,
+            "description": "流程模板的图形和活动节点的设置",
+            "class": "flow.controller.proc",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\proc.js",
+            "line": 95,
+            "description": "图形化设置流程模板， 调用： /flow/proc/desing",
+            "itemtype": "method",
+            "name": "design",
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "flow.controller.proc",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\proc.js",
+            "line": 109,
+            "description": "保存流程模板的图形信息，如果某个节点和路径的data_id==0，则增加相应记录 POST调用： /flow/proc/save_map",
+            "itemtype": "method",
+            "name": "saveMap",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "flow.controller.proc",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\logic\\index.js",
+            "line": 2,
+            "description": "logic",
+            "params": [
+                {
+                    "name": "",
+                    "description": "",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "[]"
+            },
+            "class": "flow.model.act",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\logic\\index.js",
+            "line": 8,
+            "description": "index action logic",
+            "return": {
+                "description": "[]"
+            },
+            "class": "flow.model.act",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\model\\act.js",
+            "line": 29,
+            "description": "是否可以运行一个活动(流程节点)，对外提供调用",
+            "itemtype": "method",
+            "name": "fwRun",
+            "return": {
+                "description": "判断值",
+                "type": "Bool"
+            },
+            "params": [
+                {
+                    "name": "actID",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act.js",
+            "line": 42,
+            "description": "运行一个活动(流程节点)<br/>\ncanRun的判断在具体的业务task_act中调用",
+            "itemtype": "method",
+            "name": "fwRun",
+            "return": {
+                "description": "活动节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "actID",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act.js",
+            "line": 56,
+            "description": "挂起一个活动(流程节点)，",
+            "itemtype": "method",
+            "name": "fwSuspend",
+            "return": {
+                "description": "活动节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "actID",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act.js",
+            "line": 69,
+            "description": "终止一个活动(流程节点)，",
+            "itemtype": "method",
+            "name": "fwTerminate",
+            "return": {
+                "description": "活动节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "actID",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act.js",
+            "line": 82,
+            "description": "正常结束一个活动(流程节点)，",
+            "itemtype": "method",
+            "name": "fwEnd",
+            "return": {
+                "description": "活动节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "actID",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act.js",
+            "line": 95,
+            "description": "取活动(流程节点)参数，供其他方法调用",
+            "itemtype": "method",
+            "name": "fwGetActParms",
+            "return": {
+                "description": "其他方法调用的参数列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "actID",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act.js",
+            "line": 135,
+            "description": "根据ID取活动(流程节点)参数，供其他方法调用",
+            "itemtype": "method",
+            "name": "getActById",
+            "return": {
+                "description": "活动(流程节点)参数对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act.js",
+            "line": 151,
+            "description": "根据ID和模板ID取活动(流程节点)参数，供其他方法调用<br/>\n模板较多的时候，用本方法来改进性能",
+            "itemtype": "method",
+            "name": "getActByIdAndProcId",
+            "return": {
+                "description": "活动(流程节点)参数对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act.js",
+            "line": 168,
+            "description": "根据ID取活动节点的名称，一般用于页面模块配置中的‘替换’调用: flow/act:getNameById",
+            "itemtype": "method",
+            "name": "getNameById",
+            "return": {
+                "description": "活动名称",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_path.js",
+            "line": 17,
+            "description": "根据ID取活动路径对象，供其他方法调用",
+            "itemtype": "method",
+            "name": "getActPathById",
+            "return": {
+                "description": "活动路径对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "活动路径ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.act_path",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_path.js",
+            "line": 33,
+            "description": "根据ID和模板ID取活动路径对象，供其他方法调用<br/>\n模板较多的时候，用本方法来改进性能",
+            "itemtype": "method",
+            "name": "getActPathByIdAndProcId",
+            "return": {
+                "description": "活动路径对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "活动路径ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.act_path",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_path.js",
+            "line": 51,
+            "description": "根据活动节点ID和模板ID取来源的节点ID，供其他方法调用",
+            "itemtype": "method",
+            "name": "getFromActIDs",
+            "return": {
+                "description": "节点ID的列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "actID",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.act_path",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_path.js",
+            "line": 69,
+            "description": "根据活动节点ID和模板ID取去向的节点ID，供其他方法调用",
+            "itemtype": "method",
+            "name": "getToActIDs",
+            "return": {
+                "description": "节点ID的列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "actID",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.act_path",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_path.js",
+            "line": 87,
+            "description": "根据ID取活动路径对象的名称，一般用于页面模块配置中的‘替换’调用: flow/act_path:getNameById",
+            "itemtype": "method",
+            "name": "getNameById",
+            "return": {
+                "description": "活动名称",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "活动路径ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.act_path",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc.js",
+            "line": 16,
+            "description": "一个新的流程实例",
+            "itemtype": "method",
+            "name": "fwStart",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "流程发起人",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "class": "flow.model.proc",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc.js",
+            "line": 35,
+            "description": "运行一个流程实例(任务)",
+            "itemtype": "method",
+            "name": "fwRun",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskID",
+                    "description": "任务对象ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.proc",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc.js",
+            "line": 48,
+            "description": "挂起一个流程实例(任务)",
+            "itemtype": "method",
+            "name": "fwSuspend",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskID",
+                    "description": "任务对象ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.proc",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc.js",
+            "line": 61,
+            "description": "终止一个流程实例(任务)",
+            "itemtype": "method",
+            "name": "fwTerminate",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskID",
+                    "description": "任务对象ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.proc",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc.js",
+            "line": 74,
+            "description": "正常结束一个流程实例(任务)",
+            "itemtype": "method",
+            "name": "fwEnd",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskID",
+                    "description": "任务对象ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.proc",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc.js",
+            "line": 87,
+            "description": "取流程模板的参数，供其他方法调用",
+            "itemtype": "method",
+            "name": "fwGetActParms",
+            "return": {
+                "description": "其他方法调用的参数列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "taskID",
+                    "description": "模板实例（任务）ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.proc",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc.js",
+            "line": 104,
+            "description": "根据ID取流程模板的设置，供其他方法调用，子类不需要重写",
+            "itemtype": "method",
+            "name": "getActById",
+            "return": {
+                "description": "流程模板对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.proc",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc.js",
+            "line": 120,
+            "description": "根据ID取流程模板的名称，一般用于页面模块配置中的‘替换’调用: flow/proc:getNameById",
+            "itemtype": "method",
+            "name": "getNameById",
+            "return": {
+                "description": "模板名称",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.proc",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_list.js",
+            "line": 13,
+            "description": "取查询项的设置，结合POST参数，得到Where字句",
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_list.js",
+            "line": 21,
+            "description": "初始化编辑页面的值",
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_list.js",
+            "line": 31,
+            "description": "根据 page.c_other的设置，对页面相关参数进行设置",
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_list.js",
+            "line": 46,
+            "description": "编辑页面保存,\n如果是多个表的视图，则根据存在于page.c_table中的列更新表，一般需要在子类中继承",
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_list.js",
+            "line": 59,
+            "description": "根据模板的类型自动生成活动节点",
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_list.js",
+            "line": 66,
+            "description": "取模板的流程图数据",
+            "itemtype": "method",
+            "name": "getStocks",
+            "return": {
+                "description": "流程图数据",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_list.js",
+            "line": 80,
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_list.js",
+            "line": 106,
+            "description": "保存流程模板的图形信息，如果某个节点和路径的data_id==0，则增加相应记录 POST调用： /flow/proc/save_map",
+            "itemtype": "method",
+            "name": "saveMap",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task.js",
+            "line": 16,
+            "description": "创建(启动)一个新的流程实例(任务)",
+            "itemtype": "method",
+            "name": "fwStart",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "proc",
+                    "description": "流程模板对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程发起人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task.js",
+            "line": 32,
+            "description": "运行一个流程实例(任务)",
+            "itemtype": "method",
+            "name": "fwRun",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "task",
+                    "description": "任务对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "proc",
+                    "description": "流程模板对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task.js",
+            "line": 49,
+            "description": "挂起一个流程实例(任务)",
+            "itemtype": "method",
+            "name": "fwSuspend",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "task",
+                    "description": "任务对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "proc",
+                    "description": "流程模板对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task.js",
+            "line": 67,
+            "description": "终止一个流程实例(任务)",
+            "itemtype": "method",
+            "name": "fwTerminate",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "task",
+                    "description": "任务对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "proc",
+                    "description": "流程模板对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task.js",
+            "line": 84,
+            "description": "正常结束一个流程实例(任务)",
+            "itemtype": "method",
+            "name": "fwEnd",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "task",
+                    "description": "任务对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "proc",
+                    "description": "流程模板对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task.js",
+            "line": 101,
+            "description": "增加流程实例的状态记录，记录某个活动(流程节点)发生的时间及当时状态",
+            "itemtype": "method",
+            "name": "addTaskSt",
+            "return": {
+                "description": "记录ID",
+                "type": "Int"
+            },
+            "params": [
+                {
+                    "name": "task",
+                    "description": "任务对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 16,
+            "description": "是否可以运行一个流程实例的活动(流程节点)",
+            "itemtype": "method",
+            "name": "canRun",
+            "return": {
+                "description": "判断值",
+                "type": "Bool"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "act",
+                    "description": "流程节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 32,
+            "description": "运行一个流程实例的活动(流程节点)",
+            "itemtype": "method",
+            "name": "fwRun",
+            "return": {
+                "description": "任务节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "act",
+                    "description": "流程节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 50,
+            "description": "挂起一个流程实例的活动(流程节点)",
+            "itemtype": "method",
+            "name": "fwSuspend",
+            "return": {
+                "description": "任务节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "act",
+                    "description": "流程节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 68,
+            "description": "终止一个流程实例的活动(流程节点)",
+            "itemtype": "method",
+            "name": "fwTermate",
+            "return": {
+                "description": "任务节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "act",
+                    "description": "流程节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 87,
+            "description": "正常结束一个流程实例的活动(流程节点)",
+            "itemtype": "method",
+            "name": "fwEnd",
+            "return": {
+                "description": "任务节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "act",
+                    "description": "流程节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 114,
+            "description": "保存任务的活动(流程节点), taskAct结构来自于vw_task_act<br/>\n子类中可以重写本方法来增加其他逻辑，比如保存其他业务表数据等",
+            "itemtype": "method",
+            "name": "fwSave",
+            "return": {
+                "description": "任务节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 131,
+            "description": "增加流程实例的活动节点状态记录，记录某个活动(流程节点)发生的时间及当时状态<br/>\n子类中重写本方法可以定制流程状态的记录方式，如在具体业务状态表中增加记录等",
+            "itemtype": "method",
+            "name": "addTaskSt",
+            "return": {
+                "description": "记录ID",
+                "type": "Int"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 152,
+            "description": "根据任务节点ID取汇聚来源任务节点ID的列表，供其他方法调用",
+            "itemtype": "method",
+            "name": "getFromTaskIds",
+            "return": {
+                "description": "来源的任务节点ID的列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 172,
+            "description": "根据任务节点ID取分支去向的任务节点ID的列表，供其他方法调用",
+            "itemtype": "method",
+            "name": "getToTaskIds",
+            "return": {
+                "description": "来源的任务节点ID的列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
         }
     ],
     "warnings": [
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:29"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:29"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:42"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:42"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:56"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:56"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:69"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:69"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:82"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:82"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:95"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:95"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:135"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:151"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_path.js:17"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_path.js:33"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_path.js:33"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_path.js:51"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_path.js:51"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_path.js:69"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_path.js:69"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:16"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:16"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:35"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:35"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:48"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:48"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:61"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:61"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:74"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:74"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:87"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:87"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:104"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:16"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:16"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:32"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:32"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:32"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:49"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:49"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:49"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:67"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:67"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:67"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:84"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:84"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:84"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:101"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:101"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:16"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:16"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:16"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:32"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:32"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:32"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:50"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:50"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:50"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:68"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:68"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:68"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:87"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:87"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:87"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:114"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:114"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:131"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:131"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:152"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:172"
+        },
         {
             "message": "Missing item type\n代码树，输入根节点ID为参数 ------- 以下3个操作已废弃，改用 codeTreeAction -----------\n直接通过树增删改节点\n/admin/code?rootid=1",
             "line": " src\\admin\\controller\\code.js:146"
@@ -3516,11 +5247,51 @@
         },
         {
             "message": "Missing item type",
-            "line": " src\\cmpage\\cmpage_global.js:119"
+            "line": " src\\cmpage\\cmpage_global.js:151"
         },
         {
             "message": "Missing item type",
-            "line": " src\\cmpage\\cmpage_global.js:283"
+            "line": " src\\cmpage\\cmpage_global.js:315"
+        },
+        {
+            "message": "Missing item type\nconfig",
+            "line": " src\\flow\\config\\config.js:2"
+        },
+        {
+            "message": "Missing item type\n流程模板的图形和活动节点的设置",
+            "line": " src\\flow\\controller\\proc.js:69"
+        },
+        {
+            "message": "Missing item type\nlogic",
+            "line": " src\\flow\\logic\\index.js:2"
+        },
+        {
+            "message": "Missing item type\nindex action logic",
+            "line": " src\\flow\\logic\\index.js:8"
+        },
+        {
+            "message": "Missing item type\n取查询项的设置，结合POST参数，得到Where字句",
+            "line": " src\\flow\\model\\proc_list.js:13"
+        },
+        {
+            "message": "Missing item type\n初始化编辑页面的值",
+            "line": " src\\flow\\model\\proc_list.js:21"
+        },
+        {
+            "message": "Missing item type\n根据 page.c_other的设置，对页面相关参数进行设置",
+            "line": " src\\flow\\model\\proc_list.js:31"
+        },
+        {
+            "message": "Missing item type\n编辑页面保存,\n如果是多个表的视图，则根据存在于page.c_table中的列更新表，一般需要在子类中继承",
+            "line": " src\\flow\\model\\proc_list.js:46"
+        },
+        {
+            "message": "Missing item type\n根据模板的类型自动生成活动节点",
+            "line": " src\\flow\\model\\proc_list.js:59"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\flow\\model\\proc_list.js:80"
         }
     ]
 }

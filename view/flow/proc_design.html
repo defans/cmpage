@@ -1,144 +1,171 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<iframe id="mapiframe" name="mapiframe" width="70%" height="100%" frameborder="0" src="/flow/proc/flow_map?proc_id=<%= page.editID%>"></iframe>
 
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!--<script type="text/javascript"  src="/static/fw/lib/jquery-ui-1.8.4.custom/js/jquery-1.4.2.min.js"></script>-->
+<!--<div id="flowMap"  style="float:left;display:block; overflow:auto; width:70%; height:100%; border:solid 1px #CCC; line-height:21px; background:#fff"-->
+     <!--data-toggle="autoajaxload" data-url="/flow/proc/flow_map?proc_id=<%= page.editID%>" >-->
+    <!--&lt;!&ndash;#include virtual="codeList" &ndash;&gt;-->
+<!--</div>-->
 
-    <link type="text/css" href="/static/fw/lib/jquery-ui-1.8.4.custom/css/smoothness/jquery-ui-1.8.4.custom.css"  rel="stylesheet" />
-    <script type="text/javascript" src="/static/fw/lib/raphael-min.js"></script>
-    <script type="text/javascript" src="/static/fw/lib/jquery-ui-1.8.4.custom/js/jquery-ui-1.8.4.custom.min.js"></script>
-    <script type="text/javascript" src="/static/fw/myflow.js"></script>
+<div style="float:right; display:block; overflow:hidden; width:30%; height:100%; border:solid 1px #CCC; line-height:21px; background:#fff" class="bjui-layout">
 
-    <!--<script type="text/javascript" src="myflow.editors.js"></script>-->
-    <script type="text/javascript">
-
-        $(function() {
-            var myflow = $.myflow;
-
-            $.extend(true,myflow.config.rect,{
-                attr : {
-                    r : 8,
-                    fill : '#F6F7FF',
-                    stroke : '#03689A',
-                    "stroke-width" : 2
-                },margin:0
-            });
-
-            $.extend(true,myflow.config.tools.states,{
-                start : {
-                    showType: 'image',
-                    type : 'start',
-                    name : {text:'<<start>>'},
-                    text : {text:'开始'},
-                    img : {src : '/static/fw/img/48/start_event_empty.png',width : 48, height:48},
-                    attr : {width:50 ,heigth:50 }
-                },
-                end : {showType: 'image',type : 'end',
-                    name : {text:'<<end>>'},
-                    text : {text:'结束'},
-                    img : {src : '/static/fw/img/48/end_event_terminate.png',width : 48, height:48},
-                    attr : {width:50 ,heigth:50 }
-                },
-                'end-cancel' : {showType: 'image',type : 'end-cancel',
-                    name : {text:'<<end-cancel>>'},
-                    text : {text:'取消'},
-                    img : {src : '/static/fw/img/48/end_event_cancel.png',width : 48, height:48},
-                    attr : {width:50 ,heigth:50 }
-                },
-                'end-error' : {showType: 'image',type : 'end-error',
-                    name : {text:'<<end-error>>'},
-                    text : {text:'错误'},
-                    img : {src : '/static/fw/img/48/end_event_error.png',width : 48, height:48},
-                    attr : {width:50 ,heigth:50 }
-                },
-                state : {showType: 'text',type : 'state',
-                    name : {text:'<<state>>'},
-                    text : {text:'状态'},
-                    img : {src : '/static/fw/img/48/task_empty.png',width : 48, height:48}
-                },
-                fork : {showType: 'image',type : 'fork',
-                    name : {text:'<<fork>>'},
-                    text : {text:'分支'},
-                    img : {src : '/static/fw/img/48/gateway_parallel.png',width :48, height:48},
-                    attr : {width:50 ,heigth:50 }
-                },
-                join : {showType: 'image',type : 'join',
-                    name : {text:'<<join>>'},
-                    text : {text:'合并'},
-                    img : {src : '/static/fw/img/48/gateway_parallel.png',width :48, height:48},
-                    attr : {width:50 ,heigth:50 }
-                },
-                task : {showType: 'text',type : 'task',
-                    name : {text:'<<task>>'},
-                    text : {text:'任务'},
-                    img : {src : '/static/fw/img/48/task_empty.png',width :48, height:48}
-                },
-                decision : {showType: 'image',type : 'decision',
-                    name : {text:'<<decision>>'},
-                    text : {text:'决定'},
-                    img : {src : '/static/fw/img/48/gateway_parallel.png',width :48, height:48},
-                    attr : {width:50 ,heigth:50 }
-                }
-            });
-            $('#myflow')
-                    .myflow(
-                            {
-                                basePath : "",
-                                restore : eval("({states:{rect4:{type:'start',text:{text:'开始'}, attr:{ x:409, y:10, width:50, height:50}, props:{text:{value:'开始'},temp1:{value:''},temp2:{value:''}}},rect5:{type:'task',text:{text:'任务1'}, attr:{ x:386, y:116, width:100, height:50}, props:{text:{value:'任务1'},assignee:{value:''},form:{value:''},desc:{value:''}}},rect6:{type:'fork',text:{text:'分支'}, attr:{ x:410, y:209, width:50, height:50}, props:{text:{value:'分支'},temp1:{value:''},temp2:{value:''}}},rect7:{type:'task',text:{text:'任务2'}, attr:{ x:192, y:317, width:100, height:50}, props:{text:{value:'任务2'},assignee:{value:''},form:{value:''},desc:{value:''}}},rect8:{type:'task',text:{text:'任务3'}, attr:{ x:385, y:317, width:100, height:50}, props:{text:{value:'任务3'},assignee:{value:''},form:{value:''},desc:{value:''}}},rect9:{type:'task',text:{text:'任务4'}, attr:{ x:556, y:320, width:100, height:50}, props:{text:{value:'任务4'},assignee:{value:''},form:{value:''},desc:{value:''}}},rect10:{type:'join',text:{text:'合并'}, attr:{ x:410, y:416, width:50, height:50}, props:{text:{value:'合并'},temp1:{value:''},temp2:{value:''}}},rect11:{type:'end',text:{text:'结束'}, attr:{ x:409, y:633, width:50, height:50}, props:{text:{value:'结束'},temp1:{value:''},temp2:{value:''}}},rect12:{type:'task',text:{text:'任务5'}, attr:{ x:384, y:528, width:100, height:50}, props:{text:{value:'任务5'},assignee:{value:''},form:{value:''},desc:{value:''}}}},paths:{path13:{from:'rect4',to:'rect5', dots:[],text:{text:'TO 任务1'},textPos:{x:37,y:-4}, props:{text:{value:''}}},path14:{from:'rect5',to:'rect6', dots:[],text:{text:'TO 分支'},textPos:{x:56,y:-1}, props:{text:{value:''}}},path15:{from:'rect6',to:'rect8', dots:[],text:{text:'TO 任务3'},textPos:{x:24,y:-5}, props:{text:{value:''}}},path16:{from:'rect8',to:'rect10', dots:[],text:{text:'TO 合并'},textPos:{x:41,y:8}, props:{text:{value:''}}},path17:{from:'rect10',to:'rect12', dots:[],text:{text:'TO 任务5'},textPos:{x:36,y:-5}, props:{text:{value:''}}},path18:{from:'rect12',to:'rect11', dots:[],text:{text:'TO 结束'},textPos:{x:32,y:0}, props:{text:{value:''}}},path19:{from:'rect6',to:'rect7', dots:[{x:244,y:232}],text:{text:'TO 任务2'},textPos:{x:0,y:-10}, props:{text:{value:'TO 任务2'}}},path20:{from:'rect7',to:'rect10', dots:[{x:242,y:435}],text:{text:'TO 合并'},textPos:{x:-3,y:17}, props:{text:{value:'TO 合并'}}},path21:{from:'rect6',to:'rect9', dots:[{x:607,y:234}],text:{text:'TO 任务4'},textPos:{x:0,y:-10}, props:{text:{value:'TO 任务4'}}},path22:{from:'rect9',to:'rect10', dots:[{x:607,y:439}],text:{text:'TO 合并'},textPos:{x:-8,y:16}, props:{text:{value:'TO 合并'}}}},props:{props:{name:{value:'新建流程'},key:{value:''},desc:{value:''}}}})"),
-                                tools : {
-//                                    save : {
-//                                        onclick : function(data) {
-//                                            alert('save:\n' + data);
-//                                        }
-//                                    }
-                                }
-                            });
-
-        });
-    </script>
-
-</head>
-<body>
-<div id="myflow_tools" style="position: absolute; top: 10; left: 10; background-color: #fff; width: 70px; cursor: default; padding: 3px;" class="ui-widget-content">
-    <div id="myflow_tools_handle" style="text-align: center;height:25px;" class="ui-widget-header"><label style="margin-top:5px;">工具集</label></div>
-
-    <!--<div class="flow_node" id="myflow_save"><img src="/static/fw/img/save.gif" />&nbsp;&nbsp;保存</div>-->
-    <div class="flow_node selectable" id="pointer" style="margin-top: 10px;"><img src="/static/fw/img/select16.gif" />&nbsp;&nbsp;选择</div>
-    <div style="margin-top: -10px;">
-        <hr />
+    <div id="procEdit" style="display:block; overflow:auto; width:100%; height:100%;  border:solid 1px #CCC; line-height:21px; background:#fff">
+        <div class="bjui-pageHeader">
+            <label id="procHeader" data-height="30px" style="margin: 5px;">流程模板的主信息</label>
+        </div>
+            <div class="bjui-pageContent">
+                <form id="FwProcEditForm" style="display:block;margin-top:20px;" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
+                    <input id="FwProcID" name="id" type="hidden" value="<%= page.editID%>" />
+                    <input name="modulename" type="hidden" value="FwProc" />
+                    <input name="parmsUrl" type="hidden" value="<%= page.parmsUrl%>" />
+                    <table class="table table-condensed table-hover" width="100%">
+                        <tbody>
+                        <%- procEditHtml%>
+                        </tbody>
+                    </table>
+                </form>
+                <form id="FwActEditForm" style="display:none;margin-top:20px;" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
+                    <input id="FwActID" name="id" type="hidden" value="0" />
+                    <input name="modulename" type="hidden" value="FwAct" />
+                    <input name="parmsUrl" type="hidden" value="{}" />
+                    <table id="actEditTable" class="table table-condensed table-hover" width="100%">
+                        <%- actEditHtml%>
+                    </table>
+                </form>
+                <form id="FwActPathEditForm" style="display:none;margin-top:20px;" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
+                    <input id="FwActPathID" name="id" type="hidden" value="0" />
+                    <input name="modulename" type="hidden" value="FwActPath" />
+                    <input name="parmsUrl" type="hidden" value="{}" />
+                    <input id="FwActPathc_from" name="c_from" type="hidden" value="0" />
+                    <input id="FwActPathc_to" name="c_to" type="hidden" value="0" />
+                    <input id="FwActPathc_proc" name="c_proc" type="hidden" value="0" />
+                    <table class="table table-condensed table-hover" width="100%">
+                        <tbody>
+                        <tr><td>
+                            <label>路径名称：</label>
+                            <input id="FwActPathc_name" type="text" name="c_name"  size="22"  data-rule="required"/>
+                        </td></tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="bjui-pageFooter" >
+                <ul>
+                    <li style="float:left;"><button id="btnActDelete" style="display:none;" onclick="return actDeleteConfirm();" type="button" class="btn btn-red" data-icon="remove">删除节点</button></li>
+                    <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
+                    <li><button type="button" class="btn btn-green" onclick="return fwSaveForm();" data-icon="save">保存</button></li>
+                </ul>
+            </div>
     </div>
-    <div class="flow_node selectable" id="path" style="margin-top: -10px;"><img src="/static/fw/img/16/flow_sequence.png" />&nbsp;&nbsp;路径</div>
-    <div style="margin-top: -10px;">
-        <hr />
-    </div>
-    <div class="flow_node flow_state" id="start" type="start" style="margin-top: -10px;"><img
-            src="/static/fw/img/16/start_event_empty.png" />&nbsp;&nbsp;开始</div>
-    <div class="flow_node flow_state" id="state" type="state"><img
-            src="/static/fw/img/16/task_empty.png" />&nbsp;&nbsp;状态</div>
-    <div class="flow_node flow_state" id="task" type="task"><img
-            src="/static/fw/img/16/task_empty.png" />&nbsp;&nbsp;任务</div>
-    <div class="flow_node flow_state" id="fork" type="fork"><img
-            src="/static/fw/img/16/gateway_parallel.png" />&nbsp;&nbsp;分支</div>
-    <div class="flow_node flow_state" id="join" type="join"><img
-            src="/static/fw/img/16/gateway_parallel.png" />&nbsp;&nbsp;合并</div>
-    <div class="flow_node flow_state" id="end" type="end"><img
-            src="/static/fw/img/16/end_event_terminate.png" />&nbsp;&nbsp;结束</div>
-    <div class="flow_node flow_state" id="end-cancel" type="end-cancel"><img
-            src="/static/fw/img/16/end_event_cancel.png" />&nbsp;&nbsp;取消</div>
-    <div class="flow_node flow_state" id="end-error" type="end-error"><img
-            src="/static/fw/img/16/end_event_error.png" />&nbsp;&nbsp;错误</div>
+
 </div>
 
-
-<div id="myflow" class="flow_map"></div>
-
-
-</body>
-</html>
-
 <script>
+    var fwCurrentForm ='FwProc';
+    var fwCurrentRect = null;
+    var fwCurrentSrc = null;
+    function actDeleteConfirm(){
+        if(fwCurrentRect === null){ return false;}
+        $(this).alertmsg("confirm", "是否确定要删除节点："+fwCurrentSrc.text()+", 并删除相关的路径信息？ ",{
+            okCall:function(){
+                //alert(src.getDataId());
+                fwCurrentRect.trigger('removerect',[fwCurrentSrc]);
+                $('#actEditForm').hide();
+                $('#procEditForm').show();
+                $(this).bjuiajax('doAjax', { url: '/flow/act/delete?id='+fwCurrentSrc.getDataId() ,callback:function(data){
+//                    $(this).alertmsg(data.statusCode=="200" ? "info":"error",data.message);
+                }});
+            }
+        });
+        return false;
+    }
+    function actShow(obj,src){
+        if(fwCurrentForm =='FwAct' && src.getDataId() != 0 && src.getDataId() == $('#FwActID').val()){
+            return ;
+        }
+        fwCurrentRect =obj;
+        fwCurrentSrc = src;
+        $('#FwProcEditForm').hide();
+        $('#FwActPathEditForm').hide();
+        $('#FwActEditForm').show();
+        $('#btnActDelete').show();
+        $('#procHeader').text('流程模板的活动节点');
+        fwCurrentForm = 'FwAct';
+        var dataID =fwCurrentSrc.getDataId();
+        $('#FwActID').val(dataID);
+        $.ajax({
+            url: "/flow/act/edit?id="+dataID,    //请求的url地址
+            dataType: "json",   //返回格式为json
+            success: function(ret) {
+                if(ret.statusCode == 200){
+                    $('#actEditTable').html(ret.actEditHtml);
+                    if(fwCurrentSrc.getDataId() == 0){      //新增
+                        $('#FwActc_name').val(fwCurrentSrc.text());
+                        $('#FwActc_proc').val($('#FwProcID').val());
+                        $('#FwActc_class').val('flow/act');
+                        $('#FwActc_map_id').val(fwCurrentSrc.getId());
+                    }
+                }
+            }
+        });
 
+    }
+    function pathShow(obj,src){
+        var from =src.from();
+        if(from.getDataId() == 0){
+            $(this).alertmsg("error", '请先保存活动节点： '+from.text());
+            return ;
+        }
+        var to =src.to();
+        if(to.getDataId() == 0){
+            $(this).alertmsg("error", '请先保存活动节点： '+to.text());
+            return ;
+        }
+        //alert(data);
+        fwCurrentRect =obj;
+        fwCurrentSrc = src;
+        $('#FwProcEditForm').hide();
+        $('#FwActPathEditForm').show();
+        $('#FwActEditForm').hide();
+        $('#btnActDelete').hide();
+        $('#procHeader').text('流程模板的路径信息');
+        fwCurrentForm = 'FwActPath';
+        $('#FwActPathID').val(fwCurrentSrc.getDataId());
+        $('#FwActPathc_from').val(from.getDataId());
+        $('#FwActPathc_to').val(to.getDataId());
+        $('#FwActPathc_proc').val($('#FwProcID').val());
+        $('#FwActPathc_name').val(fwCurrentSrc.text());
+    }
+    function procShow(){
+        $('#FwProcEditForm').show();
+        $('#FwActPathEditForm').hide();
+        $('#FwActEditForm').hide();
+        $('#btnActDelete').hide();
+        $('#procHeader').text('流程模板的主信息');
+        fwCurrentForm = 'FwProc';
+    }
+    function fwSaveForm(){
+       // fwCurrentSrc.setDataId(3);
+        //alert($('#FwActc_name').val());
+        $.ajax({
+            url: "/cmpage/page/save",    //请求的url地址
+            dataType: "json",   //返回格式为json
+            data: $('#'+fwCurrentForm+'EditForm').serialize(),
+            type: "POST",   //请求方式
+            success: function(ret) {
+                $(this).alertmsg(ret.statusCode == "200" ? "info" : "error", ret.message);
+                if(ret.statusCode == "200" && fwCurrentForm != 'FwProc'){
+                    $('#'+fwCurrentForm+'ID').val(ret.data.id);
+                    fwCurrentSrc.setDataId(ret.data.id);
+                    fwCurrentSrc.setText($('#'+ fwCurrentForm +'c_name').val());
+                }
+            }
+        });
 
+        //fwCurrentRect.trigger('textchange',['testttt',fwCurrentSrc]);
+    }
+
+    function flowBeforeClose(){
+        parent.frames['mapiframe'].window.flowSave();
+        return true;
+    }
 </script>

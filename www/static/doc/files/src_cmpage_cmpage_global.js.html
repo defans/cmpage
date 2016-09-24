@@ -322,6 +322,90 @@
                     </ul>
                 </dd>
              
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/flow.controller.html">flow.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/flow.controller.act.html">flow.controller.act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.base.html">flow.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/flow.model.html">flow.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/flow.model.act.html">flow.model.act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.act_path.html">flow.model.act_path</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
         </dl>
 </div>
    
@@ -445,9 +529,10 @@ export default class extends think.base {
     };
 
     /**
-     * 拷贝对象的某些属性到另一个对象
+     * 在目标对象上增加另一个对象的某些属性，如有重叠，则覆盖其值
      * @method  objPropertysFromOtherObj
      * @return  {object}  新的对象，其属性集是源对象的子集
+     * @param   {object} toObj 目标对象
      * @param   {object} fromObj 源对象
      * @param   {Array} arrProps 需要COPY的熟悉数组
      */
@@ -458,6 +543,37 @@ export default class extends think.base {
             ret[key] = fromObj[key];
         }
         return ret;
+    };
+    /**
+     * 对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象
+     * @method  objToString
+     * @return  {string}  序列化后的字符串
+     * @param   {object} obj 源对象
+     */
+    objToString = function(obj){
+        let ret = [];
+        for(let key in obj){
+            if(think.isDate(obj[key])){
+                ret.push(&#x60;${key}:&#x27;${think.datetime(obj[key])}&#x27;&#x60;);
+            }else if(think.isString(obj[key])) {
+                ret.push(&#x60;${key}:&#x27;${obj[key]}&#x27;&#x60;);
+            }else if(think.isObject(obj[key])) {
+                ret.push(&#x60;${key}:${ this.objToString(obj[key]) }&#x60;);
+            }else if(think.isArray(obj[key])) {
+                let tmp = &#x27;&#x27;;
+                for(let item of obj[key]){
+                    if(think.isObject(item)){
+                        tmp += this.objToString(item);
+                    }else{
+                        tmp += item;
+                    }
+                }
+                ret.push(&#x60;${key}:[${tmp}]&#x60;);
+            }else {
+                ret.push(&#x60;${key}:${obj[key]}&#x60;);
+            }
+        }
+        return &quot;{&quot;+ret.join(&#x27;, &#x27;)+&quot;}&quot;;
     };
 
     /**
@@ -480,7 +596,7 @@ export default class extends think.base {
     /***************************其他的全局方法 **************************************/
     debug = (msg)=&gt;{
         if(think.env === &#x27;development&#x27;)
-            console.log(think.isObject(msg) ? JSON.stringify(msg).replace(/\&quot;/g,&#x27;&#x27;).replace(/\\/g,&#x27;&#x27;).replace(/,/g,&#x27;,  &#x27;) : msg);
+            console.log(think.isObject(msg) ? JSON.stringify(msg).replace(/&quot;/g,&#x27;&#x27;).replace(/\\/g,&#x27;&#x27;).replace(/,/g,&#x27;,  &#x27;) : msg);
     };
     log = (msg)=&gt;{
         console.log(msg);
@@ -562,7 +678,7 @@ export default class extends think.base {
         global.enumActType = {
             NORMAL_MAN: {id:1, c_name:&#x27;人为参与&#x27;},
             NORMAL_AUTO: {id:2, c_name:&#x27;自动执行&#x27;},
-            BEGIN: {id:3, c_name:&#x27;开始节点&#x27;},
+            START: {id:3, c_name:&#x27;开始节点&#x27;},
             DUMMY: {id:4, c_name:&#x27;哑活动&#x27;},
             END: {id:9, c_name:&#x27;结束节点&#x27;}
         };

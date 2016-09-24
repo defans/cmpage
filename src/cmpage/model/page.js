@@ -8,14 +8,6 @@
 // +----------------------------------------------------------------------
 
 /**
- 业务模块配置和展示系统的 model 类，实现了cmpage的主要业务逻辑，包括PC端和移动端
-
- 注意点 :
- 1. 在业务模块主信息设置中配置实现类,如：cmpage/page 或 demo/customer，系统会调用该类来展现页面
- 2. 具体的业务模块必须继承 cmpage/model/page.js 来增加新的逻辑
- 3. 移动端、主从页、查找带回等页面都是从 cmpage/model/page.js 继承，具体的业务模块请适当选择基类
- 4. 在其他模块如 demo 中可以配置新的数据库连接，实现了多数据库的应该
- 5. 每个页面根据不同的HTML输出位置和处理数据的流程分成了若干方法，子类中通过重写相应的方法可以达到定制页面的效果
 
  @module cmpage.model
  */
@@ -103,9 +95,15 @@ export default class extends think.model.base {
         return [html0.join(' '), html.join(' ')];
     }
 
-  async htmlGetOther(page){
-    return ``;
-  }
+    /**
+     * 输出额外的按钮和js函数
+     * @method  htmlGetOther
+     * @return {string}  html片段
+     * @param {Object} page  页面设置主信息
+     */
+    async htmlGetOther(page){
+        return ``;
+    }
 
     /**
      * 取下拉框的选项集
@@ -393,14 +391,7 @@ export default class extends think.model.base {
         return ret.join(' and ');
     }
 
-    /**
-     * 把查询条件的操作符转换成SQL片段，一般不需要重写本方法
-     * @method  getQueryWhere
-     * @return {string} where 子句， 形如：
-     * @param   {string} op 操作符
-     * @param   {string} value 操作值
-     * @param   {string} coltype    数据表中的字段类型，已作简化
-     */
+
   getOpValue(op,value,coltype){
   let ops = [ {op:"EQ",val:"= #value#"},{op:"NE",val:"<> #value#"},{op:"CN",val:"like #value#"},{op:"NC",val:"not like #value#"},{op:"IN",val:"in (#value#)"},
     {op:"NI",val:"not in (#value#)"},{op:"GE",val:">= #value#"},{op:"LE",val:"<= #value#"},{op:"GT",val:"> #value#"},{op:"LT",val:"< #value#"}];
@@ -506,23 +497,19 @@ export default class extends think.model.base {
     }
 
     /**
-     * 取编辑页面的设置，组合成列表数据的HTML输出
-     * @method  htmlGetEdit
-     * @return {string} HTML页面片段
+     * 取当前记录对象，用于新增和修改的编辑页面展示
+     * @method  getDataRecord
+     * @return {object} 当前记录对象
      * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param   {object} pageEdits 页面编辑列的设置
      */
-    async htmlGetEdit(page) {
-        let html = ['<thead> <tr >'];
-        //let pageEdits = await think.cache(`moduleEdit${page.id}`);
-      let pageEdits = await global.model('cmpage/module').getModuleEdit(page.id);
+    async getDataRecord(page,pageEdits){
         let md = {};
         if(page.editID >0) {
             let fields = [];
             for (let edit of pageEdits) {
                 fields.push(`${edit.c_desc} as ${edit.c_column}`);
             }
-            //global.debug(fields);
-            //let list = await this.query(`select ${fields.join(',')} from ${page.c_datasource} where id=${page.editID}`);
             let list = await this.model(page.c_datasource).field(fields.join(',')).where({id:page.editID}).select();
             md =list[0];
         }else{
@@ -534,6 +521,19 @@ export default class extends think.model.base {
                 md[edit.c_column] = think.isBoolean(md[edit.c_column]) ? md[edit.c_column] : (md[edit.c_column] === 1);
             }
         }
+        return md;
+    }
+    /**
+     * 取编辑页面的设置，组合成列表数据的HTML输出
+     * @method  htmlGetEdit
+     * @return {string} HTML页面片段
+     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    async htmlGetEdit(page) {
+        let html = ['<thead> <tr >'];
+        //let pageEdits = await think.cache(`moduleEdit${page.id}`);
+      let pageEdits = await global.model('cmpage/module').getModuleEdit(page.id);
+        let md = await this.getDataRecord(page,pageEdits);
 
         html.push(`<input name='old_record' type='hidden' value='${JSON.stringify(md)}' />`);
 //        global.debug(md);
@@ -542,7 +542,7 @@ export default class extends think.model.base {
             let colValue = md[col.c_column];
             if(col.c_coltype === 'timestamp'){  colValue = think.datetime(colValue); }
             if (col.c_type === "hidden" && col.c_column!=="c_city" && col.c_column!=="c_province") {
-                html.push(`<input name="${col.c_column}" type="hidden" value="${colValue}" />`);
+                html.push(`<input id="${page.c_modulename + col.c_column}" name="${col.c_column}" type="hidden" value="${colValue}" />`);
                 continue;
             }
             col.c_format = col.c_format.trim();
@@ -587,7 +587,7 @@ export default class extends think.model.base {
             }else if (col.c_type === "readonlyReplace") {
                 html.push(`<input name="${col.c_column}" type="text" size="${col.c_width}" value="${await this.getReplaceText(md[col.c_column], col.c_memo)}"  readonly="readonly"  />`); // style=background-color:#fde5d4;
             }else if(col.c_column !=='c_province' && col.c_column !=='c_city'){
-                html.push(`<input name="${col.c_column}" type="${col.c_type}" size="${col.c_width}" value="${colValue}"
+                html.push(`<input id="${page.c_modulename + col.c_column}" name="${col.c_column}" type="${col.c_type}" size="${col.c_width}" value="${colValue}"
                     ${col.c_isrequired ? "data-rule=required;" + col.c_memo : (think.isEmpty(col.c_memo) ? "" : "data-rule=" + col.c_memo)}  />`);
             }
             if (col.c_type !== "areaSelect"){
@@ -658,7 +658,13 @@ export default class extends think.model.base {
             }
             await global.model('admin/log').addLog(page.user, log.join(', '),page.id, md.id, global.enumStatusExecute.SUCCESS.id, global.enumLogType.ADD.id);
         }else if(flag === 'update'){
-            let oldMd = JSON.parse(parms.old_record);
+            let oldMd = {};
+            if(think.isEmpty(parms["old_record"])){
+                oldMd = await this.getDataRecord(page,pageEdits);
+            }else{
+                oldMd = JSON.parse(parms.old_record);
+            }
+            think.log(oldMd);
             log.push(`id:${md.id}`);
             for(let edit of pageEdits){
                 if(edit.c_editable && edit.c_column !=='c_time') {

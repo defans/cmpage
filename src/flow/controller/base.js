@@ -1,6 +1,20 @@
 'use strict';
+/**
 
+ @module flow.controller
+ */
+
+/**
+ * flow.controller的基类，用于flow模块下的其他controller类的继承，
+ * 提供一些子类的公共方法
+ * @class flow.controller.base
+ */
 export default class extends think.controller.base {
+  /**
+   本模块的所有action执行前的检查项
+   @method  __before
+   @return {promise} 当前用户未登录时，返回错误信息或者引导到登录页面
+   */
   async __before(){
     //部分 action 下不检查,
     let blankActions = ["clear_cache"];

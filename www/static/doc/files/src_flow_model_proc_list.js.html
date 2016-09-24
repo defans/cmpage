@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src\flow\model\proc_list.js</title>
+  
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body class="yui3-smart">
+ <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+               <a class="navbar-brand mainlogo" href="/static/doc/index.html">
+             
+            <img alt="" src="../assets/css/logo.png" title="">
+            
+                
+          </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                 <ul class="nav navbar-nav">
+                    
+                    <li><a href="/home/index/index">首页</a>
+                    </li>
+                    
+                    <li><a href="/static/doc/index.html">文档</a>
+                    </li>
+                    
+                    <li><a href="/admin/index/index">演示</a>
+                    </li>
+                    
+                    <li><a href="/home/index/log">日志</a>
+                    </li>
+                    
+                </ul>
+               <div class="navbar-form navbar-right filterAPi" autocomplete="off">
+                <input type="text" id='txtSearchAPI' class="form-control search-query" placeholder="Search for API" />
+                 <ul id="filterList" class="filterItems dropdown-menu" role="menu"></ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="sidebar">
+    <h3>Modules/Classes</h3>
+        <div id="api-tabview-filter">
+            <input id='txtSearch' type="search" class="form-control" placeholder="Type to filter Modules/Classes">
+        </div>
+        <dl id="sidebar_list">
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/admin.controller.html">admin.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/admin.controller.base.html">admin.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.code.html">admin.controller.code</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.index.html">admin.controller.index</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.controller.mob.html">admin.controller.mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/admin.model.html">admin.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/admin.model.code.html">admin.model.code</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.code_list.html">admin.model.code_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.groupuser_add.html">admin.model.groupuser_add</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.log.html">admin.model.log</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.login.html">admin.model.login</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.privilege.html">admin.model.privilege</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.teamuser.html">admin.model.teamuser</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.teamuser_add.html">admin.model.teamuser_add</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/admin.model.user.html">admin.model.user</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.controller.html">cmpage.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.base.html">cmpage.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.mob.html">cmpage.controller.mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.module.html">cmpage.controller.module</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.page.html">cmpage.controller.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.controller.utils.html">cmpage.controller.utils</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.logic.html">cmpage.logic</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.logic.page.html">cmpage.logic.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmpage.model.html">cmpage.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.area.html">cmpage.model.area</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_mob.html">cmpage.model.page_mob</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.utils.html">cmpage.model.utils</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.cmpage_global.html">cmpage.cmpage_global</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/flow.controller.html">flow.controller</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/flow.controller.act.html">flow.controller.act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.base.html">flow.controller.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/flow.model.html">flow.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/flow.model.act.html">flow.model.act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.act_path.html">flow.model.act_path</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+        </dl>
+</div>
+   
+    <div class="stdoc-content">
+        <!--     <form id="options-form" class="form-inline pull-right">
+        Show:
+        <label for="api-show-inherited" class="checkbox">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected" class="checkbox">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private" class="checkbox">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated" class="checkbox">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </form>
+
+ -->
+        <div class="apidocs">
+            <div id="docs-main">
+                <div class="content">
+                    <div class="page-header">
+    <h1>src\flow\model\proc_list.js <small>File</small></h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums" id='src_code'>
+&#x27;use strict&#x27;;
+// +----------------------------------------------------------------------
+// | CmPage [ 通用页面框架 ]
+// +----------------------------------------------------------------------
+// | Licensed under the Apache License, Version 2.0
+// +----------------------------------------------------------------------
+// | Author: defans &lt;defans@sina.cn&gt;
+// +----------------------------------------------------------------------
+
+import CMPage from &#x27;../../cmpage/model/page_mob.js&#x27;;
+
+export default class extends CMPage {
+    /**
+     * 取查询项的设置，结合POST参数，得到Where字句
+     */
+    async getQueryWhere(page){
+        let where =await super.getQueryWhere(page);
+        return where +&#x27; and c_status&lt;&gt;-1&#x27;;
+    }
+
+    /**
+     * 初始化编辑页面的值
+     */
+    async pageEditInit(pageEdits,page){
+        let md = await super.pageEditInit(pageEdits,page);
+        md.c_time_to = &#x27;2099-12-31 00:00:00&#x27;;   //默认的截止日期
+        md.c_class = &#x27;flow/proc&#x27;; //默认的实现类
+
+        return md;
+    }
+    /**
+     * 根据 page.c_other的设置，对页面相关参数进行设置
+     */
+    getPageOther(page){
+        let ret = page;
+        //console.log(ret);
+        ret.editCloseBtn =true;
+        if(page.editID == 0){
+            return ret;
+        }else{
+            return super.getPageOther(page);
+        }
+    }
+
+
+    /**
+     * 编辑页面保存,
+     * 如果是多个表的视图，则根据存在于page.c_table中的列更新表，一般需要在子类中继承
+     */
+    async pageSave(page,parms){
+        let md = super.pageSave(page,parms);
+        if(parms.id ==0 ){
+            //根据模板的类型自动生成活动节点
+            await this.initActs(md);
+        }
+
+    }
+
+    /**
+     * 根据模板的类型自动生成活动节点
+     */
+    async initActs(proc){
+
+    }
+
+    /**
+     * 取模板的流程图数据
+     * @method  getStocks
+     * @return {string}  流程图数据
+     * @param {int} procID  流程模板ID
+     */
+    async getFlowMap(procID){
+        let md = await this.model(&#x27;fw_proc&#x27;).where({id:procID}).find();
+        //let map = eval(&quot;(&quot;+md.c_map+&quot;)&quot;);
+        //if(think.isObject(map)){
+        //    think.log(map);
+        //}
+        return think.isEmpty(md.c_map) ? &#x27;{states:{},paths:{},props:{props:{}}}&#x27; : md.c_map;
+
+        /*****以下是图形信息分散存放于act和path中，然后拼接而成，但考虑到频繁保存的问题，故而废弃*********/
+        //let rects = {};
+        //let paths = {};
+        //
+        //if(procID &gt; 0){
+        //    let acts = await this.model(&#x27;fw_act&#x27;).where({c_proc:procID,c_status:0}).select();
+        //    for(let act of acts){
+        //        let rect =JSON.parse(act.c_map);
+        //        rect.text.text = act.c_name;
+        //        rect.data_id = act.id;
+        //        rects[act.c_map_id] = rect;
+        //    }
+        //    let ps = await this.model(&#x27;fw_act_path&#x27;).where({c_proc:procID,c_status:0}).select();
+        //    for(let p of ps){
+        //        let path =JSON.parse(p.c_map);
+        //        path.text.text = p.c_name;
+        //        //path.from = &#x60;rect${p.c_from}&#x60;;
+        //        //path.to = &#x60;rect${p.c_to}&#x60;;
+        //        path.data_id = p.id;
+        //        paths[p.c_map_id] = path;
+        //    }
+        //}
+        //let ret = {states:rects, paths:paths, props:{props:{}}};
+        //return JSON.stringify(ret);
+    }
+
+    /**
+     * 保存流程模板的图形信息，如果某个节点和路径的data_id==0，则增加相应记录 POST调用： /flow/proc/save_map
+     * @method  saveMap
+     * @return {object}
+     * @param {int} procID  流程模板ID
+     */
+    async saveFlowMap(parms){
+        let flowMap = eval(&#x60;(${parms.flowMap})&#x60;);
+        if(think.isObject(flowMap)){
+            let actModel = this.model(&#x27;fw_act&#x27;);
+            for(let k in flowMap.states){
+                if(flowMap.states[k].data_id == 0){
+                    let rect =flowMap.states[k];
+                    think.log(rect);
+                    let act = {c_name:rect.text.text, c_desc:rect.text.text, c_proc:parms.procID,c_type:1,c_class:&#x27;flow/act&#x27;,c_btn_style:&#x27;&#x27;,c_form:&#x27;&#x27;,
+                            c_from_rule:1, c_votes:0,c_to_rule:1, c_cc_rule:1,c_jump_rule:1,c_back_rule:1, c_status:0,c_map_id:k};
+                    flowMap.states[k].data_id =await actModel.add(act);
+                }
+            }
+            let pathModel = this.model(&#x27;fw_act_path&#x27;);
+            for(let k in flowMap.paths){
+                if(flowMap.paths[k].data_id == 0){
+                    let path =flowMap.paths[k];
+                    let fromAct = await actModel.where({c_proc:parms.procID,c_map_id:path.from}).find();
+                    let toAct = await actModel.where({c_proc:parms.procID,c_map_id:path.to}).find();
+                    let rec = {c_name:path.text.text, c_proc:parms.procID, c_from:fromAct.id, c_to:toAct.id,  c_status:0};
+                    flowMap.paths[k].data_id = await pathModel.add(rec);
+                }
+            }
+        }
+        let map = global.objToString(flowMap);
+        await this.model(&#x27;fw_proc&#x27;).where({id:parms.procID}).update({c_map:map});
+    }
+
+
+}
+
+    </pre>
+</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<a id="gotoTop" class='well well-small' href='#'>
+    Top
+</a>
+<script src="../assets/vendor/jquery/jquery-1.8.2.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/doc.js"></script>
+</body>
+</html>
