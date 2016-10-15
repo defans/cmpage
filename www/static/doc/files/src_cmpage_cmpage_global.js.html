@@ -123,6 +123,14 @@
                     
                        <li>
                             
+                           <a href="../classes/admin.model.code_lookup.html">admin.model.code_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
                            <ul>
                                 
@@ -403,6 +411,14 @@
                            </ul>
                        </li>
                     
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
                     </ul>
                 </dd>
              
@@ -516,6 +532,23 @@ export default class extends think.base {
         let pattern = opt.pattern.match(reCat)[0];
         let numChar = num.toString();
         return !(zeroExc &amp;&amp; numChar == 0) ? opt.pattern.replace(pattern,this._formatNumber(numChar,pattern)) : opt.pattern.replace(pattern,&quot;0&quot;);
+    };
+
+    /**
+     * 取两个整数间的随机整数
+     * @method  getRandomNum
+     * @return  {int}  随机整数
+     * @param   {int} Min 最小整数
+     * @param   {int} Max 最大整数
+     */
+    getRandomNum = function(Min,Max)
+    {
+        if(Max &lt;= Min){
+            return Min;
+        }
+        var Range = Max - Min;
+        var Rand = Math.random();
+        return(Min + Math.round(Rand * Range));
     };
 
     /***************************对象处理 **************************************/
@@ -702,19 +735,6 @@ export default class extends think.base {
             MAN_AND_AUTO: {id:4, c_name:&#x27;手动和自动&#x27;},
             DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
         };
-        global.enumActJumpRule = {
-            NO: {id:1, c_name:&#x27;不能跳转&#x27;},
-            FORWARD: {id:2, c_name:&#x27;向前跳转&#x27;},
-            BACK: {id:3, c_name:&#x27;向后跳转&#x27;},
-            ANY: {id:4, c_name:&#x27;任意跳转&#x27;},
-            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
-        };
-        global.enumActBackRule = {
-            NO: {id:1, c_name:&#x27;不能回退&#x27;},
-            PREV: {id:2, c_name:&#x27;退到上一步&#x27;},
-            ANY: {id:4, c_name:&#x27;退到任意步&#x27;},
-            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
-        };
         global.enumActAssignType = {
             DEPT: {id:2, c_name:&#x27;部门&#x27;},
             ROLE: {id:3, c_name:&#x27;角色&#x27;},
@@ -744,6 +764,15 @@ export default class extends think.base {
             TERMINATE: {id:4, c_name:&#x27;终止&#x27;},
             END: {id:9, c_name:&#x27;完成&#x27;}
         };
+        global.enumTaskPriority = {
+            NOMAL: {id:1, c_name:&#x27;一般&#x27;},
+            HIGH: {id:2, c_name:&#x27;高&#x27;},
+            HIGHER: {id:3, c_name:&#x27;很高&#x27;},
+            HIGHEST: {id:4, c_name:&#x27;最高&#x27;},
+            LOW: {id:5, c_name:&#x27;低&#x27;},
+            LOWER: {id:6, c_name:&#x27;很低&#x27;},
+            LOWEST: {id:7, c_name:&#x27;最低&#x27;}
+        };
         global.enumTaskActStatus = {
             NO_BEGIN: {id:1, c_name:&#x27;未开始&#x27;},
             INIT: {id:2, c_name:&#x27;初始化&#x27;},
@@ -754,7 +783,20 @@ export default class extends think.base {
             TERMINATE: {id:7, c_name:&#x27;终止&#x27;},
             END: {id:9, c_name:&#x27;完成&#x27;}
         };
-
+        //暂时不考虑回退和跳转，如有必要，可继承task, task_act来实现具体的某一类业务流程模板
+        //global.enumActJumpRule = {
+        //    NO: {id:1, c_name:&#x27;不能跳转&#x27;},
+        //    FORWARD: {id:2, c_name:&#x27;向前跳转&#x27;},
+        //    BACK: {id:3, c_name:&#x27;向后跳转&#x27;},
+        //    ANY: {id:4, c_name:&#x27;任意跳转&#x27;},
+        //    DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+        //};
+        //global.enumActBackRule = {
+        //    NO: {id:1, c_name:&#x27;不能回退&#x27;},
+        //    PREV: {id:2, c_name:&#x27;退到上一步&#x27;},
+        //    ANY: {id:4, c_name:&#x27;退到任意步&#x27;},
+        //    DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+        //};
     };
 
     /***************************根据参数对象生成新增和修改的SQL语句 ************ 已经废弃 **************************/

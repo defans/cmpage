@@ -32,9 +32,10 @@ export default class extends think.model.base {
      * @return {bool}  判断值
      * @params {int} actID 活动节点ID
      * @params {object} user 流程执行人
+     * @params {object} [taskAct] 活动节点对象
      */
-    async canRun(taskActID,user){
-        let parms = await this.fwGetActParms(taskActID,user);
+    async canRun(taskActID,user,taskAct){
+        let parms = await this.fwGetActParms(taskActID,user,taskAct);
         let taskActModel = this.model(parms[1].c_class);
         return await taskActModel.canRun(...parms);
     }
@@ -47,8 +48,8 @@ export default class extends think.model.base {
      * @params {int} actID 活动节点ID
      * @params {object} user 流程执行人
      */
-    async fwRun(taskActID,user){
-        let parms = await this.fwGetActParms(taskActID,user);
+    async fwRun(taskActID,user,taskAct){
+        let parms = await this.fwGetActParms(taskActID,user,taskAct);
         let taskActModel = this.model(parms[1].c_class);
         return await taskActModel.fwRun(...parms);
     }
@@ -59,9 +60,10 @@ export default class extends think.model.base {
      * @return {object}  活动节点对象
      * @params {int} actID 活动节点ID
      * @params {object} user 流程执行人
+     * @params {object} [taskAct] 活动节点对象
      */
-    async fwSuspend(taskActID,user){
-        let parms = await this.fwGetActParms(taskActID,user);
+    async fwSuspend(taskActID,user,taskAct){
+        let parms = await this.fwGetActParms(taskActID,user,taskAct);
         let taskActModel = this.model(parms[1].c_class);
         return await taskActModel.fwSuspend(...parms);
     }
@@ -72,9 +74,10 @@ export default class extends think.model.base {
      * @return {object}  活动节点对象
      * @params {int} actID 活动节点ID
      * @params {object} user 流程执行人
+     * @params {object} [taskAct] 活动节点对象
      */
-    async fwTerminate(taskActID,user){
-        let parms = await this.fwGetActParms(taskActID,user);
+    async fwTerminate(taskActID,user,taskAct){
+        let parms = await this.fwGetActParms(taskActID,user,taskAct);
         let taskActModel = this.model(parms[1].c_class);
         return await taskActModel.fwTerminate(...parms);
     }
@@ -85,9 +88,10 @@ export default class extends think.model.base {
      * @return {object}  活动节点对象
      * @params {int} actID 活动节点ID
      * @params {object} user 流程执行人
+     * @params {object} [taskAct] 活动节点对象
      */
-    async fwEnd(taskActID,user){
-        let parms = await this.fwGetActParms(taskActID,user);
+    async fwEnd(taskActID,user,taskAct){
+        let parms = await this.fwGetActParms(taskActID,user,taskAct);
         let taskActModel = this.model(parms[1].c_class);
         return await taskActModel.fwEnd(...parms);
     }
@@ -98,12 +102,15 @@ export default class extends think.model.base {
      * @return {Array} 其他方法调用的参数列表
      * @params {int} actID 活动节点ID
      * @params {object} user 流程执行人
+     * @params {object} [taskAct] 活动节点对象
      */
-    async fwGetActParms(taskActID,user){
+    async fwGetActParms(taskActID,user,taskAct){
         if(think.isEmpty(user)){
             user = await think.session('user');
         }
-        let taskAct = this.model('vw_task_act').where({id:taskActID}).find();
+        if(think.isEmpty(taskAct)){
+            taskAct = await this.model('vw_task_act').where({id:taskActID}).find()
+        }
         let act =await this.getActByIdAndProcId(taskAct.c_act, taskAct.c_proc);
 
         return [taskAct,act,user];
@@ -183,13 +190,27 @@ export default class extends think.model.base {
 
     async getActs(){
         return await think.cache("procActs", () => {
-            return this.query('select * from fw_act order by id ');
+            let acts = this.query('select * from fw_act order by id ');
+            for(let act of acts){
+                if(!think.isEmpty(act.c_domain)){
+                    act.domain = eval(`(${act.c_domain})`);
+                    act.domain = think.isEmpty(act.domain) ? {}:act.domain;
+                }
+            }
+            return acts;
         });
     }
 
     async getActsByProcId(procID){
         return await think.cache("procActs"+procID, (procID) => {
-            return this.query(`select * from fw_act where c_proc=${procID} order by id `);
+            let acts = this.query(`select * from fw_act where c_proc=${procID} order by id `);
+            for(let act of acts){
+                if(!think.isEmpty(act.c_domain)){
+                    act.domain = eval(`(${act.c_domain})`);
+                    act.domain = think.isEmpty(act.domain) ? {}:act.domain;
+                }
+            }
+            return acts;
         });
     }
 

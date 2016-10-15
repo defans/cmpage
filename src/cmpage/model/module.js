@@ -283,11 +283,11 @@ export default class extends think.model.base {
         col.c_pager = think.isBoolean(col.c_pager) ? col.c_pager : (col.c_pager === 1);
         return col;
     }
-    async getModuleNameById(moduleID){
+    async getNameById(moduleID){
         let md = await this.getModuleById(moduleID);
         return !think.isEmpty(md) ? md[0].c_modulename: '';
     }
-    async getModuleAliasById(moduleID){
+    async getAliasById(moduleID){
         let md = await this.getModuleById(moduleID);
         return !think.isEmpty(md) ? md[0].c_alias: '';
     }
@@ -297,6 +297,11 @@ export default class extends think.model.base {
             return this.model('t_module').where({c_modulename:modulename,c_status:0}).find();  //query(`select * from t_module where c_modulename = '${modulename}' and c_status=0`);
         });
     }
+    async getAliasByName(modulename){
+        let md = await this.getModuleByName(modulename);
+        return !think.isEmpty(md) ? md[0].c_alias: '';
+    }
+
     async getModuleCol(moduleID){
         let cols = await think.cache(`moduleCol${moduleID}`, () => {
             return this.query(`select * from t_module_col where c_module = ${moduleID} order by c_order`);

@@ -82,6 +82,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "src\\admin\\model\\code_lookup.js": {
+            "name": "src\\admin\\model\\code_lookup.js",
+            "modules": {},
+            "classes": {
+                "admin.model.code_lookup": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\admin\\model\\groupuser.js": {
             "name": "src\\admin\\model\\groupuser.js",
             "modules": {},
@@ -156,13 +165,6 @@
         },
         "src\\cmpage\\config\\config.js": {
             "name": "src\\cmpage\\config\\config.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
-        "src\\cmpage\\config\\db.js": {
-            "name": "src\\cmpage\\config\\db.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -335,6 +337,13 @@
         "src\\flow\\controller\\proc.js": {
             "name": "src\\flow\\controller\\proc.js",
             "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\controller\\task.js": {
+            "name": "src\\flow\\controller\\task.js",
+            "modules": {},
             "classes": {
                 "flow.controller.proc": 1
             },
@@ -401,6 +410,15 @@
             },
             "fors": {},
             "namespaces": {}
+        },
+        "src\\flow\\model\\task_act_appr.js": {
+            "name": "src\\flow\\model\\task_act_appr.js",
+            "modules": {},
+            "classes": {
+                "flow.model.task_act_appr": 1
+            },
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {
@@ -426,6 +444,7 @@
             "classes": {
                 "admin.model.code": 1,
                 "admin.model.code_list": 1,
+                "admin.model.code_lookup": 1,
                 "admin.model.groupuser": 1,
                 "admin.model.groupuser_add": 1,
                 "admin.model.log": 1,
@@ -502,7 +521,7 @@
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "src\\flow\\controller\\proc.js",
+            "file": "src\\flow\\controller\\task.js",
             "line": 3,
             "description": "流程模板配置和引擎调用接口的controller模块，实现了对外的URL接口，包括PC端和移动端\n\n注意点 :\n1. base.js继承自 think.controller.base;\n2. 其他controller 继承自 base.js;\n3. 具体的业务模块可以继承并扩展 flow/model/act.js 来实现增加标准以外的逻辑\n4. 可以根据具体的业务模块选择适当基类，例如审核类:flow/model/act_appr.js\n5. 使用flow的页面统一从 controller/act.js, proc.js 提供的URL接口调用，也可继承并重写相应方法来增加逻辑（但一般从model/act.js, proc.js继承即可）"
         },
@@ -514,12 +533,13 @@
                 "flow.model.act_path": 1,
                 "flow.model.proc": 1,
                 "flow.model.task": 1,
-                "flow.model.task_act": 1
+                "flow.model.task_act": 1,
+                "flow.model.task_act_appr": 1
             },
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "src\\flow\\model\\task_act.js",
+            "file": "src\\flow\\model\\task_act_appr.js",
             "line": 10,
             "description": "流程模板配置和引擎调用接口的逻辑实现类\n\n注意点 :\n1. 工作流方法调用统一归口到proc.js 和 act.js ;\n2. 根据流程模板设置的实现类，proc.js 和 act.js 会调用该类\n3. 具体的业务逻辑实现类可以继承并扩展 task.js 和 task_act.js等 来实现增加标准以外的业务逻辑\n4. 可以根据具体的业务模块选择适当基类，例如审核类:flow/model/task_act_appr.js\n5. 原则上：业务无关的流程控制逻辑放于 proc.js 和 act.js ，业务相关的流程控制放于task_xxx.js 中"
         }
@@ -608,6 +628,20 @@
             "file": "src\\admin\\model\\code_list.js",
             "line": 13,
             "description": "代码于参数设置的页面展示及操作类，单层的CRUD，配合 cmpage/controller/page.js 中的相关调用，继承自 cmpage/model/page.js"
+        },
+        "admin.model.code_lookup": {
+            "name": "admin.model.code_lookup",
+            "shortname": "admin.model.code_lookup",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "admin.model",
+            "namespace": "",
+            "file": "src\\admin\\model\\code_lookup.js",
+            "line": 13,
+            "description": "参数选择，继承自 cmpage/model/page_lookup.js"
         },
         "admin.model.groupuser": {
             "name": "admin.model.groupuser",
@@ -941,7 +975,7 @@
             "extension_for": [],
             "module": "flow.controller",
             "namespace": "",
-            "file": "src\\flow\\controller\\proc.js",
+            "file": "src\\flow\\controller\\task.js",
             "line": 3,
             "description": "提供工作流模板设计的URL接口<br/>\n提供工作流引擎的URL调用接口"
         },
@@ -1014,6 +1048,20 @@
             "file": "src\\flow\\model\\task_act.js",
             "line": 10,
             "description": "提供工作流的活动节点运转的相关方法，业务相关，供flow/model/act.js的方法进行调用<br/>\n具体的业务相关的工作流活动的子类可以继承本类，来增加定制的业务逻辑"
+        },
+        "flow.model.task_act_appr": {
+            "name": "flow.model.task_act_appr",
+            "shortname": "flow.model.task_act_appr",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "flow.model",
+            "namespace": "",
+            "file": "src\\flow\\model\\task_act_appr.js",
+            "line": 10,
+            "description": "提供审核类工作流的活动节点运转的相关方法，业务相关，供flow/model/act.js的方法进行调用，在act配置的时候可以设置<br/>\n具体的业务相关的工作流活动的子类也可以继承本类，来增加定制的业务逻辑"
         }
     },
     "classitems": [
@@ -1037,8 +1085,8 @@
             "itemtype": "method",
             "name": "codeTree",
             "return": {
-                "description": "t_code记录对象的数组，多层",
-                "type": "Json"
+                "description": "代码树页面",
+                "type": "Promise"
             },
             "class": "admin.controller.code",
             "module": "admin.controller"
@@ -1046,6 +1094,19 @@
         {
             "file": "src\\admin\\controller\\code.js",
             "line": 38,
+            "description": "参数选择，查找带回页面，输入根节点ID为参数 <br/>\n点击某个节点，右侧显示其子节点列表，选择后返回 <br/>\nRUL调用如：/admin/code/code_lookup?rootid=1185*multiselect=false <br/>",
+            "itemtype": "method",
+            "name": "codeLookup",
+            "return": {
+                "description": "参数选择页面",
+                "type": "Promise"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 56,
             "description": "账套用户设置的主界面",
             "itemtype": "method",
             "name": "groupUserMain",
@@ -1058,7 +1119,7 @@
         },
         {
             "file": "src\\admin\\controller\\code.js",
-            "line": 50,
+            "line": 68,
             "description": "增加某帐套的用户",
             "itemtype": "method",
             "name": "groupUserAdd",
@@ -1071,7 +1132,7 @@
         },
         {
             "file": "src\\admin\\controller\\code.js",
-            "line": 63,
+            "line": 81,
             "description": "删除某帐套的用户",
             "itemtype": "method",
             "name": "groupUserDel",
@@ -1084,7 +1145,7 @@
         },
         {
             "file": "src\\admin\\controller\\code.js",
-            "line": 73,
+            "line": 91,
             "description": "团队用户设置的主界面",
             "itemtype": "method",
             "name": "teamUserMain",
@@ -1097,7 +1158,7 @@
         },
         {
             "file": "src\\admin\\controller\\code.js",
-            "line": 85,
+            "line": 103,
             "description": "增加某团队的用户",
             "itemtype": "method",
             "name": "teamUserAdd",
@@ -1110,7 +1171,7 @@
         },
         {
             "file": "src\\admin\\controller\\code.js",
-            "line": 98,
+            "line": 116,
             "description": "删除某团队的用户",
             "itemtype": "method",
             "name": "teamUserDel",
@@ -1123,7 +1184,7 @@
         },
         {
             "file": "src\\admin\\controller\\code.js",
-            "line": 108,
+            "line": 126,
             "description": "角色权限设置主界面",
             "itemtype": "method",
             "name": "rolePrivilege",
@@ -1136,7 +1197,7 @@
         },
         {
             "file": "src\\admin\\controller\\code.js",
-            "line": 121,
+            "line": 139,
             "description": "某个角色的权限集合展示，树状结构",
             "itemtype": "method",
             "name": "roleGetPrivilegeTree",
@@ -1149,7 +1210,7 @@
         },
         {
             "file": "src\\admin\\controller\\code.js",
-            "line": 133,
+            "line": 151,
             "description": "保存某个角色的权限设置",
             "itemtype": "method",
             "name": "roleSavePrivilege",
@@ -1162,7 +1223,7 @@
         },
         {
             "file": "src\\admin\\controller\\code.js",
-            "line": 146,
+            "line": 164,
             "description": "代码树，输入根节点ID为参数 ------- 以下3个操作已废弃，改用 codeTreeAction -----------\n直接通过树增删改节点\n/admin/code?rootid=1",
             "class": "admin.controller.code",
             "module": "admin.controller"
@@ -1662,8 +1723,8 @@
             "module": "admin.model"
         },
         {
-            "file": "src\\admin\\model\\groupuser.js",
-            "line": 21,
+            "file": "src\\admin\\model\\code_lookup.js",
+            "line": 19,
             "description": "重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句",
             "itemtype": "method",
             "name": "getQueryWhere",
@@ -1678,12 +1739,12 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.groupuser",
+            "class": "admin.model.code_lookup",
             "module": "admin.model"
         },
         {
             "file": "src\\admin\\model\\groupuser.js",
-            "line": 33,
+            "line": 22,
             "description": "重写父类的 htmlGetOther 方法，输出额外的按钮和js函数",
             "itemtype": "method",
             "name": "htmlGetOther",
@@ -1703,7 +1764,7 @@
         },
         {
             "file": "src\\admin\\model\\groupuser.js",
-            "line": 76,
+            "line": 65,
             "description": "取某个用户登录账套及其所有子帐套",
             "itemtype": "method",
             "name": "getLoginGroups",
@@ -1967,27 +2028,7 @@
         },
         {
             "file": "src\\admin\\model\\teamuser.js",
-            "line": 20,
-            "description": "重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句",
-            "itemtype": "method",
-            "name": "getQueryWhere",
-            "return": {
-                "description": "where条件子句",
-                "type": "String"
-            },
-            "params": [
-                {
-                    "name": "page",
-                    "description": "页面设置主信息",
-                    "type": "Object"
-                }
-            ],
-            "class": "admin.model.teamuser",
-            "module": "admin.model"
-        },
-        {
-            "file": "src\\admin\\model\\teamuser.js",
-            "line": 32,
+            "line": 21,
             "description": "重写父类的 htmlGetOther 方法，输出额外的按钮和js函数",
             "itemtype": "method",
             "name": "htmlGetOther",
@@ -2157,14 +2198,6 @@
             "file": "src\\cmpage\\config\\config.js",
             "line": 2,
             "description": "config",
-            "class": "cmpage.controller.base",
-            "module": "admin.model"
-        },
-        {
-            "file": "src\\cmpage\\config\\db.js",
-            "line": 2,
-            "description": "db config",
-            "type": "{Object}",
             "class": "cmpage.controller.base",
             "module": "admin.model"
         },
@@ -2509,6 +2542,19 @@
         {
             "file": "src\\cmpage\\controller\\page.js",
             "line": 127,
+            "description": "删除记录的URL接口，调用： /cmpage/xxx/delete?id=xxx",
+            "itemtype": "method",
+            "name": "delete",
+            "return": {
+                "description": "删除成功状态",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.page",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\page.js",
+            "line": 144,
             "description": "业务模块的编辑页面，一般调用： /cmpage/page/edit?modulename=xxx",
             "itemtype": "method",
             "name": "edit",
@@ -2521,7 +2567,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\page.js",
-            "line": 146,
+            "line": 163,
             "description": "业务模块的编辑页面，主从页面，一般调用： /cmpage/page/rec_edit?modulename=xxx",
             "itemtype": "method",
             "name": "recEdit",
@@ -2534,7 +2580,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\page.js",
-            "line": 169,
+            "line": 186,
             "description": "保存业务模块记录信息， POST调用： /cmpage/page/save",
             "itemtype": "method",
             "name": "save",
@@ -2547,7 +2593,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\page.js",
-            "line": 193,
+            "line": 210,
             "description": "业务模块的查看页面，一般调用： /cmpage/page/view?modulename=xxx",
             "itemtype": "method",
             "name": "view",
@@ -2560,7 +2606,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\page.js",
-            "line": 209,
+            "line": 226,
             "description": "查找带回页面，一般调用： /cmpage/page/lookup?modulename=xxx&multiselect=false",
             "itemtype": "method",
             "name": "lookup",
@@ -2829,7 +2875,7 @@
         },
         {
             "file": "src\\cmpage\\model\\module.js",
-            "line": 339,
+            "line": 344,
             "class": "cmpage.model.page",
             "module": "cmpage.model"
         },
@@ -2855,8 +2901,8 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 98,
-            "description": "输出额外的按钮和js函数",
+            "line": 102,
+            "description": "输出额外的按钮和js函数和HTML片段，区别于 getPageOther",
             "itemtype": "method",
             "name": "htmlGetOther",
             "return": {
@@ -2875,7 +2921,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 108,
+            "line": 112,
             "description": "取下拉框的选项集",
             "itemtype": "method",
             "name": "getOptions",
@@ -2902,7 +2948,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 157,
+            "line": 161,
             "description": "根据设置取显示的替换值",
             "itemtype": "method",
             "name": "getReplaceText",
@@ -2927,8 +2973,8 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 195,
-            "description": "取顶部按钮的设置，组合成HTML输出",
+            "line": 199,
+            "description": "取顶部按钮的设置，分靠左和靠右两块，组合成HTML输出",
             "itemtype": "method",
             "name": "htmlGetBtnHeader",
             "return": {
@@ -2947,7 +2993,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 221,
+            "line": 225,
             "description": "取记录列表每一行的按钮设置，组合成HTML输出，子类中重写本方法可以定制每行按钮的输出效果",
             "itemtype": "method",
             "name": "htmlGetBtnList",
@@ -2977,7 +3023,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 244,
+            "line": 248,
             "description": "取分页列表的设置，结合结果数据集，组合成HTML输出，一般不需要重新本方法",
             "itemtype": "method",
             "name": "htmlGetList",
@@ -3002,7 +3048,27 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 334,
+            "line": 331,
+            "description": "是否显示列表中的按钮，子类中重写本方法可以改变按钮显示的逻辑",
+            "itemtype": "method",
+            "name": "isShowRowBtns",
+            "return": {
+                "description": "是否显示",
+                "type": "Boolean"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面按钮的设置",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 348,
             "description": "取结果数据集，子类中重写本方法可以增加逻辑如：对结果集做进一步的数据处理等",
             "itemtype": "method",
             "name": "getDataList",
@@ -3022,7 +3088,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 362,
+            "line": 376,
             "description": "取查询项的设置，结合POST参数，得到Where字句，重写本方法可以定制或修改SQL的where子句",
             "itemtype": "method",
             "name": "getQueryWhere",
@@ -3042,7 +3108,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 422,
+            "line": 437,
             "description": "根据设置取得页面显示列表返回的字段，一般不需要重写本方法",
             "itemtype": "method",
             "name": "getListFields",
@@ -3062,7 +3128,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 445,
+            "line": 460,
             "description": "新增的时候，初始化编辑页面的值，子类重写本方法可以定制新增页面的初始值",
             "itemtype": "method",
             "name": "pageEditInit",
@@ -3087,8 +3153,8 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 474,
-            "description": "根据 page.c_other的设置，对页面相关参数进行设置",
+            "line": 489,
+            "description": "根据 page.c_other的设置，对页面相关参数进行设置 </br>\n区别于 htmlGetOther",
             "itemtype": "method",
             "name": "getPageOther",
             "return": {
@@ -3107,7 +3173,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 499,
+            "line": 515,
             "description": "取当前记录对象，用于新增和修改的编辑页面展示",
             "itemtype": "method",
             "name": "getDataRecord",
@@ -3132,7 +3198,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 526,
+            "line": 544,
             "description": "取编辑页面的设置，组合成列表数据的HTML输出",
             "itemtype": "method",
             "name": "htmlGetEdit",
@@ -3152,7 +3218,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 601,
+            "line": 630,
             "description": "编辑页面保存,<br/>\n如果是多个表的数据产生的编辑页，则根据存在于page.c_table中的列更新表，一般需要在子类中继承，例如： admin/user:pageSave",
             "itemtype": "method",
             "name": "pageSave",
@@ -3177,14 +3243,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 638,
-            "description": "保存后的操作日志记录,，通过重写可在子类中定制日志的格式",
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
-        },
-        {
-            "file": "src\\cmpage\\model\\page.js",
-            "line": 641,
+            "line": 668,
             "description": "保存后的操作日志记录,，通过重写可在子类中定制日志的格式",
             "itemtype": "method",
             "name": "pageSaveLog",
@@ -3224,13 +3283,33 @@
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 718,
+            "line": 745,
             "description": "取查看页面的设置，组合成列表数据的HTML输出",
             "itemtype": "method",
             "name": "htmlGetView",
             "return": {
                 "description": "HTML页面片段",
                 "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面对象，包括前端传过来的参数和当前的用户信息等",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 787,
+            "description": "删除记录,<br/>\n子类中可以重写本方法，实现其他的删除逻辑，如判断是否可以删除，删除相关联的其他记录等等",
+            "itemtype": "method",
+            "name": "pageDelete",
+            "return": {
+                "description": "记录对象",
+                "type": "Object"
             },
             "params": [
                 {
@@ -3315,6 +3394,26 @@
         {
             "file": "src\\cmpage\\model\\page_lookup.js",
             "line": 22,
+            "description": "是否显示列表中的按钮，子类中重写本方法可以改变按钮显示的逻辑",
+            "itemtype": "method",
+            "name": "isShowRowBtns",
+            "return": {
+                "description": "是否显示",
+                "type": "Boolean"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面按钮的设置",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page_lookup",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_lookup.js",
+            "line": 32,
             "description": "取列表中按钮的设置，组合成HTML输出,<br/> 重写父类的方法，子类中也可重写本方法，更改返回的字段和值等",
             "itemtype": "method",
             "name": "htmlGetBtnList",
@@ -3344,7 +3443,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page_lookup.js",
-            "line": 42,
+            "line": 65,
             "description": "顶部按钮不需要显示，<br/> 重写父类的方法，子类中也可重写本方法，增加其他按钮",
             "itemtype": "method",
             "name": "htmlGetBtnHeader",
@@ -3602,12 +3701,37 @@
         {
             "file": "src\\cmpage\\cmpage_global.js",
             "line": 76,
+            "description": "取两个整数间的随机整数",
+            "itemtype": "method",
+            "name": "getRandomNum",
+            "return": {
+                "description": "随机整数",
+                "type": "Int"
+            },
+            "params": [
+                {
+                    "name": "Min",
+                    "description": "最小整数",
+                    "type": "Int"
+                },
+                {
+                    "name": "Max",
+                    "description": "最大整数",
+                    "type": "Int"
+                }
+            ],
             "class": "cmpage.cmpage_global",
             "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 86,
+            "line": 93,
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 103,
             "description": "在目标对象上增加另一个对象的某些属性，如有重叠，则覆盖其值",
             "itemtype": "method",
             "name": "objPropertysFromOtherObj",
@@ -3637,7 +3761,7 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 102,
+            "line": 119,
             "description": "对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象",
             "itemtype": "method",
             "name": "objToString",
@@ -3657,7 +3781,7 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 134,
+            "line": 151,
             "description": "进行CRUD之前转换成合适的值，用来匹配 thinkjs 的CRUD方法",
             "itemtype": "method",
             "name": "checksql",
@@ -3677,13 +3801,13 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 151,
+            "line": 168,
             "class": "cmpage.cmpage_global",
             "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 160,
+            "line": 177,
             "description": "通过形如：demo/customer 参数返回model，数据库配置采用model所在模块的配置",
             "itemtype": "method",
             "name": "model",
@@ -3708,7 +3832,7 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 179,
+            "line": 196,
             "description": "时间格式化输出",
             "itemtype": "method",
             "name": "model",
@@ -3733,7 +3857,7 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 197,
+            "line": 214,
             "description": "cmpage的全局变量初始化，如enum等",
             "itemtype": "method",
             "name": "cmpageInit",
@@ -3746,7 +3870,7 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 315,
+            "line": 341,
             "class": "cmpage.cmpage_global",
             "module": "cmpage.model"
         },
@@ -3784,6 +3908,32 @@
             "module": "flow.controller"
         },
         {
+            "file": "src\\flow\\controller\\act.js",
+            "line": 51,
+            "description": "删除流程节点的路径信息， GET调用： /flow/act/delete_path?id=xxx",
+            "itemtype": "method",
+            "name": "deletePath",
+            "return": {
+                "description": "删除状态",
+                "type": "Json"
+            },
+            "class": "flow.controller.act",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\act.js",
+            "line": 63,
+            "description": "编辑流程节点内容， GET调用： /flow/act/edit?id=xxx",
+            "itemtype": "method",
+            "name": "edit",
+            "return": {
+                "description": "act编辑页面的HTML片段",
+                "type": "Json"
+            },
+            "class": "flow.controller.act",
+            "module": "flow.controller"
+        },
+        {
             "file": "src\\flow\\controller\\base.js",
             "line": 13,
             "description": "本模块的所有action执行前的检查项",
@@ -3798,67 +3948,8 @@
         },
         {
             "file": "src\\flow\\controller\\proc.js",
-            "line": 12,
-            "description": "启动一个新的流程实例, GET调用：/flow/proc/start?proc_id=xxx",
-            "itemtype": "method",
-            "name": "start",
-            "return": {
-                "description": "流程实例对象",
-                "type": "Json"
-            },
-            "class": "flow.controller.proc",
-            "module": "flow.controller"
-        },
-        {
-            "file": "src\\flow\\controller\\proc.js",
-            "line": 26,
-            "description": "重新运行一个流程实例, GET调用：/flow/proc/run?task_id=xxx",
-            "itemtype": "method",
-            "name": "run",
-            "return": {
-                "description": "流程实例对象",
-                "type": "Json"
-            },
-            "class": "flow.controller.proc",
-            "module": "flow.controller"
-        },
-        {
-            "file": "src\\flow\\controller\\proc.js",
-            "line": 40,
-            "description": "挂起一个流程实例, GET调用：/flow/proc/suspend?task_id=xxx",
-            "itemtype": "method",
-            "name": "suspend",
-            "return": {
-                "description": "流程实例对象",
-                "type": "Json"
-            },
-            "class": "flow.controller.proc",
-            "module": "flow.controller"
-        },
-        {
-            "file": "src\\flow\\controller\\proc.js",
-            "line": 54,
-            "description": "终止一个流程实例, GET调用：/flow/proc/terminate?task_id=xxx",
-            "itemtype": "method",
-            "name": "terminate",
-            "return": {
-                "description": "流程实例对象",
-                "type": "Json"
-            },
-            "class": "flow.controller.proc",
-            "module": "flow.controller"
-        },
-        {
-            "file": "src\\flow\\controller\\proc.js",
-            "line": 69,
-            "description": "流程模板的图形和活动节点的设置",
-            "class": "flow.controller.proc",
-            "module": "flow.controller"
-        },
-        {
-            "file": "src\\flow\\controller\\proc.js",
-            "line": 95,
-            "description": "图形化设置流程模板， 调用： /flow/proc/desing",
+            "line": 10,
+            "description": "图形化设置流程模板， 调用： /flow/proc/desing?id=xxx",
             "itemtype": "method",
             "name": "design",
             "return": {
@@ -3870,12 +3961,77 @@
         },
         {
             "file": "src\\flow\\controller\\proc.js",
-            "line": 109,
+            "line": 38,
+            "description": "取流程模板的图形信息 调用： /flow/proc/flow_map?proc_id=xxx",
+            "itemtype": "method",
+            "name": "flowMap",
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "flow.controller.proc",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\proc.js",
+            "line": 52,
             "description": "保存流程模板的图形信息，如果某个节点和路径的data_id==0，则增加相应记录 POST调用： /flow/proc/save_map",
             "itemtype": "method",
             "name": "saveMap",
             "return": {
                 "description": "",
+                "type": "Json"
+            },
+            "class": "flow.controller.proc",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\task.js",
+            "line": 11,
+            "description": "启动一个新的流程实例, GET调用：/flow/proc/start?proc_id=xxx",
+            "itemtype": "method",
+            "name": "start",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Json"
+            },
+            "class": "flow.controller.proc",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\task.js",
+            "line": 27,
+            "description": "重新运行一个流程实例, GET调用：/flow/proc/run?task_id=xxx",
+            "itemtype": "method",
+            "name": "run",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Json"
+            },
+            "class": "flow.controller.proc",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\task.js",
+            "line": 41,
+            "description": "挂起一个流程实例, GET调用：/flow/proc/suspend?task_id=xxx",
+            "itemtype": "method",
+            "name": "suspend",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Json"
+            },
+            "class": "flow.controller.proc",
+            "module": "flow.controller"
+        },
+        {
+            "file": "src\\flow\\controller\\task.js",
+            "line": 55,
+            "description": "终止一个流程实例, GET调用：/flow/proc/terminate?task_id=xxx",
+            "itemtype": "method",
+            "name": "terminate",
+            "return": {
+                "description": "流程实例对象",
                 "type": "Json"
             },
             "class": "flow.controller.proc",
@@ -3928,6 +4084,12 @@
                     "name": "user",
                     "description": "流程执行人",
                     "type": "Object"
+                },
+                {
+                    "name": "taskAct",
+                    "description": "活动节点对象",
+                    "type": "Object",
+                    "optional": true
                 }
             ],
             "class": "flow.model.act",
@@ -3935,7 +4097,7 @@
         },
         {
             "file": "src\\flow\\model\\act.js",
-            "line": 42,
+            "line": 43,
             "description": "运行一个活动(流程节点)<br/>\ncanRun的判断在具体的业务task_act中调用",
             "itemtype": "method",
             "name": "fwRun",
@@ -3960,7 +4122,7 @@
         },
         {
             "file": "src\\flow\\model\\act.js",
-            "line": 56,
+            "line": 57,
             "description": "挂起一个活动(流程节点)，",
             "itemtype": "method",
             "name": "fwSuspend",
@@ -3978,6 +4140,12 @@
                     "name": "user",
                     "description": "流程执行人",
                     "type": "Object"
+                },
+                {
+                    "name": "taskAct",
+                    "description": "活动节点对象",
+                    "type": "Object",
+                    "optional": true
                 }
             ],
             "class": "flow.model.act",
@@ -3985,7 +4153,7 @@
         },
         {
             "file": "src\\flow\\model\\act.js",
-            "line": 69,
+            "line": 71,
             "description": "终止一个活动(流程节点)，",
             "itemtype": "method",
             "name": "fwTerminate",
@@ -4003,6 +4171,12 @@
                     "name": "user",
                     "description": "流程执行人",
                     "type": "Object"
+                },
+                {
+                    "name": "taskAct",
+                    "description": "活动节点对象",
+                    "type": "Object",
+                    "optional": true
                 }
             ],
             "class": "flow.model.act",
@@ -4010,7 +4184,7 @@
         },
         {
             "file": "src\\flow\\model\\act.js",
-            "line": 82,
+            "line": 85,
             "description": "正常结束一个活动(流程节点)，",
             "itemtype": "method",
             "name": "fwEnd",
@@ -4028,6 +4202,12 @@
                     "name": "user",
                     "description": "流程执行人",
                     "type": "Object"
+                },
+                {
+                    "name": "taskAct",
+                    "description": "活动节点对象",
+                    "type": "Object",
+                    "optional": true
                 }
             ],
             "class": "flow.model.act",
@@ -4035,7 +4215,7 @@
         },
         {
             "file": "src\\flow\\model\\act.js",
-            "line": 95,
+            "line": 99,
             "description": "取活动(流程节点)参数，供其他方法调用",
             "itemtype": "method",
             "name": "fwGetActParms",
@@ -4053,6 +4233,12 @@
                     "name": "user",
                     "description": "流程执行人",
                     "type": "Object"
+                },
+                {
+                    "name": "taskAct",
+                    "description": "活动节点对象",
+                    "type": "Object",
+                    "optional": true
                 }
             ],
             "class": "flow.model.act",
@@ -4060,7 +4246,7 @@
         },
         {
             "file": "src\\flow\\model\\act.js",
-            "line": 135,
+            "line": 142,
             "description": "根据ID取活动(流程节点)参数，供其他方法调用",
             "itemtype": "method",
             "name": "getActById",
@@ -4080,7 +4266,7 @@
         },
         {
             "file": "src\\flow\\model\\act.js",
-            "line": 151,
+            "line": 158,
             "description": "根据ID和模板ID取活动(流程节点)参数，供其他方法调用<br/>\n模板较多的时候，用本方法来改进性能",
             "itemtype": "method",
             "name": "getActByIdAndProcId",
@@ -4100,7 +4286,7 @@
         },
         {
             "file": "src\\flow\\model\\act.js",
-            "line": 168,
+            "line": 175,
             "description": "根据ID取活动节点的名称，一般用于页面模块配置中的‘替换’调用: flow/act:getNameById",
             "itemtype": "method",
             "name": "getNameById",
@@ -4215,7 +4401,32 @@
         },
         {
             "file": "src\\flow\\model\\act_path.js",
-            "line": 87,
+            "line": 86,
+            "description": "根据活动节点ID和模板ID取去向的路径列表，供其他方法调用",
+            "itemtype": "method",
+            "name": "getToActPaths",
+            "return": {
+                "description": "去向路径的列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "actID",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.act_path",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_path.js",
+            "line": 104,
             "description": "根据ID取活动路径对象的名称，一般用于页面模块配置中的‘替换’调用: flow/act_path:getNameById",
             "itemtype": "method",
             "name": "getNameById",
@@ -4261,7 +4472,7 @@
         },
         {
             "file": "src\\flow\\model\\proc.js",
-            "line": 35,
+            "line": 40,
             "description": "运行一个流程实例(任务)",
             "itemtype": "method",
             "name": "fwRun",
@@ -4286,7 +4497,7 @@
         },
         {
             "file": "src\\flow\\model\\proc.js",
-            "line": 48,
+            "line": 53,
             "description": "挂起一个流程实例(任务)",
             "itemtype": "method",
             "name": "fwSuspend",
@@ -4311,7 +4522,7 @@
         },
         {
             "file": "src\\flow\\model\\proc.js",
-            "line": 61,
+            "line": 66,
             "description": "终止一个流程实例(任务)",
             "itemtype": "method",
             "name": "fwTerminate",
@@ -4336,7 +4547,7 @@
         },
         {
             "file": "src\\flow\\model\\proc.js",
-            "line": 74,
+            "line": 79,
             "description": "正常结束一个流程实例(任务)",
             "itemtype": "method",
             "name": "fwEnd",
@@ -4361,7 +4572,7 @@
         },
         {
             "file": "src\\flow\\model\\proc.js",
-            "line": 87,
+            "line": 92,
             "description": "取流程模板的参数，供其他方法调用",
             "itemtype": "method",
             "name": "fwGetActParms",
@@ -4386,7 +4597,7 @@
         },
         {
             "file": "src\\flow\\model\\proc.js",
-            "line": 104,
+            "line": 109,
             "description": "根据ID取流程模板的设置，供其他方法调用，子类不需要重写",
             "itemtype": "method",
             "name": "getActById",
@@ -4406,7 +4617,7 @@
         },
         {
             "file": "src\\flow\\model\\proc.js",
-            "line": 120,
+            "line": 125,
             "description": "根据ID取流程模板的名称，一般用于页面模块配置中的‘替换’调用: flow/proc:getNameById",
             "itemtype": "method",
             "name": "getNameById",
@@ -4426,42 +4637,55 @@
         },
         {
             "file": "src\\flow\\model\\proc_list.js",
-            "line": 13,
-            "description": "取查询项的设置，结合POST参数，得到Where字句",
-            "class": "flow.model.task",
-            "module": "flow.model"
-        },
-        {
-            "file": "src\\flow\\model\\proc_list.js",
-            "line": 21,
+            "line": 15,
             "description": "初始化编辑页面的值",
             "class": "flow.model.task",
             "module": "flow.model"
         },
         {
             "file": "src\\flow\\model\\proc_list.js",
-            "line": 31,
+            "line": 25,
             "description": "根据 page.c_other的设置，对页面相关参数进行设置",
             "class": "flow.model.task",
             "module": "flow.model"
         },
         {
             "file": "src\\flow\\model\\proc_list.js",
-            "line": 46,
+            "line": 39,
+            "description": "重写父类的 htmlGetOther 方法，输出额外的js函数",
+            "itemtype": "method",
+            "name": "htmlGetOther",
+            "return": {
+                "description": "html片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "page",
+                    "description": "页面设置主信息",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_list.js",
+            "line": 71,
             "description": "编辑页面保存,\n如果是多个表的视图，则根据存在于page.c_table中的列更新表，一般需要在子类中继承",
             "class": "flow.model.task",
             "module": "flow.model"
         },
         {
             "file": "src\\flow\\model\\proc_list.js",
-            "line": 59,
+            "line": 84,
             "description": "根据模板的类型自动生成活动节点",
             "class": "flow.model.task",
             "module": "flow.model"
         },
         {
             "file": "src\\flow\\model\\proc_list.js",
-            "line": 66,
+            "line": 91,
             "description": "取模板的流程图数据",
             "itemtype": "method",
             "name": "getStocks",
@@ -4481,13 +4705,13 @@
         },
         {
             "file": "src\\flow\\model\\proc_list.js",
-            "line": 80,
+            "line": 105,
             "class": "flow.model.task",
             "module": "flow.model"
         },
         {
             "file": "src\\flow\\model\\proc_list.js",
-            "line": 106,
+            "line": 131,
             "description": "保存流程模板的图形信息，如果某个节点和路径的data_id==0，则增加相应记录 POST调用： /flow/proc/save_map",
             "itemtype": "method",
             "name": "saveMap",
@@ -4532,7 +4756,87 @@
         },
         {
             "file": "src\\flow\\model\\task.js",
-            "line": 32,
+            "line": 59,
+            "description": "取某个任务的当前状态，当前节点存放于 task.taskAct <br/>\n子类中重写本方法，可以增加任务的初始化逻辑，比如业务相关的逻辑",
+            "itemtype": "method",
+            "name": "getTaskWithStatus",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "task",
+                    "description": "流程实例对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "proc",
+                    "description": "流程模板对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程发起人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task.js",
+            "line": 73,
+            "description": "初始化一个的流程实例(任务)<br/>\n子类中重写本方法，可以增加任务的初始化逻辑，比如业务相关的逻辑",
+            "itemtype": "method",
+            "name": "fwInit",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "task",
+                    "description": "流程实例对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "proc",
+                    "description": "流程模板对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程发起人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task.js",
+            "line": 89,
+            "description": "根据编号规则生成任务编号<br/>\n子类中可以重写本方法，实现特殊的编号规则",
+            "itemtype": "method",
+            "name": "getTaskNo",
+            "return": {
+                "description": "新的任务编号",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "proc",
+                    "description": "流程模板对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task.js",
+            "line": 106,
             "description": "运行一个流程实例(任务)",
             "itemtype": "method",
             "name": "fwRun",
@@ -4562,7 +4866,7 @@
         },
         {
             "file": "src\\flow\\model\\task.js",
-            "line": 49,
+            "line": 130,
             "description": "挂起一个流程实例(任务)",
             "itemtype": "method",
             "name": "fwSuspend",
@@ -4592,7 +4896,7 @@
         },
         {
             "file": "src\\flow\\model\\task.js",
-            "line": 67,
+            "line": 154,
             "description": "终止一个流程实例(任务)",
             "itemtype": "method",
             "name": "fwTerminate",
@@ -4622,8 +4926,8 @@
         },
         {
             "file": "src\\flow\\model\\task.js",
-            "line": 84,
-            "description": "正常结束一个流程实例(任务)",
+            "line": 178,
+            "description": "正常结束一个流程实例(任务)，一般在结束节点执行完成后调用",
             "itemtype": "method",
             "name": "fwEnd",
             "return": {
@@ -4652,8 +4956,8 @@
         },
         {
             "file": "src\\flow\\model\\task.js",
-            "line": 101,
-            "description": "增加流程实例的状态记录，记录某个活动(流程节点)发生的时间及当时状态",
+            "line": 196,
+            "description": "增加流程实例的状态记录，记录流程示例发生状态改变的时间及当时状态",
             "itemtype": "method",
             "name": "addTaskSt",
             "return": {
@@ -4670,6 +4974,32 @@
                     "name": "user",
                     "description": "流程执行人",
                     "type": "Object"
+                },
+                {
+                    "name": "desc",
+                    "description": "状态描述",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task.js",
+            "line": 213,
+            "description": "修改流程实例记录，此处可使用缓存机制改进性能",
+            "itemtype": "method",
+            "name": "updateTask",
+            "return": {
+                "description": "流程实例对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "task",
+                    "description": "任务对象",
+                    "type": "Object"
                 }
             ],
             "class": "flow.model.task",
@@ -4683,7 +5013,7 @@
             "name": "canRun",
             "return": {
                 "description": "判断值",
-                "type": "Bool"
+                "type": "Boolean"
             },
             "params": [
                 {
@@ -4707,10 +5037,10 @@
         },
         {
             "file": "src\\flow\\model\\task_act.js",
-            "line": 32,
-            "description": "运行一个流程实例的活动(流程节点)",
+            "line": 73,
+            "description": "自定义from规则，一般用于需要中断（等待）的操作完成后，调用本方法<br/>\n子类中可以重写本方法实现更多的控制逻辑",
             "itemtype": "method",
-            "name": "fwRun",
+            "name": "defineFromRule",
             "return": {
                 "description": "任务节点对象",
                 "type": "Object"
@@ -4737,7 +5067,42 @@
         },
         {
             "file": "src\\flow\\model\\task_act.js",
-            "line": 50,
+            "line": 92,
+            "description": "运行一个流程实例的活动(流程节点)",
+            "itemtype": "method",
+            "name": "fwRun",
+            "return": {
+                "description": "任务节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "act",
+                    "description": "流程节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                },
+                {
+                    "name": "canRun",
+                    "description": "是否可以执行，为true时跳过判断函数",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 115,
             "description": "挂起一个流程实例的活动(流程节点)",
             "itemtype": "method",
             "name": "fwSuspend",
@@ -4767,10 +5132,10 @@
         },
         {
             "file": "src\\flow\\model\\task_act.js",
-            "line": 68,
+            "line": 133,
             "description": "终止一个流程实例的活动(流程节点)",
             "itemtype": "method",
-            "name": "fwTermate",
+            "name": "fwTerminate",
             "return": {
                 "description": "任务节点对象",
                 "type": "Object"
@@ -4797,7 +5162,7 @@
         },
         {
             "file": "src\\flow\\model\\task_act.js",
-            "line": 87,
+            "line": 165,
             "description": "正常结束一个流程实例的活动(流程节点)",
             "itemtype": "method",
             "name": "fwEnd",
@@ -4827,8 +5192,108 @@
         },
         {
             "file": "src\\flow\\model\\task_act.js",
-            "line": 114,
-            "description": "保存任务的活动(流程节点), taskAct结构来自于vw_task_act<br/>\n子类中可以重写本方法来增加其他逻辑，比如保存其他业务表数据等",
+            "line": 211,
+            "description": "当节点去向规则为 或分支 的时候，通过本方法判断取哪一条路径继续 <br/>\n子类中可以重写本方法实现具体的判断逻辑，可以在路径中事先设置条件值，便于调整",
+            "itemtype": "method",
+            "name": "defineOrSplit",
+            "return": {
+                "description": "是否通过该路径",
+                "type": "Boolean"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "act",
+                    "description": "流程节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                },
+                {
+                    "name": "actPath",
+                    "description": "去向的某一个路径",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 244,
+            "description": "取当前节点的业务相关数据，存放于 taskAct.domainData 中 <br/>\n子类中可以重写本方法实现具体的取业务数据方法",
+            "itemtype": "method",
+            "name": "domainGetData",
+            "return": {
+                "description": "增加业务对象数据后的节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "act",
+                    "description": "流程节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 259,
+            "description": "自定义to规则，一般用于需要中断（等待）的操作完成后，调用本方法<br/>\n子类中可以重写本方法实现更多的控制逻辑",
+            "itemtype": "method",
+            "name": "defineToRule",
+            "return": {
+                "description": "任务节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "act",
+                    "description": "流程节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                },
+                {
+                    "name": "去向的任务节点ID的列表",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 274,
+            "description": "保存任务的活动(流程节点), taskAct结构来自于vw_task_act<br/>\n子类中可以重写本方法来增加其他逻辑，比如保存其他业务表数据等, 此处可以改用缓存机制",
             "itemtype": "method",
             "name": "fwSave",
             "return": {
@@ -4852,7 +5317,7 @@
         },
         {
             "file": "src\\flow\\model\\task_act.js",
-            "line": 131,
+            "line": 291,
             "description": "增加流程实例的活动节点状态记录，记录某个活动(流程节点)发生的时间及当时状态<br/>\n子类中重写本方法可以定制流程状态的记录方式，如在具体业务状态表中增加记录等",
             "itemtype": "method",
             "name": "addTaskSt",
@@ -4870,6 +5335,11 @@
                     "name": "user",
                     "description": "流程执行人",
                     "type": "Object"
+                },
+                {
+                    "name": "desc",
+                    "description": "状态描述",
+                    "type": "String"
                 }
             ],
             "class": "flow.model.task_act",
@@ -4877,7 +5347,27 @@
         },
         {
             "file": "src\\flow\\model\\task_act.js",
-            "line": 152,
+            "line": 314,
+            "description": "根据任务节点ID统计汇聚来源任务节点的完成数，供其他方法调用",
+            "itemtype": "method",
+            "name": "getFromTasksWithEnd",
+            "return": {
+                "description": "来源的任务节点的完成数, 形如：{cnt:3, cntEnd:3}",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 334,
             "description": "根据任务节点ID取汇聚来源任务节点ID的列表，供其他方法调用",
             "itemtype": "method",
             "name": "getFromTaskIds",
@@ -4897,12 +5387,12 @@
         },
         {
             "file": "src\\flow\\model\\task_act.js",
-            "line": 172,
+            "line": 354,
             "description": "根据任务节点ID取分支去向的任务节点ID的列表，供其他方法调用",
             "itemtype": "method",
             "name": "getToTaskIds",
             "return": {
-                "description": "来源的任务节点ID的列表",
+                "description": "去向的任务节点的列表",
                 "type": "Array"
             },
             "params": [
@@ -4913,6 +5403,86 @@
                 }
             ],
             "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act.js",
+            "line": 374,
+            "description": "根据任务ID取任务节点的列表，供其他方法调用",
+            "itemtype": "method",
+            "name": "getTaskActs",
+            "return": {
+                "description": "任务节点ID的列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "taskID",
+                    "description": "任务ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.task_act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act_appr.js",
+            "line": 17,
+            "description": "运行一个流程实例的活动(流程节点)",
+            "itemtype": "method",
+            "name": "fwRun",
+            "return": {
+                "description": "任务节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "act",
+                    "description": "流程节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act_appr",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\task_act_appr.js",
+            "line": 43,
+            "description": "取当前节点的业务相关数据，存放于 taskAct.domainData 中 <br/>\n子类中可以重写本方法实现具体的取业务数据方法",
+            "itemtype": "method",
+            "name": "domainGetData",
+            "return": {
+                "description": "增加业务对象数据后的节点对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "act",
+                    "description": "流程节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "流程执行人",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.task_act_appr",
             "module": "flow.model"
         }
     ],
@@ -4927,51 +5497,71 @@
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\act.js:42"
+            "line": " src\\flow\\model\\act.js:29"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\act.js:42"
+            "line": " src\\flow\\model\\act.js:43"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\act.js:56"
+            "line": " src\\flow\\model\\act.js:43"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\act.js:56"
+            "line": " src\\flow\\model\\act.js:57"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\act.js:69"
+            "line": " src\\flow\\model\\act.js:57"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\act.js:69"
+            "line": " src\\flow\\model\\act.js:57"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\act.js:82"
+            "line": " src\\flow\\model\\act.js:71"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\act.js:82"
+            "line": " src\\flow\\model\\act.js:71"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\act.js:95"
+            "line": " src\\flow\\model\\act.js:71"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\act.js:95"
+            "line": " src\\flow\\model\\act.js:85"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\act.js:135"
+            "line": " src\\flow\\model\\act.js:85"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\act.js:151"
+            "line": " src\\flow\\model\\act.js:85"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:99"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:99"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:99"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:142"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:158"
         },
         {
             "message": "replacing incorrect tag: params with param",
@@ -5003,7 +5593,11 @@
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\proc.js:16"
+            "line": " src\\flow\\model\\act_path.js:86"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_path.js:86"
         },
         {
             "message": "replacing incorrect tag: params with param",
@@ -5011,47 +5605,51 @@
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\proc.js:35"
+            "line": " src\\flow\\model\\proc.js:16"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\proc.js:35"
+            "line": " src\\flow\\model\\proc.js:40"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\proc.js:48"
+            "line": " src\\flow\\model\\proc.js:40"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\proc.js:48"
+            "line": " src\\flow\\model\\proc.js:53"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\proc.js:61"
+            "line": " src\\flow\\model\\proc.js:53"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\proc.js:61"
+            "line": " src\\flow\\model\\proc.js:66"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\proc.js:74"
+            "line": " src\\flow\\model\\proc.js:66"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\proc.js:74"
+            "line": " src\\flow\\model\\proc.js:79"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\proc.js:87"
+            "line": " src\\flow\\model\\proc.js:79"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\proc.js:87"
+            "line": " src\\flow\\model\\proc.js:92"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\proc.js:104"
+            "line": " src\\flow\\model\\proc.js:92"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc.js:109"
         },
         {
             "message": "replacing incorrect tag: params with param",
@@ -5063,59 +5661,95 @@
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:32"
+            "line": " src\\flow\\model\\task.js:59"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:32"
+            "line": " src\\flow\\model\\task.js:59"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:32"
+            "line": " src\\flow\\model\\task.js:59"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:49"
+            "line": " src\\flow\\model\\task.js:73"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:49"
+            "line": " src\\flow\\model\\task.js:73"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:49"
+            "line": " src\\flow\\model\\task.js:73"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:67"
+            "line": " src\\flow\\model\\task.js:89"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:67"
+            "line": " src\\flow\\model\\task.js:106"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:67"
+            "line": " src\\flow\\model\\task.js:106"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:84"
+            "line": " src\\flow\\model\\task.js:106"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:84"
+            "line": " src\\flow\\model\\task.js:130"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:84"
+            "line": " src\\flow\\model\\task.js:130"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:101"
+            "line": " src\\flow\\model\\task.js:130"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task.js:101"
+            "line": " src\\flow\\model\\task.js:154"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:154"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:154"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:178"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:178"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:178"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:196"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:196"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:196"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task.js:213"
         },
         {
             "message": "replacing incorrect tag: params with param",
@@ -5131,87 +5765,179 @@
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:32"
+            "line": " src\\flow\\model\\task_act.js:73"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:32"
+            "line": " src\\flow\\model\\task_act.js:73"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:32"
+            "line": " src\\flow\\model\\task_act.js:73"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:50"
+            "line": " src\\flow\\model\\task_act.js:92"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:50"
+            "line": " src\\flow\\model\\task_act.js:92"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:50"
+            "line": " src\\flow\\model\\task_act.js:92"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:68"
+            "line": " src\\flow\\model\\task_act.js:92"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:68"
+            "line": " src\\flow\\model\\task_act.js:115"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:68"
+            "line": " src\\flow\\model\\task_act.js:115"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:87"
+            "line": " src\\flow\\model\\task_act.js:115"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:87"
+            "line": " src\\flow\\model\\task_act.js:133"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:87"
+            "line": " src\\flow\\model\\task_act.js:133"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:114"
+            "line": " src\\flow\\model\\task_act.js:133"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:114"
+            "line": " src\\flow\\model\\task_act.js:165"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:131"
+            "line": " src\\flow\\model\\task_act.js:165"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:131"
+            "line": " src\\flow\\model\\task_act.js:165"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:152"
+            "line": " src\\flow\\model\\task_act.js:211"
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\task_act.js:172"
+            "line": " src\\flow\\model\\task_act.js:211"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:211"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:211"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:244"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:244"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:244"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:259"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:259"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:259"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:259"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:274"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:274"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:291"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:291"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:291"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:314"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:334"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:354"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act.js:374"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act_appr.js:17"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act_appr.js:17"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act_appr.js:17"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act_appr.js:43"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act_appr.js:43"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\task_act_appr.js:43"
         },
         {
             "message": "Missing item type\n代码树，输入根节点ID为参数 ------- 以下3个操作已废弃，改用 codeTreeAction -----------\n直接通过树增删改节点\n/admin/code?rootid=1",
-            "line": " src\\admin\\controller\\code.js:146"
+            "line": " src\\admin\\controller\\code.js:164"
         },
         {
             "message": "Missing item type\nconfig",
             "line": " src\\cmpage\\config\\config.js:2"
-        },
-        {
-            "message": "Missing item type\ndb config",
-            "line": " src\\cmpage\\config\\db.js:2"
         },
         {
             "message": "Missing item type",
@@ -5219,11 +5945,7 @@
         },
         {
             "message": "Missing item type",
-            "line": " src\\cmpage\\model\\module.js:339"
-        },
-        {
-            "message": "Missing item type\n保存后的操作日志记录,，通过重写可在子类中定制日志的格式",
-            "line": " src\\cmpage\\model\\page.js:638"
+            "line": " src\\cmpage\\model\\module.js:344"
         },
         {
             "message": "Missing item type\npage_mob model 实现手机APP的模块接口",
@@ -5243,23 +5965,19 @@
         },
         {
             "message": "Missing item type",
-            "line": " src\\cmpage\\cmpage_global.js:76"
+            "line": " src\\cmpage\\cmpage_global.js:93"
         },
         {
             "message": "Missing item type",
-            "line": " src\\cmpage\\cmpage_global.js:151"
+            "line": " src\\cmpage\\cmpage_global.js:168"
         },
         {
             "message": "Missing item type",
-            "line": " src\\cmpage\\cmpage_global.js:315"
+            "line": " src\\cmpage\\cmpage_global.js:341"
         },
         {
             "message": "Missing item type\nconfig",
             "line": " src\\flow\\config\\config.js:2"
-        },
-        {
-            "message": "Missing item type\n流程模板的图形和活动节点的设置",
-            "line": " src\\flow\\controller\\proc.js:69"
         },
         {
             "message": "Missing item type\nlogic",
@@ -5270,28 +5988,24 @@
             "line": " src\\flow\\logic\\index.js:8"
         },
         {
-            "message": "Missing item type\n取查询项的设置，结合POST参数，得到Where字句",
-            "line": " src\\flow\\model\\proc_list.js:13"
-        },
-        {
             "message": "Missing item type\n初始化编辑页面的值",
-            "line": " src\\flow\\model\\proc_list.js:21"
+            "line": " src\\flow\\model\\proc_list.js:15"
         },
         {
             "message": "Missing item type\n根据 page.c_other的设置，对页面相关参数进行设置",
-            "line": " src\\flow\\model\\proc_list.js:31"
+            "line": " src\\flow\\model\\proc_list.js:25"
         },
         {
             "message": "Missing item type\n编辑页面保存,\n如果是多个表的视图，则根据存在于page.c_table中的列更新表，一般需要在子类中继承",
-            "line": " src\\flow\\model\\proc_list.js:46"
+            "line": " src\\flow\\model\\proc_list.js:71"
         },
         {
             "message": "Missing item type\n根据模板的类型自动生成活动节点",
-            "line": " src\\flow\\model\\proc_list.js:59"
+            "line": " src\\flow\\model\\proc_list.js:84"
         },
         {
             "message": "Missing item type",
-            "line": " src\\flow\\model\\proc_list.js:80"
+            "line": " src\\flow\\model\\proc_list.js:105"
         }
     ]
 }

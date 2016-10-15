@@ -125,6 +125,23 @@ export default class extends Base {
     }
 
     /**
+     * 删除记录的URL接口，调用： /cmpage/xxx/delete?id=xxx
+     * @method  delete
+     * @return {json}  删除成功状态
+     */
+    async deleteAction(){
+        let page = await global.model('cmpage/module').getModuleByName(this.get('modulename'));
+        //page.id = this.get("id");
+        Object.assign(page,this.get());
+        page.user = await this.session('user');
+        //global.debug(page);
+        let model = global.model(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
+        let ret = await model.pageDelete(page);
+
+        return this.json(ret);
+    }
+
+    /**
      * 业务模块的编辑页面，一般调用： /cmpage/page/edit?modulename=xxx
      * @method  edit
      * @return {promise}  HTML片段
@@ -220,6 +237,7 @@ export default class extends Base {
         page.query ={};
         if(this.method() === 'get'){
             page.modulename =http.get('modulename');
+            page.returnFields =http.get('returnFields');
             let md = await module.getModuleByName(page.modulename);
             Object.assign(page,md);
             page.pageIndex = 1;
@@ -229,6 +247,7 @@ export default class extends Base {
             page.query = page.parmsUrl;
         }else{
             page.modulename= http.post('modulename');
+            page.returnFields =http.get('returnFields');
             let md = await module.getModuleByName(page.modulename);
             Object.assign(page,md);
             page.query = http._post;
@@ -237,8 +256,12 @@ export default class extends Base {
             page.parmsUrl = http.post('parmsUrl');
         }
         page.user = await this.session('user');
-
-        let model = global.model('cmpage/page_lookup');
+        let model = global.model(page.c_path);
+        if(think.isEmpty(model)){
+            let error = new Error(page.modulename + " 的实现类不存在！");
+            this.http.error = error;
+            return think.statusAction(500, this.http);
+        }
         vb.queryHtml = await model.htmlGetQuery(page);
         //global.debug(vb.queryHtml);
         vb.otherHtml = await model.htmlGetOther(page);

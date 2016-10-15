@@ -18,18 +18,7 @@
 import CMPage from '../../cmpage/model/page.js';
 
 export default class extends CMPage {
-    /**
-     * 重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句
-     * @method  getQueryWhere
-     * @return {string}  where条件子句
-     * @param {Object} page  页面设置主信息
-     */
-    async getQueryWhere(page){
-      let where =await super.getQueryWhere(page);
-      //global.debug(where);
-        let parms =JSON.parse(page.parmsUrl);
-      return where +' and c_group='+parms.c_group;
-    }
+
     /**
      * 重写父类的 htmlGetOther 方法，输出额外的按钮和js函数
      * @method  htmlGetOther

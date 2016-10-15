@@ -48,5 +48,28 @@ export default class extends Base {
 
         return this.json({statusCode:200, message:''});
     }
+    /**
+     * 删除流程节点的路径信息， GET调用： /flow/act/delete_path?id=xxx
+     * @method  deletePath
+     * @return {json}   删除状态
+     */
+    async deletePathAction(){
+        let id = this.get('id');
+        await this.model('fw_act_path').where(`c_id=${id}`).delete();
+
+        return this.json({statusCode:200, message:''});
+    }
+
+    /**
+     * 编辑流程节点内容， GET调用： /flow/act/edit?id=xxx
+     * @method  edit
+     * @return {json}   act编辑页面的HTML片段
+     */
+    async getActPathAction(){
+        let id = this.get('id');
+        let data = await this.model('fw_act_path').where({id:id}).find();
+
+        return this.json({statusCode:200, data:data});
+    }
 
 }

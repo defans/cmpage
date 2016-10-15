@@ -92,11 +92,15 @@ export default class extends think.model.base {
             }
         }
 
+        if(html0.length === 0){     //如果不超过 3 项查询的时候
+            html0 = html;
+            html = [];
+        }
         return [html0.join(' '), html.join(' ')];
     }
 
     /**
-     * 输出额外的按钮和js函数
+     * 输出额外的按钮和js函数和HTML片段，区别于 getPageOther
      * @method  htmlGetOther
      * @return {string}  html片段
      * @param {Object} page  页面设置主信息
@@ -193,7 +197,7 @@ export default class extends think.model.base {
     }
 
     /**
-     * 取顶部按钮的设置，组合成HTML输出
+     * 取顶部按钮的设置，分靠左和靠右两块，组合成HTML输出
      * @method  htmlGetBtnHeader
      * @return {string}  HTML片段
      * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
@@ -253,14 +257,7 @@ export default class extends think.model.base {
         let modelPage  =global.model('cmpage/module');
     let pageCols = await modelPage.getModuleCol(page.id);
     let pageBtns = await modelPage.getModuleBtn(page.id);
-    let isShowBtn = false;
-
-    for (let btn of pageBtns) {
-      if (btn.c_location > 9) {
-        isShowBtn = true;
-        break;
-      }
-    }
+    let isShowBtn = this.isShowRowBtns(pageBtns);
 
     for (let col of pageCols) {
         if (col.c_isshow) {
@@ -332,6 +329,23 @@ export default class extends think.model.base {
   }
 
     /**
+     * 是否显示列表中的按钮，子类中重写本方法可以改变按钮显示的逻辑
+     * @method  isShowRowBtns
+     * @return {boolean} 是否显示
+     * @param   {object} page 页面按钮的设置
+     */
+    isShowRowBtns(pageBtns){
+        let isShow = false;
+        for (let btn of pageBtns) {
+            if (btn.c_location > 9) {
+                isShow = true;
+                break;
+            }
+        }
+        return isShow;
+    }
+
+    /**
      * 取结果数据集，子类中重写本方法可以增加逻辑如：对结果集做进一步的数据处理等
      * @method  getDataList
      * @return {object} 结果集数据包 {count:xxx, list:[{record}]}
@@ -368,10 +382,11 @@ export default class extends think.model.base {
     async getQueryWhere(page){
         let ret =[' where 1=1'];
         let pageQuerys = await global.model('cmpage/module').getModuleQuery(page.id);
+        let parmsUrl =JSON.parse(page.parmsUrl);
         for(let md of pageQuerys){
             if (md.c_type === "fixed"){         //如果是‘固定’，则直接增加c_memo中的设置值
                 let wh = ` (${md.c_memo.replace(/#userID#/,page.user.id).replace(/#groupID#/,page.user.groupID).split(/##/).join('\'')})`;
-                wh = wh.replace(/#value#/,page.parmsUrl[md.c_column]);
+                wh = wh.replace(/#value#/,parmsUrl[md.c_column]);
                 ret.push(wh);
                 continue;
             }
@@ -433,7 +448,7 @@ export default class extends think.model.base {
       if (col.c_type === "replace" && (col.c_isshow || col.c_isview) && (col.c_memo.indexOf('select')===0)) //以select开头
       {
         fields.push(`(${col.c_memo.replace(/##/,"\'")}) as ${col.c_column}`);
-      }else {
+      }else{
         fields.push(`${col.c_desc} as ${col.c_column}`);
       }
     }
@@ -472,7 +487,8 @@ export default class extends think.model.base {
     }
 
     /**
-     * 根据 page.c_other的设置，对页面相关参数进行设置
+     * 根据 page.c_other的设置，对页面相关参数进行设置 </br>
+     * 区别于 htmlGetOther
      * @method  getPageOther
      * @return {object} 在page中增加相应属性并返回
      * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
@@ -508,7 +524,9 @@ export default class extends think.model.base {
         if(page.editID >0) {
             let fields = [];
             for (let edit of pageEdits) {
-                fields.push(`${edit.c_desc} as ${edit.c_column}`);
+                if(edit.c_desc.indexOf('fn:')!==0){
+                    fields.push(`${edit.c_desc} as ${edit.c_column}`);
+                }
             }
             let list = await this.model(page.c_datasource).field(fields.join(',')).where({id:page.editID}).select();
             md =list[0];
@@ -540,6 +558,17 @@ export default class extends think.model.base {
         for(let col of pageEdits){
             if (!col.c_editable || col.c_column === "id" ) {  continue; }
             let colValue = md[col.c_column];
+            if(col.c_desc.indexOf('fn:')===0){    //非数据库字段
+                let its = col.c_desc.trim().split(':');        //设置如： fn:admin/code:getNameByPid:c_status
+                let fnModel = global.model(its[1]);     //通过某个模块的某个方法取下拉设置
+                if(think.isFunction(fnModel[its[2]])){
+                    if(its.length === 4){
+                        colValue = await fnModel[ its[2] ]( md[its[3]]);
+                    }else{
+                        colValue = await fnModel[ its[2] ]();
+                    }
+                }
+            }
             if(col.c_coltype === 'timestamp'){  colValue = think.datetime(colValue); }
             if (col.c_type === "hidden" && col.c_column!=="c_city" && col.c_column!=="c_province") {
                 html.push(`<input id="${page.c_modulename + col.c_column}" name="${col.c_column}" type="hidden" value="${colValue}" />`);
@@ -632,12 +661,10 @@ export default class extends think.model.base {
             md.id = parms.id;
             await this.pageSaveLog(page,parms,md,pageEdits,'update');
         }
+        //console.log(md);
         return md;
     }
 
-    /**
-     * 保存后的操作日志记录,，通过重写可在子类中定制日志的格式
-     */
     /**
      * 保存后的操作日志记录,，通过重写可在子类中定制日志的格式
      * @method  pageSaveLog
@@ -756,4 +783,26 @@ export default class extends think.model.base {
     }
     return html.join(' ');
   }
+
+    /**
+     * 删除记录,<br/>
+     * 子类中可以重写本方法，实现其他的删除逻辑，如判断是否可以删除，删除相关联的其他记录等等
+     * @method  pageDelete
+     * @return {object} 记录对象
+     * @param  {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     */
+    async pageDelete(page){
+        let ret={statusCode:200,message:'删除成功！',data:{}};
+
+        let model = this.model(page.c_table);
+        if(page.id >0){
+            if(page.flag == 'true'){
+                await model.where({id: page.id}).delete();
+            }else {
+                await model.where({id: page.id}).update({c_status:-1});
+            }
+        }
+        return ret;
+    }
+
 }

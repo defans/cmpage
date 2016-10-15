@@ -74,18 +74,21 @@ export default class extends think.base {
     };
 
     /**
-     * 取两个整数间的随机证书
-     * @method  formatNumber
-     * @return  {string}  格式化输出
-     * @param   {float} mum 需要格式化的数值
-     * @param   {object} opt 格式化配置对象，一般中业务模块的列设置中制定格式如： #####0.00
+     * 取两个整数间的随机整数
+     * @method  getRandomNum
+     * @return  {int}  随机整数
+     * @param   {int} Min 最小整数
+     * @param   {int} Max 最大整数
      */
     getRandomNum = function(Min,Max)
     {
+        if(Max <= Min){
+            return Min;
+        }
         var Range = Max - Min;
         var Rand = Math.random();
         return(Min + Math.round(Rand * Range));
-    }
+    };
 
     /***************************对象处理 **************************************/
     //取对象的所有属性描述
@@ -271,19 +274,6 @@ export default class extends think.base {
             MAN_AND_AUTO: {id:4, c_name:'手动和自动'},
             DEFINE: {id:9, c_name:'自定义'}
         };
-        global.enumActJumpRule = {
-            NO: {id:1, c_name:'不能跳转'},
-            FORWARD: {id:2, c_name:'向前跳转'},
-            BACK: {id:3, c_name:'向后跳转'},
-            ANY: {id:4, c_name:'任意跳转'},
-            DEFINE: {id:9, c_name:'自定义'}
-        };
-        global.enumActBackRule = {
-            NO: {id:1, c_name:'不能回退'},
-            PREV: {id:2, c_name:'退到上一步'},
-            ANY: {id:4, c_name:'退到任意步'},
-            DEFINE: {id:9, c_name:'自定义'}
-        };
         global.enumActAssignType = {
             DEPT: {id:2, c_name:'部门'},
             ROLE: {id:3, c_name:'角色'},
@@ -332,7 +322,20 @@ export default class extends think.base {
             TERMINATE: {id:7, c_name:'终止'},
             END: {id:9, c_name:'完成'}
         };
-
+        //暂时不考虑回退和跳转，如有必要，可继承task, task_act来实现具体的某一类业务流程模板
+        //global.enumActJumpRule = {
+        //    NO: {id:1, c_name:'不能跳转'},
+        //    FORWARD: {id:2, c_name:'向前跳转'},
+        //    BACK: {id:3, c_name:'向后跳转'},
+        //    ANY: {id:4, c_name:'任意跳转'},
+        //    DEFINE: {id:9, c_name:'自定义'}
+        //};
+        //global.enumActBackRule = {
+        //    NO: {id:1, c_name:'不能回退'},
+        //    PREV: {id:2, c_name:'退到上一步'},
+        //    ANY: {id:4, c_name:'退到任意步'},
+        //    DEFINE: {id:9, c_name:'自定义'}
+        //};
     };
 
     /***************************根据参数对象生成新增和修改的SQL语句 ************ 已经废弃 **************************/

@@ -3,9 +3,9 @@
 <div class="bjui-pageContent" style="padding:5px">
 
     <div style="float:left; display:block; overflow:auto; width:240px; height:100%; border:solid 1px #CCC; line-height:21px; background:#fff">
-        <ul id="groupTree" class="ztree" data-toggle="ztree"
+        <ul id="teamTree" class="ztree" data-toggle="ztree"
             data-options="{
-                onClick: 'group_onClick'
+                onClick: 'team_onClick'
             }"
         >
             <% treeList.forEach(function(item)  { %>
@@ -15,7 +15,7 @@
         </ul>
     </div>
 
-    <div id="groupUserList"  style="margin-left:246px;height:100%;">
+    <div id="teamUserList"  style="margin-left:246px;height:100%;">
         <!--#include virtual="codeList" -->
     </div>
 
@@ -23,9 +23,9 @@
 </div>
 
 <SCRIPT type="text/javascript">
-    function group_onClick(event, treeId, treeNode){
+    function team_onClick(event, treeId, treeNode){
         //event.preventDefault();
-        $(this).bjuiajax('doLoad', {target:$("#groupUserList"), url:"/cmpage/page/list?modulename=TeamUser&c_team="+treeNode.id })
+        $(this).bjuiajax('doLoad', {target:$("#teamUserList"), url:"/cmpage/page/list?modulename=TeamUser&c_team="+treeNode.id })
 
     }
 </SCRIPT>

@@ -123,6 +123,14 @@
                     
                        <li>
                             
+                           <a href="../classes/admin.model.code_lookup.html">admin.model.code_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
                            <ul>
                                 
@@ -403,6 +411,14 @@
                            </ul>
                        </li>
                     
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
                     </ul>
                 </dd>
              
@@ -465,6 +481,16 @@ import CMPage from &#x27;./page.js&#x27;;
 export default class extends CMPage {
 
     /**
+     * 是否显示列表中的按钮，子类中重写本方法可以改变按钮显示的逻辑
+     * @method  isShowRowBtns
+     * @return {boolean} 是否显示
+     * @param   {object} page 页面按钮的设置
+     */
+    isShowRowBtns(pageBtns){
+        return true;
+    }
+
+    /**
      * 取列表中按钮的设置，组合成HTML输出,&lt;br/&gt; 重写父类的方法，子类中也可重写本方法，更改返回的字段和值等
      * @method  htmlGetBtnList
      * @return  {string}  HTML片段
@@ -473,16 +499,29 @@ export default class extends CMPage {
      * @param   {object} pageBtns 按钮设置
      */
     async htmlGetBtnList(rec,page,pageBtns){
-      let html=[];
-      let pageCols = await global.model(&#x27;cmpage/module&#x27;).getModuleCol(page.id);
-      for(let col of pageCols){
-        if (col.c_isview) {
-          html.push(&#x60;${col.c_column}:&#x27;${rec[col.c_column]}&#x27;&#x60;);
+        let html=[];
+        let fields= [];
+        if(!think.isEmpty(page.returnFields)){
+            fields = page.returnFields.split(&#x27;,&#x27;);
         }
-      }
+        let pageCols = await global.model(&#x27;cmpage/module&#x27;).getModuleCol(page.id);
+        for(let col of pageCols){
+            if (col.c_isview) {
+                if(fields.length &gt;0){
+                    for(let field of fields){
+                        if(field === col.c_column){
+                            html.push(&#x60;${col.c_column}:&#x27;${rec[col.c_column]}&#x27;&#x60;);
+                            break;
+                        }
+                    }
+                }else{
+                    html.push(&#x60;${col.c_column}:&#x27;${rec[col.c_column]}&#x27;&#x60;);
+                }
+            }
+        }
         //global.debug(html.join(&#x27;,&#x27;));
-      return &#x60; &lt;a href=&quot;javascript:;&quot; data-toggle=&quot;lookupback&quot; data-args=&quot;{${html.join(&#x27;,&#x27;)}}&quot; class=&quot;btn btn-blue&quot; title=&quot;选择本项&quot; data-icon=&quot;check&quot;&gt;选择&lt;/a&gt;&#x60;;
-    }
+        return &#x60; &lt;a href=&quot;javascript:;&quot; data-toggle=&quot;lookupback&quot; data-args=&quot;{${html.join(&#x27;,&#x27;)}}&quot; class=&quot;btn btn-blue&quot; title=&quot;选择本项&quot; data-icon=&quot;check&quot;&gt;选择&lt;/a&gt;&#x60;;
+        }
 
     /**
      * 顶部按钮不需要显示，&lt;br/&gt; 重写父类的方法，子类中也可重写本方法，增加其他按钮

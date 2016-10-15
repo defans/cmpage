@@ -123,6 +123,14 @@
                     
                        <li>
                             
+                           <a href="../classes/admin.model.code_lookup.html">admin.model.code_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
                            <ul>
                                 
@@ -403,6 +411,14 @@
                            </ul>
                        </li>
                     
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
                     </ul>
                 </dd>
              
@@ -446,73 +462,16 @@
 &#x27;use strict&#x27;;
 
 /**
- * 提供工作流模板设计的URL接口&lt;br/&gt;
- * 提供工作流引擎的URL调用接口
+ * 提供工作流模板设计的URL接口
  * @class flow.controller.proc
  */
 import Base from &#x27;./base.js&#x27;;
 
 export default class extends Base {
-
     /**
-     * 启动一个新的流程实例, GET调用：/flow/proc/start?proc_id=xxx
-     * @method  start
-     * @return {json}  流程实例对象
-     */
-    async startAction(){
-        let user = await think.session(&#x27;user&#x27;);
-        let procID = this.get(&#x27;proc_id&#x27;);
-
-        let task = await this.model(&#x27;proc&#x27;).fwStart(procID,user);
-
-        return this.json({statusCode:200,message:&#x27;流程启动成功!&#x27;,task:task});
-    }
-
-    /**
-     * 重新运行一个流程实例, GET调用：/flow/proc/run?task_id=xxx
-     * @method  run
-     * @return {json}  流程实例对象
-     */
-    async runAction(){
-        let user = await think.session(&#x27;user&#x27;);
-        let taskID = this.get(&#x27;task_id&#x27;);
-
-        let task = await this.model(&#x27;proc&#x27;).fwRun(taskID,user);
-
-        return this.json({statusCode:200,message:&#x27;流程启动成功!&#x27;,task:task});
-    }
-
-    /**
-     * 挂起一个流程实例, GET调用：/flow/proc/suspend?task_id=xxx
-     * @method  suspend
-     * @return {json}  流程实例对象
-     */
-    async suspendAction(){
-        let user = await think.session(&#x27;user&#x27;);
-        let taskID = this.get(&#x27;task_id&#x27;);
-
-        let task = await this.model(&#x27;proc&#x27;).fwSuspend(taskID,user);
-
-        return this.json({statusCode:200,message:&#x27;流程启动成功!&#x27;,task:task});
-    }
-
-    /**
-     * 终止一个流程实例, GET调用：/flow/proc/terminate?task_id=xxx
-     * @method  terminate
-     * @return {json}  流程实例对象
-     */
-    async terminateAction(){
-        let user = await think.session(&#x27;user&#x27;);
-        let taskID = this.get(&#x27;task_id&#x27;);
-
-        let task = await this.model(&#x27;proc&#x27;).fwTerminate(taskID,user);
-
-        return this.json({statusCode:200,message:&#x27;流程启动成功!&#x27;,task:task});
-    }
-
-
-    /**
-     * 流程模板的图形和活动节点的设置
+     * 图形化设置流程模板， 调用： /flow/proc/desing?id=xxx
+     * @method  design
+     * @return {promise}
      */
     async designAction(){
         let page = await global.model(&#x27;cmpage/module&#x27;).getModuleByName(&#x27;FwProcList&#x27;);
@@ -538,8 +497,8 @@ export default class extends Base {
         return this.display();
     }
     /**
-     * 图形化设置流程模板， 调用： /flow/proc/desing
-     * @method  design
+     * 取流程模板的图形信息 调用： /flow/proc/flow_map?proc_id=xxx
+     * @method  flowMap
      * @return {promise}
      */
     async flowMapAction(){

@@ -16,7 +16,7 @@ export default class extends think.model.base {
     /**
      * 是否可以运行一个流程实例的活动(流程节点)
      * @method  canRun
-     * @return {bool}  判断值
+     * @return {boolean}  判断值
      * @params {object} taskAct 任务节点对象
      * @params {object} act 流程节点对象
      * @params {object} user 流程执行人
@@ -96,13 +96,14 @@ export default class extends think.model.base {
      * @params {object} taskAct 任务节点对象
      * @params {object} act 流程节点对象
      * @params {object} user 流程执行人
+     * @params {boolean} canRun 是否可以执行，为true时跳过判断函数
      */
-    async fwRun(taskAct,act,user){
-        if(await this.canRun(taskAct,act,user)){
+    async fwRun(taskAct,act,user,canRun){
+        if(canRun || (await this.canRun(taskAct,act,user)) ){
             taskAct.c_status = global.enumTaskActStatus.RUN;
             await this.fwSave(taskAct);
             await this.addTaskSt(taskAct,user);
-            //执行本节点
+            //执行本节点，子类中可以加入其他业务逻辑
 
             //结束本节点
             await this.fwEnd(taskAct,act,user);
@@ -138,15 +139,28 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      */
     async fwTerminate(taskAct,act,user){
-
-        if(taskAct.c_status !==global.enumTaskActStatus.TERMINATE && taskAct.c_status !==global.enumTaskActStatus.END){
+        if(taskAct.c_status !== global.enumTaskActStatus.TERMINATE && taskAct.c_status !== global.enumTaskActStatus.END
+            && taskAct.c_status !== global.enumTaskActStatus.NO_BEGIN ){
             taskAct.c_status = global.enumTaskActStatus.TERMINATE;
             await this.fwSave(taskAct);
             await this.addTaskSt(taskAct,user);
-            //判断
+            //判断，如果当前节点都已经终止，则终止本流程实例，一般是自动终止的时候要检查，手动的话通过调用proc.fwTerminate来进行
+            let taskActs = await this.getTaskActs(taskAct.c_task);
+            let canTerminate = true;
+            for(let ta of taskActs){
+                if(ta.c_status !== global.enumTaskActStatus.TERMINATE && ta.c_status !== global.enumTaskActStatus.END
+                    && ta.c_status !== global.enumTaskActStatus.NO_BEGIN){
+                    canTerminate = false;
+                }
+            }
+            if(canTerminate){
+                await this.model('proc').fwTerminate(taskAct.c_task,user);
+        }
+
         }
         return taskAct;
     }
+
 
     /**
      * 正常结束一个流程实例的活动(流程节点)
@@ -164,20 +178,102 @@ export default class extends think.model.base {
                 //结束整个流程
                 await this.model('proc').fwEnd(taskAct.c_task, user);
             }else{
-                //找去向节点执行
-                let toTaskIds = this.getToTaskIds(taskAct);
-                for(let taskID of toTaskIds ){
-                    this.model('act').fwRun(taskID,user);       //此处直接往下，没有 await, 待验证
+                //找去向节点,根据去向规则进行Run
+                let toTaskActs = this.getToTaskActs(taskAct);
+                if(act.c_to_rule === global.enumActToRule.ORDER || act.c_to_rule === global.enumActToRule.AND_SPLIT ){
+                    for(let ta of toTaskActs ){
+                        await this.model('act').fwRun(ta.id,user);       //此处直接往下
+                    }
+                }else if(act.c_to_rule === global.enumActToRule.OR_SPLIT){
+                    //或分支为条件分支，有一个满足条件则继续，没有分支能满足条件则任务终止，因此需要表单填写后先进行有效性的验证
+                    //根据分支路径上的业务规则进行判断
+                    let toPaths = await this.model('act_path').getToActPaths(act.id,act.c_proc);
+                    for(let path of toPaths ){
+                        if(await this.defineOrSplit(taskAct,act,user,path)){
+                            for(let ta of toTaskActs){
+                                if(ta.c_act === path.c_to){
+                                    await this.model('act').fwRun(ta.id,user);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    //let rand = global.getRandomNum(0,toTaskIds.length -1);
+                    //this.model('act').fwRun(toTaskIds[rand],user);
+                }else{
+                    await this.defineToRule(taskAct,act,user,toTaskIds);
                 }
             }
         }
 
         return taskAct;
     }
+    /**
+     * 当节点去向规则为 或分支 的时候，通过本方法判断取哪一条路径继续 <br/>
+     * 子类中可以重写本方法实现具体的判断逻辑，可以在路径中事先设置条件值，便于调整
+     * @method  defineOrSplit
+     * @return {boolean}  是否通过该路径
+     * @params {object} taskAct 任务节点对象
+     * @params {object} act 流程节点对象
+     * @params {object} user 流程执行人
+     * @params {object} actPath 去向的某一个路径
+     */
+    async defineOrSplit(taskAct,act,user,actPath){
+        let dta = await this.domainGetData(taskAct,act,user);
+
+        //此处实现了常规的条件判断处理
+        if(!think.isEmpty(actPath.c_domain)){
+            let rule = eval("("+actPath.c_domain+")");
+            if(!think.isEmpty(rule['fn'])){      //通过某个模块的某个方法来判断是否可以通过改路径
+                let fnModel = global.model(rule['model']);
+                if(think.isFunction(fnModel[ rule['fn'] ])){
+                    return await fnModel[  rule['fn'] ](dta, act, user);
+                }
+            }else if(think.isArray(rule)){      //形如： [{field:"c_days",op:">",value:1},{field:"c_days",op:"<=",value:3}]
+                let where = [];
+                for(let item of rule){
+                    where.push(`(${ dta.domainData[ item['field'] ] } ${item['op']} ${item['value']})`);
+                }
+                return  eval("("+ where.join(' && ') +")");
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * 取当前节点的业务相关数据，存放于 taskAct.domainData 中 <br/>
+     * 子类中可以重写本方法实现具体的取业务数据方法
+     * @method  domainGetData
+     * @return {object}  增加业务对象数据后的节点对象
+     * @params {object} taskAct 任务节点对象
+     * @params {object} act 流程节点对象
+     * @params {object} user 流程执行人
+     */
+    async domainGetData(taskAct,act,user){
+        let dta = taskAct;
+        dta.domainData = {id:0};
+
+        return dta;
+    }
+    /**
+     * 自定义to规则，一般用于需要中断（等待）的操作完成后，调用本方法<br/>
+     * 子类中可以重写本方法实现更多的控制逻辑
+     * @method  defineToRule
+     * @return {object}  任务节点对象
+     * @params {object} taskAct 任务节点对象
+     * @params {object} act 流程节点对象
+     * @params {object} user 流程执行人
+     * @params {Array} 去向的任务节点ID的列表
+     */
+    async defineToRule(taskAct,act,user,toTaskIds){
+
+        return taskAct;
+    }
 
     /**
      * 保存任务的活动(流程节点), taskAct结构来自于vw_task_act<br/>
-     * 子类中可以重写本方法来增加其他逻辑，比如保存其他业务表数据等
+     * 子类中可以重写本方法来增加其他逻辑，比如保存其他业务表数据等, 此处可以改用缓存机制
      * @method  fwSave
      * @return {object}  任务节点对象
      * @params {object} taskAct 任务节点对象
@@ -187,7 +283,7 @@ export default class extends think.model.base {
         let md = global.objPropertysFromOtherObj({},taskAct,['id','c_task','c_act','c_status','c_user',
                     'c_time_begin','c_time','c_memo','c_link','c_link_type']);
         if(!think.isEmpty(md)){
-            await this.model('fw_task_act').where({id:md.id}).update(md);
+            await this.model('fw_task_act').where({id:taskAct.id}).update(taskAct);
         }
         return taskAct;
     }
@@ -222,7 +318,7 @@ export default class extends think.model.base {
      * @params {object} taskAct 任务节点对象
      */
     async getFromTasksWithEnd(taskAct){
-        let fromArr =await this.model('act_path').getFromActIDs(taskAct.c_act, taskAct.c_proc);
+        let fromArr =await this.model('act_path').getFromActIds(taskAct.c_act, taskAct.c_proc);
         let list = await this.model('fw_task_act').where({c_task:taskAct.c_task}).select();
         let cntEnd =0;
         for(let md of list){
@@ -242,7 +338,7 @@ export default class extends think.model.base {
      * @params {object} taskAct 任务节点对象
      */
     async getFromTaskIds(taskAct){
-        let fromArr =await this.model('act_path').getFromActIDs(taskAct.c_act, taskAct.c_proc);
+        let fromArr =await this.model('act_path').getFromActIds(taskAct.c_act, taskAct.c_proc);
         let list = await this.model('fw_task_act').where({c_task:taskAct.c_task}).select();
         let ret =[];
         for(let md of list){
@@ -258,22 +354,49 @@ export default class extends think.model.base {
     /**
      * 根据任务节点ID取分支去向的任务节点ID的列表，供其他方法调用
      * @method  getToTaskIds
-     * @return {Array} 来源的任务节点ID的列表
+     * @return {Array} 去向的任务节点的列表
      * @params {object} taskAct 任务节点对象
      */
-    async getToTaskIds(taskAct){
-        let toArr =await this.model('act_path').getToActIDs(taskAct.c_act, taskAct.c_proc);
+    async getToTaskActs(taskAct){
+        let toArr =await this.model('act_path').getToActIds(taskAct.c_act, taskAct.c_proc);
         let list = await this.model('fw_task_act').where({c_task:taskAct.c_task}).select();
         let ret =[];
         for(let md of list){
             for(let toID of toArr) {
                 if (md.c_act === toID) {
-                    ret.push(md.id);
+                    ret.push(md);
                 }
             }
         }
         return ret;
     }
 
+    /**
+     * 根据任务ID取任务节点的列表，供其他方法调用
+     * @method  getTaskActs
+     * @return {Array} 任务节点ID的列表
+     * @params {int} taskID 任务ID
+     */
+    async getTaskActs(taskID){
+        let list = await this.model('fw_task_act').where({c_task:taskID}).select();
+        let ret =[];
+        for(let md of list){
+            if (md.c_task === taskID) {
+                ret.push(md);
+            }
+        }
+        return ret;
+    }
+
+
+    ///**
+    // * 取流程实例（任务）的活动节点对象，此处可使用缓存机制改进性能
+    // * @method  getTaskAct
+    // * @return {object} 流程实例的节点对象
+    // * @params {object} task 任务对象
+    // */
+    //async getTaskAct(taskActID){
+    //    return await this.model('fw_task_act').where({id:taskActID}).find();
+    //}
 
 }

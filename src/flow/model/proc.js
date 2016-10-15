@@ -28,7 +28,12 @@ export default class extends think.model.base {
 
         let taskModel = this.model(proc.c_class);
 
-        return await taskModel.fwStart(proc,user);
+        let task = await taskModel.fwStart(proc,user);
+
+        //取当前节点
+        task = await taskModel.getTaskWithStatus(task,user);
+
+        return task;
 
     }
 

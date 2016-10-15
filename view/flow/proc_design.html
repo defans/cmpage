@@ -15,7 +15,7 @@
             <div class="bjui-pageContent">
                 <form id="FwProcEditForm" style="display:block;margin-top:20px;" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
                     <input id="FwProcID" name="id" type="hidden" value="<%= page.editID%>" />
-                    <input name="modulename" type="hidden" value="FwProc" />
+                    <input name="modulename" type="hidden" value="FwProcList" />
                     <input name="parmsUrl" type="hidden" value="<%= page.parmsUrl%>" />
                     <table class="table table-condensed table-hover" width="100%">
                         <tbody>
@@ -44,6 +44,10 @@
                             <label>路径名称：</label>
                             <input id="FwActPathc_name" type="text" name="c_name"  size="22"  data-rule="required"/>
                         </td></tr>
+                        <tr><td>
+                            <label>业务规则：</label>
+                            <textarea data-toggle="autoheight" cols="22" rows="1" id="FwActPathc_domain"  name="c_domain" ></textarea>
+                        </td></tr>
                         </tbody>
                     </table>
                 </form>
@@ -51,6 +55,7 @@
             <div class="bjui-pageFooter" >
                 <ul>
                     <li style="float:left;"><button id="btnActDelete" style="display:none;" onclick="return actDeleteConfirm();" type="button" class="btn btn-red" data-icon="remove">删除节点</button></li>
+                    <li style="float:left;"><button id="btnActPathDelete" style="display:none;" onclick="return actPathDeleteConfirm();" type="button" class="btn btn-red" data-icon="remove">删除路径</button></li>
                     <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
                     <li><button type="button" class="btn btn-green" onclick="return fwSaveForm();" data-icon="save">保存</button></li>
                 </ul>
@@ -69,9 +74,24 @@
             okCall:function(){
                 //alert(src.getDataId());
                 fwCurrentRect.trigger('removerect',[fwCurrentSrc]);
-                $('#actEditForm').hide();
-                $('#procEditForm').show();
+                $('#FwActEditForm').hide();
+                $('#FwProcEditForm').show();
                 $(this).bjuiajax('doAjax', { url: '/flow/act/delete?id='+fwCurrentSrc.getDataId() ,callback:function(data){
+//                    $(this).alertmsg(data.statusCode=="200" ? "info":"error",data.message);
+                }});
+            }
+        });
+        return false;
+    }
+    function actPathDeleteConfirm(){
+        if(fwCurrentRect === null){ return false;}
+        $(this).alertmsg("confirm", "是否确定要删除路径："+fwCurrentSrc.text(),{
+            okCall:function(){
+                //alert(src.getDataId());
+                fwCurrentRect.trigger('removerect',[fwCurrentSrc]);
+                $('#FwActPathEditForm').hide();
+                $('#FwProcEditForm').show();
+                $(this).bjuiajax('doAjax', { url: '/flow/act/delete_path?id='+fwCurrentSrc.getDataId() ,callback:function(data){
 //                    $(this).alertmsg(data.statusCode=="200" ? "info":"error",data.message);
                 }});
             }
@@ -87,6 +107,7 @@
         $('#FwProcEditForm').hide();
         $('#FwActPathEditForm').hide();
         $('#FwActEditForm').show();
+        $('#btnActPathDelete').hide();
         $('#btnActDelete').show();
         $('#procHeader').text('流程模板的活动节点');
         fwCurrentForm = 'FwAct';
@@ -104,6 +125,7 @@
                         $('#FwActc_class').val('flow/act');
                         $('#FwActc_map_id').val(fwCurrentSrc.getId());
                     }
+                    $('#actEditTable').initui();
                 }
             }
         });
@@ -126,6 +148,7 @@
         $('#FwProcEditForm').hide();
         $('#FwActPathEditForm').show();
         $('#FwActEditForm').hide();
+        $('#btnActPathDelete').show();
         $('#btnActDelete').hide();
         $('#procHeader').text('流程模板的路径信息');
         fwCurrentForm = 'FwActPath';
@@ -134,11 +157,22 @@
         $('#FwActPathc_to').val(to.getDataId());
         $('#FwActPathc_proc').val($('#FwProcID').val());
         $('#FwActPathc_name').val(fwCurrentSrc.text());
+        $.ajax({
+            url: "/flow/act/get_act_path?id="+fwCurrentSrc.getDataId(),    //请求的url地址
+            dataType: "json",   //返回格式为json
+            success: function(ret) {
+                if(ret.statusCode == 200){
+                    $('#FwActPathc_domain').val(ret.data.c_domain);
+                }
+            }
+        });
+
     }
     function procShow(){
         $('#FwProcEditForm').show();
         $('#FwActPathEditForm').hide();
         $('#FwActEditForm').hide();
+        $('#btnActPathDelete').hide();
         $('#btnActDelete').hide();
         $('#procHeader').text('流程模板的主信息');
         fwCurrentForm = 'FwProc';

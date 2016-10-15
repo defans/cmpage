@@ -123,6 +123,14 @@
                     
                        <li>
                             
+                           <a href="../classes/admin.model.code_lookup.html">admin.model.code_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
                            <ul>
                                 
@@ -398,6 +406,14 @@
                        <li>
                             
                            <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -728,11 +744,11 @@ export default class extends think.model.base {
         col.c_pager = think.isBoolean(col.c_pager) ? col.c_pager : (col.c_pager === 1);
         return col;
     }
-    async getModuleNameById(moduleID){
+    async getNameById(moduleID){
         let md = await this.getModuleById(moduleID);
         return !think.isEmpty(md) ? md[0].c_modulename: &#x27;&#x27;;
     }
-    async getModuleAliasById(moduleID){
+    async getAliasById(moduleID){
         let md = await this.getModuleById(moduleID);
         return !think.isEmpty(md) ? md[0].c_alias: &#x27;&#x27;;
     }
@@ -742,6 +758,11 @@ export default class extends think.model.base {
             return this.model(&#x27;t_module&#x27;).where({c_modulename:modulename,c_status:0}).find();  //query(&#x60;select * from t_module where c_modulename = &#x27;${modulename}&#x27; and c_status=0&#x60;);
         });
     }
+    async getAliasByName(modulename){
+        let md = await this.getModuleByName(modulename);
+        return !think.isEmpty(md) ? md[0].c_alias: &#x27;&#x27;;
+    }
+
     async getModuleCol(moduleID){
         let cols = await think.cache(&#x60;moduleCol${moduleID}&#x60;, () =&gt; {
             return this.query(&#x60;select * from t_module_col where c_module = ${moduleID} order by c_order&#x60;);

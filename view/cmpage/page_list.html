@@ -86,7 +86,7 @@
     }
 
     function page<%= page.c_modulename%>Del(id,obj,flag) {
-        var url = "/cmpage/page/delete?table=<%= page.c_table%>&id=" + id+"&flag=" + flag;
+        var url = "/cmpage/page/delete?modulename=<%= page.c_modulename%>&id=" + id+"&flag=" + flag;
         $(this).alertmsg("confirm", "是否确定要删除？",{
             okCall:function(){
                 $(obj).bjuiajax('doAjax', { url: url ,callback:function(data){

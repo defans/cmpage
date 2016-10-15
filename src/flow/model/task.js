@@ -46,14 +46,26 @@ export default class extends think.model.base {
                 taskActStartID = md.id;
             }
         }
-        //运行开始节点,
-        this.model('act').fwRun(taskActStartID,user);
-
         task.c_status = global.enumTaskStatus.RUN;
-        await this.model('fw_task').where({id:task.id}).update(task);
+        await this.updateTask(task);
         await this.addTaskSt(task,user);
-        //从开始节点进行run
 
+        //从开始节点进行run
+        await this.model('act').fwRun(taskActStartID,user);
+
+        return task;
+    }
+
+    /**
+     * 取某个任务的当前状态，当前节点存放于 task.taskAct <br/>
+     * 子类中重写本方法，可以增加任务的初始化逻辑，比如业务相关的逻辑
+     * @method  getTaskWithStatus
+     * @return {object}  流程实例对象
+     * @params {object} task 流程实例对象
+     * @params {object} proc 流程模板对象
+     * @params {object} user 流程发起人
+     */
+    async getTaskWithStatus(task,user){
 
         return task;
     }
@@ -100,10 +112,16 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      */
     async fwRun(task,proc,user){
-
         if(task.c_status === global.enumTaskStatus.SUSPEND){
             task.c_status = global.enumTaskStatus.RUN;
-            await this.model('fw_task').where({id:task.id}).update(task);
+            //让本实例被挂起的节点继续RUN
+            let taskActs = await this.model('task_act').getTaskActs(task.id);
+            let actModel =this.model('act');
+            for(let taskAct of taskActs){
+                    actModel.fwRun(taskAct.id,user,taskAct);
+            }
+
+            await this.updateTask(task);
             await this.addTaskSt(task,user);
         }
         return task;
@@ -118,11 +136,16 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      */
     async fwSuspend(task,proc,user){
-
-
         if(task.c_status === global.enumTaskStatus.RUN){
             task.c_status = global.enumTaskStatus.SUSPEND;
-            await this.model('fw_task').where({id:task.id}).update(task);
+            //当前活动节点挂起
+            let taskActs = await this.model('task_act').getTaskActs(task.id);
+            let actModel =this.model('act');
+            for(let taskAct of taskActs){
+                actModel.fwSuspend(taskAct.id,user,taskAct);
+            }
+
+            await this.updateTask(task);
             await this.addTaskSt(task,user);
         }
         return task;
@@ -137,17 +160,23 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      */
     async fwTerminate(task,proc,user){
-
         if(task.c_status === global.enumTaskStatus.RUN || task.c_status === global.enumTaskStatus.SUSPEND ){
             task.c_status = global.enumTaskStatus.TERMINATE;
-            await this.model('fw_task').where({id:task.id}).update(task);
+            //当前活动节点终止
+            let taskActs = await this.model('task_act').getTaskActs(task.id);
+            let actModel =this.model('act');
+            for(let taskAct of taskActs){
+                actModel.fwTerminate(taskAct.id,user,taskAct);
+            }
+
+            await this.updateTask(task);
             await this.addTaskSt(task,user);
         }
         return task;
     }
 
     /**
-     * 正常结束一个流程实例(任务)
+     * 正常结束一个流程实例(任务)，一般在结束节点执行完成后调用
      * @method  fwEnd
      * @return {object}  流程实例对象
      * @params {object} task 任务对象
@@ -158,14 +187,14 @@ export default class extends think.model.base {
 
         if(task.c_status !== global.enumTaskStatus.RUN || task.c_status === global.enumTaskStatus.SUSPEND ){
             task.c_status = global.enumTaskStatus.END;
-            await this.model('fw_task').where({id:task.id}).update(task);
+            await this.updateTask(task);
             await this.addTaskSt(task,user);
         }
         return task;
     }
 
     /**
-     * 增加流程实例的状态记录，记录某个活动(流程节点)发生的时间及当时状态
+     * 增加流程实例的状态记录，记录流程示例发生状态改变的时间及当时状态
      * @method  addTaskSt
      * @return {int}  记录ID
      * @params {object} task 任务对象
@@ -181,5 +210,24 @@ export default class extends think.model.base {
 
         return md.id;
     }
+    /**
+     * 修改流程实例记录，此处可使用缓存机制改进性能
+     * @method  updateTask
+     * @return {object} 流程实例对象
+     * @params {object} task 任务对象
+     */
+    async updateTask(task){
+        await this.model('fw_task').where({id:task.id}).update(task);
 
+        return task;
+    }
+    ///**
+    // * 取流程实例对象，此处可使用缓存机制改进性能
+    // * @method  getTask
+    // * @return {object} 流程实例对象
+    // * @params {object} task 任务对象
+    // */
+    //async getTask(taskID){
+    //    return await this.model('fw_task').where({id:taskID}).find();
+    //}
 }

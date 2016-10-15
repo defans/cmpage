@@ -123,6 +123,14 @@
                     
                        <li>
                             
+                           <a href="../classes/admin.model.code_lookup.html">admin.model.code_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
                            <ul>
                                 
@@ -403,6 +411,14 @@
                            </ul>
                        </li>
                     
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
                     </ul>
                 </dd>
              
@@ -570,6 +586,23 @@ export default class extends Base {
     }
 
     /**
+     * 删除记录的URL接口，调用： /cmpage/xxx/delete?id=xxx
+     * @method  delete
+     * @return {json}  删除成功状态
+     */
+    async deleteAction(){
+        let page = await global.model(&#x27;cmpage/module&#x27;).getModuleByName(this.get(&#x27;modulename&#x27;));
+        //page.id = this.get(&quot;id&quot;);
+        Object.assign(page,this.get());
+        page.user = await this.session(&#x27;user&#x27;);
+        //global.debug(page);
+        let model = global.model(think.isEmpty(page.c_path) ? &#x27;cmpage/page&#x27;:page.c_path);
+        let ret = await model.pageDelete(page);
+
+        return this.json(ret);
+    }
+
+    /**
      * 业务模块的编辑页面，一般调用： /cmpage/page/edit?modulename=xxx
      * @method  edit
      * @return {promise}  HTML片段
@@ -665,6 +698,7 @@ export default class extends Base {
         page.query ={};
         if(this.method() === &#x27;get&#x27;){
             page.modulename =http.get(&#x27;modulename&#x27;);
+            page.returnFields =http.get(&#x27;returnFields&#x27;);
             let md = await module.getModuleByName(page.modulename);
             Object.assign(page,md);
             page.pageIndex = 1;
@@ -674,6 +708,7 @@ export default class extends Base {
             page.query = page.parmsUrl;
         }else{
             page.modulename= http.post(&#x27;modulename&#x27;);
+            page.returnFields =http.get(&#x27;returnFields&#x27;);
             let md = await module.getModuleByName(page.modulename);
             Object.assign(page,md);
             page.query = http._post;
@@ -682,8 +717,12 @@ export default class extends Base {
             page.parmsUrl = http.post(&#x27;parmsUrl&#x27;);
         }
         page.user = await this.session(&#x27;user&#x27;);
-
-        let model = global.model(&#x27;cmpage/page_lookup&#x27;);
+        let model = global.model(page.c_path);
+        if(think.isEmpty(model)){
+            let error = new Error(page.modulename + &quot; 的实现类不存在！&quot;);
+            this.http.error = error;
+            return think.statusAction(500, this.http);
+        }
         vb.queryHtml = await model.htmlGetQuery(page);
         //global.debug(vb.queryHtml);
         vb.otherHtml = await model.htmlGetOther(page);

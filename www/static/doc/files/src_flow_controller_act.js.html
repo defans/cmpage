@@ -123,6 +123,14 @@
                     
                        <li>
                             
+                           <a href="../classes/admin.model.code_lookup.html">admin.model.code_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
                            <ul>
                                 
@@ -403,6 +411,14 @@
                            </ul>
                        </li>
                     
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
                     </ul>
                 </dd>
              
@@ -492,6 +508,29 @@ export default class extends Base {
         await this.model(&#x27;fw_act&#x27;).where({id:actID}).delete();
 
         return this.json({statusCode:200, message:&#x27;&#x27;});
+    }
+    /**
+     * 删除流程节点的路径信息， GET调用： /flow/act/delete_path?id=xxx
+     * @method  deletePath
+     * @return {json}   删除状态
+     */
+    async deletePathAction(){
+        let id = this.get(&#x27;id&#x27;);
+        await this.model(&#x27;fw_act_path&#x27;).where(&#x60;c_id=${id}&#x60;).delete();
+
+        return this.json({statusCode:200, message:&#x27;&#x27;});
+    }
+
+    /**
+     * 编辑流程节点内容， GET调用： /flow/act/edit?id=xxx
+     * @method  edit
+     * @return {json}   act编辑页面的HTML片段
+     */
+    async getActPathAction(){
+        let id = this.get(&#x27;id&#x27;);
+        let data = await this.model(&#x27;fw_act_path&#x27;).where({id:id}).find();
+
+        return this.json({statusCode:200, data:data});
     }
 
 }

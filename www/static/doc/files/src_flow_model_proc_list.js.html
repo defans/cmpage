@@ -123,6 +123,14 @@
                     
                        <li>
                             
+                           <a href="../classes/admin.model.code_lookup.html">admin.model.code_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
                            <ul>
                                 
@@ -403,6 +411,14 @@
                            </ul>
                        </li>
                     
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
                     </ul>
                 </dd>
              
@@ -455,13 +471,7 @@
 import CMPage from &#x27;../../cmpage/model/page_mob.js&#x27;;
 
 export default class extends CMPage {
-    /**
-     * 取查询项的设置，结合POST参数，得到Where字句
-     */
-    async getQueryWhere(page){
-        let where =await super.getQueryWhere(page);
-        return where +&#x27; and c_status&lt;&gt;-1&#x27;;
-    }
+
 
     /**
      * 初始化编辑页面的值
@@ -485,6 +495,37 @@ export default class extends CMPage {
         }else{
             return super.getPageOther(page);
         }
+    }
+
+    /**
+     * 重写父类的 htmlGetOther 方法，输出额外的js函数
+     * @method  htmlGetOther
+     * @return {string}  html片段
+     * @param {Object} page  页面设置主信息
+     */
+    async htmlGetOther(page){
+        let parms =JSON.parse(page.parmsUrl);
+        return &#x60;  &lt;script type=&quot;text/javascript&quot;&gt;
+            function fwStart(procID, obj) {
+                $(this).alertmsg(&quot;confirm&quot;, &quot;是否确定要启动该模板的一个新的实例？&quot;, {
+                    okCall: function () {
+                        $.ajax({
+                            url:  &quot;/flow/task/start?proc_id=&quot; + procID,
+                            dataType: &quot;json&quot;,
+                            success: function(ret) {
+                                if(ret.statusCode == 200){
+
+
+                                }
+                            }
+                        });
+                    }
+                });
+
+                return false;
+            }
+            &lt;/script&gt;
+        &#x60;;
     }
 
 

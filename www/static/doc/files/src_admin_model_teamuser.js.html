@@ -123,6 +123,14 @@
                     
                        <li>
                             
+                           <a href="../classes/admin.model.code_lookup.html">admin.model.code_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
                            <ul>
                                 
@@ -403,6 +411,14 @@
                            </ul>
                        </li>
                     
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
                     </ul>
                 </dd>
              
@@ -462,18 +478,7 @@
 import CMPage from &#x27;../../cmpage/model/page.js&#x27;;
 
 export default class extends CMPage {
-    /**
-     * 重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句
-     * @method  getQueryWhere
-     * @return {string}  where条件子句
-     * @param {Object} page  页面设置主信息
-     */
-    async getQueryWhere(page){
-      let where =await super.getQueryWhere(page);
-      //global.debug(where);
-        let parms =JSON.parse(page.parmsUrl);
-      return where +&#x27; and c_team=&#x27;+parms.c_team;
-    }
+
     /**
      * 重写父类的 htmlGetOther 方法，输出额外的按钮和js函数
      * @method  htmlGetOther

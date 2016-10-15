@@ -7,6 +7,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "admin.controller.mob",
         "admin.model.code",
         "admin.model.code_list",
+        "admin.model.code_lookup",
         "admin.model.groupuser",
         "admin.model.groupuser_add",
         "admin.model.log",
@@ -35,7 +36,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "flow.model.act_path",
         "flow.model.proc",
         "flow.model.task",
-        "flow.model.task_act"
+        "flow.model.task_act",
+        "flow.model.task_act_appr"
     ],
     "modules": [
         "admin.controller",
@@ -76,6 +78,9 @@ YUI.add("yuidoc-meta", function(Y) {
                 },
                 {
                     "name": "admin.model.code_list"
+                },
+                {
+                    "name": "admin.model.code_lookup"
                 },
                 {
                     "name": "admin.model.groupuser"
@@ -198,6 +203,9 @@ YUI.add("yuidoc-meta", function(Y) {
                 },
                 {
                     "name": "flow.model.task_act"
+                },
+                {
+                    "name": "flow.model.task_act_appr"
                 }
             ]
         }

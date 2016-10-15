@@ -22,7 +22,7 @@ export default class extends Base {
      * 点击某个节点，右侧显示其子节点列表，增删改后更新左侧树 <br/>
      * RUL调用如：/admin/code_tree?rootid=1 <br/>
      * @method codeTree
-     * @return {json}   t_code记录对象的数组，多层
+     * @return {promise}   代码树页面
      */
   async codeTreeAction(){
     let vb={};
@@ -34,6 +34,24 @@ export default class extends Base {
     this.assign('vb',vb);
     return this.display();
   }
+
+    /**
+     * 参数选择，查找带回页面，输入根节点ID为参数 <br/>
+     * 点击某个节点，右侧显示其子节点列表，选择后返回 <br/>
+     * RUL调用如：/admin/code/code_lookup?rootid=1185*multiselect=false <br/>
+     * @method codeLookup
+     * @return {promise}   参数选择页面
+     */
+    async codeLookupAction(){
+        let vb={};
+        vb.rootID=this.http.get('rootid');
+        vb.treeID=`codeTree${vb.rootID}`;
+        let model = this.model('code');
+        vb.list =await model.getTreeList(vb.rootID,true);
+//    global.debug(JSON.stringify(vb));
+        this.assign('vb',vb);
+        return this.display();
+    }
 
     /**
      * 账套用户设置的主界面

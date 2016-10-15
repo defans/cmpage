@@ -123,6 +123,14 @@
                     
                        <li>
                             
+                           <a href="../classes/admin.model.code_lookup.html">admin.model.code_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/admin.model.groupuser.html">admin.model.groupuser</a>
                            <ul>
                                 
@@ -403,6 +411,14 @@
                            </ul>
                        </li>
                     
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
                     </ul>
                 </dd>
              
@@ -500,7 +516,7 @@ export default class extends think.model.base {
      * @params {int} actID 活动节点ID
      * @params {int} procID 流程模板ID
      */
-    async getFromActIDs(actID,procID){
+    async getFromActIds(actID,procID){
         let list =await this.getActPathsByProcId(procID);
         let ret = [];
         for(let md of list){
@@ -518,12 +534,29 @@ export default class extends think.model.base {
      * @params {int} actID 活动节点ID
      * @params {int} procID 流程模板ID
      */
-    async getToActIDs(actID,procID){
+    async getToActIds(actID,procID){
         let list =await this.getActPathsByProcId(procID);
         let ret = [];
         for(let md of list){
             if(md.c_from === actID){
                 ret.push(md.c_to);
+            }
+        }
+        return ret;
+    }
+    /**
+     * 根据活动节点ID和模板ID取去向的路径列表，供其他方法调用
+     * @method  getToActPaths
+     * @return {Array} 去向路径的列表
+     * @params {int} actID 活动节点ID
+     * @params {int} procID 流程模板ID
+     */
+    async getToActPaths(actID,procID){
+        let list =await this.getActPathsByProcId(procID);
+        let ret = [];
+        for(let md of list){
+            if(md.c_from === actID){
+                ret.push(md);
             }
         }
         return ret;

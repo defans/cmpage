@@ -10,13 +10,7 @@
 import CMPage from '../../cmpage/model/page_mob.js';
 
 export default class extends CMPage {
-    /**
-     * 取查询项的设置，结合POST参数，得到Where字句
-     */
-    async getQueryWhere(page){
-        let where =await super.getQueryWhere(page);
-        return where +' and c_status<>-1';
-    }
+
 
     /**
      * 初始化编辑页面的值
@@ -40,6 +34,37 @@ export default class extends CMPage {
         }else{
             return super.getPageOther(page);
         }
+    }
+
+    /**
+     * 重写父类的 htmlGetOther 方法，输出额外的js函数
+     * @method  htmlGetOther
+     * @return {string}  html片段
+     * @param {Object} page  页面设置主信息
+     */
+    async htmlGetOther(page){
+        let parms =JSON.parse(page.parmsUrl);
+        return `  <script type="text/javascript">
+            function fwStart(procID, obj) {
+                $(this).alertmsg("confirm", "是否确定要启动该模板的一个新的实例？", {
+                    okCall: function () {
+                        $.ajax({
+                            url:  "/flow/task/start?proc_id=" + procID,
+                            dataType: "json",
+                            success: function(ret) {
+                                if(ret.statusCode == 200){
+
+
+                                }
+                            }
+                        });
+                    }
+                });
+
+                return false;
+            }
+            </script>
+        `;
     }
 
 
