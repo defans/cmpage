@@ -1,0 +1,33 @@
+<script type="text/javascript">
+
+//单击事件
+function <%= vb.treeID%>Click(event, treeId, treeNode) {
+    event.preventDefault()
+    $(this).bjuiajax('doLoad', {target:$("#code<%= vb.rootID%>List"), url:"/cmpage/page/lookup?modulename=CodeLookup&c_pid="+treeNode.id})
+}
+
+</script>
+
+<div class="bjui-pageContent" style="padding:5px">
+    <div style="float:left; display:block; overflow:auto; width:200px; height:100%; border:solid 1px #CCC; line-height:21px; background:#fff">
+        <ul id="<%= vb.treeID%>" class="ztree" data-toggle="ztree"
+            data-options="{
+                expandAll: false,
+                onClick: '<%= vb.treeID%>Click'
+            }"
+        >
+            <% vb.list.map(function(rec){  %>
+                <li data-id="<%= rec.id%>" data-pid="<%= rec.c_pid%>" data-rec="<%= JSON.stringify(rec)%>" data-open="<%= (rec.id == vb.rootID) %>" ><%= rec.c_name%></li>
+            <% });%>
+        </ul>
+        <!--<button type="button" class="btn-green" data-icon="search" >刷新</button>-->
+    </div>
+    <div id="code<%= vb.rootID%>List" style="margin-left:246px;height:100%;">
+        <!--#include virtual="codeList" -->
+    </div>
+</div>
+<!--<div class="bjui-pageFooter" >-->
+    <!--<ul>-->
+        <!--<li><button type="button" class="btn-close" data-icon="close">关闭</button></li>-->
+    <!--</ul>-->
+<!--</div>-->
