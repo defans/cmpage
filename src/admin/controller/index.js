@@ -31,30 +31,65 @@ export default class extends Base {
     let vb={groupName:user.groupName,version:codeMd.c_desc,userName:user.c_name,title:'CmPage by defans'};
     let menus = await this.model('privilege').userGetPrivilegeTree(user.id,user.c_role);
 
-    vb.navList=[];  //主菜单
-    vb.itemList=[]; //二级导航菜单
-    vb.menuList=[];//叶子菜单
-    menus.forEach(function(rec){
-        if(rec.c_type==='N' && rec.isAllow){
-            if(rec.c_pid===1){
-                if(vb.navList.length===0){
-                    rec.liStyle="class=active";
-                }
-                vb.navList.push(rec);
-            }else{
-                vb.itemList.push(rec);
-            }
-        }else{
-            if(rec.c_type=='M' && rec.isAllow){
-              vb.menuList.push(rec);
-            }
-        }
-    });
+      //取主菜单
+      let menuHtml = [];
+      let firstMenu = true;
+      for(let menu of menus){
+          if(menu.c_type === 'N' && menu.c_pid ===1 ){
+              menuHtml.push(`<li ${firstMenu ? 'class="active"':''}><a href="/admin/index/get_menu?root_id=${menu.id}" data-toggle="sidenav"
+                     data-tree-options="{onClick:MainMenuClick}" data-id-key="targetid">${menu.c_name}</a></li>`)
+              firstMenu = false;
+          }
+      }
+      vb.menuHtml = menuHtml;
 
     // global.debug(vb.itemList);
     this.assign('vb',vb);
     return this.display();
   }
+    /**
+     * 用户密码修改页面，get方式显示编辑页面，post方式执行密码修改
+     * @method  loginPwdEdit
+     * @return {Promise}
+     */
+    async getMenuAction(){
+        let user = await this.session('user');
+        let rootID = this.get('root_id');
+        let menus = await this.model('privilege').userGetPrivilegeTree(user.id,user.c_role,rootID);
+        let ret =[];
+        let nav = [];
+        for(let menu of menus){
+            if(menu.c_pid === rootID && menu.c_type === 'M'){
+                menu.external = (menu.c_object === 'Module');
+                nav.push({id:`page${menu.c_object.split('.').join('')}`, name:menu.c_name, target:'navtab',
+                    url:menu.c_desc, external:menu.external});
+            }
+        }
+        if(nav.length >0){
+            ret.push({name:await this.model('code').getNameById(rootID), children:nav});
+        }
+        let navs = [];
+        for(let menu of menus){
+            if(menu.c_type === 'N'){
+                navs.push(menu);
+            }
+        }
+        for(let n of navs ){
+            nav = [];
+            for(let menu of menus){
+                if(menu.c_pid === n.id  && menu.c_type === 'M'){
+                    menu.external = (menu.c_object === 'Module');
+                    nav.push({id:`page${menu.c_object.split('.').join('')}`, name:menu.c_name, target:'navtab',
+                        url:menu.c_desc, external:menu.external});
+                }
+            }
+            if(nav.length >0){
+                ret.push({name:n.c_name, children:nav});
+            }
+        }
+
+        return this.json(ret);
+    }
 
     /**
      * 用户登录界面，get方式显示登录页面，post方式执行用户登录，如果成功则将用户信息写入session并引导到index页面,
@@ -132,19 +167,17 @@ export default class extends Base {
             let user = await this.session('user');
             await this.model('t_user').where({id:user.id}).update({c_login_pwd:think.md5(this.post('newPwd'))});
             await this.cache("users",null);  //清除users缓存
-            return this.json({statusCode:200, message:'密码已修改，请牢记！'});
+            return this.json({statusCode:200, message:'密码已修改，请牢记！',closeCurrent:true});
         }
     }
 
-    async keepConnectDbAction(){
-        let cnt = await this.model('t_code').count();
-        if(cnt >0){
-            return this.json({statusCode:200, message:'DB is openning '})
-        }else{
-            return this.json({statusCode:200, message:'DB has closed '})
-        }
-
+    async setClientWidthAction(){
+        let user = await this.session('user');
+        user.clientWidth = this.get('width');
+        await this.session('user', user);
+        return this.json({statusCode:200, message:''});
     }
+
     //开始定时器
     timerStartAction(){
         if(this.ip() != "127.0.0.1"){

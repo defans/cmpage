@@ -39,7 +39,7 @@ export default class extends think.model.base {
     //查询条件中的操作符
     operations(){
         return [{op:'EQ',des:'等于'},{op:'NE',des:'不等于'},{op:'CN',des:'包含'},{op:'NC',des:'不包含'},{op:'IN',des:'在其中'},{op:'NI',des:'不在其中'},
-            {op:'GE',des:'大于等于'},{op:'LE',des:'小于等于'},{op:'GT',des:'大于'},{op:'LT',des:'小于'}];
+            {op:'GE',des:'大于等于'},{op:'LE',des:'小于等于'},{op:'GT',des:'大于'},{op:'LT',des:'小于'},{op:'NO',des:'不操作'}];
     }
 
     //从数据源取字段名称和类型
@@ -140,7 +140,7 @@ export default class extends think.model.base {
         }
         for (let [k,col] of columns.entries()) {
             let colmd = {c_module:md.id, c_column:col.column, c_coltype:col.type, c_scale:col.length, c_name:this.getColumnComment(comments,col.column),
-                c_desc : col.column,c_editable:true, c_type:'text', c_format:'', c_order:(k+1), c_width:35, c_style:'',
+                c_desc : col.column,c_editable:true, c_type:'text', c_format:'', c_order:(k+1), c_width:28, c_style:'',
                 c_suffix:'', c_isshow:true,c_isrequired:false, c_user:0, c_time: think.datetime(), c_memo:'', c_mui:'',c_validate_rules:''};
             if(['id','c_time','c_user','c_group'].indexOf(col.column) !== -1){
                 colmd.c_type ='hidden';
@@ -188,7 +188,7 @@ export default class extends think.model.base {
 
         let colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'dialog',c_class:'btn btn-green', c_onclick:'', c_memo:'', c_mui:'',
             c_title:'新增',c_label:'新增',c_location:0,c_object:md.c_modulename+'.Add', c_url:`/cmpage/page/edit?modulename=${md.c_modulename}*id=0`,
-            c_options:`{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:400 }`, c_icon:'plus'};
+            c_options:`{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:500 }`, c_icon:'plus'};
         await model.add(global.checksql(colmd));
 
         colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'#',c_class:'btn btn-orange', c_onclick:`return page${md.c_modulename}ExportData(this);`, c_memo:'', c_mui:'',
@@ -197,12 +197,12 @@ export default class extends think.model.base {
 
         colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'dialog',c_class:'btn btn-default', c_onclick:'', c_memo:'', c_mui:'',
             c_title:'查看',c_label:'',c_location:11,c_object:md.c_modulename+'.View', c_url:`/cmpage/page/view?modulename=${md.c_modulename}*id=#id#`,
-            c_options:`{id:##page${md.c_modulename}View##, mask:true, width:600, height:400 }`, c_icon:'info'};
+            c_options:`{id:##page${md.c_modulename}View##, mask:true, width:600, height:500 }`, c_icon:'info'};
         await model.add(global.checksql(colmd));
 
         colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'dialog',c_class:'btn btn-green', c_onclick:'', c_memo:'', c_mui:'',
             c_title:'编辑',c_label:'编辑',c_location:12,c_object:md.c_modulename+'.Edit', c_url:`/cmpage/page/edit?modulename=${md.c_modulename}*id=#id#`,
-            c_options:`{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:400 }`, c_icon:'edit'};
+            c_options:`{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:500 }`, c_icon:'edit'};
         await model.add(global.checksql(colmd));
 
         colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'#',c_class:'btn btn-red', c_onclick:`return page${md.c_modulename}Del(#id#,this);`, c_memo:'', c_mui:'',
@@ -242,7 +242,7 @@ export default class extends think.model.base {
             await think.cache(`module${module.id}`,null);
             await think.cache(`modulename${module.c_modulename}`,null);
             await think.cache(`moduleCol${module.id}`,null);
-            await await await await think.cache(`moduleQuery${module.id}`,null);
+            await think.cache(`moduleQuery${module.id}`,null);
             await think.cache(`moduleEdit${module.id}`,null);
             await think.cache(`moduleBtn${module.id}`,null);
         }

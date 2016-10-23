@@ -26,12 +26,21 @@ export default class extends think.model.base {
         }
         let proc =await this.getProcById(procID);
 
+        //console.log(proc);
+        if(think.isEmpty(proc)){
+            return {id:0, message:'流程模板不存在或设置有错误!'};
+        }
+
         let taskModel = this.model(proc.c_class);
 
         let task = await taskModel.fwStart(proc,user);
+        global.debug(task,'proc.fwStart --- task');
+        if(think.isEmpty(task)){
+            return {id:0, message:'启动新任务失败!'};
+        }
 
         //取当前节点
-        task = await taskModel.getTaskWithStatus(task,user);
+        task = await taskModel.getTaskWithCurrentAct(task,user);
 
         return task;
 
@@ -115,7 +124,7 @@ export default class extends think.model.base {
     async getProcById(id){
         let list =await this.getProcs();
         for(let md of list){
-            if(md.id === id){
+            if(md.id == id){
                 return md;
             }
         }
@@ -131,7 +140,7 @@ export default class extends think.model.base {
     async getNameById(id){
         let list =await this.getProcs();
         for(let md of list){
-            if(md.id === id){
+            if(md.id == id){
                 return md.c_name;
             }
         }
@@ -139,11 +148,18 @@ export default class extends think.model.base {
     }
     async getProcs(){
         return await think.cache("procProcs", () => {
-            return this.query('select id,c_name,c_desc,c_type,c_class,c_no_format,c_way_create,c_time_from,c_time_to,' +
-                'c_status,c_user,c_time,c_group  from fw_proc order by id ');
+            return this.query('select id,c_name,c_desc,c_type,c_class,c_no_format,c_way_create,c_time_from,c_time_to,c_status,c_user,c_time,c_group  ' +
+                'from fw_proc  where c_status=0 order by id');
         });
     }
 
-
+    async clearCache(){
+        let procs = await this.query('select id from fw_proc where c_status=0 ');
+        for(let proc of procs){
+            await think.cache(`procActs${proc.id}`,null);
+            await think.cache(`procActPaths${proc.id}`,null);
+        }
+        await think.cache('procProcs', null);
+    }
 
 }

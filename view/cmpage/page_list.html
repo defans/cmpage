@@ -34,7 +34,8 @@
     </form>
 </div>
 <div class="bjui-pageContent">
-    <table data-toggle="tablefixed" data-width="100%"  data-nowrap="false" data-selected-multi="<% page.c_multiselect ? "true":""%>">
+    <table class="table table-bordered table-striped table-hover " data-width="100%"
+           data-nowrap="false" data-selected-multi="<% page.c_multiselect ? "true":""%>">
     <%- vb.listHtml%>
 
     </table>
@@ -77,6 +78,14 @@
 <% } %>
 
 <script type="text/javascript">
+    function pageRowSelect(id){
+        var oldRowID =$('#idSelect<%= page.c_modulename%>').val()
+        if(oldRowID != id){
+            $.CurrentNavtab.find('#row'+oldRowID).removeClass('selected');
+        }
+        $('#idSelect<%= page.c_modulename%>').val(id);
+        $.CurrentNavtab.find('#row'+id).toggleClass('selected');
+    }
     function page<%= page.c_modulename%>Edit_onClose($navtab) {
         //$("#pagerForm",$navtab).submit();
         //$("#btnSearch<%= page.c_modulename%>").click();

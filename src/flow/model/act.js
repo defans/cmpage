@@ -50,7 +50,8 @@ export default class extends think.model.base {
      */
     async fwRun(taskActID,user,taskAct){
         let parms = await this.fwGetActParms(taskActID,user,taskAct);
-        let taskActModel = this.model(parms[1].c_class);
+        //global.debug(parms);
+        let taskActModel = this.model(think.isEmpty(parms[1].c_class) ? 'flow/task_act': parms[1].c_class);
         return await taskActModel.fwRun(...parms);
     }
 
@@ -187,30 +188,34 @@ export default class extends think.model.base {
         }
         return '';
     }
-
     async getActs(){
+        let acts = await this.getActsCache();
+        for(let act of acts){
+            act.domain = think.isEmpty(act.c_domain) ? {}: eval(`(${act.c_domain})`);
+            //act.btn_style = think.isEmpty(act.c_btn_style) ? {}:eval(`(${act.c_btn_style})`);
+            //act.form = think.isEmpty(act.c_form) ? {}:eval(`(${act.c_form})`);
+        }
+        return acts;
+    }
+    async getActsByProcId(procID){
+        let acts = await this.getActsByProcIdCache(procID);
+        for(let act of acts){
+            act.domain = think.isEmpty(act.c_domain) ? {}: eval(`(${act.c_domain})`);
+            //act.btn_style = think.isEmpty(act.c_btn_style) ? {}:eval(`(${act.c_btn_style})`);
+            //act.form = think.isEmpty(act.c_form) ? {}:eval(`(${act.c_form})`);
+        }
+        return acts;
+    }
+
+    async getActsCache(){
         return await think.cache("procActs", () => {
-            let acts = this.query('select * from fw_act order by id ');
-            for(let act of acts){
-                if(!think.isEmpty(act.c_domain)){
-                    act.domain = eval(`(${act.c_domain})`);
-                    act.domain = think.isEmpty(act.domain) ? {}:act.domain;
-                }
-            }
-            return acts;
+            return this.query('select * from fw_act order by id ');
         });
     }
 
-    async getActsByProcId(procID){
-        return await think.cache("procActs"+procID, (procID) => {
-            let acts = this.query(`select * from fw_act where c_proc=${procID} order by id `);
-            for(let act of acts){
-                if(!think.isEmpty(act.c_domain)){
-                    act.domain = eval(`(${act.c_domain})`);
-                    act.domain = think.isEmpty(act.domain) ? {}:act.domain;
-                }
-            }
-            return acts;
+    async getActsByProcIdCache(procID){
+        return await think.cache("procActs"+procID, () => {
+            return this.query(`select * from fw_act where c_proc=${procID} order by id `);
         });
     }
 

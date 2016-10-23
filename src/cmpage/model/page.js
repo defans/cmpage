@@ -66,7 +66,7 @@ export default class extends think.model.base {
                 }
                 else if (col.c_type === "lookup")
                 {
-                    html.push(`<input name="${col.c_column}" type="lookup" size="${col.c_width}" value=""  data-width="800" data-height="600"
+                    html.push(`<input name="${col.c_column}" type="lookup" size="${col.c_width}" value="${col.c_default}"  data-width="800" data-height="600"
                         data-toggle="lookup" data-title="${col.c_name} 选择" data-url="${this.getReplaceToSpecialChar(col.c_memo,page)}" readonly="readonly" />`);
                 }
                 else if (col.c_type === "provinceSelect")
@@ -278,7 +278,7 @@ export default class extends think.model.base {
 
     html.push('<tbody>');
     for (let item of dataList) {
-        html.push(`<tr data-id="${item['id']}" onclick="$('#idSelect${page.c_modulename}').val(${item['id']});" >`);
+        html.push(`<tr id="row${item['id']}" data-id="${item['id']}" onclick="pageRowSelect(${item['id']});" >`);
         for (let col of pageCols) {
             if (col.c_isshow) {
 //                global.debug(col);
@@ -390,7 +390,7 @@ export default class extends think.model.base {
                 ret.push(wh);
                 continue;
             }
-            if (md.c_isshow) {
+            if (md.c_isshow && md.c_op!=='NO') {
                 if(!think.isEmpty(page.query[md.c_column])){
                     if((md.c_coltype === 'int' && parseInt(page.query[md.c_column])===0) || (md.c_type.indexOf('select') === 0 && page.query[md.c_column] == 0)){
                         continue;
@@ -533,6 +533,7 @@ export default class extends think.model.base {
         }else{
             md = await this.pageEditInit(pageEdits,page);
         }
+        //console.log(md);
         //对记录进行处理
         for (let edit of pageEdits) {
             if(edit.c_coltype ==='bool'){
@@ -548,12 +549,12 @@ export default class extends think.model.base {
      * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
     async htmlGetEdit(page) {
-        let html = ['<thead> <tr >'];
+        let html = [];
         //let pageEdits = await think.cache(`moduleEdit${page.id}`);
       let pageEdits = await global.model('cmpage/module').getModuleEdit(page.id);
         let md = await this.getDataRecord(page,pageEdits);
 
-        html.push(`<input name='old_record' type='hidden' value='${JSON.stringify(md)}' />`);
+        html.push(`<input name='old_record' type='hidden' value='${JSON.stringify(md).replace(/'/g,'')}' />`);
 //        global.debug(md);
         for(let col of pageEdits){
             if (!col.c_editable || col.c_column === "id" ) {  continue; }
@@ -576,55 +577,62 @@ export default class extends think.model.base {
             }
             col.c_format = col.c_format.trim();
             if(col.c_type !== "hidden"){
-                html.push(`<tr><td> <label class="control-label x85">${col.c_name}: </label>`);
+                html.push(` <label  class="row-label">${col.c_name}: </label>`);
             }
-
+            let input ='';
             if (col.c_type === "datetime" ||col.c_type === "date") {
-                html.push(`<input type="text" name="${col.c_column}" value="${ global.datetime(colValue,think.isEmpty(col.c_format) ? 'yyyy-MM-dd':col.c_format)}"
-                    ${col.c_type === "readonly" ? "disabled":""} data-toggle="datepicker" data-pattern="${think.isEmpty(col.c_format) ? 'yyyy-MM-dd':col.c_format}"  size="15" />`);
+                input += `<input type="text" name="${col.c_column}" value="${ global.datetime(colValue,think.isEmpty(col.c_format) ? 'yyyy-MM-dd':col.c_format)}"
+                    ${col.c_type === "readonly" ? "disabled":""} data-toggle="datepicker" data-pattern="${think.isEmpty(col.c_format) ? 'yyyy-MM-dd':col.c_format}"  size="15" />`;
             } else if (col.c_type === "select" || col.c_type === "selectBlank" ) {
-                html.push(`<select name="${col.c_column}" data-toggle="selectpicker" ${col.c_isrequired ? "data-rule=required" : ""}>`);
+                input += `<select name="${col.c_column}" data-toggle="selectpicker" ${col.c_isrequired ? "data-rule=required" : ""}>`;
                 col.c_default = colValue;
-                html.push(await this.getOptions(col,false));
-                html.push('</select>');
+                input += await this.getOptions(col,false);
+                input += '</select>';
             } else if (col.c_type === "textarea") {
-                html.push(`<textarea name="${col.c_column}" data-toggle="autoheight" cols="${col.c_width}" rows="1"  ${col.c_isrequired ? "data-rule=required" : ""}>${colValue}</textarea>`);
+                input += `<textarea name="${col.c_column}" data-toggle="autoheight" cols="${col.c_width}" rows="1"  ${col.c_isrequired ? "data-rule=required" : ""}>${colValue}</textarea>`;
             } else if (col.c_type === "lookup") {
-                html.push(`<input name="${col.c_column}" type="lookup" size="${col.c_width}" value="${colValue}"   ${col.c_isrequired ? "data-rule=required" : ""}
-                    data-width="800" data-height="600" data-toggle="lookup" data-title="${col.c_name} 选择" data-url="${this.getReplaceToSpecialChar(col.c_memo,page)}" readonly="readonly" />`);
+                input += `<input name="${col.c_column}" type="lookup" size="${col.c_width}" value="${colValue}"
+                    data-width="800" data-height="600" data-toggle="lookup" data-title="${col.c_name} 选择" data-url="${this.getReplaceToSpecialChar(col.c_memo,page)}" readonly="readonly" />
+                      <!--<a class="bjui-lookup" href="javascript:;" ><i class="fa fa-search"></i></a>--> `;
             }else if (col.c_type == "areaSelect"){
-                html.push(`<select name="c_province" data-toggle="selectpicker"  data-nextselect="#city${page.c_modulename}" data-refurl="/cmpage/utils/get_citys?province={value}" >`);
-                html.push(await global.model('cmpage/area').getProvinceItems(md['c_province'],true));
+                input += `<select name="c_province" data-toggle="selectpicker"  data-nextselect="#city${page.c_modulename}" data-refurl="/cmpage/utils/get_citys?province={value}" >`;
+                input += await global.model('cmpage/area').getProvinceItems(md['c_province'],true);
                 if(col.c_column ==='c_country'){
-                    html.push(`</select> <select name="c_city" id="city${page.c_modulename}" data-toggle="selectpicker" data-nextselect="#country${page.c_modulename}"
-                        data-refurl="/cmpage/utils/get_countrys?city={value}" >`);
-                    html.push(await global.model('cmpage/area').getCityItems(md['c_city'],true));
-                    html.push(`</select> <select name="c_country" id="country${page.c_modulename}" data-toggle="selectpicker" data-rule="required" >`);
-                    html.push(await global.model('cmpage/area').getCountryItems(md['c_country'],true));
+                    input += `</select> <select name="c_city" id="city${page.c_modulename}" data-toggle="selectpicker" data-nextselect="#country${page.c_modulename}"
+                        data-refurl="/cmpage/utils/get_countrys?city={value}" >`;
+                    input += await global.model('cmpage/area').getCityItems(md['c_city'],true);
+                    input += `</select> <select name="c_country" id="country${page.c_modulename}" data-toggle="selectpicker" data-rule="required" >`;
+                    input += await global.model('cmpage/area').getCountryItems(md['c_country'],true);
                 }else if(col.c_column === 'c_city'){
-                    html.push(`</select> <select name="c_city" id="city${page.c_modulename}" data-toggle="selectpicker" data-nextselect="#country${page.c_modulename}" >`);
-                    html.push(await global.model('cmpage/area').getCityItems(md['c_city'],true));
+                    input += `</select> <select name="c_city" id="city${page.c_modulename}" data-toggle="selectpicker" data-nextselect="#country${page.c_modulename}" >`;
+                    input += await global.model('cmpage/area').getCityItems(md['c_city'],true);
                 }
-                html.push('</select>');
+                input += '</select>';
             } else if(col.c_type === "kindeditor"){
-                html.push(`<div style="display: inline-block; vertical-align: middle;"> <textarea name="${col.c_column}" style="width: 960px;height:640px;"
-            data-toggle="kindeditor" data-minheight="460"> ${colValue}  </textarea> </div>`);
+                input += `<div style="display: inline-block; vertical-align: middle;"> <textarea name="${col.c_column}" style="width: 960px;height:640px;"
+                        data-toggle="kindeditor" data-minheight="460"> ${colValue}  </textarea> </div>`;
             } else if (col.c_type == "checkbox") {
-                html.push(`<input type="checkbox" name="${col.c_column}" data-toggle="icheck" value="1" data-label="${col.c_memo}"  ${colValue == "1" ? "checked" : ""} />`);
+                input += `<input type="checkbox" name="${col.c_column}" data-toggle="icheck" value="1" data-label="${col.c_memo}"  ${colValue == "1" ? "checked" : ""} />`;
             }else if (col.c_type === "readonly") {
-                html.push(`<input name="${col.c_column}" type="text" size="${col.c_width}" value="${colValue}"  readonly="readonly"  />`); // style=background-color:#fde5d4;
+                input += `<input name="${col.c_column}" type="text" size="${col.c_width}" value="${colValue}"  readonly="readonly"  />`; // style=background-color:#fde5d4;
             }else if (col.c_type === "readonlyReplace") {
-                html.push(`<input name="${col.c_column}" type="text" size="${col.c_width}" value="${await this.getReplaceText(md[col.c_column], col.c_memo)}"  readonly="readonly"  />`); // style=background-color:#fde5d4;
+//                global.debug(col,'page.getHtmlEdit --- col readonlyReplace');
+//                global.debug(md,'page.getHtmlEdit --- md readonlyReplace');
+                input += `<input name="${col.c_column}" type="hidden"  value="${colValue}"  readonly="readonly"  />`;
+                input += `<input name="${col.c_column}_text" type="text" size="${col.c_width}" value="${await this.getReplaceText(colValue, col.c_memo)}"  readonly="readonly"  />`; // style=background-color:#fde5d4;
             }else if(col.c_column !=='c_province' && col.c_column !=='c_city'){
-                html.push(`<input id="${page.c_modulename + col.c_column}" name="${col.c_column}" type="${col.c_type}" size="${col.c_width}" value="${colValue}"
-                    ${col.c_isrequired ? "data-rule=required;" + col.c_memo : (think.isEmpty(col.c_memo) ? "" : "data-rule=" + col.c_memo)}  />`);
+                input += `<input id="${page.c_modulename + col.c_column}" name="${col.c_column}" type="${col.c_type}" size="${col.c_width}" value="${colValue}"
+                    ${col.c_isrequired ? "data-rule=required;" + col.c_memo : (think.isEmpty(col.c_memo) ? "" : "data-rule=" + col.c_memo)}  />`;
             }
             if (col.c_type !== "areaSelect"){
-                html.push(col.c_suffix);
+                input += col.c_suffix;
             }
-            html.push('</td></tr>');
+            if(input.length >0){
+                html.push(`<div class="row-input">${input}</div>`);
+            }
+
         }
-        return html.join(' ');
+        return html.join('');
     }
 
     /**
@@ -641,6 +649,7 @@ export default class extends think.model.base {
         //page.editID = prams.id;
         let pageEdits = await model.getModuleEdit(page.id);
         //let colList = await model.getAllColumns(page.c_table);
+        global.debug(parms,'page.pageSave - parms - 递交的内容')
         let md = {};
         for(let edit of pageEdits){
             if(edit.c_editable && edit.c_column.indexOf('c_')===0 ) {      //&& this.isExistColumn(edit.c_column,colList)
@@ -651,7 +660,6 @@ export default class extends think.model.base {
                 }
             }
         }
-        //global.debug(JSON.stringify(md));
         if(parms.id == 0){
             //let id = await this.query(global.getInsertSql(md,page.c_table) +' returning id;');
             md.id = await this.model(page.c_table).add(global.checksql(md));
@@ -689,23 +697,27 @@ export default class extends think.model.base {
             if(think.isEmpty(parms["old_record"])){
                 oldMd = await this.getDataRecord(page,pageEdits);
             }else{
-                oldMd = JSON.parse(parms.old_record);
+                oldMd = JSON.parse(parms["old_record"]);
             }
-            think.log(oldMd);
+            //think.log(oldMd);
             log.push(`id:${md.id}`);
             for(let edit of pageEdits){
-                if(edit.c_editable && edit.c_column !=='c_time') {
+                if(edit.c_editable && edit.c_column !=='c_time' && edit.c_column !=='c_user' && edit.c_column.indexOf('c_')===0 && edit.c_type.indexOf('readonly') === -1) {
                     if(edit.c_coltype === 'timestamp'){
                         md[edit.c_column] =  global.datetime(md[edit.c_column],'yyyy-MM-dd HH:mm:ss');
                         oldMd[edit.c_column] =  global.datetime(oldMd[edit.c_column],'yyyy-MM-dd HH:mm:ss');
                     }
-                    if(md[edit.c_column] != oldMd[edit.c_column]) {
-                        log.push(`${edit.c_name}: ${oldMd[edit.c_column]} --> ${md[edit.c_column]}`);
+//                    global.debug(edit,'page.pageSaveLog - edit - 值有变化的字段保存到日志');
+                    let newValue = global.objToString(md[edit.c_column]).replace(/'/g,'');
+                    if(oldMd[edit.c_column] !=newValue) {
+//                        console.log(global.objToString(md[edit.c_column]));
+                        log.push(`${edit.c_name}: ${oldMd[edit.c_column]} --> ${newValue}`);
                     }else if(edit.c_column === 'c_name'){
                         log.push(`c_name:${md.c_name}`);
                     }
                 }
             }
+//            console.log(log.join(', '));
             await global.model('admin/log').addLog(page.user, log.join(', '),page.id, md.id, global.enumStatusExecute.SUCCESS.id,  global.enumLogType.UPDATE.id);
         }
     }

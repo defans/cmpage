@@ -12,7 +12,9 @@
  * 具体的业务相关的工作流活动的子类也可以继承本类，来增加定制的业务逻辑
  * @class flow.model.task_act_appr
  */
-export default class extends think.model.base {
+import TaskAct from './task_act.js';
+
+export default class extends TaskAct {
 
     /**
      * 运行一个流程实例的活动(流程节点)

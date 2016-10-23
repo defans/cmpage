@@ -124,7 +124,7 @@ export default class extends think.model.base {
     }
 
     async getActPathsByProcId(procID){
-        return await think.cache("procActPaths"+procID, (procID) => {
+        return await think.cache("procActPaths"+procID, () => {
             return this.query(`select * from fw_act_path where c_proc=${procID} order by id `);
         });
     }

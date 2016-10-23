@@ -1,0 +1,252 @@
+@charset "utf-8";
+/*特大*/
+html.bjui-font-a body,
+html.bjui-font-a legend{font-size:22px;}
+html.bjui-font-a .bjui-header .navbar-nav > li > a{font-size:22px;}
+html.bjui-font-a #bjui-sidenav-box > .nav{font-size:22px;}
+html.bjui-font-a #bjui-sidenav-box > .nav > li > a{padding-top:10px; padding-bottom:10px;}
+html.bjui-font-a #bjui-sidenav-box > .nav > li .nav > li > a{padding-top:8px; padding-bottom:8px;}
+html.bjui-font-a #bjui-navtab > .tabsPageHeader{height:32px;}
+html.bjui-font-a #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent{height:32px;}
+html.bjui-font-a #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul{height:32px;}
+html.bjui-font-a #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li > a{padding:0px 24px 0px 16px;}
+html.bjui-font-a #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li > a > span{font-size:22px;}
+html.bjui-font-a #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li span.close{font-size:22px;}
+html.bjui-font-a #bjui-navtab > .tabsPageHeader > .tabsLeft, html.bjui-font-a #bjui-navtab > .tabsPageHeader > .tabsRight, html.bjui-font-a #bjui-navtab > .tabsPageHeader > .tabsMore{height:32px; line-height:1.78;}
+html.bjui-font-a #bjui-navtab > .tabsMoreList{top:31px;}
+html.bjui-font-a #bjui-navtab > .tabsMoreList > li a{height:34px; line-height:34px;}
+html.bjui-font-a #bjui-contextmenu li{height:32px; line-height:32px;}
+html.bjui-font-a .bjui-datagrid .datagrid-title{font-size:22px;}
+html.bjui-font-a .bjui-datagrid .table > thead > tr > th{padding-top:7px; padding-bottom:7px; font-size:22px;}
+html.bjui-font-a .bjui-datagrid .table > tbody > tr > td{padding:8px 8px; font-size:22px;}
+html.bjui-font-a ul.selectpicker > li{height:36px; font-size:22px; line-height:36px;}
+html.bjui-font-a .bootstrap-select.btn-group .btn .filter-option{line-height:1.4;}
+html.bjui-font-a .btn{height:36px; font-size:22px;}
+html.bjui-font-a .btn.btn-lg{height:42px;}
+html.bjui-font-a .form-control{height:36px; font-size:22px;}
+html.bjui-font-a textarea.form-control{height:auto;}
+html.bjui-font-a .input-group-lg > .form-control,
+html.bjui-font-a .input-group-lg > .input-group-addon,
+html.bjui-font-a .input-group-lg > .input-group-btn > .btn{
+    height: 46px;
+    padding: 10px 16px;
+    font-size: 22px;
+    line-height: 1.3333333;
+}
+html.bjui-font-a .bjui-lookup{width:32px;}
+html.bjui-font-a .bjui-spinner{font-size:18px;}
+html.bjui-font-a #bjui-calendar{width:230px;}
+html.bjui-font-a #bjui-calendar > .main > .body > dl > dt, html.bjui-font-a #bjui-calendar > .main > .body > dl > dd{width:32px; height:26px; line-height:26px;}
+html.bjui-font-a #bjui-calendar > .main > .foot > .time td{font-size:16px; line-height:28px;}
+html.bjui-font-a #bjui-calendar > .main > .foot > .time .hh, html.bjui-font-a #bjui-calendar > .main > .foot > .time .mm, html.bjui-font-a #bjui-calendar > .main > .foot > .time .ss{
+    width:24px; height:28px; font-size:16px; line-height:28px;
+}
+html.bjui-font-a #bjui-calendar > .main > .foot .btn{height:30px; font-size:16px;}
+html.bjui-font-a #bjui-calendar > .main > .tm > .hh, html.bjui-font-a #bjui-calendar > .main > .tm > .mm, html.bjui-font-a #bjui-calendar > .main > .tm > .ss{width:182px;}
+html.bjui-font-a #bjui-calendar > .main > .tm > .hh > li, html.bjui-font-a #bjui-calendar > .main > .tm > .mm > li, html.bjui-font-a #bjui-calendar > .main > .tm > .ss > li{
+    width:30px; height:26px; font-size:16px; line-height:26px;
+}
+html.bjui-font-a #bjui-calendar > .main > .foot > .time .up, html.bjui-font-a #bjui-calendar > .main > .foot > .time .down{height:14px;}
+html.bjui-font-a .bjui-row .row-label,
+html.bjui-font-a .bjui-row .row-input{
+    font-size:22px;
+}
+html.bjui-font-a .bjui-dialog > .dialogHeader h1{font-size:22px;}
+html.bjui-font-a .bjui-alert > .alertContent .alertInner > h1{padding-top:8px; padding-bottom:8px; height:36px; font-size:22px;}
+html.bjui-font-a .bjui-alert > .alertContent .alertInner > .msg{font-size:20px;}
+html.bjui-font-a .bjui-maskProgress{padding:2px 10px; width:320px; height:50px; font-size:20px;}
+html.bjui-font-a .bjui-maskProgress > .progressBg{bottom:8px; width:300px;}
+html.bjui-font-a .bjui-datagrid .datagrid-box-h,
+html.bjui-font-a .bjui-datagrid .datagrid-box-h .btn,
+html.bjui-font-a .bjui-datagrid .datagrid-paging-box,
+html.bjui-font-a .bjui-datagrid .datagrid-paging-box .btn{
+    font-size:22px;
+}
+html.bjui-font-a .bjui-datagrid .table > thead > tr.datagrid-filter th .form-control,
+html.bjui-font-a .bjui-datagrid .table > tbody > tr > td.datagrid-edit-td .form-control{
+    height:36px;
+    font-size:22px;
+}
+html.bjui-font-a .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-pagesize,
+html.bjui-font-a .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-pagesize > .btn-refresh,
+html.bjui-font-a .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-pagesize > .btn-group > .btn{
+    height:37px;
+}
+html.bjui-font-a .bjui-datagrid > .datagrid-paging-box{min-height:52px;}
+html.bjui-font-a .bjui-datagrid > .datagrid-paging-box > .paging-content > span{height:44px;}
+html.bjui-font-a .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-paging > .pagination > li.btn-nav > a{width:40px;}
+html.bjui-font-a .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-paging > .pagination > li > span.page-input > input{width:50px !important; height:30px; font-size:20px;}
+
+/*大*/
+html.bjui-font-b body,
+html.bjui-font-b legend{font-size:20px;}
+html.bjui-font-b .bjui-header .navbar-nav > li > a{font-size:20px;}
+html.bjui-font-b #bjui-sidenav-box > .nav{font-size:20px;}
+html.bjui-font-b #bjui-sidenav-box > .nav > li > a{padding-top:10px; padding-bottom:10px;}
+html.bjui-font-b #bjui-sidenav-box > .nav > li .nav > li > a{padding-top:8px; padding-bottom:8px;}
+html.bjui-font-b #bjui-navtab > .tabsPageHeader{height:32px;}
+html.bjui-font-b #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent{height:32px;}
+html.bjui-font-b #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul{height:32px;}
+html.bjui-font-b #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li > a{padding:0px 24px 2px 16px;}
+html.bjui-font-b #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li > a > span{font-size:20px;}
+html.bjui-font-b #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li span.close{font-size:20px;}
+html.bjui-font-b #bjui-navtab > .tabsPageHeader > .tabsLeft, html.bjui-font-b #bjui-navtab > .tabsPageHeader > .tabsRight, html.bjui-font-b #bjui-navtab > .tabsPageHeader > .tabsMore{height:32px; line-height:1.78;}
+html.bjui-font-b #bjui-navtab > .tabsMoreList{top:31px;}
+html.bjui-font-b #bjui-navtab > .tabsMoreList > li a{height:30px; line-height:30px;}
+html.bjui-font-b #bjui-contextmenu li{height:28px; line-height:28px;}
+html.bjui-font-b .bjui-datagrid .datagrid-title{font-size:20px;}
+html.bjui-font-b .bjui-datagrid .table > thead > tr > th{padding-top:6px; padding-bottom:7px; font-size:20px;}
+html.bjui-font-b .bjui-datagrid .table > tbody > tr > td{padding:6px 8px; font-size:20px;}
+html.bjui-font-b ul.selectpicker > li{height:36px; font-size:20px; line-height:36px;}
+html.bjui-font-b .bootstrap-select.btn-group .btn .filter-option{line-height:1.4;}
+html.bjui-font-b .btn{height:36px; font-size:20px;}
+html.bjui-font-b .btn.btn-lg{height:42px;}
+html.bjui-font-b .form-control{height:36px; font-size:20px;}
+html.bjui-font-b textarea.form-control{height:auto;}
+html.bjui-font-b .input-group-lg > .form-control,
+html.bjui-font-b .input-group-lg > .input-group-addon,
+html.bjui-font-b .input-group-lg > .input-group-btn > .btn{
+    height: 46px;
+    padding: 10px 16px;
+    font-size: 20px;
+    line-height: 1.3333333;
+}
+html.bjui-font-b .bjui-lookup{width:30px;}
+html.bjui-font-b .bjui-spinner{font-size:16px;}
+html.bjui-font-b #bjui-calendar{width:230px;}
+html.bjui-font-b #bjui-calendar > .main > .body > dl > dt, html.bjui-font-b #bjui-calendar > .main > .body > dl > dd{width:32px; height:26px; line-height:26px;}
+html.bjui-font-b #bjui-calendar > .main > .foot > .time td{font-size:16px; line-height:28px;}
+html.bjui-font-b #bjui-calendar > .main > .foot > .time .hh, html.bjui-font-b #bjui-calendar > .main > .foot > .time .mm, html.bjui-font-b #bjui-calendar > .main > .foot > .time .ss{
+    width:24px; height:28px; font-size:16px; line-height:28px;
+}
+html.bjui-font-b #bjui-calendar > .main > .foot .btn{height:30px; font-size:16px;}
+html.bjui-font-b #bjui-calendar > .main > .tm > .hh, html.bjui-font-b #bjui-calendar > .main > .tm > .mm, html.bjui-font-b #bjui-calendar > .main > .tm > .ss{width:182px;}
+html.bjui-font-b #bjui-calendar > .main > .tm > .hh > li, html.bjui-font-b #bjui-calendar > .main > .tm > .mm > li, html.bjui-font-b #bjui-calendar > .main > .tm > .ss > li{
+    width:30px; height:26px; font-size:16px; line-height:26px;
+}
+html.bjui-font-b #bjui-calendar > .main > .foot > .time .up, html.bjui-font-b #bjui-calendar > .main > .foot > .time .down{height:14px;}
+html.bjui-font-b .bjui-row .row-label,
+html.bjui-font-b .bjui-row .row-input{
+    font-size:20px;
+}
+html.bjui-font-b .bjui-dialog > .dialogHeader h1{font-size:20px;}
+html.bjui-font-b .bjui-alert > .alertContent .alertInner > h1{padding-top:8px; padding-bottom:8px; height:36px; font-size:20px;}
+html.bjui-font-b .bjui-alert > .alertContent .alertInner > .msg{font-size:20px;}
+html.bjui-font-b .bjui-maskProgress{padding:2px 10px; width:300px; height:50px; font-size:18px;}
+html.bjui-font-b .bjui-maskProgress > .progressBg{bottom:8px; width:280px;}
+html.bjui-font-b .bjui-datagrid .datagrid-box-h,
+html.bjui-font-b .bjui-datagrid .datagrid-box-h .btn,
+html.bjui-font-b .bjui-datagrid .datagrid-paging-box,
+html.bjui-font-b .bjui-datagrid .datagrid-paging-box .btn{
+    font-size:20px;
+}
+html.bjui-font-b .bjui-datagrid .table > thead > tr.datagrid-filter th .form-control,
+html.bjui-font-b .bjui-datagrid .table > tbody > tr > td.datagrid-edit-td .form-control{
+    height:36px;
+    font-size:20px;
+}
+html.bjui-font-b .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-pagesize,
+html.bjui-font-b .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-pagesize > .btn-refresh,
+html.bjui-font-b .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-pagesize > .btn-group > .btn{
+    height:34px;
+}
+html.bjui-font-b .bjui-datagrid > .datagrid-paging-box{min-height:50px;}
+html.bjui-font-b .bjui-datagrid > .datagrid-paging-box > .paging-content > span{height:44px;}
+html.bjui-font-b .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-paging > .pagination > li.btn-nav > a{width:40px;}
+html.bjui-font-b .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-paging > .pagination > li > span.page-input > input{width:50px !important; height:27px; font-size:20px;}
+/*中*/
+html.bjui-font-c body,
+html.bjui-font-c legend{font-size:16px;}
+html.bjui-font-c .bjui-header .navbar-nav > li > a{font-size:16px;}
+html.bjui-font-c #bjui-sidenav-box > .nav{font-size:16px;}
+html.bjui-font-c #bjui-sidenav-box > .nav > li > a{padding-top:6px; padding-bottom:6px;}
+html.bjui-font-c #bjui-sidenav-box > .nav > li .nav > li > a{padding-top:5px; padding-bottom:5px;}
+html.bjui-font-c #bjui-navtab > .tabsPageHeader{height:32px;}
+html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent{height:32px;}
+html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul{height:32px;}
+html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li > a{padding:4px 24px 4px 16px;}
+html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li > a > span{font-size:16px;}
+html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li span.close{font-size:16px;}
+html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsLeft, html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsRight, html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsMore{height:32px; line-height:1.78;}
+html.bjui-font-c #bjui-navtab > .tabsMoreList{top:31px;}
+html.bjui-font-c #bjui-navtab > .tabsMoreList > li a{height:30px; line-height:30px;}
+html.bjui-font-c #bjui-contextmenu li{height:26px; line-height:26px;}
+html.bjui-font-c .bjui-datagrid .datagrid-title{font-size:16px;}
+html.bjui-font-c .bjui-datagrid .table > thead > tr > th{padding-top:5px; padding-bottom:5px; font-size:16px;}
+html.bjui-font-c .bjui-datagrid .table > tbody > tr > td{padding:5px 7px; font-size:16px;}
+html.bjui-font-c ul.selectpicker > li{height:28px; font-size:16px; line-height:36px;}
+html.bjui-font-c .bootstrap-select.btn-group .btn .filter-option{line-height:1.4;}
+html.bjui-font-c .btn{height:28px; font-size:16px;}
+html.bjui-font-c .btn.btn-lg{height:40px;}
+html.bjui-font-c .form-control{height:28px; font-size:16px;}
+html.bjui-font-c textarea.form-control{height:auto;}
+html.bjui-font-c .input-group-lg > .form-control,
+html.bjui-font-c .input-group-lg > .input-group-addon,
+html.bjui-font-c .input-group-lg > .input-group-btn > .btn{
+    height: 46px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+}
+html.bjui-font-c .bjui-lookup{width:22px;}
+html.bjui-font-c .bjui-spinner{font-size:14px;}
+html.bjui-font-c #bjui-calendar{width:216px;}
+html.bjui-font-c #bjui-calendar > .main > .body > dl > dt, html.bjui-font-c #bjui-calendar > .main > .body > dl > dd{width:30px; height:24px; line-height:24px;}
+html.bjui-font-c #bjui-calendar > .main > .foot > .time td{font-size:14px; line-height:26px;}
+html.bjui-font-c #bjui-calendar > .main > .foot > .time .hh, html.bjui-font-c #bjui-calendar > .main > .foot > .time .mm, html.bjui-font-c #bjui-calendar > .main > .foot > .time .ss{
+    width:24px; height:26px; font-size:14px; line-height:26px;
+}
+html.bjui-font-c #bjui-calendar > .main > .foot .btn{height:28px; font-size:14px;}
+html.bjui-font-c #bjui-calendar > .main > .tm > .hh, html.bjui-font-c #bjui-calendar > .main > .tm > .mm, html.bjui-font-c #bjui-calendar > .main > .tm > .ss{width:182px;}
+html.bjui-font-c #bjui-calendar > .main > .tm > .hh > li, html.bjui-font-c #bjui-calendar > .main > .tm > .mm > li, html.bjui-font-c #bjui-calendar > .main > .tm > .ss > li{
+    width:30px; height:26px; font-size:14px; line-height:26px;
+}
+html.bjui-font-c #bjui-calendar > .main > .foot > .time .up, html.bjui-font-c #bjui-calendar > .main > .foot > .time .down{height:13px;}
+html.bjui-font-c .bjui-row .row-label,
+html.bjui-font-c .bjui-row .row-input{
+    font-size:16px;
+}
+html.bjui-font-c .bjui-dialog > .dialogHeader h1{font-size:16px;}
+html.bjui-font-c .bjui-alert > .alertContent .alertInner > h1{padding-top:5px; padding-bottom:5px; height:30px; font-size:16px;}
+html.bjui-font-c .bjui-alert > .alertContent .alertInner > .msg{font-size:16px;}
+html.bjui-font-c .bjui-maskProgress{padding:2px 10px; width:280px; height:50px; font-size:16px;}
+html.bjui-font-c .bjui-maskProgress > .progressBg{bottom:8px; width:260px;}
+html.bjui-font-c .bjui-datagrid .datagrid-box-h,
+html.bjui-font-c .bjui-datagrid .datagrid-box-h .btn,
+html.bjui-font-c .bjui-datagrid .datagrid-paging-box,
+html.bjui-font-c .bjui-datagrid .datagrid-paging-box .btn{
+    font-size:16px;
+}
+html.bjui-font-c .bjui-datagrid .table > thead > tr.datagrid-filter th .form-control,
+html.bjui-font-c .bjui-datagrid .table > tbody > tr > td.datagrid-edit-td .form-control{
+    height:28px;
+    font-size:16px;
+}
+html.bjui-font-c .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-pagesize,
+html.bjui-font-c .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-pagesize > .btn-refresh,
+html.bjui-font-c .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-pagesize > .btn-group > .btn{
+    height:28px;
+}
+html.bjui-font-c .bjui-datagrid > .datagrid-paging-box{min-height:42px;}
+html.bjui-font-c .bjui-datagrid > .datagrid-paging-box > .paging-content > span{height:37px;}
+html.bjui-font-c .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-paging > .pagination > li.btn-nav > a{width:30px;}
+html.bjui-font-c .bjui-datagrid > .datagrid-paging-box > .paging-content > .datagrid-paging > .pagination > li > span.page-input > input{width:35px !important; height:23px; font-size:16px;}
+
+/*小*/
+html.bjui-font-d .bjui-datagrid .table > thead > tr > th{font-family:"Verdana", "Tahoma", "Lucida Grande", "SimSun", "Hiragino Sans GB", sans-serif;}
+
+/**/
+html.bjui-font-c .bjui-datagrid .table > tbody > tr > td{padding-left:1px; padding-right:1px;}
+.bjui-fonts-tit{color:#fff; background-color:#ff0000;}
+.nav .open > a.bjui-fonts-tit,
+.nav li > a.bjui-fonts-tit:hover, 
+.nav .open > a.bjui-fonts-tit:hover, 
+.nav .open > a.bjui-fonts-tit:focus{color:#fff; background-color:#ff6600 !important;}
+.bjui-fonts-tit.bjui-font-a{font-size:22px !important;}
+.bjui-fonts-tit.bjui-font-b{font-size:20px !important;}
+.bjui-fonts-tit.bjui-font-c{font-size:16px !important;}
+.bjui-fonts-tit.bjui-font-d{font-size:14px !important;}
+#bjui-fonts .bjui-font-a{font-size:22px;}
+#bjui-fonts .bjui-font-b{font-size:20px;}
+#bjui-fonts .bjui-font-c{font-size:16px;}
+#bjui-fonts .bjui-font-d{font-size:14px;}

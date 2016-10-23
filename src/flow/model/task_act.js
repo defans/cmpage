@@ -22,20 +22,22 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      */
     async canRun(taskAct,act,user){
-        //根据节点状态判断
+        global.debug(taskAct,'task_act.canRun --- taskAct --- 根据节点状态判断');
+        global.debug(act,'task_act.canRun --- act --- 根据节点状态判断');
         if(act.c_type === global.enumActType.START  || act.c_type === global.enumActType.DUMMY
             || (taskAct.c_status === global.enumTaskActStatus.SUSPEND && taskAct.c_from_rule !== global.enumActFromRule.DEFINE) ){
             return true;
         }else if(taskAct.c_status === global.enumTaskActStatus.NO_BEGIN || taskAct.c_status === global.enumTaskActStatus.SUSPEND){
             //根据汇聚类型判断
-            if(taskAct.c_from_rule === global.enumActFromRule.ORDER){
-                return true;
-            }else if(taskAct.c_from_rule === global.enumActFromRule.DEFINE){
-                //等待自定义的方法被调用后继续往下走
+            if(taskAct.c_from_rule === global.enumActFromRule.DEFINE || act.c_type === global.enumActType.NORMAL_MAN){
+                //等待自定义的方法被调用后继续往下走, 人为参与的节点类似
+                global.debug(taskAct,'task_act.canRun --- taskAct --- 等待...');
                 taskAct.c_status = global.enumTaskActStatus.WAIT;
                 await this.fwSave(taskAct);
                 await this.addTaskSt(taskAct,user);
                 return false;
+            }else if(taskAct.c_from_rule === global.enumActFromRule.ORDER){
+                return true;
             }else{
                 let actCnt = await this.getFromTasksWithEnd(taskAct);
                 if(actCnt.cntEnd >0){
@@ -98,8 +100,8 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      * @params {boolean} canRun 是否可以执行，为true时跳过判断函数
      */
-    async fwRun(taskAct,act,user,canRun){
-        if(canRun || (await this.canRun(taskAct,act,user)) ){
+    async fwRun(taskAct,act,user){
+        if(await this.canRun(taskAct,act,user) ){
             taskAct.c_status = global.enumTaskActStatus.RUN;
             await this.fwSave(taskAct);
             await this.addTaskSt(taskAct,user);
@@ -175,14 +177,16 @@ export default class extends think.model.base {
             taskAct.c_status = global.enumTaskActStatus.END;
             await this.fwSave(taskAct);
             if(act.c_type == global.enumActType.END){
-                //结束整个流程
                 await this.model('proc').fwEnd(taskAct.c_task, user);
+                global.debug(taskAct,'task_act.fwEnd --- taskAct --- 结束整个流程');
             }else{
                 //找去向节点,根据去向规则进行Run
-                let toTaskActs = this.getToTaskActs(taskAct);
+                global.debug(taskAct,'task_act.fwEnd --- taskAct --- 此节点处，找去向节点');
+                let toTaskActs = await this.getToTaskActs(taskAct);
                 if(act.c_to_rule === global.enumActToRule.ORDER || act.c_to_rule === global.enumActToRule.AND_SPLIT ){
                     for(let ta of toTaskActs ){
-                        await this.model('act').fwRun(ta.id,user);       //此处直接往下
+                        await this.model('act').fwRun(ta.id,user);
+                        global.debug(ta,'task_act.fwEnd --- toTaskActs.ta --- 此处直接往下');
                     }
                 }else if(act.c_to_rule === global.enumActToRule.OR_SPLIT){
                     //或分支为条件分支，有一个满足条件则继续，没有分支能满足条件则任务终止，因此需要表单填写后先进行有效性的验证
@@ -193,6 +197,7 @@ export default class extends think.model.base {
                             for(let ta of toTaskActs){
                                 if(ta.c_act === path.c_to){
                                     await this.model('act').fwRun(ta.id,user);
+                                    global.debug(ta,'task_act.fwEnd --- toTaskActs.ta --- 或分支往下');
                                     break;
                                 }
                             }
@@ -318,8 +323,11 @@ export default class extends think.model.base {
      * @params {object} taskAct 任务节点对象
      */
     async getFromTasksWithEnd(taskAct){
+        global.debug(taskAct,'task_act.getFromTasksWithEnd')
         let fromArr =await this.model('act_path').getFromActIds(taskAct.c_act, taskAct.c_proc);
-        let list = await this.model('fw_task_act').where({c_task:taskAct.c_task}).select();
+        global.debug(fromArr,'task_act.getFromTasksWithEnd---fromArr')
+        let list = await this.query(`select * from fw_task_act where c_task=${taskAct.c_task} `);
+        //global.debug(list);
         let cntEnd =0;
         for(let md of list){
             for(let fromID of fromArr) {
@@ -328,7 +336,7 @@ export default class extends think.model.base {
                 }
             }
         }
-        return {cnt:fromArr.length(), cntEnd:cntEnd};
+        return {cnt:fromArr.length, cntEnd:cntEnd};
     }
 
     /**
@@ -338,6 +346,7 @@ export default class extends think.model.base {
      * @params {object} taskAct 任务节点对象
      */
     async getFromTaskIds(taskAct){
+        global.debug(taskAct,'task_act.getFromTaskIds')
         let fromArr =await this.model('act_path').getFromActIds(taskAct.c_act, taskAct.c_proc);
         let list = await this.model('fw_task_act').where({c_task:taskAct.c_task}).select();
         let ret =[];
@@ -358,8 +367,9 @@ export default class extends think.model.base {
      * @params {object} taskAct 任务节点对象
      */
     async getToTaskActs(taskAct){
+        global.debug(taskAct,'task_act.getToTaskActs ---- taskAct');
         let toArr =await this.model('act_path').getToActIds(taskAct.c_act, taskAct.c_proc);
-        let list = await this.model('fw_task_act').where({c_task:taskAct.c_task}).select();
+        let list = await this.query(`select * from fw_task_act where c_task=${taskAct.c_task}`);
         let ret =[];
         for(let md of list){
             for(let toID of toArr) {
@@ -378,14 +388,15 @@ export default class extends think.model.base {
      * @params {int} taskID 任务ID
      */
     async getTaskActs(taskID){
-        let list = await this.model('fw_task_act').where({c_task:taskID}).select();
-        let ret =[];
-        for(let md of list){
-            if (md.c_task === taskID) {
-                ret.push(md);
-            }
-        }
-        return ret;
+        return await this.query(`select * from fw_task_act where c_task=${taskID}`);
+        //let list = await this.model('fw_task_act').where({c_task:taskID}).select();
+        //let ret =[];
+        //for(let md of list){
+        //    if (md.c_task === taskID) {
+        //        ret.push(md);
+        //    }
+        //}
+        //return ret;
     }
 
 

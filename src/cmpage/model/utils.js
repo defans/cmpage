@@ -29,8 +29,8 @@ export default class extends think.model.base  {
         let obj = global[enumObj];
         if(think.isObject(obj)){
             for(let p in obj){
-                if(obj[p].id == id){
-                    return obj[p].c_name;
+                if(obj[p]== id){
+                    return obj[p+'_name'];
                 }
             }
         }
@@ -49,9 +49,12 @@ export default class extends think.model.base  {
         let ret = [];
         if(think.isObject(obj)){
             for(let p in obj){
-                ret.push( obj[p]);
+                if(think.isNumber(obj[p])){
+                    ret.push( {id:obj[p],c_name:obj[p+'_name']});
+                }
             }
         }
+        //console.log(ret);
         return ret;
     }
 

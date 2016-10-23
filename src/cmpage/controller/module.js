@@ -18,6 +18,9 @@ import Base from './base.js';
 
 export default class extends Base {
 
+  async indexAction(){
+    return this.display();
+  }
   /**
    * 模块主信息设置，分页列表，调用： /cmpage/module/list
    * @method  list
@@ -32,6 +35,7 @@ export default class extends Base {
       vb.where = http.get();
     }else if(http.method=="POST"){
       vb.where = http.post();
+      vb.currentPage = vb.where['currentPage'];
     }
     global.debug(vb);
     let model = this.model("module");

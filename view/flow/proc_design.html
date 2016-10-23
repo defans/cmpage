@@ -13,43 +13,39 @@
             <label id="procHeader" data-height="30px" style="margin: 5px;">流程模板的主信息</label>
         </div>
             <div class="bjui-pageContent">
-                <form id="FwProcEditForm" style="display:block;margin-top:20px;" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
+                <form id="FwProcEditForm" style="display:block;margin-top:40px;" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
                     <input id="FwProcID" name="id" type="hidden" value="<%= page.editID%>" />
                     <input name="modulename" type="hidden" value="FwProcList" />
                     <input name="parmsUrl" type="hidden" value="<%= page.parmsUrl%>" />
-                    <table class="table table-condensed table-hover" width="100%">
-                        <tbody>
+                    <div class="bjui-row">
                         <%- procEditHtml%>
-                        </tbody>
-                    </table>
+                    </div>
                 </form>
-                <form id="FwActEditForm" style="display:none;margin-top:20px;" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
+                <form id="FwActEditForm" style="display:none;margin-top:40px;" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
                     <input id="FwActID" name="id" type="hidden" value="0" />
                     <input name="modulename" type="hidden" value="FwAct" />
                     <input name="parmsUrl" type="hidden" value="{}" />
-                    <table id="actEditTable" class="table table-condensed table-hover" width="100%">
+                    <div id="actEditTable" class="bjui-row">
                         <%- actEditHtml%>
-                    </table>
+                    </div>
                 </form>
-                <form id="FwActPathEditForm" style="display:none;margin-top:20px;" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
+                <form id="FwActPathEditForm" style="display:none;margin-top:40px;" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
                     <input id="FwActPathID" name="id" type="hidden" value="0" />
                     <input name="modulename" type="hidden" value="FwActPath" />
                     <input name="parmsUrl" type="hidden" value="{}" />
                     <input id="FwActPathc_from" name="c_from" type="hidden" value="0" />
                     <input id="FwActPathc_to" name="c_to" type="hidden" value="0" />
                     <input id="FwActPathc_proc" name="c_proc" type="hidden" value="0" />
-                    <table class="table table-condensed table-hover" width="100%">
-                        <tbody>
-                        <tr><td>
-                            <label>路径名称：</label>
+                    <div class="bjui-row">
+                        <label class="row-label">路径名称：</label>
+                        <div class="row-input">
                             <input id="FwActPathc_name" type="text" name="c_name"  size="22"  data-rule="required"/>
-                        </td></tr>
-                        <tr><td>
-                            <label>业务规则：</label>
+                        </div>
+                        <label class="row-label">业务规则：</label>
+                        <div class="row-input">
                             <textarea data-toggle="autoheight" cols="22" rows="1" id="FwActPathc_domain"  name="c_domain" ></textarea>
-                        </td></tr>
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="bjui-pageFooter" >

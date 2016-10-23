@@ -124,28 +124,34 @@ export default class extends think.base {
      */
     objToString = function(obj){
         let ret = [];
-        for(let key in obj){
-            if(think.isDate(obj[key])){
-                ret.push(`${key}:'${think.datetime(obj[key])}'`);
-            }else if(think.isString(obj[key])) {
-                ret.push(`${key}:'${obj[key]}'`);
-            }else if(think.isObject(obj[key])) {
-                ret.push(`${key}:${ this.objToString(obj[key]) }`);
-            }else if(think.isArray(obj[key])) {
-                let tmp = '';
-                for(let item of obj[key]){
-                    if(think.isObject(item)){
-                        tmp += this.objToString(item);
-                    }else{
-                        tmp += item;
+        if(think.isObject(obj)) {
+            for (let key in obj) {
+                if (think.isDate(obj[key])) {
+                    ret.push(`${key}:'${think.datetime(obj[key])}'`);
+                } else if (think.isString(obj[key])) {
+                    ret.push(`${key}:'${obj[key]}'`);
+                } else if (think.isObject(obj[key])) {
+                    ret.push(`${key}:${ this.objToString(obj[key]) }`);
+                } else if (think.isArray(obj[key])) {
+                    let tmp = [];
+                    for (let item of obj[key]) {
+                        tmp.push(global.objToString(item));
                     }
+                    ret.push(`${key}:[${tmp.join(',')}]`);
+                } else {
+                    ret.push(`${key}:${obj[key]}`);
                 }
-                ret.push(`${key}:[${tmp}]`);
-            }else {
-                ret.push(`${key}:${obj[key]}`);
             }
+            return "{" + ret.join(', ') + "}";
+        }else if(think.isArray(obj)){
+            let tmp = [];
+            for (let item of obj) {
+                tmp.push(global.objToString(item));
+            }
+            ret.push(`[${tmp.join(',')}]`);
+        }else{
+            return obj;
         }
-        return "{"+ret.join(', ')+"}";
     };
 
     /**
@@ -166,9 +172,14 @@ export default class extends think.base {
     };
 
     /***************************其他的全局方法 **************************************/
-    debug = (msg)=>{
-        if(think.env === 'development')
+    debug = (msg,desc)=>{
+        if(think.env === 'development'){
             console.log(think.isObject(msg) ? JSON.stringify(msg).replace(/"/g,'').replace(/\\/g,'').replace(/,/g,',  ') : msg);
+            if(!think.isEmpty(desc)){
+                console.log('-------- '+desc);
+            }
+        }
+
     };
     log = (msg)=>{
         console.log(msg);
@@ -217,111 +228,113 @@ export default class extends think.base {
      * @return  {无}
      */
     cmpageInit = () =>{
-        //用 c_ 开头,值>0 ,是为了和数据库中一致
+        //值>0 ,是为了和数据库中其他的参数值设置方式保持一致
         global.enumStatusExecute = {
-            SUCCESS: {id:1, c_name:'执行成功'},
-            FAIL: {id:2, c_name:'执行失败'},
-            ERROR: {id:3, c_name:'执行错误'}
+            SUCCESS:1, SUCCESS_name:'执行成功',
+            FAIL:2, FAIL_name:'执行失败',
+            ERROR:3, ERROR_name:'执行错误'
         };
 
         global.enumLogType = {
-            ADD: {id:1, c_name:'新增'},
-            UPDATE: {id:2, c_name:'修改'}
+            ADD:1, ADD_name:'新增',
+            UPDATE:2, UPDATE_name:'修改'
         };
 
         //工作流相关参数
         global.enumProcType = {
-            NORMAL: {id:1, c_name:'常规类型'},
-            APPROVE: {id:2, c_name:'审核类型'}
+            NORMAL:1, NORMAL_name:'常规类型',
+            APPROVE:2, APPROVE_name:'审核类型'
         };
         global.enumProcWayCreate = {
-            MAN: {id:1, c_name:'手动执行'},
-            TRIGGER: {id:2, c_name:'自动触发'},
-            DEFINE: {id:9, c_name:'自定义'}
+            MAN:1, MAN_name:'手动执行',
+            TRIGGER:2, TRIGGER_name:'自动触发',
+            DEFINE:9, DEFINE_name:'自定义'
         };
         global.enumProcAssignType = {
-            ALL: {id:1, c_name:'所有人'},
-            DEPT: {id:2, c_name:'部门'},
-            ROLE: {id:3, c_name:'角色'},
-            TEAM: {id:4, c_name:'团队'},
-            USER: {id:5, c_name:'用户'},
-            DEFINE: {id:9, c_name:'自定义'}
+            ALL:1, ALL_name:'所有人',
+            DEPT:2, DEPT_name:'部门',
+            ROLE:3, ROLE_name:'角色',
+            TEAM:4, TEAM_name:'团队',
+            USER:5, USER_name:'用户',
+            DEFINE:9, DEFINE_name:'自定义'
         };
         global.enumActType = {
-            NORMAL_MAN: {id:1, c_name:'人为参与'},
-            NORMAL_AUTO: {id:2, c_name:'自动执行'},
-            START: {id:3, c_name:'开始节点'},
-            DUMMY: {id:4, c_name:'哑活动'},
-            END: {id:9, c_name:'结束节点'}
+            NORMAL_MAN:1, NORMAL_MAN_name:'人为参与',
+            NORMAL_AUTO:2, NORMAL_AUTO_name:'自动执行',
+            START:3, START_name:'开始节点',
+            DUMMY:4, DUMMY_name:'哑活动',
+            END:9, END_name:'结束节点'
         };
         global.enumActFromRule = {
-            ORDER: {id:1, c_name:'顺序'},
-            AND_JOIN: {id:2, c_name:'与汇聚'},
-            OR_JOIN: {id:3, c_name:'或汇聚'},
-            VOTES_JOIN: {id:4, c_name:'投票汇聚'},
-            DEFINE: {id:9, c_name:'自定义'}
+            ORDER:1, ORDER_name:'顺序',
+            AND_JOIN:2, AND_JOIN_name:'与汇聚',
+            OR_JOIN:3, OR_JOIN_name:'或汇聚',
+            VOTES_JOIN:4, VOTES_JOIN_name:'投票汇聚',
+            DEFINE:9, DEFINE_name:'自定义'
         };
         global.enumActToRule = {
-            ORDER: {id:1, c_name:'顺序'},
-            AND_SPLIT: {id:2, c_name:'与分支'},
-            OR_SPLIT: {id:3, c_name:'或分支'},
-            DEFINE: {id:9, c_name:'自定义'}
+            ORDER:1, ORDER_name:'顺序',
+            AND_SPLIT:2, AND_SPLIT_name:'与分支',
+            OR_SPLIT:3, OR_SPLIT_name:'或分支',
+            DEFINE:9, DEFINE_name:'自定义'
         };
         global.enumActCcRule = {
-            NO: {id:1, c_name:'不通知'},
-            MAN: {id:2, c_name:'手动通知'},
-            AUTO: {id:3, c_name:'自动发送'},
-            MAN_AND_AUTO: {id:4, c_name:'手动和自动'},
-            DEFINE: {id:9, c_name:'自定义'}
+            NO:1, NO_name:'不通知',
+            MAN:2, MAN_name:'手动通知',
+            AUTO:3, AUTO_name:'自动发送',
+            MAN_AND_AUTO:4, MAN_AND_AUTO_name:'手动和自动',
+            DEFINE:9, DEFINE_name:'自定义'
         };
         global.enumActAssignType = {
-            DEPT: {id:2, c_name:'部门'},
-            ROLE: {id:3, c_name:'角色'},
-            TEAM: {id:4, c_name:'团队'},
-            USER: {id:5, c_name:'用户'},
-            SELF: {id:6, c_name:'发起人自己'},
-            PREV: {id:7, c_name:'上一步执行人'},
-            DEFINE: {id:9, c_name:'自定义'}
+            DEPT:2, DEPT_name:'部门',
+            ROLE:3, ROLE_name:'角色',
+            TEAM:4, TEAM_name:'团队',
+            USER:5, USER_name:'用户',
+            SELF:6, SELF_name:'发起人自己',
+            PREV:7, PREV_name:'上一步执行人',
+            DEFINE:9, DEFINE_name:'自定义'
         };
         global.enumActAssignWay = {
-            ALL: {id:1, c_name:'所有人'},
-            LEAST_WORKING_LIST: {id:2, c_name:'最少工作量'},   //任务将分配给指定群体中的工作量最少的人员，工作量的多少可以通过TO_DO_TASK_LIST的统计数据得到
-            FCFA: {id:3, c_name:'先来先分配'},   //（First Coming First Assigning）
-            PRIORITY: {id:4, c_name:'优先数大者'},   //基于优先数分配（c_type==ROLE），每个角色中的人员都有一个优先数，数大者得
-            ROUND_ROBIN: {id:5, c_name:'令牌轮转'},    //轮转法（c_type==ROLE），ROUND_ROBIN_TOKEN为轮转令牌，任务将分配给携有轮转令牌的人员
-            SELECT: {id:6, c_name:'提供选择'}   //，上一个活动的执行人来选择
+            ALL:1, ALL_name:'所有人',
+            LEAST_WORKING_LIST:2, LEAST_WORKING_LIST_name:'最少工作量',   //任务将分配给指定群体中的工作量最少的人员，工作量的多少可以通过TO_DO_TASK_LIST的统计数据得到
+            FCFA:3, FCFA_name:'先来先分配',   //（First Coming First Assigning）
+            PRIORITY:4, PRIORITY_name:'优先数大者',   //基于优先数分配（c_type==ROLE），每个角色中的人员都有一个优先数，数大者得
+            ROUND_ROBIN:5, ROUND_ROBIN_name:'令牌轮转',    //轮转法（c_type==ROLE），ROUND_ROBIN_TOKEN为轮转令牌，任务将分配给携有轮转令牌的人员
+            SELECT:6, SELECT_name:'提供选择'   //，上一个活动的执行人来选择
         };
         global.enumActAssignTypeExe = {
-            EXE: {id:1, c_name:'执行'},
-            EXE_AND_BEFORE_CC: {id:2, c_name:'执行并事前通知'},
-            AFTER_CC: {id:3, c_name:'事后通知'}
+            EXE:1, EXE_name:'执行',
+            EXE_AND_BEFORE_CC:2, EXE_AND_BEFORE_CC_name:'执行并事前通知',
+            AFTER_CC:3, AFTER_CC_name:'事后通知'
         };
         global.enumTaskStatus = {
-            INIT: {id:1, c_name:'初始化'},
-            RUN: {id:2, c_name:'运行中'},
-            SUSPEND: {id:3, c_name:'挂起'},
-            TERMINATE: {id:4, c_name:'终止'},
-            END: {id:9, c_name:'完成'}
+            INIT:1, INIT_name:'初始化',
+            RUN:2, RUN_name:'运行中',
+            SUSPEND:3, SUSPEND_name:'挂起',
+            TERMINATE:4, TERMINATE_name:'终止',
+            END:9, END_name:'完成'
         };
         global.enumTaskPriority = {
-            NOMAL: {id:1, c_name:'一般'},
-            HIGH: {id:2, c_name:'高'},
-            HIGHER: {id:3, c_name:'很高'},
-            HIGHEST: {id:4, c_name:'最高'},
-            LOW: {id:5, c_name:'低'},
-            LOWER: {id:6, c_name:'很低'},
-            LOWEST: {id:7, c_name:'最低'}
+            NOMAL:1, NOMAL_name:'一般',
+            HIGH:2, HIGH_name:'高',
+            HIGHER:3, HIGHER_name:'很高',
+            HIGHEST:4, HIGHEST_name:'最高',
+            LOW:5, LOW_name:'低',
+            LOWER:6, LOWER_name:'很低',
+            LOWEST:7, LOWEST_name:'最低'
         };
         global.enumTaskActStatus = {
-            NO_BEGIN: {id:1, c_name:'未开始'},
-            INIT: {id:2, c_name:'初始化'},
-            WAIT: {id:2, c_name:'等待中'},
-            RUN: {id:4, c_name:'运行中'},
-            SUSPEND: {id:5, c_name:'挂起'},
-            PENDING: {id:6, c_name:'汇聚中'},
-            TERMINATE: {id:7, c_name:'终止'},
-            END: {id:9, c_name:'完成'}
+            NO_BEGIN:1, NO_BEGIN_name:'未开始',
+            INIT:2, INIT_name:'初始化',
+            WAIT:3, WAIT_name:'等待中',
+            RUN:4, RUN_name:'运行中',
+            SUSPEND:5, SUSPEND_name:'挂起',
+            PENDING:6, PENDING_name:'汇聚中',
+            TERMINATE:7, TERMINATE_name:'终止',
+            END:9, END_name:'完成'
         };
+
+
         //暂时不考虑回退和跳转，如有必要，可继承task, task_act来实现具体的某一类业务流程模板
         //global.enumActJumpRule = {
         //    NO: {id:1, c_name:'不能跳转'},

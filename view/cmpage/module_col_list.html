@@ -5,7 +5,7 @@
         <label>数据来源：</label><input name="c_datasource" type="text" size="15" readonly value="<%= md.c_datasource%>"  />&nbsp;
         <label>数据表:</label><input name="c_table" type="text" size="15" readonly value="<%= md.c_table%>"  />&nbsp;
         <a type="button" class="btn btn-orange" href="/cmpage/module/col_reset?moduleid=<%= md.id%>" data-toggle="doajax" data-confirm-msg="是否确定要删除原设置？">重新设置</a>
-        <a class="btn btn-orange" href="/cmpage/page/list?modulename=<%= md.c_modulename%>" data-toggle="navtab" data-id="page<%= md.c_modulename%>List" data-title="<%= md.c_modulename%> 预览" data-icon="search">--预览--</a>&nbsp;
+        <a  class="btn btn-orange"  href="#" onclick="return modulePreview('<%= md.c_modulename%>');">--预览--</a>&nbsp;
         <button type="button" class="btn-default" data-toggle="tableditadd" data-target="#commpageColEdit" data-num="1" data-icon="plus">添加显示列</button>&nbsp;
         <div class="pull-right">
             <button type="button" class="btn-green" data-icon="save" onclick="$('#commpageColForm').submit();">保存设置</button>

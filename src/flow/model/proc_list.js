@@ -18,7 +18,7 @@ export default class extends CMPage {
     async pageEditInit(pageEdits,page){
         let md = await super.pageEditInit(pageEdits,page);
         md.c_time_to = '2099-12-31 00:00:00';   //默认的截止日期
-        md.c_class = 'flow/proc'; //默认的实现类
+        md.c_class = 'flow/task'; //默认的实现类
 
         return md;
     }
@@ -34,37 +34,6 @@ export default class extends CMPage {
         }else{
             return super.getPageOther(page);
         }
-    }
-
-    /**
-     * 重写父类的 htmlGetOther 方法，输出额外的js函数
-     * @method  htmlGetOther
-     * @return {string}  html片段
-     * @param {Object} page  页面设置主信息
-     */
-    async htmlGetOther(page){
-        let parms =JSON.parse(page.parmsUrl);
-        return `  <script type="text/javascript">
-            function fwStart(procID, obj) {
-                $(this).alertmsg("confirm", "是否确定要启动该模板的一个新的实例？", {
-                    okCall: function () {
-                        $.ajax({
-                            url:  "/flow/task/start?proc_id=" + procID,
-                            dataType: "json",
-                            success: function(ret) {
-                                if(ret.statusCode == 200){
-
-
-                                }
-                            }
-                        });
-                    }
-                });
-
-                return false;
-            }
-            </script>
-        `;
     }
 
 

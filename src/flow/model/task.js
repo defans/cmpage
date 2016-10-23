@@ -34,8 +34,16 @@ export default class extends think.model.base {
         task.id = await this.model('fw_task').add(task);
         await this.addTaskSt(task,user);
 
+        //console.log(task);
+
+//        console.log(proc);
         //增加活动节点
-        let acts = this.model('act').getActsByProcId(proc.id);
+        let acts = await this.model('act').getActsByProcId(proc.id);
+//        console.log(acts);
+        if(think.isEmpty(acts)){
+            await this.addTaskSt(task,user,'流程模板的活动节点设置错误!');
+            return task;
+        }
         let taskActModel = this.model('fw_task_act');
         let taskActStartID = 0;
         for(let act of acts){
@@ -57,7 +65,7 @@ export default class extends think.model.base {
     }
 
     /**
-     * 取某个任务的当前状态，当前节点存放于 task.taskAct <br/>
+     * 取某个任务的当前状态，当前节点存放于 task.currAct <br/>
      * 子类中重写本方法，可以增加任务的初始化逻辑，比如业务相关的逻辑
      * @method  getTaskWithStatus
      * @return {object}  流程实例对象
@@ -65,7 +73,36 @@ export default class extends think.model.base {
      * @params {object} proc 流程模板对象
      * @params {object} user 流程发起人
      */
-    async getTaskWithStatus(task,user){
+    async getTaskWithCurrentAct(task,user){
+        global.debug(task,'task.getTaskWithCurrentAct --- task');
+        task.currAct = {id:0};
+        if(task.c_status === global.enumTaskStatus.RUN){
+            let taskActs = await this.model('task_act').getTaskActs(task.id);
+            for(let ta of taskActs){
+                //TODO: 可能要考虑user来进行区分
+                //取当前节点
+                if(ta.c_status === global.enumTaskActStatus.WAIT || ta.c_status === global.enumTaskActStatus.RUN || ta.c_status === global.enumTaskActStatus.SUSPEND){
+                    task.currTaskAct = ta;
+                    task.currAct = await this.model('act').getActByIdAndProcId(ta.c_act, task.c_proc);
+                    if(ta.c_status === global.enumTaskActStatus.WAIT){
+                        task.currAct.btn_style = think.isEmpty(task.currAct.c_btn_style) ? {label:task.currAct.c_name}:eval(`(${task.currAct.c_btn_style})`);
+                        task.currAct.form = think.isEmpty(task.currAct.c_form) ? {opentype:'none'}:eval(`(${task.currAct.c_form})`);
+                        //设置的前端需要用户操作的界面
+                        let form = task.currAct.form;
+                        task.currAct.form.opentype = think.isEmpty(form['opentype']) ? 'dialog':form['opentype'];
+                        task.currAct.form.id = think.isEmpty(form['id']) ? 'fwForm'+task.currTaskAct.id:form['id'];
+                        task.currAct.form.title = think.isEmpty(form['title']) ? task.currAct.c_name:form['title'];
+                        if(!think.isEmpty(form['modulename'])){
+                            task.currAct.form.url = `/cmpage/page/edit?modulename=${form['modulename']}&id=0&c_task=${task.id}`;
+                        }
+                        if(think.isEmpty(form['url'])){
+                            task.currAct.form.opentype ='none';
+                        }
+                    }
+                    break;
+                }
+            }
+        }
 
         return task;
     }
@@ -202,9 +239,13 @@ export default class extends think.model.base {
      * @params {string} [desc] 状态描述
      */
     async addTaskSt(task,user,desc){
-        let md = {c_proc:task.c_proc,c_act:0,c_task:task.id, c_task_act:0,c_time:task.c_time, c_user:task.c_user};
+       // console.log(task);
+        if(task.id <=0){
+            return 0;
+        }
+        let md = {c_proc:task.c_proc,c_act:0,c_task:task.id, c_task_act:0, c_time:task.c_time, c_user:user.id, c_status:task.c_status};
         //组成状态描述
-        md.c_desc = think.isEmpty(desc) ?  '流程'+ this.model('cmpage/utils').getEnumName(md.c_status,'TaskStatus') : desc;
+        md.c_desc = think.isEmpty(desc) ?  '流程'+ (await this.model('cmpage/utils').getEnumName(task.c_status,'TaskStatus')) : desc;
         md.id = await this.model('fw_task_st').add(md);
         await this.model('fw_task_st_his').add(md);
 

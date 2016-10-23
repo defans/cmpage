@@ -18,18 +18,18 @@
     </form>
 </div>
 <div class="bjui-pageContent tableContent">
-    <table data-toggle="tablefixed" data-width="100%" data-nowrap="false">
+    <table class="table table-bordered table-hover table-striped" data-width="100%" data-nowrap="false">
         <thead>
         <tr>
-            <th width="40" >模块名称</th>
-            <th width="40" >子模块名称</th>
-            <th width="30" >数据来源</th>
-            <th width="30" >数据表</th>
-            <th width="20">分页</th>
-            <th width="50" >修改日期</th>
-            <th width="20" >别名</th>
-            <th width="50" >备注</th>
-            <th width="120" >操作</th>
+            <th  >模块名称</th>
+            <th >子模块名称</th>
+            <th >数据来源</th>
+            <th >数据表</th>
+            <th >分页</th>
+            <th >修改日期</th>
+            <th >别名</th>
+            <th >备注</th>
+            <th >操作</th>
         </tr>
         </thead>
         <tbody>
@@ -50,7 +50,7 @@
                 <a data-title="查询列设置" class="btn btn-default" data-toggle="navtab" href="/cmpage/module/query_list?moduleid=<%= item.id%>" data-id="pageModuleQueryList">查询列</a>
                 <a data-confirm-msg="是否确定要删除本模块设置?" class="btn btn-red" data-toggle="doajax" href="/cmpage/module/delete?table=t_module&flag=false&id=<%= item.id%>">删除</a>
                 <a data-confirm-msg="是否确定要复制本模块，新模块名：<%= item.c_modulename%>_copy ?" class="btn btn-red" data-toggle="doajax" href="/cmpage/module/copy?modulename=<%= item.c_modulename%>">复制</a>
-                <a data-title="<%= item.c_modulename%> 预览" class="btn btn-orange" data-toggle="navtab" data-id="page<%= item.c_modulename%>" href="/cmpage/page/list?modulename=<%= item.c_modulename%>">预览</a>
+                <a  class="btn btn-orange"  href="#" onclick="return modulePreview('<%= item.c_modulename%>');">预览</a>
             </td>
         </tr>
         <%})%>
@@ -93,6 +93,12 @@
 <script type="text/javascript" >
     function pageModuleRefresh() {
         $("#btnSearchModule").click();
+    }
+
+    function modulePreview(modulename){
+        var url = '/cmpage/page/list?modulename='+modulename;
+        parent.window.modulePreview(url, modulename+' 预览');
+        return false;
     }
 
     function moduleAdd(obj) {

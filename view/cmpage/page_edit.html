@@ -1,15 +1,14 @@
 
 <%- page.editHeaderHtml%>
-<form id="edit<%= page.c_modulename%>Form" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
 <div class="bjui-pageContent">
+    <form id="edit<%= page.c_modulename%>Form" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
         <input id="<%= page.c_modulename%>ID" name="id" type="hidden" value="<%= page.editID%>" />
         <input name="modulename" type="hidden" value="<%= page.c_modulename%>" />
         <input name="parmsUrl" type="hidden" value="<%= page.parmsUrl%>" />
-        <table class="table table-condensed table-hover" width="100%">
-            <tbody>
+        <div class="bjui-row col-<%= page.c_edit_column%>">
             <%- editHtml%>
-            </tbody>
-        </table>
+        </div>
+    </form>
 </div>
 <div class="bjui-pageFooter" >
     <ul>
@@ -23,7 +22,6 @@
                                  <!--@(ViewBag.nextEdit > 0 ? "":"disabled")>下一条</button></li>-->
     </ul>
 </div>
-</form>
 
 <script type="text/javascript">
     function <%= page.c_modulename%>gotoEdit(editID){

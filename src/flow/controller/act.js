@@ -33,7 +33,7 @@ export default class extends Base {
         pageAct.user = await this.session('user');
         let actEditHtml = await this.model('cmpage/page').htmlGetEdit(pageAct);
 
-        return this.json({statusCode:200, actEditHtml:'<tbody>'+actEditHtml+'</tbody>'});
+        return this.json({statusCode:200, actEditHtml:actEditHtml});
     }
 
     /**

@@ -61,4 +61,12 @@ export default class extends Base {
         return this.json({statusCode:200,message:'保存图形成功!'});
     }
 
+    async clearCacheAction(){
+        let ret={statusCode:200,message:'已成功清除了流程模板的缓存!',tabid: '',data:{}};
+
+        await this.model('proc').clearCache();
+
+        return this.json(ret);
+    }
+
 }
