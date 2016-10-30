@@ -23,20 +23,20 @@ export default class extends CMPage {
      * 重写父类的 htmlGetOther 方法，输出额外的按钮和js函数
      * @method  htmlGetOther
      * @return {string}  html片段
-     * @param {Object} page  页面设置主信息
      */
-    async htmlGetOther(page){
-      let parms =JSON.parse(page.parmsUrl);
+    async htmlGetOther(){
+        //global.debug(this.mod,'groupuser.htmlGetOther - this.mod');
+      let parms =JSON.parse(this.mod.parmsUrl);
       return `<a class="btn btn-green" href="/cmpage/page/list?modulename=GroupUserAdd&c_group=${parms.c_group}"
                         data-toggle="dialog" data-options="{id:'pageGroupUserAdd', mask:true, width:800, height:600 }"
                         data-on-close="pageGroupUserEdit_onClose" data-icon="plus">加入用户</a>
-                <a class="btn btn-red" href="#" onclick="return GroupUserDelIds(this,${ parms.c_group});"  data-icon="times">剔除</a>
+                <a class="btn btn-red" href="#" onclick="return GroupUserDelIds();"  data-icon="times">剔除</a>
             <script type="text/javascript">
-            function GroupUserDelIds(obj, groupID) {
+            function GroupUserDelIds( ) {
                 //alert($('[name="ids"]').val());
                 var ids = [];
                 $('[name="ids"]').each(function () {
-                    if($(this).attr("checked")){
+                    if($(this).parent().hasClass("checked")){
                         ids.push($(this).val());
                     }
                 });
@@ -48,15 +48,17 @@ export default class extends CMPage {
 
                 $(this).alertmsg("confirm", "是否确定要剔除选中的用户？", {
                     okCall: function () {
-                        var url = "/admin/code/group_user_del?userIds=" + ids.join(',');
-                        $(obj).bjuiajax('doAjax', { url: url, callback: function () {
-                            $("#btnSearchGroupUser").click();
-                        }
+                        BJUI.ajax('doajax', {
+                            url: "/admin/code/group_user_del?ids=" + ids.join(','),
+                            loadingmask: true,
+                            okCallback: function(json, options) {
+                                $("#btnSearchGroupUser").click();
+                            }
                         });
                     }
                 });
 
-                return false;
+                return true;
             }
             </script>
         `;
@@ -69,7 +71,7 @@ export default class extends CMPage {
      * @param {int} userID  用户ID
      * @param {int} groupID  当前登录的账套ID
      */
-    async getLoginGroups(userID,groupID){
+    async getLoginGroups(groupID,userID){
         //假设账套不超过3层
         let codeModel = this.model('code');
         let cnt = await this.model('t_group_user').where({c_group:groupID, c_user:userID}).count();
@@ -91,7 +93,7 @@ export default class extends CMPage {
             }
         }
         let groups = await codeModel.getTreeList(groupID);
-        global.debug(groups);
+        //global.debug(groups,'groupuser.getLoginGroups - grous');
         let ret = [];
         ret.push(groupID);
         for(let group of groups){ ret.push(group.id); }

@@ -24,18 +24,18 @@ export default class extends CMPage {
      * @return {string}  html片段
      * @param {Object} page  页面设置主信息
      */
-    async htmlGetOther(page){
-      let parms =JSON.parse(page.parmsUrl);
+    async htmlGetOther(){
+      let parms =JSON.parse(this.mod.parmsUrl);
       return `<a class="btn btn-green" href="/cmpage/page/list?modulename=TeamUserAdd&c_team=${parms.c_team}"
                         data-toggle="dialog" data-options="{id:'pageTeamUserAdd', mask:true, width:800, height:600 }"
                         data-on-close="pageTeamUserEdit_onClose" data-icon="plus">加入用户</a>
-                <a class="btn btn-red" href="#" onclick="return TeamUserDelIds(this,${ parms.c_team});"  data-icon="times">剔除</a>
+                <a class="btn btn-red" href="#" onclick="return TeamUserDelIds();"  data-icon="times">剔除</a>
             <script type="text/javascript">
-            function TeamUserDelIds(obj, teamID) {
+            function TeamUserDelIds() {
                 //alert($('[name="ids"]').val());
                 var ids = [];
                 $('[name="ids"]').each(function () {
-                    if($(this).attr("checked")){
+                    if($(this).parent().hasClass("checked")){
                         ids.push($(this).val());
                     }
                 });
@@ -47,10 +47,12 @@ export default class extends CMPage {
 
                 $(this).alertmsg("confirm", "是否确定要剔除选中的用户？", {
                     okCall: function () {
-                        var url = "/admin/code/team_user_del?userIds=" + ids.join(',');
-                        $(obj).bjuiajax('doAjax', { url: url, callback: function () {
-                            $("#btnSearchTeamUser").click();
-                        }
+                        BJUI.ajax('doajax', {
+                            url: "/admin/code/team_user_del?ids=" + ids.join(','),
+                            loadingmask: true,
+                            okCallback: function(json, options) {
+                                $("#btnSearchTeamUser").click();
+                            }
                         });
                     }
                 });

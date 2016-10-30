@@ -84,7 +84,7 @@ export default class extends Base {
      * @return {json}
      */
     async groupUserDelAction(){
-        await this.model('t_group_user').where(` c_user in(${this.get('userIds')})`).delete();
+        await this.model('t_group_user').where(` id in(${this.get('ids')})`).delete();
         return this.json({statusCode:200,message:'用户删除成功!'});
     }
 
@@ -119,7 +119,7 @@ export default class extends Base {
      * @return {json}
      */
     async teamUserDelAction(){
-        await this.model('t_team_user').where(` c_user in(${this.get('userIds')})`).delete();
+        await this.model('t_team_user').where(` id in(${this.get('ids')})`).delete();
         return this.json({statusCode:200,message:'用户删除成功!'});
     }
 

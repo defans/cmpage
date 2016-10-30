@@ -191,7 +191,7 @@ export default class extends think.model.base {
             c_options:`{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:500 }`, c_icon:'plus'};
         await model.add(global.checksql(colmd));
 
-        colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'#',c_class:'btn btn-orange', c_onclick:`return page${md.c_modulename}ExportData(this);`, c_memo:'', c_mui:'',
+        colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'#',c_class:'btn btn-orange', c_onclick:`return pageExportData();`, c_memo:'', c_mui:'',
             c_title:'导出',c_label:'导出',c_location:5,c_object:md.c_modulename+'.ExportData', c_url:'#', c_options:'', c_icon:'file-excel-o'};
         await model.add(global.checksql(colmd));
 

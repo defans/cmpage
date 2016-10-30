@@ -26,18 +26,14 @@ export default class extends CMPage {
      * 取模块列表中的MUI设置，组合成HTML输出，一般在子类中通过重写这个方法来达到页面定制的效果
      * @method  mobHtmlGetList
      * @return  {string}  HTML片段
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
-     * @param   {object} dataList 结果集对象
      */
-    async mobHtmlGetList(page,dataList) {
+    async mobHtmlGetList() {
         let html = [];
-        let modelPage = global.model('cmpage/module');
-        let pageCols = await modelPage.getModuleCol(page.id);
-        let pageBtns = await modelPage.getModuleBtn(page.id);
 
-        for(let row of dataList){
+        await this.getDataList();
+        for(let row of this.list.data){
             //处理替换值
-            for(let col of pageCols){
+            for(let col of this.modCols){
                 if (col.c_type === "replace" && !(/^select/.test(col.c_memo))) {
                     row[col.c_column] = await this.getReplaceText(row[col.c_column], col.c_memo);
                 }else if(col.c_coltype === 'timestamp'){
@@ -47,11 +43,11 @@ export default class extends CMPage {
             html.push('<li class="mui-table-view-cell mui-media">');
 
             //加入按钮组
-            html.push(await this.mobHtmlGetListBtns(row,pageBtns,page));
+            html.push(await this.mobHtmlGetListBtns(row));
 
             //组合生成列表每项的内容
             html.push("<a class=\"mui-slider-handle list-item\" >");
-            html.push(await this.mobHtmlGetListRow(row,pageCols));
+            html.push(await this.mobHtmlGetListRow(row));
             html.push('</a> </li>');
         }
 
@@ -63,20 +59,18 @@ export default class extends CMPage {
      * @method  mobHtmlGetListBtns
      * @return  {string}  HTML片段
      * @param   {object} row 记录对象
-     * @param   {object} pageBtns 业务模块的按钮设置
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    async mobHtmlGetListBtns(row,pageBtns,page) {
+    async mobHtmlGetListBtns(row) {
         let html =[];
-        let mui = this.mobGetPageMuiSetting(page);
+        let mui = this.mobGetPageMuiSetting();
         html.push('<div class="mui-slider-right mui-disabled">');
-        for(let btn of pageBtns){
+        for(let btn of this.modBtns){
             if (btn.c_location > 10 && btn.c_isshow){
                 if (btn.c_object.indexOf(".Edit") > 0)
                     html.push(`<a class='mui-btn mui-btn-green list-btn' href='${mui.editurl}'
                             data-type='view'  data-id='${row['id']}' >编辑</a>"`);
                 else if (btn.c_object.indexOf(".Del") > 0)
-                    html.push(`<a class='mui-btn mui-btn-red list-btn' href='/cmpage/page/delete?table=${page.c_datatable}&id=${row['id']}&flag=false'
+                    html.push(`<a class='mui-btn mui-btn-red list-btn' href='/cmpage/page/delete?table=${this.mod.c_datatable}&id=${row['id']}&flag=false'
                             data-type='action' >删除</a>`);
             }
         }
@@ -88,11 +82,10 @@ export default class extends CMPage {
      * 取模块的MUI设置，一般在子类中通过重写这个方法来增加MUI的配置信息，需要手机端做相应的逻辑实现
      * @method  mobGetPageMuiSetting
      * @return  {object}  MUI的配置对象
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    mobGetPageMuiSetting(page){
+    mobGetPageMuiSetting(){
         let mui = {editurl:'/html/commpage/commpage-edit.html'};
-        for(let item of page.c_mui.split(',')){
+        for(let item of this.mod.c_mui.split(',')){
             let its = item.split(':');
             if(its[0] === 'editurl'){
                 mui.editurl = its[1];
@@ -106,11 +99,10 @@ export default class extends CMPage {
      * @method  mobHtmlGetListRow
      * @return  {string}  HTML片段
      * @param   {object} row 记录对象
-     * @param   {object} pageCols 业务模块的显示列设置
      */
-    async mobHtmlGetListRow(row,pageCols) {
+    async mobHtmlGetListRow(row) {
         let html =[];
-        for(let col of pageCols){
+        for(let col of this.modCols){
             if (!think.isEmpty(col.c_mui)){
                 let its = col.c_mui.split(',');
                 html.push(`<${its[0]}> ${ its[1].replace(/#value#/, row[col.c_column]).replace(/#title#/, col.c_name.trim())} </${its[0]}>`);
@@ -123,20 +115,18 @@ export default class extends CMPage {
      * 取业务模块中的查询列设置，组合成APP端HTML输出，为保持和PC端的一致性，一般不需要重写
      * @method  mobHtmlGetQuery
      * @return  {string}  HTML片段
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    async mobHtmlGetQuery(page){
+    async mobHtmlGetQuery(){
         let html =[];
-        html.push(`<input type='hidden' name='modulename' value='${page.c_modulename}' />`);
-        html.push(`<input type='hidden' name='parmsUrl' value='${page.parmsUrl}' />`);
+        html.push(`<input type='hidden' name='modulename' value='${this.mod.c_modulename}' />`);
+        html.push(`<input type='hidden' name='parmsUrl' value='${this.mod.parmsUrl}' />`);
         html.push("<input type='hidden' name='pageCurrent' value='1' />");
-        html.push(`<input type='hidden' name='pageSize' value='${page.pageSize}' />`);
+        html.push(`<input type='hidden' name='pageSize' value='8' />`);
 
-        let pageQuerys = await global.model('cmpage/module').getModuleQuery(page.id);
         let provinceValue ='';
         let cityValue='';
 
-        for(let md of pageQuerys){
+        for(let md of this.modQuerys){
             if (md.c_isshow)
             {
                 if (md.c_coltype === "bool"){
@@ -158,8 +148,8 @@ export default class extends CMPage {
                     html.push("<div class='mui-input-row'>");
                     html.push("<label>地区选择:</label>");
                     html.push(`<button class='mui-btn mui-btn-block citypicker' style='width:65%; border:none; text-align:left; padding-left:0px; height:100%;'
-                        data-ref='${page.c_modulename}_c_country' type='button'>${provinceName} ${cityName} ${countryName} </button>
-                        <input type='hidden' id='${page.c_modulename}_c_country' name='c_country' value='${provinceValue},${cityValue},${countryValue}' />`);
+                        data-ref='${this.mod.c_modulename}_c_country' type='button'>${provinceName} ${cityName} ${countryName} </button>
+                        <input type='hidden' id='${this.mod.c_modulename}_c_country' name='c_country' value='${provinceValue},${cityValue},${countryValue}' />`);
                 }else if (md.c_coltype == "datetime"){
                     let dateTitle = md.c_default;    // DateTime.Parse(dr[edit.c_column].ToString()).ToString(md.c_format);
                     let dateType = {type:'date'};
@@ -173,9 +163,9 @@ export default class extends CMPage {
                     }
                     html.push("<div class='mui-input-row'>");
                     html.push(`<label>${md.c_name}:</label>`);
-                    html.push(`<button data-options='${JSON.stringify(dateType)}' data-ref='" ${page.c_modulename + md.c_column}' class='btn mui-btn mui-btn-block datepicker'
+                    html.push(`<button data-options='${JSON.stringify(dateType)}' data-ref='" ${this.mod.c_modulename + md.c_column}' class='btn mui-btn mui-btn-block datepicker'
                         style='width:65%; border:none; text-align:left; padding-left:0px; height:100%;'> ${dateTitle}</button>
-                        <input type='hidden' id='${page.c_modulename + md.c_column}' name='${md.c_column}' value='${ md.c_default}' />`);
+                        <input type='hidden' id='${this.mod.c_modulename + md.c_column}' name='${md.c_column}' value='${ md.c_default}' />`);
                 }
                 else if (md.c_type == "provinceSelect") {
                     provinceValue = md.c_default;
@@ -198,27 +188,25 @@ export default class extends CMPage {
      * 取业务模块中的编辑列设置，组合成APP端HTML输出，为保持和PC端的一致性，一般不需要重写
      * @method  mobHtmlGetEdit
      * @return  {string}  HTML片段
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    async mobHtmlGetEdit(page) {
+    async mobHtmlGetEdit() {
         let html =[];
-        let pageEdits = await global.model('cmpage/module').getModuleEdit(page.id);
-        let md = {};
-        if(page.editID >0) {
+        if(this.mod.editID >0) {
             let fields = [];
-            for (let edit of pageEdits) {
+            for (let edit of this.modEdits) {
                 fields.push(`${edit.c_desc} as ${edit.c_column}`);
             }
             //global.debug(fields);
-            let list = await this.model(page.c_datasource).field(fields.join(',')).where({id:page.editID}).select();
-            md =list[0];
+            let list = await this.model(this.mod.c_datasource).field(fields.join(',')).where({id:this.mod.editID}).select();
+            this.rec =list[0];
         }else{
-            md = await this.pageEditInit(pageEdits,page);
+            this.rec = await this.pageEditInit();
         }
+        let md = this.rec;
 //        global.debug(md);
-        html.push(`<input type='hidden' name='modulename' value='${page.c_modulename}' />`);
+        html.push(`<input type='hidden' name='modulename' value='${this.mod.c_modulename}' />`);
         html.push(`<input name='old_record' type='hidden' value='${JSON.stringify(md)}' />`);
-        for(let col of pageEdits){
+        for(let col of this.modEdits){
             if (!col.c_editable  ) {  continue; }
             let colValue = md[col.c_column];
             if(col.c_coltype === 'timestamp'){  colValue = think.datetime(colValue); }
@@ -242,9 +230,9 @@ export default class extends CMPage {
                         dateType = {};
                     }
                 }
-                html.push(`<button data-options='${JSON.stringify(dateType)}' data-ref='" ${page.c_modulename + md.c_column}' class='btn mui-btn mui-btn-block datepicker'
+                html.push(`<button data-options='${JSON.stringify(dateType)}' data-ref='" ${this.mod.c_modulename + md.c_column}' class='btn mui-btn mui-btn-block datepicker'
                         style='width:65%; border:none; text-align:left; padding-left:0px; height:100%;'> ${dateTitle}</button>
-                        <input type='hidden' id='${page.c_modulename + md.c_column}' name='${md.c_column}' value='${ md.c_default}' />`);
+                        <input type='hidden' id='${this.mod.c_modulename + md.c_column}' name='${md.c_column}' value='${ md.c_default}' />`);
             } else if (col.c_type === "select" || col.c_type === "selectBlank" || col.c_type === "readonlyReplace") {
                 col.c_default = colValue;
                 let isBlank = (col.c_type === "selectBlank" || col.c_type === "readonlyReplace");
@@ -256,9 +244,9 @@ export default class extends CMPage {
             }else if (col.c_type == "areaSelect"){
                 let areaModel = global.model('cmpage/area');
                 html.push(`<button class='mui-btn mui-btn-block citypicker' style='width:65%; border:none; text-align:left; padding-left:0px;'
-                    data-ref='${page.c_modulename}_c_country' type='button'>${await areaModel.getProvinceName(md['c_province'])}
+                    data-ref='${this.mod.c_modulename}_c_country' type='button'>${await areaModel.getProvinceName(md['c_province'])}
                     ${await areaModel.getCityName(md['c_city'])} ${await areaModel.getCountryName(md['c_country'])} </button>
-                    <input type='hidden' id='${page.c_modulename}_c_country' name='c_country' value='${md['c_province']},${md['c_city']},${md['c_country']}' />`);
+                    <input type='hidden' id='${this.mod.c_modulename}_c_country' name='c_country' value='${md['c_province']},${md['c_city']},${md['c_country']}' />`);
             }else if (col.c_type === "readonly") {
                 html.push(`<input name="${col.c_column}" class='mui-input-clear mui-input' type="text" value="${colValue}"  readonly="readonly"  />`);
             }else if(col.c_column !=='c_province' && col.c_column !=='c_city'){

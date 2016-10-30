@@ -85,7 +85,7 @@ export default class extends think.model.base {
                     task.currTaskAct = ta;
                     task.currAct = await this.model('act').getActByIdAndProcId(ta.c_act, task.c_proc);
                     if(ta.c_status === global.enumTaskActStatus.WAIT){
-                        task.currAct.btn_style = think.isEmpty(task.currAct.c_btn_style) ? {label:task.currAct.c_name}:eval(`(${task.currAct.c_btn_style})`);
+//                        task.currAct.btn_style = think.isEmpty(task.currAct.c_btn_style) ? {label:task.currAct.c_name}:eval(`(${task.currAct.c_btn_style})`);
                         task.currAct.form = think.isEmpty(task.currAct.c_form) ? {opentype:'none'}:eval(`(${task.currAct.c_form})`);
                         //设置的前端需要用户操作的界面
                         let form = task.currAct.form;
@@ -93,7 +93,7 @@ export default class extends think.model.base {
                         task.currAct.form.id = think.isEmpty(form['id']) ? 'fwForm'+task.currTaskAct.id:form['id'];
                         task.currAct.form.title = think.isEmpty(form['title']) ? task.currAct.c_name:form['title'];
                         if(!think.isEmpty(form['modulename'])){
-                            task.currAct.form.url = `/cmpage/page/edit?modulename=${form['modulename']}&id=0&c_task=${task.id}`;
+                            task.currAct.form.url = `/cmpage/page/edit?modulename=${form['modulename']}&id=0&c_task=${task.id}&c_act=${task.currAct.id}`;
                         }
                         if(think.isEmpty(form['url'])){
                             task.currAct.form.opentype ='none';

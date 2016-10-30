@@ -27,46 +27,51 @@ export default class extends Base {
         let vb={};
         let module = this.model("cmpage/module");
 
-        let page ={};
-        page.modulename =this.post('modulename');
-        if(page.modulename.length >20){
-            let error = new Error(page.modulename + " 模块名错误！");
+        let parms ={};
+        parms.modulename =this.post('modulename');
+        if(parms.modulename.length >20){
+            let error = new Error(parms.modulename + " 模块名错误！");
             //将错误信息写到 http 对象上，用于模版里显示
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        page.pageIndex = this.post('pageIndex');
-        page.pageSize = this.post('pageSize');
-        page.parmsUrl = this.post('parmsUrl');
+        parms.pageIndex = this.post('pageIndex');
+        parms.pageSize = this.post('pageSize');
+        parms.parmsUrl = this.post('parmsUrl');
         Object.assign(vb,page);
 
-        let md = await module.getModuleByName(page.modulename);
-        Object.assign(page,md);
+        let md = await module.getModuleByName(parms.modulename);
+        Object.assign(parms,md);
 
-        page.query = this.post();
-        page.c_page_size = this.post('pageSize');
+        parms.query = this.post();
+        parms.c_page_size = this.post('pageSize');
         //console.log(page);
-        page.user = await this.session('user');
+        parms.user = await this.session('user');
         //    console.log(page);
-        if(think.isEmpty(page.id)){
-            let error = new Error(page.modulename + " 模块不存在！");
+        if(think.isEmpty(parms.id)){
+            let error = new Error(parms.modulename + " 模块不存在！");
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
 
-        let model = this.model(think.isEmpty(page.c_path) ? 'cmpage/page_mob':(page.c_path ==='cmpage/page' ? 'cmpage/page_mob':page.c_path));
-        if(think.isEmpty(model)){
-            let error = new Error(page.modulename + " 的实现类不存在！");
+        let pageModel = global.model(parms.c_path);
+        if(think.isEmpty(pageModel)){
+            let error = new Error(parms.modulename + " 的实现类不存在！");
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
+        //global.debug(parms);
+        pageModel.mod = parms;
+        pageModel.modQuerys = await module.getModuleQuery(parms.id);
+        pageModel.modCols = await module.getModuleCol(parms.id);
+        pageModel.modBtns = await module.getModuleBtn(parms.id);
 
-        vb.queryHtml = await model.mobHtmlGetQuery(page);
+        vb.queryHtml = await pageModel.mobHtmlGetQuery();
         //      global.debug(vb.queryHtml);
-        let data = await model.getDataList(page);
         //global.debug(data);
-        vb.count = data.count;
-        vb.listHtml = await model.mobHtmlGetList(page,data.list);
+        vb.listHtml = await pageModel.mobHtmlGetList();
+        vb.listIds = pageModel.list.ids.join(',');
+        vb.count = pageModel.list.count;
         //global.debug(vb.listHtml);
         vb.statusCode =200;
 
@@ -80,13 +85,23 @@ export default class extends Base {
      * @return {json}  包含HTML片段
      */
     async editAction() {
-        let page = await this.model('cmpage/module').getModuleByName(this.post('modulename'));
-        page.parmsUrl = JSON.stringify(this.post('parmsUrl'));
-        page.editID = this.post("editID");
+        let module = this.model('cmpage/module');
+        let parms = await module.getModuleByName(this.post('modulename'));
+        parms.parmsUrl = JSON.stringify(this.post('parmsUrl'));
+        parms.editID = this.post("editID");
         //console.log(page);
-        page.user = await this.session('user');
-        let model = this.model(think.isEmpty(page.c_path) ? 'cmpage/page_mob':(page.c_path ==='cmpage/page' ? 'cmpage/page_mob':page.c_path));
-        let editHtml =await model.mobHtmlGetEdit(page);
+        parms.user = await this.session('user');
+        let pageModel = global.model(parms.c_path);
+        if(think.isEmpty(pageModel)){
+            let error = new Error(parms.modulename + " 的实现类不存在！");
+            this.http.error = error;
+            return think.statusAction(500, this.http);
+        }
+        //global.debug(parms);
+        pageModel.mod = parms;
+        pageModel.modEdits = await module.getModuleEdit(parms.id);
+
+        let editHtml =await pageModel.mobHtmlGetEdit(page);
 
         return this.json({statusCode:200, editHtml:editHtml});
     }
@@ -112,28 +127,35 @@ export default class extends Base {
         }
         let ret={statusCode:200,message:'保存成功!',tabid: `page${parms.modulename}`,data:{}};
 
-        let page = await this.model('module').getModuleByName(parms.modulename);
-        page.user = await this.session('user');
-
-        let model = this.model(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
-        ret.editID = await model.pageSave(page,parms);
+        let module = this.model('module');
+        let md = await module.getModuleByName(parms.modulename);
+        let pageModel = global.model(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
+        pageModel.mod = md;
+        pageModel.mod.user = user;
+        pageModel.modEdits = await module.getModuleEdit(md.id);
+        await pageModel.pageSave(parms);
+        ret.data = pageModel.rec;
 
         return this.json(ret);
     }
 
     /**
-     * 业务模块的查看页面，一般调用： /cmpage/mob/view
+     * 业务模块的查看页面，一般调用： /cmpage/page/view?modulename=xxx
      * @method  view
      * @return {promise}  HTML片段
      */
     async viewAction() {
-        let page = await this.model("cmpage/module").getModuleByName(this.get('modulename'));
-        page.viewID =parseInt( this.get('id'));
-        let model = this.model(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
-        let viewHtml = await model.htmlGetView(page)
+        let module = this.model('module');
+        let md = await module.getModuleByName(this.get('modulename'));
+        let pageModel = global.model(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
+        pageModel.mod = md;
+        pageModel.mod.viewID =parseInt( this.get('id'));
+        pageModel.mod.user =  await this.session('user');
+        pageModel.modCols = await module.getModuleCol(md.id);
+
+        let viewHtml = await pageModel.htmlGetView()
 
         this.assign('viewHtml',viewHtml);
-        this.assign('page',page);
         return this.display();
     }
 

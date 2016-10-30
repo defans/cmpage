@@ -115,7 +115,7 @@ export default class extends Base {
                     return this.display();
                 }
                 //判断是否有权限登录所选择的账套
-                let groups = this.model('groupuser').getLoginGroups(this.post('loginGroup'), user.id);
+                let groups = await this.model('groupuser').getLoginGroups(this.post('loginGroup'), user.id);
                 if(think.isEmpty(groups)){
                     vb.loginName = this.post('loginName');
                     vb.msg = '对不起，您不能登录该账套！';

@@ -23,24 +23,23 @@ export default class extends think.model.base {
      * 根据查询结果集和模块的列设置把数据导出成excel文件
      * @method  excelExport
      * @return {object}  excel文件格式的对象
-     * @param   {object} data  结果记录集对象
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param   {object} list  结果记录集对象
+     * @param   {object} modCols 页面显示列设置
      */
-    async excelExport(data,page) {
+    async excelExport(list,modCols) {
         let conf = {};
         conf.stylesXmlFile = think.ROOT_PATH + "/www/static/css/excel_styles.xml";
-        let pageCols = await global.model('cmpage/module').getModuleCol(page.id);
         //设置每列的属性
         conf.cols = [];
-        for(let col of pageCols){
+        for(let col of modCols){
             if (col.c_isview) {
                 conf.cols.push(this.getColStyle(col));
             }
         }
         conf.rows = [];
-        for(let rec of data.list){
+        for(let rec of list.data){
             let row = [];
-            for(let col of pageCols){
+            for(let col of modCols){
                 if(col.c_isview && col.c_column !=='id'){
                     row.push(await this.getColData(rec,col))
                 }

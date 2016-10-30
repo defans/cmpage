@@ -25,59 +25,63 @@ export default class extends Base {
      */
     async listAction(){
         let vb={};
-        let module = this.model("cmpage/module");
-
-        let page ={};
-        page.query ={};
-        page.modulename =(this.method() === 'get' ? this.get('modulename'):this.post('modulename'));
-        if(page.modulename.length >20){
-            let error = new Error(page.modulename + " 模块名错误！");
+        let parms ={};
+        parms.query ={};
+        parms.modulename =(this.method() === 'get' ? this.get('modulename'):this.post('modulename'));
+        if(parms.modulename.length >20){
+            let error = new Error(parms.modulename + " 模块名错误！");
             //将错误信息写到 http 对象上，用于模版里显示
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        let md = await module.getModuleByName(page.modulename);
-        Object.assign(page,md);
+        let module = this.model("cmpage/module");
+        let md = await module.getModuleByName(parms.modulename);
+        Object.assign(parms,md);
 
         if(this.method() === 'get'){
-            page.pageIndex = 1;
-            page.pageSize = page.c_page_size;
+            parms.pageIndex = 1;
+            parms.pageSize = md.c_page_size;
             //global.debug(http._get);
-            page.parmsUrl = JSON.stringify(this.get());
-            page.query = this.get();
+            parms.parmsUrl = JSON.stringify(this.get());
+            parms.query = this.get();
         }else{
-            page.pageIndex = this.post('pageCurrent');
-            page.pageSize = this.post('pageSize');
-            page.parmsUrl = this.post('parmsUrl');
-            page.query = this.post();
+            parms.pageIndex = this.post('pageCurrent');
+            parms.pageSize = this.post('pageSize');
+            parms.parmsUrl = this.post('parmsUrl');
+            parms.query = this.post();
         }
 
-        page.user = await this.session('user');
+        parms.user = await this.session('user');
         //    console.log(page);
-        if(think.isEmpty(page.id)){
-            let error = new Error(page.modulename + " 模块不存在！");
+        if(think.isEmpty(parms.id)){
+            let error = new Error(parms.modulename + " 模块不存在！");
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        let model = global.model(page.c_path);
-        if(think.isEmpty(model)){
-            let error = new Error(page.modulename + " 的实现类不存在！");
+        let pageModel = global.model(parms.c_path);
+        if(think.isEmpty(pageModel)){
+            let error = new Error(parms.modulename + " 的实现类不存在！");
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        vb.queryHtml = await model.htmlGetQuery(page);
+        //global.debug(parms);
+        pageModel.mod = parms;
+        pageModel.modQuerys = await module.getModuleQuery(parms.id);
+        pageModel.modCols = await module.getModuleCol(parms.id);
+        pageModel.modBtns = await module.getModuleBtn(parms.id);
+        vb.queryHtml = await pageModel.htmlGetQuery();
         //      global.debug(vb.queryHtml);
-        vb.otherHtml = await model.htmlGetOther(page);
-        vb.btnHeaderHtml = await model.htmlGetBtnHeader(page);
+        //global.debug(pageModel.mod, 'controller.page.list - pageModel.mod');
+        vb.otherHtml = await pageModel.htmlGetOther();
+        vb.btnHeaderHtml = await pageModel.htmlGetBtnHeader();
         //console.log(vb.btnHeaderHtml);
-        let data = await model.getDataList(page);
-        //global.debug(data);
-        vb.count = data.count;
-        vb.listHtml = await model.htmlGetList(page,data.list);
+        vb.listHtml = await pageModel.htmlGetList();
+        vb.listIds = pageModel.list.ids.join(',');
+        vb.count = pageModel.list.count;
         //global.debug(vb.listHtml);
 
         this.assign('vb',vb);
-        this.assign('page',page);
+        this.assign('mod',pageModel.mod);
         return this.display();
     }
 
@@ -87,40 +91,44 @@ export default class extends Base {
      * @return {file}  excel文件
      */
     async excelExportAction(){
-        let module = global.model("cmpage/module");
-        let page ={};
-        page.query ={};
-        page.modulename= this.get('modulename');
-        let md = await module.getModuleByName(page.modulename);
-        Object.assign(page,md);
-        page.query = this.post();
-        page.pageIndex = 1;
-        page.pageSize = 2000;   //最多2000行
-        page.parmsUrl = this.get('parmsUrl');
+        let module = this.model("module");
+        let parms ={};
+        parms.query ={};
+        parms.modulename= this.get('modulename');
+        let md = await module.getModuleByName(parms.modulename);
+        Object.assign(parms,md);
+        parms.query = this.get();
+        parms.pageIndex = 1;
+        parms.pageSize = 2000;   //最多2000行
+        parms.parmsUrl = this.get('parmsUrl');
 
-        page.user = await this.session('user');
-//    console.log(page);
-        if(think.isEmpty(page.id)){
-            let error = new Error(page.modulename + " 模块不存在！");
+        parms.user = await this.session('user');
+//    console.log(parms);
+        if(think.isEmpty(parms.id)){
+            let error = new Error(parms.modulename + " 模块不存在！");
             //将错误信息写到 http 对象上，用于模版里显示
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
 
-        let model = global.model(page.c_path);
-        if(think.isEmpty(model)){
-            let error = new Error(page.modulename + " 的实现类不存在！");
+        let pageModel = global.model(parms.c_path);
+        if(think.isEmpty(pageModel)){
+            let error = new Error(parms.modulename + " 的实现类不存在！");
             //将错误信息写到 http 对象上，用于模版里显示
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        let data = await model.getDataList(page);
+        //global.debug(parms);
+        pageModel.mod = parms;
+        pageModel.modQuerys = await module.getModuleQuery(parms.id);
+        pageModel.modCols = await module.getModuleCol(parms.id);
+        await pageModel.getDataList();
         //global.debug(data);
-        let excel = await global.model('cmpage/page_excel').excelExport(data,page);
+        let excel = await this.model('page_excel').excelExport(pageModel.list,pageModel.modCols);
         //global.debug(vb.listHtml);
         this.header('Content-Type', 'application/vnd.openxmlformats');
         //let filename=[{filename:(think.isEmpty(page.c_alias) ? page.modulename : page.c_alias)}];
-        this.header("Content-Disposition", "attachment; filename=" +page.modulename +".xlsx");
+        this.header("Content-Disposition", "attachment; filename=" +parms.modulename +".xlsx");
         this.end(excel, 'binary');
     }
 
@@ -130,13 +138,15 @@ export default class extends Base {
      * @return {json}  删除成功状态
      */
     async deleteAction(){
-        let page = await global.model('cmpage/module').getModuleByName(this.get('modulename'));
+        let page = await this.model('module').getModuleByName(this.get('modulename'));
         //page.id = this.get("id");
-        Object.assign(page,this.get());
         page.user = await this.session('user');
         //global.debug(page);
-        let model = global.model(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
-        let ret = await model.pageDelete(page);
+        let pageModel = global.model(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
+        pageModel.mod = page;
+        pageModel.mod.recID = this.get("id");
+        pageModel.mod.flag = this.get("flag");
+        let ret = await pageModel.pageDelete();
 
         return this.json(ret);
     }
@@ -147,16 +157,23 @@ export default class extends Base {
      * @return {promise}  HTML片段
      */
     async editAction() {
-        let page = await global.model('cmpage/module').getModuleByName(this.get('modulename'));
-        page.parmsUrl = JSON.stringify(this.get());
-        page.editID = this.get("id");
-        page.user = await this.session('user');
+        let module = global.model('cmpage/module');
+        let parms = await module.getModuleByName(this.get('modulename'));
+        parms.parmsUrl = JSON.stringify(this.get());
+        parms.editID = this.get("id");
+        parms.listIds = think.isEmpty(this.get('listIds')) ? '':this.get('listIds');
+        parms.user = await this.session('user');
         //global.debug(page);
-        let model = global.model(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
-        let editHtml =await model.htmlGetEdit(page);
+        let pageModel = global.model(think.isEmpty(parms.c_path) ? 'cmpage/page':parms.c_path);
+        pageModel.mod = parms;
+        pageModel.modEdits = await module.getModuleEdit(parms.id);
+        pageModel.getPageOther();
+        let editHtml =await pageModel.htmlGetEdit();
+        let btnHtml = await pageModel.htmlGetEditBtns();
 
         this.assign('editHtml',editHtml);
-        this.assign('page',model.getPageOther(page));
+        this.assign('btnHtml',btnHtml);
+        this.assign('parms',pageModel.mod);
         return this.display();
     }
 
@@ -166,20 +183,23 @@ export default class extends Base {
      * @return {promise}  HTML片段
      */
     async recEditAction() {
-        let page = await global.model('cmpage/module').getModuleByName(this.get('modulename'));
-        page.parmsUrl = JSON.stringify(this.get());
-        page.editID = this.get("id");
-        page.user = await this.session('user');
+        let module = this.model('module');
+        let parms = await module.getModuleByName(this.get('modulename'));
+        parms.parmsUrl = JSON.stringify(this.get());
+        parms.editID = this.get("id");
+        parms.user = await this.session('user');
         //global.debug(page);
-        let model = global.model(page.c_path);
-        let editHtml =await model.htmlGetEdit(page);
-        let tabsHtml = model.htmlGetTabs(page);
-        let jsHtml = model.htmlGetJS(page);
+        let pageModel = global.model(parms.c_path);
+        pageModel.mod = parms;
+        pageModel.modEdits = await module.getModuleEdit(parms.id);
+        let editHtml =await pageModel.htmlGetEdit();
+        let tabsHtml = pageModel.htmlGetTabs();
+        let jsHtml = pageModel.htmlGetJS();
 
         this.assign('editHtml',editHtml);
         this.assign('tabsHtml',tabsHtml);
         this.assign('jsHtml',jsHtml);
-        this.assign('page',page);
+        this.assign('parms',parms);
         return this.display();
     }
 
@@ -191,18 +211,25 @@ export default class extends Base {
     async saveAction(){
         let parms =this.post();
         let user = await this.session('user');
-
+        //global.debug(user);
         parms.c_user =user.id;
-        parms.c_group = (think.isEmpty(parms.c_group) ? user.groupID : parms.c_group);
+        parms.c_group = (think.isEmpty(parms.c_group) || parms.c_group == 0) ? user.groupID : parms.c_group;
         parms.c_time = think.datetime();
         parms.c_status= (think.isEmpty(parms.c_status) ? 0 : parms.c_status);
         let ret={statusCode:200,message:'保存成功!',tabid: `page${parms.modulename}`,data:{}};
+        if(parms.modulename === 'CodeList'){
+            global.debug(parms.parmsUrl);
+            let parmsUrl = JSON.parse(parms.parmsUrl);
+            ret = {statusCode:200,message:'保存成功!',divid: parmsUrl['target'],data:{}};
+        }
 
-        let page = await this.model('module').getModuleByName(parms.modulename);
-        page.user = await this.session('user');
-
-        let model = global.model(page.c_path);
-        ret.data = await model.pageSave(page,parms);
+        let md = await this.model('module').getModuleByName(parms.modulename);
+        let pageModel = global.model(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
+        pageModel.mod = md;
+        pageModel.mod.user = user;
+        pageModel.modEdits = await global.model('cmpage/module').getModuleEdit(md.id);
+        await pageModel.pageSave(parms);
+        ret.data = pageModel.rec;
 
         return this.json(ret);
     }
@@ -213,13 +240,17 @@ export default class extends Base {
      * @return {promise}  HTML片段
      */
     async viewAction() {
-        let page = await this.model("cmpage/module").getModuleByName(this.get('modulename'));
-        page.viewID =parseInt( this.get('id'));
-        let model = global.model(page.c_path);
-        let viewHtml = await model.htmlGetView(page)
+        let module = this.model('module');
+        let md = await module.getModuleByName(this.get('modulename'));
+        let pageModel = global.model(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
+        pageModel.mod = md;
+        pageModel.mod.viewID =parseInt( this.get('id'));
+        pageModel.mod.user =  await this.session('user');
+        pageModel.modCols = await module.getModuleCol(md.id);
+
+        let viewHtml = await pageModel.htmlGetView()
 
         this.assign('viewHtml',viewHtml);
-        this.assign('page',page);
         return this.display();
     }
 
@@ -233,47 +264,54 @@ export default class extends Base {
         let vb={};
         let module = this.model("cmpage/module");
 
-        let page ={};
-        page.query ={};
+        let parms ={};
+        parms.query ={};
         if(this.method() === 'get'){
-            page.modulename =http.get('modulename');
-            page.returnFields =http.get('returnFields');
-            let md = await module.getModuleByName(page.modulename);
-            Object.assign(page,md);
-            page.pageIndex = 1;
-            page.pageSize = page.c_page_size;
+            parms.modulename =http.get('modulename');
+            parms.returnFields =http.get('returnFields');
+            let md = await module.getModuleByName(parms.modulename);
+            Object.assign(parms,md);
+            parms.pageIndex = 1;
+            parms.pageSize = parms.c_page_size;
             //global.debug(http._get);
-            page.parmsUrl = JSON.stringify(http._get);
-            page.query = page.parmsUrl;
+            parms.parmsUrl = JSON.stringify(http._get);
+            parms.query = parms.parmsUrl;
         }else{
-            page.modulename= http.post('modulename');
-            page.returnFields =http.get('returnFields');
-            let md = await module.getModuleByName(page.modulename);
-            Object.assign(page,md);
-            page.query = http._post;
-            page.pageIndex = http.post('pageIndex');
-            page.pageSize = http.post('pageSize');
-            page.parmsUrl = http.post('parmsUrl');
+            parms.modulename= http.post('modulename');
+            parms.returnFields =http.get('returnFields');
+            let md = await module.getModuleByName(parms.modulename);
+            Object.assign(parms,md);
+            parms.query = http._post;
+            parms.pageIndex = http.post('pageIndex');
+            parms.pageSize = http.post('pageSize');
+            parms.parmsUrl = http.post('parmsUrl');
         }
-        page.user = await this.session('user');
-        let model = global.model(page.c_path);
-        if(think.isEmpty(model)){
-            let error = new Error(page.modulename + " 的实现类不存在！");
+        parms.user = await this.session('user');
+        let pageModel = global.model(parms.c_path);
+        if(think.isEmpty(pageModel)){
+            let error = new Error(parms.modulename + " 的实现类不存在！");
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        vb.queryHtml = await model.htmlGetQuery(page);
+        //global.debug(parms);
+        pageModel.mod = parms;
+        pageModel.modQuerys = await module.getModuleQuery(parms.id);
+        pageModel.modCols = await module.getModuleCol(parms.id);
+        pageModel.modBtns = await global.model('cmpage/module').getModuleBtn(parms.id);
+
+        vb.queryHtml = await pageModel.htmlGetQuery();
         //global.debug(vb.queryHtml);
-        vb.otherHtml = await model.htmlGetOther(page);
-        vb.btnHeaderHtml = await model.htmlGetBtnHeader(page);
+        vb.otherHtml = await pageModel.htmlGetOther();
+        vb.btnHeaderHtml = await pageModel.htmlGetBtnHeader();
         //    global.debug(vb.btnHeaderHtml);
-        let data = await model.getDataList(page);
-        vb.count = data.count;
-        vb.listHtml = await model.htmlGetList(page,data.list);
-        //    global.debug(vb.listHtml);
+        vb.listHtml = await pageModel.htmlGetList();
+        vb.listIds = pageModel.list.ids.join(',');
+        vb.count = pageModel.list.count;
+        //global.debug(vb.listHtml);
 
         this.assign('vb',vb);
-        this.assign('page',page);
+        this.assign('mod',pageModel.mod);
+
         return this.display();
     }
 

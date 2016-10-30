@@ -24,9 +24,9 @@ export default class extends CMPage {
      * @return {string}  where条件子句
      * @param {Object} page  页面设置主信息
      */
-    async getQueryWhere(page){
-        let where =await super.getQueryWhere(page);
-        where += ` and c_user=${page.user.id}`;
+    async getQueryWhere(){
+        let where =await super.getQueryWhere();
+        where += ` and c_user=${this.mod.user.id}`;
 
         return where ;
     }

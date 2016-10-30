@@ -27,11 +27,16 @@ export default class extends Base {
      * @return {json}   act编辑页面的HTML片段
      */
     async editAction(){
-        let pageAct = await global.model('cmpage/module').getModuleByName('FwAct');
-        pageAct.parmsUrl= '{}';
-        pageAct.editID = this.get('id');
-        pageAct.user = await this.session('user');
-        let actEditHtml = await this.model('cmpage/page').htmlGetEdit(pageAct);
+        let module = global.model('cmpage/module');
+        let parmsAct = await module.getModuleByName('FwAct');
+        parmsAct.parmsUrl= '{}';
+        parmsAct.editID = this.get('id');
+        parmsAct.user = await this.session('user');
+        let pageAct = global.model('cmpage/page');
+        pageAct.mod = parmsAct;
+        pageAct.modEdits = await module.getModuleEdit(parmsAct.id);
+
+        let actEditHtml = await pageAct.htmlGetEdit();
 
         return this.json({statusCode:200, actEditHtml:actEditHtml});
     }

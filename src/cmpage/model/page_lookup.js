@@ -8,12 +8,12 @@
 // +----------------------------------------------------------------------
 
 /**
- @module cmpage.model
+ @module cmthis.mob.model
  */
 
 /**
  * 实现了查找带回的功能，可继承本类做定制化的查找带回页面，调用： /cmpage/page/lookup?modulename=XXX*multiselect=false
- * @class cmpage.model.page_lookup
+ * @class cmthis.mob.model.page_lookup
  */
 import CMPage from './page.js';
 
@@ -25,7 +25,7 @@ export default class extends CMPage {
      * @return {boolean} 是否显示
      * @param   {object} page 页面按钮的设置
      */
-    isShowRowBtns(pageBtns){
+    isShowRowBtns(){
         return true;
     }
 
@@ -34,17 +34,15 @@ export default class extends CMPage {
      * @method  htmlGetBtnList
      * @return  {string}  HTML片段
      * @param   {object} rec 每行的记录对象
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
-     * @param   {object} pageBtns 按钮设置
      */
-    async htmlGetBtnList(rec,page,pageBtns){
+    async htmlGetBtnList(rec){
         let html=[];
         let fields= [];
-        if(!think.isEmpty(page.returnFields)){
-            fields = page.returnFields.split(',');
+        //global.debug(this.mod,'page_lookup.htmlGetBtnList - this.mob');
+        if(!think.isEmpty(this.mod['returnFields'])){
+            fields = String(this.mod['returnFields']).split(',');
         }
-        let pageCols = await global.model('cmpage/module').getModuleCol(page.id);
-        for(let col of pageCols){
+        for(let col of this.modCols){
             if (col.c_isview) {
                 if(fields.length >0){
                     for(let field of fields){
@@ -68,7 +66,7 @@ export default class extends CMPage {
      * @return {string}  HTML片段
      * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    async htmlGetBtnHeader(page){
+    async htmlGetBtnHeader(){
         return ' ';
     }
 }

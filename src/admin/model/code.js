@@ -242,7 +242,7 @@ export default class extends think.model.base {
      */
     async getStocks(){
         return await think.cache("codeStocks", () => {
-            return this.getTreeList(6);c
+            return this.getTreeList(6);
         });
     }
 

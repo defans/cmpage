@@ -24,9 +24,9 @@ export default class extends CMPage {
      * @return {string}  where条件子句
      * @param {Object} page  页面设置主信息
      */
-    async getQueryWhere(page){
-      let where =await super.getQueryWhere(page);
-        let parmsUrl =JSON.parse(page.parmsUrl);
+    async getQueryWhere(){
+      let where =await super.getQueryWhere();
+        let parmsUrl =JSON.parse(this.mod.parmsUrl);
       return where +` and id not in(select c_user from t_group_user where c_group=${parmsUrl.c_group}) `;
     }
     /**
@@ -35,15 +35,15 @@ export default class extends CMPage {
      * @return {string}  html片段
      * @param {Object} page  页面设置主信息
      */
-    async htmlGetOther(page) {
-        let parmsUrl =JSON.parse(page.parmsUrl);
-        return `<a class="btn btn-green" href="#" onclick="return GroupUserAddIds(this,${parmsUrl.c_group});" data-icon="plus">加入</a>
+    async htmlGetOther() {
+        let parmsUrl =JSON.parse(this.mod.parmsUrl);
+        return `<a class="btn btn-green" href="#" onclick="return GroupUserAddIds(${parmsUrl.c_group});" data-icon="plus">加入</a>
             <script type="text/javascript">
-                function GroupUserAddIds(obj, groupID) {
-                    //alert($('[name="ids"]').val());
+                function GroupUserAddIds( groupID) {
+                    //alert($('[name="ids"]').length);
                     var ids = [];
                     $('[name="ids"]').each(function () {
-                        if($(this).attr("checked")){
+                        if($(this).parent().hasClass("checked")){
                             ids.push($(this).val());
                         }
                     });
@@ -52,8 +52,14 @@ export default class extends CMPage {
                         $(this).alertmsg("warn", "请选择要加入的用户。");
                         return false;
                     }
-                    var url = "/admin/code/group_user_add?groupID=" + groupID + "&userIds=" + ids.join(',');
-                    $(obj).bjuiajax('doAjax', { url: url });
+                    BJUI.ajax('doajax', {
+                        url: "/admin/code/group_user_add?groupID=" + groupID + "&userIds=" + ids.join(','),
+                        loadingmask: true,
+                        okCallback: function(json, options) {
+                            $('#btnSearchGroupUser').click();
+                            $('#btnSearchGroupUserAdd').click();
+                        }
+                    });
 
                     return false;
                 }
@@ -61,8 +67,14 @@ export default class extends CMPage {
 
                     $(this).alertmsg("confirm", "是否确定要加入？",{
                         okCall:function(){
-                            var url = "/admin/code/group_user_add/?groupID=" + groupID + "&userIds=" + id;
-                            $(obj).bjuiajax('doAjax', { url: url });
+                            BJUI.ajax('doajax', {
+                                url: "/admin/code/group_user_add?groupID=" + groupID + "&userIds=" + id,
+                                loadingmask: true,
+                                okCallback: function(json, options) {
+                                     $('#btnSearchGroupUser').click();
+                                    $('#btnSearchGroupUserAdd').click();
+                                }
+                            });
                         }
                     });
 

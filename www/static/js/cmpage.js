@@ -1,3 +1,75 @@
+///////////////////////////// cmpage/page 相关的界面处理 -- BEGIN ////////////////////////////
+/* cmpage/page/edit 上一条，下一条 */
+function pageGotoEdit(modulename,editID){
+    $.CurrentDialog.dialog('reload',{ url:"/cmpage/page/edit?modulename="+ modulename +"&id="+ editID
+        +"&listIds="+ $.CurrentDialog.find('#listIds').val(), type:"GET" });
+    return true;
+}
+
+/* cmpage/page/list -- delete record */
+function pageDelete(id,obj,flag) {
+    var page = pageGetCurrent(obj);
+    var modulename = page.find('#modulename').val();
+    BJUI.alertmsg("confirm", "是否确定要删除？",{
+        okCall:function(){
+            BJUI.ajax('doajax', {
+                url: "/cmpage/page/delete?modulename="+ modulename +"&id=" + id+"&flag=" + flag,
+                loadingmask: true,
+                okCallback: function(json, options) {
+                    BJUI.alertmsg(json.statusCode=="200" ? "info":"error",json.message);
+                    $('#btnSearch'+ modulename).click();
+                }
+            });
+        }
+    });
+    return false;
+}
+
+/* cmpage/page/list export data to excel file */
+function pageExportData(){
+    BJUI.alertmsg("confirm", "是否确定要导出数据？",{
+        okCall:function(){
+            $.fileDownload('/cmpage/page/excel_export?'+$.CurrentNavtab.find('#pagerForm').serialize(), {
+                failCallback: function(responseHtml, url) {
+                    BJUI.alertmsg("warn", "下载文件失败！");
+                }
+            });
+        }
+    });
+    return false;
+}
+
+/* cmpage/page/list refresh list data */
+function pageRefresh(modulename) {
+    $("#btnSearch"+modulename).click();
+}
+
+/* cmpage/page/list(lookup) -- close current navtab or dialog */
+function pageClose(obj) {
+    if( $(obj).closest('.navtab-panel').length){
+        BJUI.navtab('closeCurrentTab');
+    }else{
+        BJUI.dialog('closeCurrent');
+    }
+}
+
+/* cmpage/page/list 鼠标单击显示选中行 */
+function pageRowSelect(id,obj){
+    var page = pageGetCurrent(obj);
+
+    var oldRowID = page.find('#idSelect').val()
+    if(oldRowID != id){
+        page.find('#row'+oldRowID).removeClass('selected');
+    }
+    page.find('#idSelect').val(id);
+    page.find('#row'+id).toggleClass('selected');
+}
+
+function pageGetCurrent(obj){
+    return  $(obj).closest('.navtab-panel').length ? $.CurrentNavtab : $.CurrentDialog;
+}
+
+///////////////////////////// cmpage/page 相关的界面处理 -- END ////////////////////////////
 
 /////////////////////////////业务相关的全局变量--BEGIN////尽量保持和后端一致////////////////////////////
 var global = {};
@@ -55,7 +127,7 @@ function fwStart(procID) {
                         }
                     }
                 }
-            });
+        });
         }
     });
 

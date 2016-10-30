@@ -123,6 +123,8 @@ export default class extends think.base {
      * @param   {object} obj 源对象
      */
     objToString = function(obj){
+        if(think.isEmpty(obj)){return '';}
+
         let ret = [];
         if(think.isObject(obj)) {
             for (let key in obj) {
@@ -150,7 +152,7 @@ export default class extends think.base {
             }
             ret.push(`[${tmp.join(',')}]`);
         }else{
-            return obj;
+            return String(obj);
         }
     };
 

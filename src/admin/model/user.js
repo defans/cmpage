@@ -23,8 +23,8 @@ export default class extends CMPage {
      * @return {string}  where条件子句
      * @param {Object} page  页面设置主信息
      */
-    async getQueryWhere(page){
-        let where =await super.getQueryWhere(page);
+    async getQueryWhere(){
+        let where =await super.getQueryWhere();
         //global.debug(where);
         return where +' and c_status<>-1 and c_linktype=1';
     }
@@ -35,7 +35,7 @@ export default class extends CMPage {
      * @param {Object} page  页面设置主信息
      * @param {Object} parms  编辑页面传回的FORM参数
      */
-    async pageSave(page,parms){
+    async pageSave(parms){
         //先保存t_emp
         let md =global.objPropertysFromOtherObj({},parms,['c_name','c_sex','c_phone','c_email','c_qq','c_address','c_memo','c_birthday','c_dept',
             'c_user','c_time','c_group','c_province','c_city','c_country','c_manager']);

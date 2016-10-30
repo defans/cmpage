@@ -22,10 +22,10 @@ export default class extends CMPageLookup {
      * @return {string}  where条件子句
      * @param {Object} page  页面设置主信息
      */
-    async getQueryWhere(page){
-        let where =await super.getQueryWhere(page);
+    async getQueryWhere(){
+        let where =await super.getQueryWhere();
         //global.debug(where);
-        let parmsUrl =JSON.parse(page.parmsUrl);
+        let parmsUrl =JSON.parse(this.mod.parmsUrl);
         return where +' and c_pid='+parmsUrl.c_pid;
     }
 

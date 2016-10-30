@@ -9,29 +9,35 @@
 
 /**
 
- @module cmpage.model
+ @module cmthis.mod.model
  */
 
 /**
  * 普通页面的数据处理类，实现了具体的操作方法
- * @class cmpage.model.page
+ * @class cmthis.mod.model.page
  */
 export default class extends think.model.base {
+
+        mod = {};   //模块主设置信息，及传入的参数等
+        modQuerys = {}; //模块查询列设置信息
+        modCols = {};    //模块显示列设置信息
+        modEdits = {};   //模块编辑列设置信息
+        modBtns = {};    //模块按钮设置信息
+        list = {};     //结果列表集
+        rec = {};      //当前记录
 
     /**
      * 取查询项的设置，组合成HTML输出
      * @method  htmlGetQuery
      * @return {Array}  查询的HTML片段，包括 bjui-moreSearch 部分
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    async htmlGetQuery(page){
+    async htmlGetQuery(){
         let html =[];
         let html0 = [];
-        let pageQuerys = await global.model('cmpage/module').getModuleQuery(page.id);
         let provinceValue ='';
         let cityValue='';
         let k =0;
-        for(let col of pageQuerys){
+        for(let col of this.modQuerys){
             if (col.c_isshow) {
                 if(k >2 && k !== -1){
                     for(let h of html){    html0.push(h);       }
@@ -39,8 +45,8 @@ export default class extends think.model.base {
                     html =[];
                     k = -1;
                 }
-                if(!think.isEmpty(page.query[col.c_column])){
-                    col.c_default = page.query[col.c_column];
+                if(!think.isEmpty(this.mod.query[col.c_column])){
+                    col.c_default = this.mod.query[col.c_column];
                 }
                 if(col.c_type !== "hidden" && col.c_type !== "provinceSelect" && col.c_type !== "citySelect" && col.c_type !== "countrySelect" && col.c_type !== "fixed")
                 {
@@ -67,23 +73,23 @@ export default class extends think.model.base {
                 else if (col.c_type === "lookup")
                 {
                     html.push(`<input name="${col.c_column}" type="lookup" size="${col.c_width}" value="${col.c_default}"  data-width="800" data-height="600"
-                        data-toggle="lookup" data-title="${col.c_name} 选择" data-url="${this.getReplaceToSpecialChar(col.c_memo,page)}" readonly="readonly" />`);
+                        data-toggle="lookup" data-title="${col.c_name} 选择" data-url="${this.getReplaceToSpecialChar(col.c_memo)}" readonly="readonly" />`);
                 }
                 else if (col.c_type === "provinceSelect")
                 {
-                    html.push(`<select name="c_province" data-toggle="selectpicker"  data-nextselect="#city${page.c_modulename}Query"
+                    html.push(`<select name="c_province" data-toggle="selectpicker"  data-nextselect="#city${this.mod.c_modulename}Query"
                         data-refurl="/cmpage/utils/get_citys?province={value}">  ${await global.model('cmpage/area').getProvinceItems(col.c_default,true)} </select>`);
                     provinceValue = col.c_default;
                 }
                 else if (col.c_type === "citySelect")
                 {
-                    html.push(`<select name="c_city" id="city${page.c_modulename}Query" data-toggle="selectpicker" data-nextselect="#country${page.c_modulename}Query"
+                    html.push(`<select name="c_city" id="city${this.mod.c_modulename}Query" data-toggle="selectpicker" data-nextselect="#country${this.mod.c_modulename}Query"
                         data-refurl="/cmpage/utils/get_countrys?city={value}">${await global.model('cmpage/area').getCityItems(col.c_default,true,provinceValue )} </select>`);
                     cityValue = col.c_default;
                 }
                 else if (col.c_type === "countrySelect")
                 {
-                    html.push(`<select name="c_country" id="country${page.c_modulename}Query" data-toggle="selectpicker" >${await global.model('cmpage/area').getCountryItems(col.c_default,true,cityValue)} </select>`);
+                    html.push(`<select name="c_country" id="country${this.mod.c_modulename}Query" data-toggle="selectpicker" >${await global.model('cmpage/area').getCountryItems(col.c_default,true,cityValue)} </select>`);
                 }
                 else if( col.c_type !== "fixed")
                 {
@@ -103,9 +109,8 @@ export default class extends think.model.base {
      * 输出额外的按钮和js函数和HTML片段，区别于 getPageOther
      * @method  htmlGetOther
      * @return {string}  html片段
-     * @param {Object} page  页面设置主信息
      */
-    async htmlGetOther(page){
+    async htmlGetOther(){
         return ``;
     }
 
@@ -161,7 +166,7 @@ export default class extends think.model.base {
     /**
      * 根据设置取显示的替换值
      * @method  getReplaceText
-     * @return {Array}  查询的HTML片段，包括 bjui-moreSearch 部分
+     * @return {string}  替换的字符串
      * @param   {string} value 当前值
      * @param   {string} replaceItems  替换的设置值，支持两种方式
      *                      1. 函数如：admin/code:getXXXXXX
@@ -200,71 +205,65 @@ export default class extends think.model.base {
      * 取顶部按钮的设置，分靠左和靠右两块，组合成HTML输出
      * @method  htmlGetBtnHeader
      * @return {string}  HTML片段
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    async htmlGetBtnHeader(page){
+    async htmlGetBtnHeader(){
       let html =[];
       let htmlRight =[];
-      let pageBtns = await global.model('cmpage/module').getModuleBtn(page.id);
-      for(let btn of pageBtns){
+      for(let btn of this.modBtns){
             if(btn.c_isshow ){
                 if(btn.c_location <6){
-                    html.push(`<a class="${btn.c_class}" data-toggle="${btn.c_opentype}" data-options="${this.getReplaceToSpecialChar(btn.c_options,page)}"  data-on-close="page${page.c_modulename}Edit_onClose"
-                      data-icon="${btn.c_icon}" href="${this.getReplaceToSpecialChar(btn.c_url,page)}" data-title="${btn.c_title}" data-on-load="pageRecList_load"
-                      onclick="${this.getReplaceToSpecialChar(btn.c_onclick,page)}">${btn.c_label}</a>`);
+                    html.push(`<a class="${btn.c_class}" data-toggle="${btn.c_opentype}" data-options="${this.getReplaceToSpecialChar(btn.c_options)}"  data-on-close="page${this.mod.c_modulename}Edit_onClose"
+                      data-icon="${btn.c_icon}" href="${this.getReplaceToSpecialChar(btn.c_url)}" data-title="${btn.c_title}" data-on-load="pageRecList_load"
+                      onclick="${this.getReplaceToSpecialChar(btn.c_onclick)}">${btn.c_label}</a>`);
                 }else if(btn.c_location >5 && btn.c_location <10){      //靠右放置
-                    htmlRight.push(`<a class="${btn.c_class}" data-toggle="${btn.c_opentype}" data-options="${this.getReplaceToSpecialChar(btn.c_options,page)}"  data-on-close="page${page.c_modulename}Edit_onClose"
-                      data-icon="${btn.c_icon}" href="${this.getReplaceToSpecialChar(btn.c_url,page)}" data-title="${btn.c_title}" data-on-load="pageRecList_load"
-                      onclick="${this.getReplaceToSpecialChar(btn.c_onclick,page)}">${btn.c_label}</a>`);
+                    htmlRight.push(`<a class="${btn.c_class}" data-toggle="${btn.c_opentype}" data-options="${this.getReplaceToSpecialChar(btn.c_options)}"  data-on-close="page${this.mod.c_modulename}Edit_onClose"
+                      data-icon="${btn.c_icon}" href="${this.getReplaceToSpecialChar(btn.c_url)}" data-title="${btn.c_title}" data-on-load="pageRecList_load"
+                      onclick="${this.getReplaceToSpecialChar(btn.c_onclick)}">${btn.c_label}</a>`);
                 }
             }
       }
       return html.join(' ')+(htmlRight.length >0 ? '<div class="pull-right">'+htmlRight.join(' ')+'</div>': '');
-  }
+    }
 
     /**
      * 取记录列表每一行的按钮设置，组合成HTML输出，子类中重写本方法可以定制每行按钮的输出效果
      * @method  htmlGetBtnList
      * @return {string}  HTML片段
      * @param   {object} rec 每行的记录对象
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
-     * @param   {object} pageBtns 按钮设置
      */
-  async htmlGetBtnList(rec,page,pageBtns){
-    let html=[];
-     for(let btn of pageBtns){
-       if (btn.c_isshow && btn.c_location > 10 ) {
-         let btnUrl = this.getReplaceToSpecialChar(btn.c_url.replace(/#id#/,rec['id']),page);
-         let btnClick = this.getReplaceToSpecialChar(btn.c_onclick.replace(/#id#/,rec['id']),page);
-         let options = this.getReplaceToSpecialChar(btn.c_options,page);
-         html.push(` <a type="button" class="${btn.c_class}" data-toggle="${btn.c_opentype}" data-options="${options}" title="${btn.c_title}"
-                         data-on-load="pageRecList_load"  data-on-close="page${page.c_modulename}Edit_onClose" data-icon="${btn.c_icon}" href="${btnUrl}"
-         onclick="${btnClick}" data-title="${btn.c_title}"  style="${btn.c_style}" >${btn.c_label}</a> `);
-       }
-     }
-    return html.join(' ');
-  }
+    async htmlGetBtnList(rec){
+        let html=[];
+        for(let btn of this.modBtns){
+            if (btn.c_isshow && btn.c_location > 10 ) {
+                let btnUrl = this.getReplaceToSpecialChar(btn.c_url.replace(/#id#/,rec['id']));
+                let btnClick = this.getReplaceToSpecialChar(btn.c_onclick.replace(/#id#/,rec['id']));
+                let options = this.getReplaceToSpecialChar(btn.c_options);
+                if(btn.c_object.indexOf('.Edit') >0){
+                    btnUrl += `&listIds=${this.list.ids.join(',')}`;
+                }
+                html.push(` <a type="button" class="${btn.c_class}" data-toggle="${btn.c_opentype}" data-options="${options}" title="${btn.c_title}"
+                             data-on-load="pageRecList_load"  data-on-close="page${this.mod.c_modulename}Edit_onClose" data-icon="${btn.c_icon}" href="${btnUrl}"
+                            onclick="${btnClick}" data-title="${btn.c_title}"  style="${btn.c_style}" >${btn.c_label}</a> `);
+            }
+        }
+        return html.join(' ');
+    }
 
     /**
      * 取分页列表的设置，结合结果数据集，组合成HTML输出，一般不需要重新本方法
      * @method  htmlGetList
      * @return {string}  HTML片段
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
-     * @param   {object} dataList 结果数据集，this.getDataList(page) 的返回值
      */
-  async htmlGetList(page,dataList) {
+  async htmlGetList() {
     let html = ['<thead> <tr >'];
-        let modelPage  =global.model('cmpage/module');
-    let pageCols = await modelPage.getModuleCol(page.id);
-    let pageBtns = await modelPage.getModuleBtn(page.id);
-    let isShowBtn = this.isShowRowBtns(pageBtns);
+    let isShowBtn = this.isShowRowBtns();
 
-    for (let col of pageCols) {
+    for (let col of this.modCols) {
         if (col.c_isshow) {
             html.push(`<th width="${col.c_width}" style="text-align:center;">${col.c_name} </th>`);
         }
     }
-    if (page.c_multiselect) {
+    if (this.mod.c_multiselect) {
         html.push('<th width="26"><input type="checkbox" class="checkboxCtrl" data-group="ids" data-toggle="icheck"></th>');
     }
     if (isShowBtn) {
@@ -273,13 +272,13 @@ export default class extends think.model.base {
     html.push('</tr> </thead>');
 
     //数据列
-//    let dataList = await this.getDataList(page,pageCols);
-//    global.debug(dataList);
+    await this.getDataList();
+//    global.debug(this.list.data);
 
     html.push('<tbody>');
-    for (let item of dataList) {
-        html.push(`<tr id="row${item['id']}" data-id="${item['id']}" onclick="pageRowSelect(${item['id']});" >`);
-        for (let col of pageCols) {
+    for (let item of this.list.data) {
+        html.push(`<tr id="row${item['id']}" data-id="${item['id']}" onclick="pageRowSelect(${item['id']},this);" >`);
+        for (let col of this.modCols) {
             if (col.c_isshow) {
 //                global.debug(col);
                 html.push(`<td style="${item["id"] === 0 ? "font-weight:bold;" + col.c_style : col.c_style}" >`);
@@ -311,12 +310,12 @@ export default class extends think.model.base {
                 html.push('</td>')
             }
         }
-        if (page.c_multiselect) {
+        if (this.mod.c_multiselect) {
             html.push(`<td><input type="checkbox" name="ids" data-toggle="icheck" value="${item["id"]}"></td>`);
         }
         if (isShowBtn) {
             html.push('<td >');
-            let btnHtml =await this.htmlGetBtnList(item, page,pageBtns);
+            let btnHtml =await this.htmlGetBtnList(item);
 //            global.debug(btnHtml);
             html.push(btnHtml);
             html.push('</td >');
@@ -332,11 +331,10 @@ export default class extends think.model.base {
      * 是否显示列表中的按钮，子类中重写本方法可以改变按钮显示的逻辑
      * @method  isShowRowBtns
      * @return {boolean} 是否显示
-     * @param   {object} page 页面按钮的设置
      */
-    isShowRowBtns(pageBtns){
+    isShowRowBtns(){
         let isShow = false;
-        for (let btn of pageBtns) {
+        for (let btn of this.modBtns) {
             if (btn.c_location > 9) {
                 isShow = true;
                 break;
@@ -349,55 +347,52 @@ export default class extends think.model.base {
      * 取结果数据集，子类中重写本方法可以增加逻辑如：对结果集做进一步的数据处理等
      * @method  getDataList
      * @return {object} 结果集数据包 {count:xxx, list:[{record}]}
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    async getDataList(page){
-        let pageCols = await global.model('cmpage/module').getModuleCol(page.id);
-        let data = {};
-        let where=await this.getQueryWhere(page);
+    async getDataList(){
+        let where=await this.getQueryWhere();
+        global.debug(`select count(id) as count from ${this.mod.c_datasource} ${where} `);
 
-        let cnt = await this.query(`select count(id) as count from ${page.c_datasource} ${where} `);
-        data.count = cnt[0].count;
-        if(data.count ==0 ) {
-            data.list = [];
-            return data;
+        let cnt = await this.query(`select count(id) as count from ${this.mod.c_datasource} ${where} `);
+        this.list.count = cnt[0].count;
+        this.list.data = [];
+        this.list.ids = [];
+        if(this.list.count >0 ) {
+            //global.debug(this.mod);
+            if (this.mod.c_pager) {
+                this.list.data = await this.query(`select ${this.getListFields(this.modCols)} from ${this.mod.c_datasource} ${where} order by ${this.mod.c_sort_by}
+                limit ${this.mod.c_page_size} offset ${this.mod.c_page_size * (this.mod.pageIndex - 1)}`);
+            } else {
+                this.list.data = await this.query(`select ${this.getListFields()} from ${this.mod.c_datasource} ${where} order by ${this.mod.c_sort_by} `);
+            }
+            for (let rec of this.list.data) {
+                this.list.ids.push(rec.id);
+            }
         }
-
-        //global.debug(page);
-        if(page.c_pager) {
-            data.list = await this.query(`select ${this.getListFields(pageCols)} from ${page.c_datasource} ${where} order by ${page.c_sort_by}
-                limit ${page.c_page_size} offset ${page.c_page_size * (page.pageIndex - 1)}`);
-        }else {
-            data.list = await this.query(`select ${this.getListFields(pageCols)} from ${page.c_datasource} ${where} order by ${page.c_sort_by} `);
-        }
-        return data;
     }
 
     /**
      * 取查询项的设置，结合POST参数，得到Where字句，重写本方法可以定制或修改SQL的where子句
      * @method  getQueryWhere
      * @return {string} where 子句， 形如： where xxx and xxx
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    async getQueryWhere(page){
+    async getQueryWhere(){
         let ret =[' where 1=1'];
-        let pageQuerys = await global.model('cmpage/module').getModuleQuery(page.id);
-        let parmsUrl =JSON.parse(page.parmsUrl);
-        for(let md of pageQuerys){
+        let parmsUrl =JSON.parse(this.mod.parmsUrl);
+        for(let md of this.modQuerys){
             if (md.c_type === "fixed"){         //如果是‘固定’，则直接增加c_memo中的设置值
-                let wh = ` (${md.c_memo.replace(/#userID#/,page.user.id).replace(/#groupID#/,page.user.groupID).split(/##/).join('\'')})`;
+                let wh = ` (${md.c_memo.replace(/#userID#/,this.mod.user.id).replace(/#groupID#/,this.mod.user.groupID).split(/##/).join('\'')})`;
                 wh = wh.replace(/#value#/,parmsUrl[md.c_column]);
                 ret.push(wh);
                 continue;
             }
             if (md.c_isshow && md.c_op!=='NO') {
-                if(!think.isEmpty(page.query[md.c_column])){
-                    if((md.c_coltype === 'int' && parseInt(page.query[md.c_column])===0) || (md.c_type.indexOf('select') === 0 && page.query[md.c_column] == 0)){
+                if(!think.isEmpty(this.mod.query[md.c_column])){
+                    if((md.c_coltype === 'int' && parseInt(this.mod.query[md.c_column])===0) || (md.c_type.indexOf('select') === 0 && this.mod.query[md.c_column] == 0)){
                         continue;
                     }
                     //console.log(md.c_column);
-                    md.c_default = page.query[md.c_column];
-                    let value = page.query[md.c_column].split('\'').join(' ').split('\"').join(' ').trim();
+                    md.c_default = this.mod.query[md.c_column];
+                    let value = this.mod.query[md.c_column].split('\'').join(' ').split('\"').join(' ').trim();
                     if((md.c_column ==='c_province' || md.c_column ==='c_city' || md.c_column ==='c_country') && value ==='-1'){    continue;   }
                     ret.push(md.c_desc + ' '+this.getOpValue(md.c_op, value, md.c_coltype));
                 }
@@ -438,11 +433,10 @@ export default class extends think.model.base {
      * 根据设置取得页面显示列表返回的字段，一般不需要重写本方法
      * @method  getListFields
      * @return {string} fields 部分， 形如：id,c_name,xxx
-     * @param   {object} pageCols 业务模块的显示列设置
      */
-    getListFields(pageCols){
+    getListFields(){
     let fields = [];
-    for(let col of pageCols){
+    for(let col of this.modCols){
       if (!col.c_isretrieve) continue;
       //if(col.c_column ==='c_user'){  console.log(col);}
       if (col.c_type === "replace" && (col.c_isshow || col.c_isview) && (col.c_memo.indexOf('select')===0)) //以select开头
@@ -461,12 +455,10 @@ export default class extends think.model.base {
      * 新增的时候，初始化编辑页面的值，子类重写本方法可以定制新增页面的初始值
      * @method  pageEditInit
      * @return {object} 新增的记录对象
-     * @param   {object} pageEdits 业务模块的编辑列设置
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    async pageEditInit(pageEdits,page){
+    async pageEditInit(){
         let md ={};
-        for(let edit of pageEdits){
+        for(let edit of this.modEdits){
             if(edit.c_column === 'id'){ continue; }
 
             let key = edit.c_column.trim();
@@ -487,55 +479,49 @@ export default class extends think.model.base {
     }
 
     /**
-     * 根据 page.c_other的设置，对页面相关参数进行设置 </br>
+     * 根据 this.mod.c_other的设置，对页面相关参数进行设置 </br>
      * 区别于 htmlGetOther
      * @method  getPageOther
      * @return {object} 在page中增加相应属性并返回
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    getPageOther(page){
-        let ret = page;
-        ret.editHeaderHtml = '';
-        ret.editCloseBtn = true;
-        if(!think.isEmpty(page.c_other)){
-            let its = page.c_other.split(',');
+    getPageOther(){
+        this.mod.editHeaderHtml = '';
+        this.mod.editCloseBtn = true;
+        if(!think.isEmpty(this.mod.c_other)){
+            let its = this.mod.c_other.split(',');
             for(let item of its){
                 let it = item.split(':');
                 if(it[0] ==='editTitle'){
-                    ret.editHeaderHtml = `<div class="bjui-pageHeader"><label data-height="30px" style="margin: 5px;">${it[1]}</label></div>`;
+                    this.mod.editHeaderHtml = `<div class="bjui-pageHeader"><label data-height="30px" style="margin: 5px;">${it[1]}</label></div>`;
                 }else if(it[0] ==='editCloseBtn'){
-                    ret.editCloseBtn = (it[1] !== 'none');
+                    this.mod.editCloseBtn = (it[1] !== 'none');
                 }
             }
         }
-
-        return ret
     }
 
     /**
      * 取当前记录对象，用于新增和修改的编辑页面展示
      * @method  getDataRecord
      * @return {object} 当前记录对象
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
-     * @param   {object} pageEdits 页面编辑列的设置
      */
-    async getDataRecord(page,pageEdits){
+    async getDataRecord(){
         let md = {};
-        if(page.editID >0) {
+        if(this.mod.editID >0) {
             let fields = [];
-            for (let edit of pageEdits) {
+            for (let edit of this.modEdits) {
                 if(edit.c_desc.indexOf('fn:')!==0){
                     fields.push(`${edit.c_desc} as ${edit.c_column}`);
                 }
             }
-            let list = await this.model(page.c_datasource).field(fields.join(',')).where({id:page.editID}).select();
+            let list = await this.model(this.mod.c_datasource).field(fields.join(',')).where({id:this.mod.editID}).select();
             md =list[0];
         }else{
-            md = await this.pageEditInit(pageEdits,page);
+            md = await this.pageEditInit();
         }
         //console.log(md);
         //对记录进行处理
-        for (let edit of pageEdits) {
+        for (let edit of this.modEdits) {
             if(edit.c_coltype ==='bool'){
                 md[edit.c_column] = think.isBoolean(md[edit.c_column]) ? md[edit.c_column] : (md[edit.c_column] === 1);
             }
@@ -546,17 +532,14 @@ export default class extends think.model.base {
      * 取编辑页面的设置，组合成列表数据的HTML输出
      * @method  htmlGetEdit
      * @return {string} HTML页面片段
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    async htmlGetEdit(page) {
+    async htmlGetEdit() {
         let html = [];
-        //let pageEdits = await think.cache(`moduleEdit${page.id}`);
-      let pageEdits = await global.model('cmpage/module').getModuleEdit(page.id);
-        let md = await this.getDataRecord(page,pageEdits);
+        let md = await this.getDataRecord();
 
         html.push(`<input name='old_record' type='hidden' value='${JSON.stringify(md).replace(/'/g,'')}' />`);
 //        global.debug(md);
-        for(let col of pageEdits){
+        for(let col of this.modEdits){
             if (!col.c_editable || col.c_column === "id" ) {  continue; }
             let colValue = md[col.c_column];
             if(col.c_desc.indexOf('fn:')===0){    //非数据库字段
@@ -572,7 +555,7 @@ export default class extends think.model.base {
             }
             if(col.c_coltype === 'timestamp'){  colValue = think.datetime(colValue); }
             if (col.c_type === "hidden" && col.c_column!=="c_city" && col.c_column!=="c_province") {
-                html.push(`<input id="${page.c_modulename + col.c_column}" name="${col.c_column}" type="hidden" value="${colValue}" />`);
+                html.push(`<input id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" type="hidden" value="${colValue}" />`);
                 continue;
             }
             col.c_format = col.c_format.trim();
@@ -592,19 +575,19 @@ export default class extends think.model.base {
                 input += `<textarea name="${col.c_column}" data-toggle="autoheight" cols="${col.c_width}" rows="1"  ${col.c_isrequired ? "data-rule=required" : ""}>${colValue}</textarea>`;
             } else if (col.c_type === "lookup") {
                 input += `<input name="${col.c_column}" type="lookup" size="${col.c_width}" value="${colValue}"
-                    data-width="800" data-height="600" data-toggle="lookup" data-title="${col.c_name} 选择" data-url="${this.getReplaceToSpecialChar(col.c_memo,page)}" readonly="readonly" />
+                    data-width="800" data-height="600" data-toggle="lookup" data-title="${col.c_name} 选择" data-url="${this.getReplaceToSpecialChar(col.c_memo)}" readonly="readonly" />
                       <!--<a class="bjui-lookup" href="javascript:;" ><i class="fa fa-search"></i></a>--> `;
             }else if (col.c_type == "areaSelect"){
-                input += `<select name="c_province" data-toggle="selectpicker"  data-nextselect="#city${page.c_modulename}" data-refurl="/cmpage/utils/get_citys?province={value}" >`;
+                input += `<select name="c_province" data-toggle="selectpicker"  data-nextselect="#city${this.mod.c_modulename}" data-refurl="/cmpage/utils/get_citys?province={value}" >`;
                 input += await global.model('cmpage/area').getProvinceItems(md['c_province'],true);
                 if(col.c_column ==='c_country'){
-                    input += `</select> <select name="c_city" id="city${page.c_modulename}" data-toggle="selectpicker" data-nextselect="#country${page.c_modulename}"
+                    input += `</select> <select name="c_city" id="city${this.mod.c_modulename}" data-toggle="selectpicker" data-nextselect="#country${this.mod.c_modulename}"
                         data-refurl="/cmpage/utils/get_countrys?city={value}" >`;
                     input += await global.model('cmpage/area').getCityItems(md['c_city'],true);
-                    input += `</select> <select name="c_country" id="country${page.c_modulename}" data-toggle="selectpicker" data-rule="required" >`;
+                    input += `</select> <select name="c_country" id="country${this.mod.c_modulename}" data-toggle="selectpicker" data-rule="required" >`;
                     input += await global.model('cmpage/area').getCountryItems(md['c_country'],true);
                 }else if(col.c_column === 'c_city'){
-                    input += `</select> <select name="c_city" id="city${page.c_modulename}" data-toggle="selectpicker" data-nextselect="#country${page.c_modulename}" >`;
+                    input += `</select> <select name="c_city" id="city${this.mod.c_modulename}" data-toggle="selectpicker" data-nextselect="#country${this.mod.c_modulename}" >`;
                     input += await global.model('cmpage/area').getCityItems(md['c_city'],true);
                 }
                 input += '</select>';
@@ -616,12 +599,12 @@ export default class extends think.model.base {
             }else if (col.c_type === "readonly") {
                 input += `<input name="${col.c_column}" type="text" size="${col.c_width}" value="${colValue}"  readonly="readonly"  />`; // style=background-color:#fde5d4;
             }else if (col.c_type === "readonlyReplace") {
-//                global.debug(col,'page.getHtmlEdit --- col readonlyReplace');
-//                global.debug(md,'page.getHtmlEdit --- md readonlyReplace');
+//                global.debug(col,'this.mod.getHtmlEdit --- col readonlyReplace');
+//                global.debug(md,'this.mod.getHtmlEdit --- md readonlyReplace');
                 input += `<input name="${col.c_column}" type="hidden"  value="${colValue}"  readonly="readonly"  />`;
                 input += `<input name="${col.c_column}_text" type="text" size="${col.c_width}" value="${await this.getReplaceText(colValue, col.c_memo)}"  readonly="readonly"  />`; // style=background-color:#fde5d4;
             }else if(col.c_column !=='c_province' && col.c_column !=='c_city'){
-                input += `<input id="${page.c_modulename + col.c_column}" name="${col.c_column}" type="${col.c_type}" size="${col.c_width}" value="${colValue}"
+                input += `<input id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" type="${col.c_type}" size="${col.c_width}" value="${colValue}"
                     ${col.c_isrequired ? "data-rule=required;" + col.c_memo : (think.isEmpty(col.c_memo) ? "" : "data-rule=" + col.c_memo)}  />`;
             }
             if (col.c_type !== "areaSelect"){
@@ -636,78 +619,115 @@ export default class extends think.model.base {
     }
 
     /**
+     * 取编辑页面的按钮设置，组合按钮的HTML输出
+     * @method  htmlGetEditBtns
+     * @return {string} HTML页面片段
+     */
+    async htmlGetEditBtns() {
+        global.debug(this.mod,'this.mod.htmlGetEditBtns -- this.mod')
+        let html = [];
+        if(this.mod.editCloseBtn){
+            html.push('<li><button type="button" class="btn-close" data-icon="close">关闭</button></li>');
+        }
+        html.push('<li ><button type="submit" class="btn-green"  data-icon="save">保存</button></li>');
+
+        if(this.mod.editID >0) {
+            let parmsUrl = JSON.parse(this.mod.parmsUrl);
+            let listIds = parmsUrl.listIds.split(',');
+            if (listIds.length > 0) {
+                let prevID = 0, nextID = 0;
+                let k = 0;
+                for (let id of listIds) {
+                    if (id == this.mod.editID) {
+                        k = listIds.indexOf(id);
+                        break;
+                    }
+                }
+                if (k > 0) {
+                    prevID = listIds[k - 1];
+                }
+                if (k < listIds.length - 1) {
+                    nextID = listIds[k + 1];
+                }
+                html.push(`<li class="left" style="margin-left: -40px;"><button type="button" class="btn-default" ${k == 0 ? 'style="display:none"' : ''} data-icon="arrow-left"
+                onclick="return pageGotoEdit('${this.mod.c_modulename}',${prevID});">上一条</button></li>`)
+                html.push(`<li class="left" ><button type="button" class="btn-default" ${nextID == 0 ? 'style="display:none"' : ''} data-icon="arrow-right"
+                onclick="return pageGotoEdit('${this.mod.c_modulename}',${nextID});">下一条</button></li>`)
+
+            }
+        }
+
+        return html.join('');
+    }
+
+
+    /**
      * 编辑页面保存,<br/>
-     * 如果是多个表的数据产生的编辑页，则根据存在于page.c_table中的列更新表，一般需要在子类中继承，例如： admin/user:pageSave
+     * 如果是多个表的数据产生的编辑页，则根据存在于this.mod.c_table中的列更新表，一般需要在子类中继承，例如： admin/user:pageSave
      * @method  pageSave
      * @return {object} 记录对象
-     * @param  {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      * @param  {object} parms 前端传入的FORM参数
      */
-    async pageSave(page,parms){
-        let model =global.model('cmpage/module');
-        //page.parmsUrl = parms.parmsUrl;
-        //page.editID = prams.id;
-        let pageEdits = await model.getModuleEdit(page.id);
-        //let colList = await model.getAllColumns(page.c_table);
-        global.debug(parms,'page.pageSave - parms - 递交的内容')
-        let md = {};
-        for(let edit of pageEdits){
+    async pageSave(parms){
+        global.debug(parms,'this.mod.pageSave - parms - 递交的内容')
+        //global.debug(this.modEdits,'this.mod.pageSave - this.modEdits')
+        this.rec = {};
+        for(let edit of this.modEdits){
             if(edit.c_editable && edit.c_column.indexOf('c_')===0 ) {      //&& this.isExistColumn(edit.c_column,colList)
                 if(edit.c_type === 'checkbox'){
-                    md[edit.c_column] = think.isEmpty(parms[edit.c_column]) ? false : parms[edit.c_column];
+                    this.rec[edit.c_column] = think.isEmpty(parms[edit.c_column]) ? false : parms[edit.c_column];
                 }else{
-                    md[edit.c_column] = parms[edit.c_column];
+                    this.rec[edit.c_column] = parms[edit.c_column];
                 }
             }
         }
+        //global.debug(this.rec,'this.mod.pageSave - md - 保存内容')
         if(parms.id == 0){
-            //let id = await this.query(global.getInsertSql(md,page.c_table) +' returning id;');
-            md.id = await this.model(page.c_table).add(global.checksql(md));
-            await this.pageSaveLog(page,parms,md,pageEdits,'add');
+            //let id = await this.query(global.getInsertSql(md,this.mod.c_table) +' returning id;');
+            this.rec.id = await this.model(this.mod.c_table).add(global.checksql(this.rec));
+            await this.pageSaveLog(parms,'add');
         }else {
-            await this.model(page.c_table).where({id:parseInt(parms.id)}).update(global.checksql(md));
-            md.id = parms.id;
-            await this.pageSaveLog(page,parms,md,pageEdits,'update');
+            await this.model(this.mod.c_table).where({id:parseInt(parms.id)}).update(global.checksql(this.rec));
+            this.rec.id = parms.id;
+            await this.pageSaveLog(parms,'update');
         }
-        //console.log(md);
-        return md;
+
     }
 
     /**
      * 保存后的操作日志记录,，通过重写可在子类中定制日志的格式
      * @method  pageSaveLog
      * @return {无}
-     * @param  {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      * @param  {object} parms 前端传入的FORM参数
-     * @param {object} md   记录对象
-     * @param {object} pageEdits    业务模块的编辑列设置
      * @param {string} flag 操作的类型标志
      */
-    async pageSaveLog(page,parms,md,pageEdits,flag){
+    async pageSaveLog(parms,flag){
         let log =[];
+        let md = this.rec;
         if(flag === 'add' ){
-            for(let edit of pageEdits){
+            for(let edit of this.modEdits){
                 if(edit.c_editable ) {
                     log.push(`${edit.c_name}:${md[edit.c_column]}`);
                 }
             }
-            await global.model('admin/log').addLog(page.user, log.join(', '),page.id, md.id, global.enumStatusExecute.SUCCESS.id, global.enumLogType.ADD.id);
+            await global.model('admin/log').addLog(this.mod.user, log.join(', '),this.mod.id, md.id, global.enumStatusExecute.SUCCESS, global.enumLogType.ADD);
         }else if(flag === 'update'){
             let oldMd = {};
             if(think.isEmpty(parms["old_record"])){
-                oldMd = await this.getDataRecord(page,pageEdits);
+                oldMd = await this.getDataRecord();
             }else{
                 oldMd = JSON.parse(parms["old_record"]);
             }
             //think.log(oldMd);
             log.push(`id:${md.id}`);
-            for(let edit of pageEdits){
+            for(let edit of this.modEdits){
                 if(edit.c_editable && edit.c_column !=='c_time' && edit.c_column !=='c_user' && edit.c_column.indexOf('c_')===0 && edit.c_type.indexOf('readonly') === -1) {
                     if(edit.c_coltype === 'timestamp'){
                         md[edit.c_column] =  global.datetime(md[edit.c_column],'yyyy-MM-dd HH:mm:ss');
                         oldMd[edit.c_column] =  global.datetime(oldMd[edit.c_column],'yyyy-MM-dd HH:mm:ss');
                     }
-//                    global.debug(edit,'page.pageSaveLog - edit - 值有变化的字段保存到日志');
+                    //global.debug(edit,'this.mod.pageSaveLog - edit - 值有变化的字段保存到日志');
+                    //global.debug(md[edit.c_column],'this.mod.pageSaveLog - md[edit.c_column] ');
                     let newValue = global.objToString(md[edit.c_column]).replace(/'/g,'');
                     if(oldMd[edit.c_column] !=newValue) {
 //                        console.log(global.objToString(md[edit.c_column]));
@@ -718,7 +738,7 @@ export default class extends think.model.base {
                 }
             }
 //            console.log(log.join(', '));
-            await global.model('admin/log').addLog(page.user, log.join(', '),page.id, md.id, global.enumStatusExecute.SUCCESS.id,  global.enumLogType.UPDATE.id);
+            await global.model('admin/log').addLog(this.mod.user, log.join(', '),this.mod.id, md.id, global.enumStatusExecute.SUCCESS,  global.enumLogType.UPDATE);
         }
     }
 
@@ -733,7 +753,8 @@ export default class extends think.model.base {
     }
 
     //替换备注设置中的特殊字符,需要组成SQL
-    getReplaceToSpecialChar(memo,page){
+    getReplaceToSpecialChar(memo){
+
         //let ret = memo.split('*').join('\&').split(/##/).join("\'");
         if(think.isEmpty(memo)){
             return '';
@@ -743,7 +764,7 @@ export default class extends think.model.base {
             for(let parm of parms){
                 if(parm.indexOf('[[')==0){      // [[ 开头表示从parmsUrl中取值
                     let key =parm.substr(2,parm.length -2).trim();
-                    let parmsUrl = JSON.parse(page.parmsUrl);
+                    let parmsUrl = JSON.parse(this.mod.parmsUrl);
                     let val = parmsUrl[`${key}`];
                     parms[parms.indexOf(parm)] = `${key}=${val}`;
                     //console.log(parms);
@@ -751,26 +772,23 @@ export default class extends think.model.base {
             }
         }
         //let ret = memo.replace(/\*/ig,'\&').replace(/##/ig,"\'");
-        return parms.join('\&').split(/##/).join("\'");;
+        return parms.join('\&').replace(/##/g,"'");
     }
 
     /**
      * 取查看页面的设置，组合成列表数据的HTML输出
      * @method  htmlGetView
      * @return {string} HTML页面片段
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-  async htmlGetView(page) {
+  async htmlGetView() {
     let html = [];
-    //let pageEdits = await think.cache(`moduleEdit${page.id}`);
-    let pageCols = await global.model('cmpage/module').getModuleCol(page.id);
-    if(page.viewID <=0){
+    if(this.mod.viewID <=0){
       return '<tr><td>----</td><td>----</td><td>----</td><td>该数据不存在！</td><td>----</td><td>----</td><td>----</td></tr>';
     }
-    let list = await this.query(`select ${this.getListFields(pageCols)} from ${page.c_datasource} where id=${page.viewID}`);
+    let list = await this.query(`select ${this.getListFields()} from ${this.mod.c_datasource} where id=${this.mod.viewID}`);
     let md =list[0];
         //global.debug(md);
-    for(let col of pageCols){
+    for(let col of this.modCols){
       if (!col.c_isview ){
         continue;
       }
@@ -801,17 +819,15 @@ export default class extends think.model.base {
      * 子类中可以重写本方法，实现其他的删除逻辑，如判断是否可以删除，删除相关联的其他记录等等
      * @method  pageDelete
      * @return {object} 记录对象
-     * @param  {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    async pageDelete(page){
+    async pageDelete(){
         let ret={statusCode:200,message:'删除成功！',data:{}};
 
-        let model = this.model(page.c_table);
-        if(page.id >0){
-            if(page.flag == 'true'){
-                await model.where({id: page.id}).delete();
+        if(this.mod.recID >0){
+            if(this.mod.flag == 'true'){
+                await model.where({id: this.mod.recID}).delete();
             }else {
-                await model.where({id: page.id}).update({c_status:-1});
+                await model.where({id: this.mod.recID}).update({c_status:-1});
             }
         }
         return ret;

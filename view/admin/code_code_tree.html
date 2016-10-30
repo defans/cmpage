@@ -3,7 +3,7 @@
 //单击事件
 function <%= vb.treeID%>Click(event, treeId, treeNode) {
     event.preventDefault()
-    $(this).bjuiajax('doLoad', {target:$("#code<%= vb.rootID%>List"), url:"/cmpage/page/list?modulename=CodeList&c_pid="+treeNode.id})
+    $(this).bjuiajax('doLoad', {target:$("#code<%= vb.rootID%>List"), url:"/cmpage/page/list?modulename=CodeList&c_pid="+treeNode.id+"&target=code<%= vb.rootID%>List"})
 }
 
 </script>

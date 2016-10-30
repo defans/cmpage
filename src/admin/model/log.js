@@ -24,8 +24,8 @@ export default class extends CMPage {
      * @return {string}  where条件子句
      * @param {Object} page  页面设置主信息
      */
-    async getQueryWhere(page){
-        let where =await super.getQueryWhere(page);
+    async getQueryWhere(){
+        let where =await super.getQueryWhere();
         //global.debug(where);
         //where += ` and c_user=${page.user.id}`;
 
@@ -44,9 +44,9 @@ export default class extends CMPage {
      * @param {int} [logType]  日志类型，global.enum
      */
     async addLog(user,msg,moduleID,linkID,logStatus,logType){
-        //let user = await think.session('user');
+        //global.debug(logStatus,'log.addlog -- logStatus');
         msg = (msg.length >3800 ? msg.substr(0,3800):msg);
-        msg  = think.isObject(msg) ? JSON.stringify(msg).replace(/\"/g,'').replace(/\\/g,'').replace(/,/g,',  ') : msg;
+        msg  = think.isObject(msg) ? JSON.stringify(msg).replace(/"/g,'').replace(/\\/g,'').replace(/,/g,',  ') : msg;
         let md ={c_desc:msg, c_group:user.groupID, c_user:user.id, c_time:think.datetime(),c_module:moduleID,
             c_type:(think.isEmpty(logType) ? 0: logType),c_status:(think.isEmpty(logStatus) ? 0: logStatus),c_link:(think.isEmpty(linkID) ? 0: linkID)};
 

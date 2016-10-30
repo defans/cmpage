@@ -13,24 +13,34 @@ export default class extends Base {
      * @return {promise}
      */
     async designAction(){
-        let page = await global.model('cmpage/module').getModuleByName('FwProcList');
-        page.parmsUrl = JSON.stringify(this.get());
-        page.editID = this.get("id");
-        page.user = await this.session('user');
+        let module = global.model('cmpage/module')
+        let parms = await module.getModuleByName('FwProcList');
+        parms.parmsUrl = JSON.stringify(this.get());
+        parms.editID = this.get("id");
+        parms.user = await this.session('user');
         //global.debug(page);
-        let model = this.model('proc_list');
-        let procEditHtml =await model.htmlGetEdit(page);
-        this.assign('procEditHtml',procEditHtml);
-        this.assign('page',model.getPageOther(page));
+        let pageModel = this.model('proc_list');
+        pageModel.mod = parms;
+        pageModel.modEdits = await module.getModuleEdit(parms.id);
 
-        let pageAct = await global.model('cmpage/module').getModuleByName('FwAct');
-        pageAct.parmsUrl= '{}';
-        pageAct.editID =0;
-        pageAct.user = page.user;
-        let actEditHtml = await this.model('cmpage/page').htmlGetEdit(pageAct);
+        let procEditHtml =await pageModel.htmlGetEdit();
+        await pageModel.getPageOther();
+        this.assign('procEditHtml',procEditHtml);
+        this.assign('parms',pageModel.mod);
+
+        let parmsAct = await module.getModuleByName('FwAct');
+        parmsAct.parmsUrl= '{}';
+        parmsAct.editID =0;
+        parmsAct.user = parms.user;
+        let pageAct = global.model('cmpage/page');
+        pageAct.mod = parmsAct;
+        pageAct.modEdits = await module.getModuleEdit(parmsAct.id);
+
+        let actEditHtml = await pageAct.htmlGetEdit();
+        //global.debug(actEditHtml,'flow.controller.proc - actEditHtml');
         this.assign('actEditHtml','<tbody>'+actEditHtml+'</tbody>');
 
-        let flowMap = await model.getFlowMap(page.editID);
+        let flowMap = await pageModel.getFlowMap(parms.editID);
         this.assign('flowMap',flowMap);
 
         return this.display();

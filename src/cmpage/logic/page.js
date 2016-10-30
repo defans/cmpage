@@ -31,9 +31,10 @@ export default class extends think.logic.base {
      */
     async saveAction(){
         let parms =this.post();
+        let module = this.model('module');
 
-        let page = await this.model('module').getModuleByName(parms.modulename);
-        let pageEdits = await this.model('module').getModuleEdit(page.id);
+        let page = await module.getModuleByName(parms.modulename);
+        let pageEdits = await module.getModuleEdit(page.id);
       let rules = {};
       for(let edit of pageEdits){
           if(edit.c_editable && !think.isEmpty(edit.c_validate_rules)){

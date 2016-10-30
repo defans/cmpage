@@ -59,7 +59,7 @@ export default class extends Base {
    * index action
    * @return {Promise} []
    */
-  indexAction(){
+  async indexAction(){
       let vb={action:'index'};
       this.assign('vb',vb);
     return this.display();

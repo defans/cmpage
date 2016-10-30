@@ -15,8 +15,8 @@ export default class extends CMPage {
     /**
      * 初始化编辑页面的值
      */
-    async pageEditInit(pageEdits,page){
-        let md = await super.pageEditInit(pageEdits,page);
+    async pageEditInit(){
+        let md = await super.pageEditInit();
         md.c_time_to = '2099-12-31 00:00:00';   //默认的截止日期
         md.c_class = 'flow/task'; //默认的实现类
 
@@ -25,15 +25,10 @@ export default class extends CMPage {
     /**
      * 根据 page.c_other的设置，对页面相关参数进行设置
      */
-    getPageOther(page){
-        let ret = page;
+    async getPageOther(){
         //console.log(ret);
-        ret.editCloseBtn =true;
-        if(page.editID == 0){
-            return ret;
-        }else{
-            return super.getPageOther(page);
-        }
+        this.mod.editCloseBtn =true;
+        return await super.getPageOther();
     }
 
 
@@ -41,8 +36,8 @@ export default class extends CMPage {
      * 编辑页面保存,
      * 如果是多个表的视图，则根据存在于page.c_table中的列更新表，一般需要在子类中继承
      */
-    async pageSave(page,parms){
-        let md = super.pageSave(page,parms);
+    async pageSave(parms){
+        let md = await super.pageSave(parms);
         if(parms.id ==0 ){
             //根据模板的类型自动生成活动节点
             await this.initActs(md);
