@@ -123,8 +123,6 @@ export default class extends think.base {
      * @param   {object} obj 源对象
      */
     objToString = function(obj){
-        if(think.isEmpty(obj)){return '';}
-
         let ret = [];
         if(think.isObject(obj)) {
             for (let key in obj) {
@@ -157,6 +155,22 @@ export default class extends think.base {
     };
 
     /**
+     * 从一个对象数组中取某一列（属性）值组成的数组，一般用于处理select返回的结果集
+     * @method  arrGetValuesByColumnName
+     * @return  {Array}  新的数组，由源数组元素的某个属性值组成
+     * @param   {Array} arr 对象数组
+     * @param   {object} fromObj 源对象
+     * @param   {string} columnName 属性名称
+     */
+    arrGetValuesByColumnName = function(arr,columnName){
+        let ret = [];
+        for(let obj of arr){
+            ret.push(obj[columnName]);
+        }
+        return ret;
+    };
+
+    /**
      * 进行CRUD之前转换成合适的值，用来匹配 thinkjs 的CRUD方法
      * @method  checksql
      * @return  {object}  新的对象，其属性已做SQL特性匹配
@@ -178,7 +192,7 @@ export default class extends think.base {
         if(think.env === 'development'){
             console.log(think.isObject(msg) ? JSON.stringify(msg).replace(/"/g,'').replace(/\\/g,'').replace(/,/g,',  ') : msg);
             if(!think.isEmpty(desc)){
-                console.log('-------- '+desc);
+                console.log(' --- '+desc);
             }
         }
 

@@ -475,6 +475,8 @@ export default class extends think.model.base {
             }
         }
         //console.log(md);
+        md.c_user = this.mod.user.id;
+        md.c_group = this.mod.groupID;
         return md
     }
 
@@ -526,6 +528,7 @@ export default class extends think.model.base {
                 md[edit.c_column] = think.isBoolean(md[edit.c_column]) ? md[edit.c_column] : (md[edit.c_column] === 1);
             }
         }
+        this.rec = md;
         return md;
     }
     /**
@@ -629,7 +632,13 @@ export default class extends think.model.base {
         if(this.mod.editCloseBtn){
             html.push('<li><button type="button" class="btn-close" data-icon="close">关闭</button></li>');
         }
-        html.push('<li ><button type="submit" class="btn-green"  data-icon="save">保存</button></li>');
+        if(this.rec.hasOwnProperty('c_task') && this.rec.c_task > 0){
+            let parmsUrl =JSON.parse(this.mod.parmsUrl);
+            html.push(`<li ><button type="button" class="btn-green"  data-icon="save"
+                onclick="return pageSaveByTask('${this.mod.c_modulename}',${parmsUrl.taskActID},${parmsUrl.status});">保存</button></li>`);
+        }else{
+            html.push('<li ><button type="submit" class="btn-green"  data-icon="save">保存</button></li>');
+        }
 
         if(this.mod.editID >0) {
             let parmsUrl = JSON.parse(this.mod.parmsUrl);
@@ -653,8 +662,75 @@ export default class extends think.model.base {
                 onclick="return pageGotoEdit('${this.mod.c_modulename}',${prevID});">上一条</button></li>`)
                 html.push(`<li class="left" ><button type="button" class="btn-default" ${nextID == 0 ? 'style="display:none"' : ''} data-icon="arrow-right"
                 onclick="return pageGotoEdit('${this.mod.c_modulename}',${nextID});">下一条</button></li>`)
-
             }
+            //如果和流程相关，则显示流程节点的按钮
+            if(this.rec['c_task'] >0){
+                html.push(await this.htmlGetActBtns());
+            }
+        }
+
+        return html.join('');
+    }
+
+    /**
+     * 取流程节点相关的按钮设置，组合按钮的HTML输出</br>
+     * 考虑到按钮输出和业务关联度大，定义在此处
+     * @method  htmlGetActBtns
+     * @return {string} HTML页面片段
+     */
+    async htmlGetActBtns() {
+        let html = [];
+        let task = await this.model('flow/task').getTask(this.rec.c_task);
+        if(think.isEmpty(task)){    return ''; }
+
+        //取流程的当前节点，然后取按钮设置
+        let taskModel = this.model('flow/task');
+        global.debug(task,'page.htmlGetActBtns - task');
+        let act = await taskModel.getTaskWithCurrentAct(task);
+        global.debug(act,'page.htmlGetActBtns - act');
+        let taskAct = taskModel.currTaskAct;
+        if(act.id >0){
+            let form = think.isEmpty(act.c_form) ? {} : eval("("+ act.c_form +")");;
+            if(form.hasOwnProperty('modulename') && form['modulename'] === this.mod.c_modulename ){
+                let btns = [];
+                act.formBtn = think.isEmpty(act.c_form_btn) ? {}:eval(`(${act.c_form_btn})`);
+                if(think.isArray(act.formBtn)){
+                    for(let btn of act.formBtn){
+                        btns.push(btn);
+                    }
+                }else{
+                    btns.push(act.formBtn);
+                }
+                for(let btn of btns){
+                    btn.label = think.isEmpty(btn['label']) ? act.c_name : btn.label;
+                    btn.class = think.isEmpty(btn['class']) ? 'btn-green' : btn.class;
+                    btn.icon = think.isEmpty(btn['icon']) ? 'cogs' : btn.icon;
+                    if(!think.isEmpty(btn['onclick'])){
+                        btn.onclick = btn.onclick.replace(/#taskID#/g,task.id);
+                        html.push(`<li class="left" ><button type="button" class="${btn.class}" data-icon="${btn.icon}" onclick="${btn.onclick}">${btn.label}</button></li>`)
+                    }
+                    else if(!think.isEmpty(btn['url'])){
+                        btn.title = think.isEmpty(btn['title']) ? btn.label : btn.title;
+                        btn.opentype = think.isEmpty(btn['opentype']) ? 'dialog' : btn.opentype;
+                        btn.url = btn.url.replace(/#taskID#/g,task.id).replace(/#taskActID#/g,taskAct.id);
+                        html.push(`<li class="left" ><button type="button" class="${btn.class}" data-icon="${btn.icon}" data-toggle="${btn.opentype}"
+                        data-options="{id:'flowDialog', url:'${btn.url}', title:'${btn.title}'}">${btn.label}</button></li>`)
+                    }else {
+                        html.push(`<li class="left" ><button type="button" class="${btn.class}" data-icon="${btn.icon}"
+                        onclick="return fwRunAct(${taskAct.id},true,'Leave');">${btn.label}</button></li>`)
+                    }
+                }
+                //增加可终止或者可挂起按钮
+                if(taskAct.c_status == global.enumTaskActStatus.WAIT){
+                    if(act.c_can_terminate){
+                        html.push(`<li class="left" ><button type="button" class="btn-red" data-icon="stop" onclick="return fwTerminateAct(${taskAct.id});">终止</button></li>`)
+                    }
+                    if(act.c_can_suspend){
+                        html.push(`<li class="left" ><button type="button" class="btn-orange" data-icon="pause" onclick="return fwSuspendAct(${taskAct.id});">挂起</button></li>`)
+                    }
+                }
+            }
+
         }
 
         return html.join('');
@@ -665,7 +741,6 @@ export default class extends think.model.base {
      * 编辑页面保存,<br/>
      * 如果是多个表的数据产生的编辑页，则根据存在于this.mod.c_table中的列更新表，一般需要在子类中继承，例如： admin/user:pageSave
      * @method  pageSave
-     * @return {object} 记录对象
      * @param  {object} parms 前端传入的FORM参数
      */
     async pageSave(parms){
@@ -825,9 +900,9 @@ export default class extends think.model.base {
 
         if(this.mod.recID >0){
             if(this.mod.flag == 'true'){
-                await model.where({id: this.mod.recID}).delete();
+                await this.model(this.mod.c_table).where({id: this.mod.recID}).delete();
             }else {
-                await model.where({id: this.mod.recID}).update({c_status:-1});
+                await this.model(this.mod.c_table).where({id: this.mod.recID}).update({c_status:-1});
             }
         }
         return ret;

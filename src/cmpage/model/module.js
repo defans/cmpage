@@ -23,6 +23,7 @@ export default class extends think.model.base {
     sumTypes(){
         return [{value:"none",text:"无"},{value:"text",text:"文本"},{value:"sum",text:"合计"},{value:"avg",text:"平均"}];
     }
+
     //编辑页面的控件类型
     editTypes(){
         return [{value:"text",text:"文本"},{value:"textarea",text:"多行文本"},{value:"number",text:"数字"},{value:"datetime",text:"日期时间"},
@@ -98,7 +99,7 @@ export default class extends think.model.base {
         let md = await this.model('t_module').where({id:moduleID}).find();
         let model =this.model('t_module_col');
 
-        await model.where({c_module: md.id}).delete();
+        //await model.where({c_module: md.id}).delete();
         let columns = await this.getAllColumns(md.c_datasource,md.c_path);
         if(columns.length ===0){    return {statusCode:200,message:'没有列数据，请确认数据连接是否正确。'}; }
         let comments = [];
@@ -107,7 +108,18 @@ export default class extends think.model.base {
         }else{
             Object.assign(comments,columns);
         }
+        let mcols = await this.getModuleCol(moduleID);
         for (let [k,col] of columns.entries()) {
+            //如果列已经设置过，则跳过
+            let exist = false;
+            for(let mcol of mcols){
+                if(mcol.c_column === col.column){
+                    exist = true;
+                    break;
+                }
+            }
+            if(exist){  continue;   }
+
             let colmd = {c_module:md.id, c_column:col.column, c_coltype:col.type, c_scale:col.length, c_name:this.getColumnComment(comments,col.column),
                 c_desc : col.column, c_type:'text', c_format: "", c_order:(k+1), c_width:50, c_style:'',
                 c_isretrieve:true, c_isshow:(col.column !== 'id'),c_isview:(col.column !== 'id'), c_user:0, c_time: think.datetime(),
@@ -129,7 +141,7 @@ export default class extends think.model.base {
         let md = await this.model('t_module').where({id:moduleID}).find();
         let model =this.model('t_module_edit');
 
-        await model.where({c_module: md.id}).delete();
+        //await model.where({c_module: md.id}).delete();
         let columns = await this.getAllColumns(md.c_datasource,md.c_path);
         if(columns.length ===0){    return {statusCode:200,message:'没有列数据，请确认数据连接是否正确。'}; }
         let comments = [];
@@ -138,7 +150,18 @@ export default class extends think.model.base {
         }else{
             Object.assign(comments,columns);
         }
+        let mcols = await this.getModuleEdit(moduleID);
         for (let [k,col] of columns.entries()) {
+            //如果列已经设置过，则跳过
+            let exist = false;
+            for(let mcol of mcols){
+                if(mcol.c_column === col.column){
+                    exist = true;
+                    break;
+                }
+            }
+            if(exist){  continue;   }
+
             let colmd = {c_module:md.id, c_column:col.column, c_coltype:col.type, c_scale:col.length, c_name:this.getColumnComment(comments,col.column),
                 c_desc : col.column,c_editable:true, c_type:'text', c_format:'', c_order:(k+1), c_width:28, c_style:'',
                 c_suffix:'', c_isshow:true,c_isrequired:false, c_user:0, c_time: think.datetime(), c_memo:'', c_mui:'',c_validate_rules:''};
@@ -160,7 +183,7 @@ export default class extends think.model.base {
         }
         let md = await this.model('t_module').where({id:moduleID}).find();
         let model =this.model('t_module_query');
-        await model.where({c_module: md.id}).delete();
+        //await model.where({c_module: md.id}).delete();
         let columns = await this.getAllColumns(md.c_datasource,md.c_path);
         if(columns.length ===0){    return {statusCode:200,message:'没有列数据，请确认数据连接是否正确。'}; }
         let comments = [];
@@ -169,7 +192,18 @@ export default class extends think.model.base {
         }else{
             Object.assign(comments,columns);
         }
+        let mcols = await this.getModuleQuery(moduleID);
         for (let [k,col] of columns.entries()) {
+            //如果列已经设置过，则跳过
+            let exist = false;
+            for(let mcol of mcols){
+                if(mcol.c_column === col.column){
+                    exist = true;
+                    break;
+                }
+            }
+            if(exist){  continue;   }
+
             let colmd = {c_module:md.id, c_column:col.column, c_coltype:col.type, c_scale:col.length, c_name:this.getColumnComment(comments,col.column),
                 c_desc : col.column,c_type:(col.column ==='id' ? 'hidden':'text'),c_default:'', c_format:'', c_order:(k+1), c_width:12, c_style:'',
                 c_suffix:'', c_isshow:false,c_panel_index:0, c_user:0, c_time: think.datetime(), c_memo:'', c_mui:''};
@@ -184,30 +218,42 @@ export default class extends think.model.base {
         }
         let md = await this.model('t_module').where({id:moduleID}).find();
         let model =this.model('t_module_btn');
-        await model.where({c_module: md.id}).delete();
+        //await model.where({c_module: md.id}).delete();
+        let colnames = global.arrGetValuesByColumnName(await this.getModuleBtn(moduleID),'c_object');
 
-        let colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'dialog',c_class:'btn btn-green', c_onclick:'', c_memo:'', c_mui:'',
-            c_title:'新增',c_label:'新增',c_location:0,c_object:md.c_modulename+'.Add', c_url:`/cmpage/page/edit?modulename=${md.c_modulename}*id=0`,
-            c_options:`{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:500 }`, c_icon:'plus'};
-        await model.add(global.checksql(colmd));
+        //global.debug(colnames,'module.resetModuleBtn - colnames');
+        if(colnames.indexOf(md.c_modulename+'.Add') === -1){
+            let colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'dialog',c_class:'btn btn-green', c_onclick:'', c_memo:'', c_mui:'',
+                c_title:'新增',c_label:'新增',c_location:0,c_object:md.c_modulename+'.Add', c_url:`/cmpage/page/edit?modulename=${md.c_modulename}*id=0`,
+                c_options:`{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:500 }`, c_icon:'plus'};
+            await model.add(global.checksql(colmd));
+        }
 
-        colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'#',c_class:'btn btn-orange', c_onclick:`return pageExportData();`, c_memo:'', c_mui:'',
-            c_title:'导出',c_label:'导出',c_location:5,c_object:md.c_modulename+'.ExportData', c_url:'#', c_options:'', c_icon:'file-excel-o'};
-        await model.add(global.checksql(colmd));
+        if(colnames.indexOf(md.c_modulename+'.ExportData') === -1){
+            let colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'#',c_class:'btn btn-orange', c_onclick:`return pageExportData();`, c_memo:'', c_mui:'',
+                c_title:'导出',c_label:'导出',c_location:5,c_object:md.c_modulename+'.ExportData', c_url:'#', c_options:'', c_icon:'file-excel-o'};
+            await model.add(global.checksql(colmd));
+        }
 
-        colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'dialog',c_class:'btn btn-default', c_onclick:'', c_memo:'', c_mui:'',
-            c_title:'查看',c_label:'',c_location:11,c_object:md.c_modulename+'.View', c_url:`/cmpage/page/view?modulename=${md.c_modulename}*id=#id#`,
-            c_options:`{id:##page${md.c_modulename}View##, mask:true, width:600, height:500 }`, c_icon:'info'};
-        await model.add(global.checksql(colmd));
+        if(colnames.indexOf(md.c_modulename+'.View') === -1){
+            let colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'dialog',c_class:'btn btn-default', c_onclick:'', c_memo:'', c_mui:'',
+                c_title:'查看',c_label:'',c_location:11,c_object:md.c_modulename+'.View', c_url:`/cmpage/page/view?modulename=${md.c_modulename}*id=#id#`,
+                c_options:`{id:##page${md.c_modulename}View##, mask:true, width:600, height:500 }`, c_icon:'info'};
+            await model.add(global.checksql(colmd));
+        }
 
-        colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'dialog',c_class:'btn btn-green', c_onclick:'', c_memo:'', c_mui:'',
-            c_title:'编辑',c_label:'编辑',c_location:12,c_object:md.c_modulename+'.Edit', c_url:`/cmpage/page/edit?modulename=${md.c_modulename}*id=#id#`,
-            c_options:`{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:500 }`, c_icon:'edit'};
-        await model.add(global.checksql(colmd));
+        if(colnames.indexOf(md.c_modulename+'.Edit') === -1){
+            let colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'dialog',c_class:'btn btn-green', c_onclick:'', c_memo:'', c_mui:'',
+                c_title:'编辑',c_label:'编辑',c_location:12,c_object:md.c_modulename+'.Edit', c_url:`/cmpage/page/edit?modulename=${md.c_modulename}*id=#id#`,
+                c_options:`{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:500 }`, c_icon:'edit'};
+            await model.add(global.checksql(colmd));
+        }
 
-        colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'#',c_class:'btn btn-red', c_onclick:`return page${md.c_modulename}Del(#id#,this);`, c_memo:'', c_mui:'',
-            c_title:'删除',c_label:'',c_location:13,c_object:md.c_modulename+'.Del', c_url:'#', c_options:'', c_icon:'times'};
-        await model.add(global.checksql(colmd));
+        if(colnames.indexOf(md.c_modulename+'.Del') === -1){
+            let colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'#',c_class:'btn btn-red', c_onclick:`return page${md.c_modulename}Del(#id#,this);`, c_memo:'', c_mui:'',
+                c_title:'删除',c_label:'',c_location:13,c_object:md.c_modulename+'.Del', c_url:'#', c_options:'', c_icon:'times'};
+            await model.add(global.checksql(colmd));
+        }
 
         return {statusCode:200,message:''};
     }

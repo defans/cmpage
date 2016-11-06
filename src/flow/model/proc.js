@@ -13,37 +13,29 @@
  * @class flow.model.proc
  */
 export default class extends think.model.base {
+    taskModel = null;   //当前流程实例的对象
+
     /**
-     * 一个新的流程实例
+     * 开始一个新的流程实例</br>
+     * 调用前先初始化 fwInit
      * @method  fwStart
      * @return {object}  流程实例对象
      * @params {int} procID 流程模板ID
      * @params {object} [user] 流程发起人
      */
     async fwStart(procID,user){
-        if(think.isEmpty(user)){
-            user = await think.session('user');
+        if(think.isEmpty(this.taskModel)){
+            await this.fwInit(0,user,procID);
         }
-        let proc =await this.getProcById(procID);
-
-        //console.log(proc);
-        if(think.isEmpty(proc)){
-            return {id:0, message:'流程模板不存在或设置有错误!'};
+        if(!think.isEmpty(this.taskModel)){
+            await this.taskModel.fwStart();
+            global.debug(this.taskModel.task,'proc.fwStart --- this.taskModel.task');
+            if(!think.isEmpty(this.taskModel.task)){
+                //取当前节点
+                await this.taskModel.getTaskWithCurrentAct();
+                global.debug(this.taskModel.currAct,'proc.fwStart - taskModel.currAct');
+            }
         }
-
-        let taskModel = this.model(proc.c_class);
-
-        let task = await taskModel.fwStart(proc,user);
-        global.debug(task,'proc.fwStart --- task');
-        if(think.isEmpty(task)){
-            return {id:0, message:'启动新任务失败!'};
-        }
-
-        //取当前节点
-        task = await taskModel.getTaskWithCurrentAct(task,user);
-
-        return task;
-
     }
 
     /**
@@ -54,9 +46,10 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      */
     async fwRun(taskID,user){
-        let parms = await this.fwGetProcParms(taskID,user);
-        let taskModel = this.model(parms[1].c_class);
-        return await taskModel.fwRun(...parms);
+        if(think.isEmpty(this.taskModel)){
+            await this.fwInit(taskID,user);
+        }
+        await this.taskModel.fwRun();
     }
 
     /**
@@ -67,9 +60,10 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      */
     async fwSuspend(taskID,user){
-        let parms = await this.fwGetProcParms(taskID,user);
-        let taskModel = this.model(parms[1].c_class);
-        return await taskModel.fwSuspend(...parms);
+        if(think.isEmpty(this.taskModel)){
+            await this.fwInit(taskID,user);
+        }
+        await this.taskModel.fwSuspend();
     }
 
     /**
@@ -80,9 +74,10 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      */
     async fwTerminate(taskID,user){
-        let parms = await this.fwGetProcParms(taskID,user);
-        let taskModel = this.model(parms[1].c_class);
-        return await taskModel.fwTerminate(...parms);
+        if(think.isEmpty(this.taskModel)){
+            await this.fwInit(taskID,user);
+        }
+        await this.taskModel.fwTerminate();
     }
 
     /**
@@ -93,9 +88,10 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      */
     async fwEnd(taskID,user){
-        let parms = await this.fwGetProcParms(taskID,user);
-        let taskModel = this.model(parms[1].c_class);
-        return await taskModel.fwEnd(...parms);
+        if(think.isEmpty(this.taskModel)){
+            await this.fwInit(taskID,user);
+        }
+        await this.taskModel.fwEnd();
     }
 
     /**
@@ -104,15 +100,15 @@ export default class extends think.model.base {
      * @return {Array} 其他方法调用的参数列表
      * @params {int} taskID 模板实例（任务）ID
      * @params {object} user 流程执行人
+     * @params {int} [procID] 模板ID,当 taskID===0 时，取procID的值
      */
-    async fwGetProcParms(taskID,user){
-        if(think.isEmpty(user)){
-            user = await think.session('user');
-        }
-        let task = this.model('fw_task').where({id:taskID}).find();
-        let proc =await this.getProcById(task.c_proc);
-
-        return [task,proc,user];
+    async fwInit(taskID,user,procID){
+        let task = taskID >0 ? this.model('fw_task').where({id:taskID}).find() : {};
+        let proc = await this.getProcById(taskID >0 ? task.c_proc : procID);
+        this.taskModel = this.model(think.isEmpty(proc.c_class) ? 'flow/task' : proc.c_class);
+        this.taskModel.proc = proc;
+        this.taskModel.task = task;
+        this.taskModel.user = think.isEmpty(user) ? await think.session('user') : user;
     }
 
     /**

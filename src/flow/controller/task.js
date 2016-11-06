@@ -3,39 +3,49 @@
 /**
  * 提供工作流模板设计的URL接口<br/>
  * 提供工作流引擎的URL调用接口
- * @class flow.controller.proc
+ * @class flow.controller.task
  */
 import Base from './base.js';
 
 export default class extends Base {
     /**
-     * 启动一个新的流程实例, GET调用：/flow/proc/start?proc_id=xxx
+     * 启动一个新的流程实例, GET调用：/flow/task/start?procID=xxx
      * @method  start
      * @return {json}  流程实例对象
      */
     async startAction(){
-        let user = await this.session('user');
-        let procID = this.get('proc_id');
+        let procID = this.get('procID');
         let ret = {statusCode:300,message:'流程模板不存在或设置有错误!',task:{}};
 
-        let task = await this.model('proc').fwStart(procID,user);
-        if(task.id ===0){
-            ret.message = task.message;
+        let procModel = this.model('proc');
+        await procModel.fwInit(0,await this.session('user'),procID);
+        await procModel.fwStart();
+
+        let task = procModel.taskModel.task;
+        let currAct = procModel.taskModel.currAct;
+        let currTaskAct = procModel.taskModel.currTaskAct;
+        if(think.isEmpty(task) || task.id ===0){
+//            ret.message = task.message;
             return this.json(ret);
         }
         let utilsModel = this.model('cmpage/utils');
-        ret = {statusCode:200,message:`流程已经${await utilsModel.getEnumName(task.c_status,'TaskStatus')}!`,task:task};
+        ret = {statusCode:200,message:`流程已经${await utilsModel.getEnumName(task.c_status,'TaskStatus')}!`,task:task, currAct:currAct, currTaskAct:currTaskAct};
         if(task.c_status === global.enumTaskStatus.RUN){
-            ret.message = `当前节点:${await this.model('act').getNameById(task.currAct.c_act)},
-                            状态${await utilsModel.getEnumName(task.currAct.c_status,'TaskActStatus')}`;
-            if(task.currAct.c_status === global.enumTaskActStatus.WAIT){
+            ret.message = `当前节点:${await this.model('act').getNameById(currAct.id)},
+                            状态${await utilsModel.getEnumName(currAct.c_status,'TaskActStatus')}`;
+            if(currTaskAct.c_status === global.enumTaskActStatus.WAIT && !think.isEmpty(currAct.c_form)){
                 //根据设定弹出相关界面
-                if(task.currAct.form['modulename']){
-                    task.currAct.form.url = `/cmpage/page/list?modulename=${task.currAct.form['modulename']}`;
+                global.debug(currAct,'c:task.start - currAct - 弹出界面');
+                currAct.form =eval("("+ currAct.c_form +")");  // JSON.parse(currAct.c_form);
+                if(!think.isEmpty(currAct.form['modulename'])){
+                    currAct.form.url = `/cmpage/page/edit?modulename=${currAct.form['modulename']}&id=0&taskID=${task.id}&taskActID=${currTaskAct.id}&status=${currAct.c_domain_st}`;
                 }
-                task.currAct.form.opentype = think.isEmpty(task.currAct.form['opentype']) ? 'dialog':task.currAct.form['opentype'];
-                task.currAct.form.id = think.isEmpty(task.currAct.form['id']) ? 'fwTaskAct'+task.currAct.id:task.currAct.form['id'];
-                task.currAct.form.title = think.isEmpty(task.currAct.form['title']) ? task.currAct.c_name:task.currAct.form['title'];
+                currAct.form.url = currAct.form.url.replace(/#taskID#/g,task.id).replace(/#taskActID#/g,currAct.id);
+                currAct.form.opentype = think.isEmpty(currAct.form['opentype']) ? 'dialog':currAct.form['opentype'];
+                currAct.form.id = think.isEmpty(currAct.form['id']) ? 'fwTaskAct'+currAct.id:currAct.form['id'];
+                currAct.form.title = think.isEmpty(currAct.form['title']) ? currAct.c_name:currAct.form['title'];
+                ret.task = task;
+                ret.currAct = currAct;
             }
         }
 
@@ -45,27 +55,29 @@ export default class extends Base {
     }
 
     /**
-     * 重新运行一个流程实例, GET调用：/flow/proc/run?task_id=xxx
+     * 重新运行一个流程实例, GET调用：/flow/task/run?task_id=xxx
      * @method  run
      * @return {json}  流程实例对象
      */
     async runAction(){
         let user = await think.session('user');
-        let taskID = this.get('task_id');
+        let taskID = this.get('taskID');
+        let procModel = this.model('proc');
+        await procModel.fwInit(procID,await this.session('user'));
 
         let task = await this.model('proc').fwRun(taskID,user);
 
         return this.json({statusCode:200,message:'流程重新运行成功!',task:task});
-}
+    }
 
     /**
-     * 挂起一个流程实例, GET调用：/flow/proc/suspend?task_id=xxx
+     * 挂起一个流程实例, GET调用：/flow/task/suspend?task_id=xxx
      * @method  suspend
      * @return {json}  流程实例对象
      */
     async suspendAction(){
         let user = await think.session('user');
-        let taskID = this.get('task_id');
+        let taskID = this.get('taskID');
 
         let task = await this.model('proc').fwSuspend(taskID,user);
 
@@ -73,13 +85,13 @@ export default class extends Base {
     }
 
     /**
-     * 终止一个流程实例, GET调用：/flow/proc/terminate?task_id=xxx
+     * 终止一个流程实例, GET调用：/flow/task/terminate?task_id=xxx
      * @method  terminate
      * @return {json}  流程实例对象
      */
     async terminateAction(){
         let user = await think.session('user');
-        let taskID = this.get('task_id');
+        let taskID = this.get('taskID');
 
         let task = await this.model('proc').fwTerminate(taskID,user);
 

@@ -25,96 +25,99 @@
  * @class flow.model.act
  */
 export default class extends think.model.base {
+    taskActModel = null;    //当前任务节点的实例对象
 
     /**
      * 是否可以运行一个活动(流程节点)，对外提供调用
-     * @method  fwRun
+     * @method  canRun
      * @return {bool}  判断值
-     * @params {int} actID 活动节点ID
+     * @params {int} taskActID 活动节点ID
      * @params {object} user 流程执行人
      * @params {object} [taskAct] 活动节点对象
      */
     async canRun(taskActID,user,taskAct){
-        let parms = await this.fwGetActParms(taskActID,user,taskAct);
-        let taskActModel = this.model(parms[1].c_class);
-        return await taskActModel.canRun(...parms);
+        if(think.isEmpty(this.taskActModel)){
+            await this.fwInit(taskActID,user,taskAct);
+        }
+        return await this.taskActModel.canRun();
     }
 
     /**
      * 运行一个活动(流程节点)<br/>
      * canRun的判断在具体的业务task_act中调用
      * @method  fwRun
-     * @return {object}  活动节点对象
-     * @params {int} actID 活动节点ID
+     * @params {int} taskActID 活动节点ID
      * @params {object} user 流程执行人
+     * @params {object} [taskAct] 活动节点对象
      */
-    async fwRun(taskActID,user,taskAct){
-        let parms = await this.fwGetActParms(taskActID,user,taskAct);
-        //global.debug(parms);
-        let taskActModel = this.model(think.isEmpty(parms[1].c_class) ? 'flow/task_act': parms[1].c_class);
-        return await taskActModel.fwRun(...parms);
+    async fwRun(taskActID,user,taskAct,isPass){
+        if(think.isEmpty(this.taskActModel)){
+            await this.fwInit(taskActID,user,taskAct);
+            //global.debug(this.taskActModel.taskAct,'act.fwRun - this.taskActModel.taskAct');
+        }
+        await this.taskActModel.fwRun(isPass);
     }
 
     /**
      * 挂起一个活动(流程节点)，
      * @method  fwSuspend
-     * @return {object}  活动节点对象
-     * @params {int} actID 活动节点ID
+     * @params {int} taskActID 活动节点ID
      * @params {object} user 流程执行人
      * @params {object} [taskAct] 活动节点对象
      */
     async fwSuspend(taskActID,user,taskAct){
-        let parms = await this.fwGetActParms(taskActID,user,taskAct);
-        let taskActModel = this.model(parms[1].c_class);
-        return await taskActModel.fwSuspend(...parms);
+        if(think.isEmpty(this.taskActModel)){
+            await this.fwInit(taskActID,user,taskAct);
+        }
+        await this.taskActModel.fwSuspend();
     }
 
     /**
      * 终止一个活动(流程节点)，
      * @method  fwTerminate
-     * @return {object}  活动节点对象
-     * @params {int} actID 活动节点ID
+     * @params {int} taskActID 活动节点ID
      * @params {object} user 流程执行人
      * @params {object} [taskAct] 活动节点对象
      */
     async fwTerminate(taskActID,user,taskAct){
-        let parms = await this.fwGetActParms(taskActID,user,taskAct);
-        let taskActModel = this.model(parms[1].c_class);
-        return await taskActModel.fwTerminate(...parms);
+        if(think.isEmpty(this.taskActModel)){
+            await this.fwInit(taskActID,user,taskAct);
+        }
+
+        await this.taskActModel.fwTerminate();
     }
 
     /**
      * 正常结束一个活动(流程节点)，
      * @method  fwEnd
-     * @return {object}  活动节点对象
-     * @params {int} actID 活动节点ID
+     * @params {int} taskActID 活动节点ID
      * @params {object} user 流程执行人
      * @params {object} [taskAct] 活动节点对象
      */
     async fwEnd(taskActID,user,taskAct){
-        let parms = await this.fwGetActParms(taskActID,user,taskAct);
-        let taskActModel = this.model(parms[1].c_class);
-        return await taskActModel.fwEnd(...parms);
+        if(think.isEmpty(this.taskActModel)){
+            await this.fwInit(taskActID,user,taskAct);
+        }
+
+        await this.taskActModel.fwEnd();
     }
 
     /**
      * 取活动(流程节点)参数，供其他方法调用
      * @method  fwGetActParms
-     * @return {Array} 其他方法调用的参数列表
      * @params {int} actID 活动节点ID
      * @params {object} user 流程执行人
      * @params {object} [taskAct] 活动节点对象
      */
-    async fwGetActParms(taskActID,user,taskAct){
-        if(think.isEmpty(user)){
-            user = await think.session('user');
-        }
-        if(think.isEmpty(taskAct)){
-            taskAct = await this.model('vw_task_act').where({id:taskActID}).find()
-        }
+    async fwInit(taskActID,user,taskAct){
+        taskAct = think.isEmpty(taskAct) ? await this.model('vw_task_act').where({id:taskActID}).find() : taskAct;
+        global.debug(taskAct,'act.fwInit - taskAct');
         let act =await this.getActByIdAndProcId(taskAct.c_act, taskAct.c_proc);
-
-        return [taskAct,act,user];
+        global.debug(act,'act.fwInit - act');
+        this.taskActModel = this.model(think.isEmpty(act.c_class) ? 'flow/task_act': act.c_class);
+        this.taskActModel.taskAct = taskAct;
+        this.taskActModel.act = act;
+        this.taskActModel.user = think.isEmpty(user) ? await think.session('user') : user;
     }
 
 
@@ -192,8 +195,6 @@ export default class extends think.model.base {
         let acts = await this.getActsCache();
         for(let act of acts){
             act.domain = think.isEmpty(act.c_domain) ? {}: eval(`(${act.c_domain})`);
-            //act.btn_style = think.isEmpty(act.c_btn_style) ? {}:eval(`(${act.c_btn_style})`);
-            //act.form = think.isEmpty(act.c_form) ? {}:eval(`(${act.c_form})`);
         }
         return acts;
     }
@@ -201,8 +202,6 @@ export default class extends think.model.base {
         let acts = await this.getActsByProcIdCache(procID);
         for(let act of acts){
             act.domain = think.isEmpty(act.c_domain) ? {}: eval(`(${act.c_domain})`);
-            //act.btn_style = think.isEmpty(act.c_btn_style) ? {}:eval(`(${act.c_btn_style})`);
-            //act.form = think.isEmpty(act.c_form) ? {}:eval(`(${act.c_form})`);
         }
         return acts;
     }

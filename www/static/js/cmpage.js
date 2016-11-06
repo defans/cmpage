@@ -6,6 +6,25 @@ function pageGotoEdit(modulename,editID){
     return true;
 }
 
+/* cmpage/page/edit 工作流相关编辑界面，保存 */
+function pageSaveByTask(modulename,taskActID,status){
+    //var page = pageGetCurrent(obj);
+    BJUI.ajax('ajaxform', {
+        url: '/cmpage/page/save',
+        form: $('#edit'+modulename+'Form'),
+        validate: true,
+        loadingmask: true,
+        okCallback: function(json, options) {
+            //TODO: 关闭界面或者刷新 id>0 的编辑页
+            var rec =json.data;
+            var url = '/cmpage/page/edit?modulename='+modulename+'&id='+rec.id +'&taskID='+rec.c_task+'&taskActID='
+                +taskActID+'&status='+status +'&listIds=';
+            BJUI.dialog('reload', {url:url});
+        }
+    });
+    return true;
+}
+
 /* cmpage/page/list -- delete record */
 function pageDelete(id,obj,flag) {
     var page = pageGetCurrent(obj);
@@ -99,20 +118,20 @@ function fwStart(procID) {
     BJUI.alertmsg("confirm", "是否确定要启动该模板的一个新的实例？", {
         okCall: function () {
             $.ajax({
-                url:  "/flow/task/start?proc_id=" + procID,
+                url:  "/flow/task/start?procID=" + procID,
                 dataType: "json",
                 success: function(ret) {
                     if(ret.statusCode == 200){
                         //根据任务的当前状态分别处理
-                        var task = ret.task;
-                        if(task.c_status === global.enumTaskStatus.RUN){
-                            if(task.currAct){
+                        var currAct = ret.currAct;
+                        if(ret.task.c_status === global.enumTaskStatus.RUN){
+                            if(currAct.form){
                                 //根据当前节点的状态分别处理
-                                if(task.currTaskAct.c_status === global.enumTaskActStatus.WAIT){
+                                if(ret.currTaskAct.c_status === global.enumTaskActStatus.WAIT){
                                     //根据设定弹出相关界面
-                                    if(task.currAct.form.url){
-                                        if(task.currAct.form.opentype ==='dialog'){
-                                            BJUI.dialog(task.currAct.form);
+                                    if(currAct.form.url){
+                                        if(currAct.form.opentype ==='dialog'){
+                                            BJUI.dialog(currAct.form);
                                         }else{
                                         }
                                     }
@@ -134,21 +153,88 @@ function fwStart(procID) {
     return false;
 }
 
-function fwTerminate(procID) {
-    BJUI.alertmsg("confirm", "是否确定要终止本次流程？", {
+function fwTerminateAct(taskActID) {
+    BJUI.alertmsg("confirm", "是否确定要终止或取消本次操作？", {
         okCall: function () {
-            $.ajax({
-                url:  "/flow/task/terminate?proc_id=" + procID,
-                dataType: "json",
-                success: function(ret) {
-                    if(ret.statusCode == 200){
-                        BJUI.alertmsg(ret.message);
+            BJUI.ajax('doajax', {
+                url:  "/flow/task_act/terminate?taskActID=" + taskActID,
+                okCallback: function(json, options) {
+                    BJUI.alertmsg(json.message);
+                }
+            });
+        }
+    });
+    return false;
+}
+function fwSuspendAct(taskActID) {
+    BJUI.alertmsg("confirm", "是否确定要挂起本次操作？", {
+        okCall: function () {
+            BJUI.ajax('doajax', {
+                url:  "/flow/task_act/suspend?taskActID=" + taskActID,
+                okCallback: function(json, options) {
+                    BJUI.alertmsg(json.message);
+                }
+            });
+        }
+    });
+    return false;
+}
+function fwRunAct(taskActID,isPass,modulename) {
+    BJUI.alertmsg("confirm", "是否确定要继续运行本次操作？", {
+        okCall: function () {
+            BJUI.ajax('doajax', {
+                url:  "/flow/task_act/run?taskActID=" + taskActID+(isPass ? '&isPass=true':''),
+                okCallback: function(json, options) {
+                    BJUI.alertmsg(json.message);
+                    if(json.statusCode == 200){
+                        pageRefresh(modulename);
+                        BJUI.dialog('closeCurrent');
                     }
                 }
             });
         }
     });
+    return false;
+}
 
+function fwTerminate(taskID) {
+    BJUI.alertmsg("confirm", "是否确定要终止本次流程？", {
+        okCall: function () {
+            BJUI.ajax('doajax', {
+                url: "/flow/task/terminate?taskID=" + taskID,
+                okCallback: function(json, options) {
+                    BJUI.alertmsg(json.message);
+                }
+            });
+        }
+    });
+    return false;
+}
+
+function fwSuspend(taskID) {
+    BJUI.alertmsg("confirm", "是否确定要挂起本次流程？", {
+        okCall: function () {
+            BJUI.ajax('doajax', {
+                url: "/flow/task/suspend?taskID=" + taskID,
+                okCallback: function(json, options) {
+                    BJUI.alertmsg(json.message);
+                }
+            });
+        }
+    });
+    return false;
+}
+function fwRun(taskID) {
+    BJUI.alertmsg("confirm", "是否确定要继续运行本次流程？", {
+        okCall: function () {
+            BJUI.ajax('doajax', {
+                url: "/flow/task/run?taskID=" + taskID,
+                okCallback: function(json, options) {
+                    BJUI.alertmsg(json.message);
+                }
+            });
+        }
+    });
     return false;
 }
 
