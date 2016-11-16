@@ -62,8 +62,8 @@ export default class extends CMPage {
     /**
      * 根据用户ID取用户名称，一般用于页面模块配置中的‘替换’调用: admin/user:getNameById
      * @method  getNameById
-     * @return {string}  参数名称
-     * @param {int} id  参数ID
+     * @return {string}  用户名称
+     * @param {int} id  用户ID
      */
     async getNameById(id){
         let users =await this.getUsers();
@@ -74,7 +74,21 @@ export default class extends CMPage {
         }
         return '';
     }
-
+    /**
+     * 根据用户ID取用户对象
+     * @method  getNameById
+     * @return {object}  用户对象
+     * @param {int} id  用户ID
+     */
+    async getUserById(id){
+        let users =await this.getUsers();
+        for(let user of users){
+            if(user.id == id){
+                return user;
+            }
+        }
+        return {};
+    }
     /**
      * 根据用户登录名和密码取用户记录对象，
      * @method  getUserByLogin

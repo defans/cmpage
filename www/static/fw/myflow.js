@@ -484,8 +484,8 @@
 			if (!myflow.config.editable)
 				return;
 			if (src.getId() == _id) {
-				parent.window.actShow($(_r),src);
-				//$(_r).trigger('showprops', [_o.props, src]);
+                    parent.window.actShow($(_r), src);
+                    //$(_r).trigger('showprops', [_o.props, src]);
 			} else {
 				hideBox();
 			}
@@ -1023,8 +1023,8 @@
 				return;
 			if (src && src.getId() == _id) {
 				_dotList.show();
-				//$(_r).trigger('showprops', [_o.props, _this]);
-                parent.window.pathShow($(_r),src);
+                //$(_r).trigger('showprops', [_o.props, _this]);
+                parent.window.pathShow($(_r), src);
 			} else {
 				_dotList.hide();
 			}
@@ -1219,103 +1219,81 @@
 
 		$.extend(true, myflow.config, o);
 
-		/**
-		 * 删除： 删除状态时，触发removerect事件，连接在这个状态上当路径监听到这个事件，触发removepath删除自身；
-		 * 删除路径时，触发removepath事件
-		 */
-		//$(document).keydown(function(arg) {
-		//	if (!myflow.config.editable)
-		//		return;
-		//	if (arg.keyCode == 46) {
-		//		var c = $(_r).data('currNode');
-		//		if (c) {
-		//			if (c.getId().substring(0, 4) == 'rect') {
-         //               parent.window.actDeleteConfirm($(_r),c);
-         //               //$(_r).trigger('removerect', c);
-		//			} else if (c.getId().substring(0, 4) == 'path') {
-		//				$(_r).trigger('removepath', c);
-		//			}
-        //
-		//			$(_r).removeData('currNode');
-		//		}
-		//	}
-		//	//alert(arg.keyCode);
-		//});
+        if(myflow.config.editable) {
+            $(document).click(function() {
+                $(_r).data('currNode', null);
+                $(_r).trigger('click', {
+                    getId: function () {
+                        return '00000000';
+                    }
+                });
+                //$(_r).trigger('showprops', [myflow.config.props.props, {
+                //					getId : function() {
+                //						return '00000000';
+                //					}
+                //				}]);
+            });
 
-		$(document).click(function() {
-			$(_r).data('currNode', null);
-			$(_r).trigger('click', {
-				getId : function() {
-					return '00000000';
-				}
-			});
-			//$(_r).trigger('showprops', [myflow.config.props.props, {
-			//					getId : function() {
-			//						return '00000000';
-			//					}
-			//				}]);
-		});
-        $('#myflow').click(function(){
-            parent.window.procShow();
-        });
+            $('#myflow').click(function () {
+                parent.window.procShow();
+            });
+            // 删除事件
+            var removeHandler = function(e, src) {
+                if (!myflow.config.editable)
+                    return;
+                if (src.getId().substring(0, 4) == 'rect') {
+                    _states[src.getId()] = null;
+                    src.remove();
+                } else if (src.getId().substring(0, 4) == 'path') {
+                    _paths[src.getId()] = null;
+                    src.remove();
+                }
+            };
+            $(_r).bind('removepath', removeHandler);
+            $(_r).bind('removerect', removeHandler);
 
-		// 删除事件
-		var removeHandler = function(e, src) {
-			if (!myflow.config.editable)
-				return;
-			if (src.getId().substring(0, 4) == 'rect') {
-				_states[src.getId()] = null;
-				src.remove();
-			} else if (src.getId().substring(0, 4) == 'path') {
-				_paths[src.getId()] = null;
-				src.remove();
-			}
-		};
-		$(_r).bind('removepath', removeHandler);
-		$(_r).bind('removerect', removeHandler);
+            // 添加状态
+            $(_r).bind('addrect', function(e, type, o) {
+                // $('body').append(type+', ');
+                var rect = new myflow.rect($.extend(true, {},myflow.config.tools.states[type], o), _r);
+                rect.data_id = 0;
+                _states[rect.getId()] = rect;
+            });
+            // 添加路径
+            var addpathHandler = function(e, from, to) {
+                var path = new myflow.path({}, _r, from, to);
+                path.data_id =0;
+                _paths[path.getId()] = path;
+            };
+            $(_r).bind('addpath', addpathHandler);
 
-		// 添加状态
-		$(_r).bind('addrect', function(e, type, o) {
-			// $('body').append(type+', ');
-			var rect = new myflow.rect($.extend(true, {},myflow.config.tools.states[type], o), _r);
-			rect.data_id = 0;
-			_states[rect.getId()] = rect;
-		});
-		// 添加路径
-		var addpathHandler = function(e, from, to) {
-			var path = new myflow.path({}, _r, from, to);
-			path.data_id =0;
-			_paths[path.getId()] = path;
-		};
-		$(_r).bind('addpath', addpathHandler);
+            // 模式
+            $(_r).data('mod', 'point');
 
-		// 模式
-		$(_r).data('mod', 'point');
-		if (myflow.config.editable) {
-			// 工具栏
-			$("#myflow_tools").draggable({
-						handle : '#myflow_tools_handle'
-					}).css(myflow.config.tools.attr);
+            // 工具栏
+            $("#myflow_tools").draggable({
+                        handle : '#myflow_tools_handle'
+                    }).css(myflow.config.tools.attr);
 
-			$('#myflow_tools .flow_node').hover(function() {
-						$(this).addClass('flow_mover');
-					}, function() {
-						$(this).removeClass('flow_mover');
-					});
-			$('#myflow_tools .selectable').click(function() {
-						$('.flow_selected').removeClass('flow_selected');
-						$(this).addClass('flow_selected');
-						$(_r).data('mod', this.id);
+            $('#myflow_tools .flow_node').hover(function() {
+                        $(this).addClass('flow_mover');
+                    }, function() {
+                        $(this).removeClass('flow_mover');
+                    });
+            $('#myflow_tools .selectable').click(function() {
+                        $('.flow_selected').removeClass('flow_selected');
+                        $(this).addClass('flow_selected');
+                        $(_r).data('mod', this.id);
 
-					});
+                    });
 
-			$('#myflow_tools .flow_state').each(function() {
+            $('#myflow_tools .flow_state').each(function() {
                 $(this).draggable({
                             helper : 'clone'
                         });
             });
 
-			$(c).droppable({
+            $(c).droppable({
                 accept : '.flow_state',
                 drop : function(event, ui) {
                     $(_r).trigger('addrect', [ui.helper.attr('type'), {
@@ -1355,16 +1333,16 @@
                     dataType: "json",   //返回格式为json
                     data: { "procID":  $("#fwProcID").val(), "flowMap": data},    //参数值
                     type: "POST",   //请求方式
-					success:function(){
+                    success:function(){
 
-					}
+                    }
                     //error: function() {
                     //    alert('流程图保存失败！');
                     //}
                 });
             });
+        }
 
-		}
 		// 恢复
 		if (o.restore) {
 			// var data = ((typeof o.restore === 'string') ? eval(o.restore) :
@@ -1397,48 +1375,49 @@
 			}
 		}
 		// 历史状态
-		var hr = myflow.config.historyRects, ar = myflow.config.activeRects;
-		if (hr.rects.length || ar.rects.length) {
-			var pmap = {}, rmap = {};
-			for (var pid in _paths) {// 先组织MAP
-				if (!rmap[_paths[pid].from().text()]) {
-					rmap[_paths[pid].from().text()] = {
-						rect : _paths[pid].from(),
-						paths : {}
-					};
-				}
-				rmap[_paths[pid].from().text()].paths[_paths[pid].text()] = _paths[pid];
-				if (!rmap[_paths[pid].to().text()]) {
-					rmap[_paths[pid].to().text()] = {
-						rect : _paths[pid].to(),
-						paths : {}
-					};
-				}
-			}
-			for (var i = 0; i < hr.rects.length; i++) {
-				if (rmap[hr.rects[i].name]) {
-					rmap[hr.rects[i].name].rect.attr(hr.rectAttr);
-				}
-				for (var j = 0; j < hr.rects[i].paths.length; j++) {
-					if (rmap[hr.rects[i].name].paths[hr.rects[i].paths[j]]) {
-						rmap[hr.rects[i].name].paths[hr.rects[i].paths[j]]
-								.attr(hr.pathAttr);
-					}
-				}
-			}
-			for (var i = 0; i < ar.rects.length; i++) {
-				if (rmap[ar.rects[i].name]) {
-					rmap[ar.rects[i].name].rect.attr(ar.rectAttr);
-				}
-				for (var j = 0; j < ar.rects[i].paths.length; j++) {
-					if (rmap[ar.rects[i].name].paths[ar.rects[i].paths[j]]) {
-						rmap[ar.rects[i].name].paths[ar.rects[i].paths[j]]
-								.attr(ar.pathAttr);
-					}
-				}
-			}
-		}
-	}
+		//var hr = myflow.config.historyRects, ar = myflow.config.activeRects;
+		//if (hr.rects.length || ar.rects.length) {
+		//	var pmap = {}, rmap = {};
+		//	for (var pid in _paths) {// 先组织MAP
+		//		if (!rmap[_paths[pid].from().text()]) {
+		//			rmap[_paths[pid].from().text()] = {
+		//				rect : _paths[pid].from(),
+		//				paths : {}
+		//			};
+		//		}
+		//		rmap[_paths[pid].from().text()].paths[_paths[pid].text()] = _paths[pid];
+		//		if (!rmap[_paths[pid].to().text()]) {
+		//			rmap[_paths[pid].to().text()] = {
+		//				rect : _paths[pid].to(),
+		//				paths : {}
+		//			};
+		//		}
+		//	}
+		//	for (var i = 0; i < hr.rects.length; i++) {
+		//		if (rmap[hr.rects[i].name]) {
+		//			rmap[hr.rects[i].name].rect.attr(hr.rectAttr);
+		//		}
+		//		for (var j = 0; j < hr.rects[i].paths.length; j++) {
+		//			if (rmap[hr.rects[i].name].paths[hr.rects[i].paths[j]]) {
+		//				rmap[hr.rects[i].name].paths[hr.rects[i].paths[j]]
+		//						.attr(hr.pathAttr);
+		//			}
+		//		}
+		//	}
+		//	for (var i = 0; i < ar.rects.length; i++) {
+		//		if (rmap[ar.rects[i].name]) {
+		//			rmap[ar.rects[i].name].rect.attr(ar.rectAttr);
+		//		}
+		//		for (var j = 0; j < ar.rects[i].paths.length; j++) {
+		//			if (rmap[ar.rects[i].name].paths[ar.rects[i].paths[j]]) {
+		//				rmap[ar.rects[i].name].paths[ar.rects[i].paths[j]]
+		//						.attr(ar.pathAttr);
+		//			}
+		//		}
+		//	}
+		//}
+		//
+	};
 
 	// 添加jquery方法
 	$.fn.myflow = function(o) {

@@ -127,6 +127,12 @@ export default class extends Base {
                     user.groupID = parseInt(this.post('loginGroup'));
                     user.groupName = await this.model('code').getNameById(user.groupID);
                     user.groups = groups;
+                    let width = think.isEmpty(this.post('clientWidth')) ? 1200 : this.post('clientWidth');
+                    user.listColumns = width >=1200 ? cmpageUI.enumListColumns.MAX : (width >=970 ? cmpageUI.enumListColumns.MIDDLE :
+                        (width >=768 ? cmpageUI.enumListColumns.SMALL : cmpageUI.enumListColumns.MOBILE ));
+                    user.listBtns = width >=1200 ? cmpageUI.enumListBtns.MAX : (width >=970 ? cmpageUI.enumListBtns.MIDDLE :
+                        (width >=768 ? cmpageUI.enumListBtns.SMALL : cmpageUI.enumListBtns.MOBILE ));
+
                     //console.log(user);
                     await this.model('login').addLogin(user);
                     await this.session('user', user);
@@ -173,39 +179,44 @@ export default class extends Base {
 
     async setClientWidthAction(){
         let user = await this.session('user');
-        user.clientWidth = this.get('width');
+        let width = think.isEmpty(this.get('width')) ? 1200 : this.get('width');
+        user.listColumns = width >=1200 ? cmpageUI.enumListColumns.MAX : (width >=970 ? cmpageUI.enumListColumns.MIDDLE :
+            (width >=768 ? cmpageUI.enumListColumns.SMALL : cmpageUI.enumListColumns.MOBILE ));
+        user.listBtns = width >=1200 ? cmpageUI.enumListBtns.MAX : (width >=970 ? cmpageUI.enumListBtns.MIDDLE :
+            (width >=768 ? cmpageUI.enumListBtns.SMALL : cmpageUI.enumListBtns.MOBILE ));
         await this.session('user', user);
         return this.json({statusCode:200, message:''});
     }
 
     //开始定时器
-    timerStartAction(){
+    autoExecOpenAction(){
         if(this.ip() != "127.0.0.1"){
-            return this.json({statusCode:300,message:"timer is not start! "+this.ip()});
+            return this.json({statusCode:300,message:"timer is not start, ! "+this.ip()});
         }
-        if(!think.isObject(global.timer)){
-            global.timer = setInterval(function() {
-                request('http://127.0.0.1:8300/admin/index/keep_connect_db', function (error, response, body) {
+        if(!think.isObject(global.autoExecTimer)){
+            global.autoExecTimer = setInterval(function() {
+                request('http://127.0.0.1:8300/flow/task/auto_exec', function (error, response, body) {
                     if (!error) {
                         console.log(body);
                     } else {
                         //console.log("error: " + error);
                     }
+                    flow.autoExecuting =false;
                 });
-            }, 600000);
+            }, 3000);
             return this.json({statusCode:200,message:"timer is start! "+this.ip()});
         }
         return this.json({statusCode:200,message:"timer has be started! "+this.ip()});
     }
 
     //停止定时器
-    timerStopAction(){
+    autoExecCloseAction(){
         if(this.ip() != "127.0.0.1"){
             return this.json({statusCode:300,message:"timer is not stop! "+this.ip()});
         }
-        if(think.isObject(global.timer)){
-            clearInterval(global.timer);
-            global.timer = null;
+        if(think.isObject(global.autoExecTimer)){
+            clearInterval(global.autoExecTimer);
+            global.autoExecTimer = null;
             return this.json({statusCode:200,message:"timer is stop! "+this.ip()});
         }
         return this.json({statusCode:300,message:"timer is not exist! "+this.ip()});

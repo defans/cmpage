@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -476,56 +512,12 @@ export default class extends CMPage {
     /**
      * 初始化编辑页面的值
      */
-    async pageEditInit(pageEdits,page){
-        let md = await super.pageEditInit(pageEdits,page);
+    async pageEditInit(){
+        let md = await super.pageEditInit();
         md.c_time_to = &#x27;2099-12-31 00:00:00&#x27;;   //默认的截止日期
-        md.c_class = &#x27;flow/proc&#x27;; //默认的实现类
+        md.c_class = &#x27;flow/task&#x27;; //默认的实现类
 
         return md;
-    }
-    /**
-     * 根据 page.c_other的设置，对页面相关参数进行设置
-     */
-    getPageOther(page){
-        let ret = page;
-        //console.log(ret);
-        ret.editCloseBtn =true;
-        if(page.editID == 0){
-            return ret;
-        }else{
-            return super.getPageOther(page);
-        }
-    }
-
-    /**
-     * 重写父类的 htmlGetOther 方法，输出额外的js函数
-     * @method  htmlGetOther
-     * @return {string}  html片段
-     * @param {Object} page  页面设置主信息
-     */
-    async htmlGetOther(page){
-        let parms =JSON.parse(page.parmsUrl);
-        return &#x60;  &lt;script type=&quot;text/javascript&quot;&gt;
-            function fwStart(procID, obj) {
-                $(this).alertmsg(&quot;confirm&quot;, &quot;是否确定要启动该模板的一个新的实例？&quot;, {
-                    okCall: function () {
-                        $.ajax({
-                            url:  &quot;/flow/task/start?proc_id=&quot; + procID,
-                            dataType: &quot;json&quot;,
-                            success: function(ret) {
-                                if(ret.statusCode == 200){
-
-
-                                }
-                            }
-                        });
-                    }
-                });
-
-                return false;
-            }
-            &lt;/script&gt;
-        &#x60;;
     }
 
 
@@ -533,8 +525,8 @@ export default class extends CMPage {
      * 编辑页面保存,
      * 如果是多个表的视图，则根据存在于page.c_table中的列更新表，一般需要在子类中继承
      */
-    async pageSave(page,parms){
-        let md = super.pageSave(page,parms);
+    async pageSave(parms){
+        let md = await super.pageSave(parms);
         if(parms.id ==0 ){
             //根据模板的类型自动生成活动节点
             await this.initActs(md);
@@ -596,9 +588,10 @@ export default class extends CMPage {
      * @param {int} procID  流程模板ID
      */
     async saveFlowMap(parms){
-        let flowMap = eval(&#x60;(${parms.flowMap})&#x60;);
+        let flowMap = objFromString(parms.flowMap);
         if(think.isObject(flowMap)){
             let actModel = this.model(&#x27;fw_act&#x27;);
+            let actids =[];
             for(let k in flowMap.states){
                 if(flowMap.states[k].data_id == 0){
                     let rect =flowMap.states[k];
@@ -607,8 +600,10 @@ export default class extends CMPage {
                             c_from_rule:1, c_votes:0,c_to_rule:1, c_cc_rule:1,c_jump_rule:1,c_back_rule:1, c_status:0,c_map_id:k};
                     flowMap.states[k].data_id =await actModel.add(act);
                 }
+                actids.push(flowMap.states[k].data_id);
             }
             let pathModel = this.model(&#x27;fw_act_path&#x27;);
+            await pathModel.query(&#x60;delete from fw_act_path where c_from not in(${actids.join(&#x27;,&#x27;)}) or c_to not in(${actids.join(&#x27;,&#x27;)}) or c_from is null or c_to is null&#x60;);
             for(let k in flowMap.paths){
                 if(flowMap.paths[k].data_id == 0){
                     let path =flowMap.paths[k];

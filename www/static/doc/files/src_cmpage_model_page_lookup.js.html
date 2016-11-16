@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -469,12 +505,12 @@
 // +----------------------------------------------------------------------
 
 /**
- @module cmpage.model
+ @module cmthis.mob.model
  */
 
 /**
  * 实现了查找带回的功能，可继承本类做定制化的查找带回页面，调用： /cmpage/page/lookup?modulename=XXX*multiselect=false
- * @class cmpage.model.page_lookup
+ * @class cmthis.mob.model.page_lookup
  */
 import CMPage from &#x27;./page.js&#x27;;
 
@@ -486,7 +522,7 @@ export default class extends CMPage {
      * @return {boolean} 是否显示
      * @param   {object} page 页面按钮的设置
      */
-    isShowRowBtns(pageBtns){
+    isShowRowBtns(){
         return true;
     }
 
@@ -495,17 +531,15 @@ export default class extends CMPage {
      * @method  htmlGetBtnList
      * @return  {string}  HTML片段
      * @param   {object} rec 每行的记录对象
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
-     * @param   {object} pageBtns 按钮设置
      */
-    async htmlGetBtnList(rec,page,pageBtns){
+    async htmlGetBtnList(rec){
         let html=[];
         let fields= [];
-        if(!think.isEmpty(page.returnFields)){
-            fields = page.returnFields.split(&#x27;,&#x27;);
+        //global.debug(this.mod,&#x27;page_lookup.htmlGetBtnList - this.mob&#x27;);
+        if(!think.isEmpty(this.mod[&#x27;returnFields&#x27;])){
+            fields = String(this.mod[&#x27;returnFields&#x27;]).split(&#x27;,&#x27;);
         }
-        let pageCols = await global.model(&#x27;cmpage/module&#x27;).getModuleCol(page.id);
-        for(let col of pageCols){
+        for(let col of this.modCols){
             if (col.c_isview) {
                 if(fields.length &gt;0){
                     for(let field of fields){
@@ -529,7 +563,7 @@ export default class extends CMPage {
      * @return {string}  HTML片段
      * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    async htmlGetBtnHeader(page){
+    async htmlGetBtnHeader(){
         return &#x27; &#x27;;
     }
 }

@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -479,6 +515,9 @@ import Base from &#x27;./base.js&#x27;;
 
 export default class extends Base {
 
+  async indexAction(){
+    return this.display();
+  }
   /**
    * 模块主信息设置，分页列表，调用： /cmpage/module/list
    * @method  list
@@ -493,6 +532,7 @@ export default class extends Base {
       vb.where = http.get();
     }else if(http.method==&quot;POST&quot;){
       vb.where = http.post();
+      vb.currentPage = vb.where[&#x27;currentPage&#x27;];
     }
     global.debug(vb);
     let model = this.model(&quot;module&quot;);

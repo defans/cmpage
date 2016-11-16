@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -637,7 +673,7 @@
             
         
         
-        <a href="../files/src_flow_model_proc.js.html#l79"><code>src\flow\model\proc.js:79</code></a>
+        <a href="../files/src_flow_model_proc.js.html#l83"><code>src\flow\model\proc.js:83</code></a>
         
         </p>
 
@@ -737,6 +773,12 @@
                     
                 </li>
             
+                <li class="arg">
+                    
+                        [procID]
+                    
+                </li>
+            
             </ul><span class="paren">)</span>
         </div>
     
@@ -771,7 +813,7 @@
             
         
         
-        <a href="../files/src_flow_model_proc.js.html#l92"><code>src\flow\model\proc.js:92</code></a>
+        <a href="../files/src_flow_model_proc.js.html#l97"><code>src\flow\model\proc.js:97</code></a>
         
         </p>
 
@@ -821,6 +863,24 @@
                     </td>
                     <td><div class="param-description">
                         <p>流程执行人</p>
+
+                    </div>
+
+                    
+                </tr>
+            
+                <tr class="param">
+                    
+                    <td>
+                        <code class="param-name optional">[procID]</code></td>
+                    <td><span class="type">Int</span></td>
+                    <td><span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+                    </td>
+                    <td><div class="param-description">
+                        <p>模板ID,当 taskID===0 时，取procID的值</p>
 
                     </div>
 
@@ -905,7 +965,7 @@
             
         
         
-        <a href="../files/src_flow_model_proc.js.html#l40"><code>src\flow\model\proc.js:40</code></a>
+        <a href="../files/src_flow_model_proc.js.html#l41"><code>src\flow\model\proc.js:41</code></a>
         
         </p>
 
@@ -1039,7 +1099,7 @@
             
         
         
-        <a href="../files/src_flow_model_proc.js.html#l16"><code>src\flow\model\proc.js:16</code></a>
+        <a href="../files/src_flow_model_proc.js.html#l18"><code>src\flow\model\proc.js:18</code></a>
         
         </p>
 
@@ -1050,7 +1110,8 @@
     </div>
 
     <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>一个新的流程实例</p>
+        <div class="stdoc-code"><p>开始一个新的流程实例</br>
+调用前先初始化 fwInit</p>
 </div>
     </div>
 
@@ -1174,7 +1235,7 @@
             
         
         
-        <a href="../files/src_flow_model_proc.js.html#l53"><code>src\flow\model\proc.js:53</code></a>
+        <a href="../files/src_flow_model_proc.js.html#l55"><code>src\flow\model\proc.js:55</code></a>
         
         </p>
 
@@ -1308,7 +1369,7 @@
             
         
         
-        <a href="../files/src_flow_model_proc.js.html#l66"><code>src\flow\model\proc.js:66</code></a>
+        <a href="../files/src_flow_model_proc.js.html#l69"><code>src\flow\model\proc.js:69</code></a>
         
         </p>
 
@@ -1436,7 +1497,7 @@
             
         
         
-        <a href="../files/src_flow_model_proc.js.html#l109"><code>src\flow\model\proc.js:109</code></a>
+        <a href="../files/src_flow_model_proc.js.html#l114"><code>src\flow\model\proc.js:114</code></a>
         
         </p>
 
@@ -1547,7 +1608,7 @@
             
         
         
-        <a href="../files/src_flow_model_proc.js.html#l125"><code>src\flow\model\proc.js:125</code></a>
+        <a href="../files/src_flow_model_proc.js.html#l130"><code>src\flow\model\proc.js:130</code></a>
         
         </p>
 

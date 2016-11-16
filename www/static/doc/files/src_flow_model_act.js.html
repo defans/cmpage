@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -486,95 +522,125 @@
  * @class flow.model.act
  */
 export default class extends think.model.base {
+    taskActModel = null;    //当前任务节点的实例对象
 
     /**
      * 是否可以运行一个活动(流程节点)，对外提供调用
-     * @method  fwRun
+     * @method  canRun
      * @return {bool}  判断值
-     * @params {int} actID 活动节点ID
+     * @params {int} taskActID 活动节点ID
      * @params {object} user 流程执行人
      * @params {object} [taskAct] 活动节点对象
      */
     async canRun(taskActID,user,taskAct){
-        let parms = await this.fwGetActParms(taskActID,user,taskAct);
-        let taskActModel = this.model(parms[1].c_class);
-        return await taskActModel.canRun(...parms);
+        if(think.isEmpty(this.taskActModel)){
+            await this.fwInit(taskActID,user,taskAct);
+        }
+        return await this.taskActModel.canRun();
     }
 
     /**
      * 运行一个活动(流程节点)&lt;br/&gt;
      * canRun的判断在具体的业务task_act中调用
      * @method  fwRun
-     * @return {object}  活动节点对象
-     * @params {int} actID 活动节点ID
+     * @params {int} taskActID 活动节点ID
      * @params {object} user 流程执行人
+     * @params {object} [taskAct] 活动节点对象
      */
-    async fwRun(taskActID,user,taskAct){
-        let parms = await this.fwGetActParms(taskActID,user,taskAct);
-        let taskActModel = this.model(parms[1].c_class);
-        return await taskActModel.fwRun(...parms);
+    async fwRun(taskActID,user,taskAct,isPass){
+        if(think.isEmpty(this.taskActModel)){
+            await this.fwInit(taskActID,user,taskAct);
+            //global.debug(this.taskActModel.taskAct,&#x27;act.fwRun - this.taskActModel.taskAct&#x27;);
+        }
+        await this.taskActModel.fwRun(isPass);
     }
 
     /**
      * 挂起一个活动(流程节点)，
      * @method  fwSuspend
-     * @return {object}  活动节点对象
-     * @params {int} actID 活动节点ID
+     * @params {int} taskActID 活动节点ID
      * @params {object} user 流程执行人
      * @params {object} [taskAct] 活动节点对象
      */
     async fwSuspend(taskActID,user,taskAct){
-        let parms = await this.fwGetActParms(taskActID,user,taskAct);
-        let taskActModel = this.model(parms[1].c_class);
-        return await taskActModel.fwSuspend(...parms);
+        if(think.isEmpty(this.taskActModel)){
+            await this.fwInit(taskActID,user,taskAct);
+        }
+        await this.taskActModel.fwSuspend();
     }
 
     /**
      * 终止一个活动(流程节点)，
      * @method  fwTerminate
-     * @return {object}  活动节点对象
-     * @params {int} actID 活动节点ID
+     * @params {int} taskActID 活动节点ID
      * @params {object} user 流程执行人
      * @params {object} [taskAct] 活动节点对象
      */
     async fwTerminate(taskActID,user,taskAct){
-        let parms = await this.fwGetActParms(taskActID,user,taskAct);
-        let taskActModel = this.model(parms[1].c_class);
-        return await taskActModel.fwTerminate(...parms);
+        if(think.isEmpty(this.taskActModel)){
+            await this.fwInit(taskActID,user,taskAct);
+        }
+
+        await this.taskActModel.fwTerminate();
     }
 
     /**
      * 正常结束一个活动(流程节点)，
      * @method  fwEnd
-     * @return {object}  活动节点对象
-     * @params {int} actID 活动节点ID
+     * @params {int} taskActID 活动节点ID
      * @params {object} user 流程执行人
      * @params {object} [taskAct] 活动节点对象
      */
     async fwEnd(taskActID,user,taskAct){
-        let parms = await this.fwGetActParms(taskActID,user,taskAct);
-        let taskActModel = this.model(parms[1].c_class);
-        return await taskActModel.fwEnd(...parms);
+        if(think.isEmpty(this.taskActModel)){
+            await this.fwInit(taskActID,user,taskAct);
+        }
+
+        await this.taskActModel.fwEnd();
     }
 
     /**
      * 取活动(流程节点)参数，供其他方法调用
      * @method  fwGetActParms
-     * @return {Array} 其他方法调用的参数列表
      * @params {int} actID 活动节点ID
      * @params {object} user 流程执行人
      * @params {object} [taskAct] 活动节点对象
      */
-    async fwGetActParms(taskActID,user,taskAct){
-        if(think.isEmpty(user)){
-            user = await think.session(&#x27;user&#x27;);
-        }
-        if(think.isEmpty(taskAct)){
-            taskAct = await this.model(&#x27;vw_task_act&#x27;).where({id:taskActID}).find()
-        }
+    async fwInit(taskActID,user,taskAct){
+        taskAct = think.isEmpty(taskAct) ? await this.model(&#x27;vw_task_act&#x27;).where({id:taskActID}).find() : taskAct;
+        global.debug(taskAct,&#x27;act.fwInit - taskAct&#x27;);
         let act =await this.getActByIdAndProcId(taskAct.c_act, taskAct.c_proc);
+        global.debug(act,&#x27;act.fwInit - act&#x27;);
+        this.taskActModel = this.model(think.isEmpty(act.c_class) ? &#x27;flow/task_act&#x27;: act.c_class);
+        this.taskActModel.taskAct = taskAct;
+        this.taskActModel.act = act;
+        this.taskActModel.user = think.isEmpty(user) ? await think.session(&#x27;user&#x27;) : user;
+    }
 
-        return [taskAct,act,user];
+    /**
+     * 检查任务列表的所有当前节点，如果是自动执行的节点，则执行之
+     * @method  fwAutoExec
+     */
+    async fwAutoExec(){
+        //如果被调用函数需要，可在以下SQL语句中增加 fw_act 的字段
+        let taskActs = await this.query(&#x60;select A.*,B.c_form,B.c_domain_st from vw_task_act A,fw_act B where A.c_act = B.id and A.c_status in(3,6) and B.c_type=2 &#x60;);
+        for(let ta of taskActs){
+            if(!think.isEmpty(ta.c_form)){
+                let form = objFromString(ta.c_form);
+                let fnModel = model(form.model);
+                if (think.isFunction(fnModel[ form.fn ])) {
+                    if(!think.isEmpty(ta.task_link_type)){
+                        ta.domainData =  await this.model(ta.task_link_type).where({id:ta.task_link}).find();
+                    }
+                    let user = await this.model(&#x27;task&#x27;).getUserFromTask(ta.id);
+                    if(await fnModel[form.fn](ta,user)){
+                        //如果执行成功，则继续往下
+                        await this.fwRun(ta.id,user,ta,true);
+                    }
+                }
+
+            }
+        }
     }
 
 
@@ -599,6 +665,84 @@ export default class extends think.model.base {
     //    return ret;
     //}
 
+    /**
+     * 把节点根据路径走向排序，供其他方法调用
+     * @method  getActsOrder
+     * @return {Array} 流程节点的对象数组
+     * @params {int} procID 流程模板ID
+     */
+    acts = [];
+    async getActsOrder(procID, acts){
+        this.acts = think.isEmpty(acts) ? await this.getActsByProcId(procID) : acts;
+        let actPaths = await this.model(&#x27;act_path&#x27;).getActPathsByProcId(procID);
+        //把节点根据路径走向排序
+        let order = [];
+        let actStart = {}, actEnd = {};
+        for(let act of this.acts){
+            if(act.c_type === global.enumActType.START){
+                actStart =act;
+            }else if(act.c_type === global.enumActType.END){
+                actEnd = act;
+            }
+        }
+        if(think.isEmpty(actEnd)){ return [];  }       //没有结束节点
+        debug(actStart,&#x27;act.getActsOrder - actStart&#x27;);
+        order.push(actStart.id);
+        actStart.isOrder =true;
+        let sub = this.getActsOrder_toActs(actStart.id,actPaths,1);
+        for(let a of sub){
+            order.push(a);
+        }
+
+        order = global.arrGetUnique(order);
+        let ret = [];
+        for(let id of order){
+            for(let a of this.acts){
+                if(a.id === id){
+                    ret.push(a);
+                    break;
+                }
+            }
+        }
+
+        return ret;
+    }
+    //layer: 递归层数
+    getActsOrder_toActs(actID,paths,layer){
+        let toActIDs = [];
+        layer += 1;
+        if(layer &gt; 50){ return [];  }
+
+        for(let path of paths){
+            if(path.c_from === actID){
+                for(let act of this.acts){
+                    if(act.id === path.c_to ){
+//                        debug(act,&#x27;act.getActsOrder_toActs - act&#x27;);
+                        if(think.isEmpty(act.isOrder)){     //如果去向节点已经排序，则返回
+                            act.isOrder =true;
+                            toActIDs.push(act.id);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+//        if(think.isEmpty(toActIDs)){ return []; }
+
+        debug(toActIDs,&#x27;act.getActsOrder_toActs - toActIDs&#x27;);
+
+        //加入去向节点
+        let order = [];
+        order = toActIDs;
+        for(let toActID of toActIDs){
+            //继续往下
+            let sub = this.getActsOrder_toActs(toActID,paths,layer);
+            for(let a of sub){
+                order.push(a);
+            }
+        }
+        return order;
+    }
 
     /**
      * 根据ID取活动(流程节点)参数，供其他方法调用
@@ -648,30 +792,30 @@ export default class extends think.model.base {
         }
         return &#x27;&#x27;;
     }
-
     async getActs(){
+        let acts = await this.getActsCache();
+        for(let act of acts){
+            act.domain = think.isEmpty(act.c_domain) ? {}: eval(&#x60;(${act.c_domain})&#x60;);
+        }
+        return acts;
+    }
+    async getActsByProcId(procID){
+        let acts = await this.getActsByProcIdCache(procID);
+        for(let act of acts){
+            act.domain = think.isEmpty(act.c_domain) ? {}: eval(&#x60;(${act.c_domain})&#x60;);
+        }
+        return acts;
+    }
+
+    async getActsCache(){
         return await think.cache(&quot;procActs&quot;, () =&gt; {
-            let acts = this.query(&#x27;select * from fw_act order by id &#x27;);
-            for(let act of acts){
-                if(!think.isEmpty(act.c_domain)){
-                    act.domain = eval(&#x60;(${act.c_domain})&#x60;);
-                    act.domain = think.isEmpty(act.domain) ? {}:act.domain;
-                }
-            }
-            return acts;
+            return this.query(&#x27;select * from fw_act order by id &#x27;);
         });
     }
 
-    async getActsByProcId(procID){
-        return await think.cache(&quot;procActs&quot;+procID, (procID) =&gt; {
-            let acts = this.query(&#x60;select * from fw_act where c_proc=${procID} order by id &#x60;);
-            for(let act of acts){
-                if(!think.isEmpty(act.c_domain)){
-                    act.domain = eval(&#x60;(${act.c_domain})&#x60;);
-                    act.domain = think.isEmpty(act.domain) ? {}:act.domain;
-                }
-            }
-            return acts;
+    async getActsByProcIdCache(procID){
+        return await think.cache(&quot;procActs&quot;+procID, () =&gt; {
+            return this.query(&#x60;select * from fw_act where c_proc=${procID} order by id &#x60;);
         });
     }
 

@@ -24,14 +24,16 @@ YUI.add("yuidoc-meta", function(Y) {
         "cmpage.controller.utils",
         "cmpage.logic.page",
         "cmpage.model.area",
-        "cmpage.model.page",
         "cmpage.model.page_excel",
-        "cmpage.model.page_lookup",
         "cmpage.model.page_mob",
         "cmpage.model.utils",
+        "cmthis.mob.model.page_lookup",
+        "cmthis.mod.model.page",
         "flow.controller.act",
         "flow.controller.base",
         "flow.controller.proc",
+        "flow.controller.task",
+        "flow.controller.task_act",
         "flow.model.act",
         "flow.model.act_path",
         "flow.model.proc",
@@ -45,6 +47,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "cmpage.controller",
         "cmpage.logic",
         "cmpage.model",
+        "cmthis.mob.model",
+        "cmthis.mod.model",
         "flow.controller",
         "flow.model"
     ],
@@ -143,19 +147,12 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "cmpage.model",
             "name": "cmpage.model",
-            "description": "业务模块配置和展示系统的 model 类，实现了cmpage的主要业务逻辑，包括PC端和移动端\n\n注意点 :\n1. 在业务模块主信息设置中配置实现类,如：cmpage/page 或 demo/customer，系统会调用该类来展现页面\n2. 具体的业务模块必须继承 cmpage/model/page.js 来增加新的逻辑\n3. 移动端、主从页、查找带回等页面都是从 cmpage/model/page.js 继承，具体的业务模块请适当选择基类\n4. 在其他模块如 demo 中可以配置新的数据库连接，实现了多数据库的应该\n5. 每个页面根据不同的HTML输出位置和处理数据的流程分成了若干方法，子类中通过重写相应的方法可以达到定制页面的效果",
             "classes": [
                 {
                     "name": "cmpage.model.area"
                 },
                 {
-                    "name": "cmpage.model.page"
-                },
-                {
                     "name": "cmpage.model.page_excel"
-                },
-                {
-                    "name": "cmpage.model.page_lookup"
                 },
                 {
                     "name": "cmpage.model.page_mob"
@@ -165,6 +162,24 @@ YUI.add("yuidoc-meta", function(Y) {
                 },
                 {
                     "name": "cmpage.cmpage_global"
+                }
+            ]
+        },
+        {
+            "displayName": "cmthis.mob.model",
+            "name": "cmthis.mob.model",
+            "classes": [
+                {
+                    "name": "cmthis.mob.model.page_lookup"
+                }
+            ]
+        },
+        {
+            "displayName": "cmthis.mod.model",
+            "name": "cmthis.mod.model",
+            "classes": [
+                {
+                    "name": "cmthis.mod.model.page"
                 }
             ]
         },
@@ -181,6 +196,12 @@ YUI.add("yuidoc-meta", function(Y) {
                 },
                 {
                     "name": "flow.controller.proc"
+                },
+                {
+                    "name": "flow.controller.task"
+                },
+                {
+                    "name": "flow.controller.task_act"
                 }
             ]
         },

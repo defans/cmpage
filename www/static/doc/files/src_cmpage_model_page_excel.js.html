@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -484,24 +520,23 @@ export default class extends think.model.base {
      * 根据查询结果集和模块的列设置把数据导出成excel文件
      * @method  excelExport
      * @return {object}  excel文件格式的对象
-     * @param   {object} data  结果记录集对象
-     * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
+     * @param   {object} list  结果记录集对象
+     * @param   {object} modCols 页面显示列设置
      */
-    async excelExport(data,page) {
+    async excelExport(list,modCols) {
         let conf = {};
         conf.stylesXmlFile = think.ROOT_PATH + &quot;/www/static/css/excel_styles.xml&quot;;
-        let pageCols = await global.model(&#x27;cmpage/module&#x27;).getModuleCol(page.id);
         //设置每列的属性
         conf.cols = [];
-        for(let col of pageCols){
+        for(let col of modCols){
             if (col.c_isview) {
                 conf.cols.push(this.getColStyle(col));
             }
         }
         conf.rows = [];
-        for(let rec of data.list){
+        for(let rec of list.data){
             let row = [];
-            for(let col of pageCols){
+            for(let col of modCols){
                 if(col.c_isview &amp;&amp; col.c_column !==&#x27;id&#x27;){
                     row.push(await this.getColData(rec,col))
                 }

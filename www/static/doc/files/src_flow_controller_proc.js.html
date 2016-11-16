@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -474,24 +510,33 @@ export default class extends Base {
      * @return {promise}
      */
     async designAction(){
-        let page = await global.model(&#x27;cmpage/module&#x27;).getModuleByName(&#x27;FwProcList&#x27;);
-        page.parmsUrl = JSON.stringify(this.get());
-        page.editID = this.get(&quot;id&quot;);
-        page.user = await this.session(&#x27;user&#x27;);
+        let module = global.model(&#x27;cmpage/module&#x27;)
+        let parms = await module.getModuleByName(&#x27;FwProcList&#x27;);
+        parms.parmsUrl = JSON.stringify(this.get());
+        parms.editID = this.get(&quot;id&quot;);
+        parms.user = await this.session(&#x27;user&#x27;);
         //global.debug(page);
-        let model = this.model(&#x27;proc_list&#x27;);
-        let procEditHtml =await model.htmlGetEdit(page);
-        this.assign(&#x27;procEditHtml&#x27;,procEditHtml);
-        this.assign(&#x27;page&#x27;,model.getPageOther(page));
+        let pageModel = this.model(&#x27;proc_list&#x27;);
+        pageModel.mod = parms;
+        pageModel.modEdits = await module.getModuleEdit(parms.id);
 
-        let pageAct = await global.model(&#x27;cmpage/module&#x27;).getModuleByName(&#x27;FwAct&#x27;);
-        pageAct.parmsUrl= &#x27;{}&#x27;;
-        pageAct.editID =0;
-        pageAct.user = page.user;
-        let actEditHtml = await this.model(&#x27;cmpage/page&#x27;).htmlGetEdit(pageAct);
+        let procEditHtml =await pageModel.htmlGetEdit();
+        this.assign(&#x27;procEditHtml&#x27;,procEditHtml);
+        this.assign(&#x27;parms&#x27;,pageModel.mod);
+
+        let parmsAct = await module.getModuleByName(&#x27;FwAct&#x27;);
+        parmsAct.parmsUrl= &#x27;{}&#x27;;
+        parmsAct.editID =0;
+        parmsAct.user = parms.user;
+        let pageAct = global.model(&#x27;cmpage/page&#x27;);
+        pageAct.mod = parmsAct;
+        pageAct.modEdits = await module.getModuleEdit(parmsAct.id);
+
+        let actEditHtml = await pageAct.htmlGetEdit();
+        //global.debug(actEditHtml,&#x27;flow.controller.proc - actEditHtml&#x27;);
         this.assign(&#x27;actEditHtml&#x27;,&#x27;&lt;tbody&gt;&#x27;+actEditHtml+&#x27;&lt;/tbody&gt;&#x27;);
 
-        let flowMap = await model.getFlowMap(page.editID);
+        let flowMap = await pageModel.getFlowMap(parms.editID);
         this.assign(&#x27;flowMap&#x27;,flowMap);
 
         return this.display();
@@ -520,6 +565,14 @@ export default class extends Base {
         await this.model(&#x27;proc_list&#x27;).saveFlowMap(parms);
 
         return this.json({statusCode:200,message:&#x27;保存图形成功!&#x27;});
+    }
+
+    async clearCacheAction(){
+        let ret={statusCode:200,message:&#x27;已成功清除了流程模板的缓存!&#x27;,tabid: &#x27;&#x27;,data:{}};
+
+        await this.model(&#x27;proc&#x27;).clearCache();
+
+        return this.json(ret);
     }
 
 }

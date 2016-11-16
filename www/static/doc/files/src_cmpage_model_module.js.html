@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -484,6 +520,7 @@ export default class extends think.model.base {
     sumTypes(){
         return [{value:&quot;none&quot;,text:&quot;无&quot;},{value:&quot;text&quot;,text:&quot;文本&quot;},{value:&quot;sum&quot;,text:&quot;合计&quot;},{value:&quot;avg&quot;,text:&quot;平均&quot;}];
     }
+
     //编辑页面的控件类型
     editTypes(){
         return [{value:&quot;text&quot;,text:&quot;文本&quot;},{value:&quot;textarea&quot;,text:&quot;多行文本&quot;},{value:&quot;number&quot;,text:&quot;数字&quot;},{value:&quot;datetime&quot;,text:&quot;日期时间&quot;},
@@ -500,7 +537,7 @@ export default class extends think.model.base {
     //查询条件中的操作符
     operations(){
         return [{op:&#x27;EQ&#x27;,des:&#x27;等于&#x27;},{op:&#x27;NE&#x27;,des:&#x27;不等于&#x27;},{op:&#x27;CN&#x27;,des:&#x27;包含&#x27;},{op:&#x27;NC&#x27;,des:&#x27;不包含&#x27;},{op:&#x27;IN&#x27;,des:&#x27;在其中&#x27;},{op:&#x27;NI&#x27;,des:&#x27;不在其中&#x27;},
-            {op:&#x27;GE&#x27;,des:&#x27;大于等于&#x27;},{op:&#x27;LE&#x27;,des:&#x27;小于等于&#x27;},{op:&#x27;GT&#x27;,des:&#x27;大于&#x27;},{op:&#x27;LT&#x27;,des:&#x27;小于&#x27;}];
+            {op:&#x27;GE&#x27;,des:&#x27;大于等于&#x27;},{op:&#x27;LE&#x27;,des:&#x27;小于等于&#x27;},{op:&#x27;GT&#x27;,des:&#x27;大于&#x27;},{op:&#x27;LT&#x27;,des:&#x27;小于&#x27;},{op:&#x27;NO&#x27;,des:&#x27;不操作&#x27;}];
     }
 
     //从数据源取字段名称和类型
@@ -559,7 +596,7 @@ export default class extends think.model.base {
         let md = await this.model(&#x27;t_module&#x27;).where({id:moduleID}).find();
         let model =this.model(&#x27;t_module_col&#x27;);
 
-        await model.where({c_module: md.id}).delete();
+        //await model.where({c_module: md.id}).delete();
         let columns = await this.getAllColumns(md.c_datasource,md.c_path);
         if(columns.length ===0){    return {statusCode:200,message:&#x27;没有列数据，请确认数据连接是否正确。&#x27;}; }
         let comments = [];
@@ -568,7 +605,18 @@ export default class extends think.model.base {
         }else{
             Object.assign(comments,columns);
         }
+        let mcols = await this.getModuleCol(moduleID);
         for (let [k,col] of columns.entries()) {
+            //如果列已经设置过，则跳过
+            let exist = false;
+            for(let mcol of mcols){
+                if(mcol.c_column === col.column){
+                    exist = true;
+                    break;
+                }
+            }
+            if(exist){  continue;   }
+
             let colmd = {c_module:md.id, c_column:col.column, c_coltype:col.type, c_scale:col.length, c_name:this.getColumnComment(comments,col.column),
                 c_desc : col.column, c_type:&#x27;text&#x27;, c_format: &quot;&quot;, c_order:(k+1), c_width:50, c_style:&#x27;&#x27;,
                 c_isretrieve:true, c_isshow:(col.column !== &#x27;id&#x27;),c_isview:(col.column !== &#x27;id&#x27;), c_user:0, c_time: think.datetime(),
@@ -590,7 +638,7 @@ export default class extends think.model.base {
         let md = await this.model(&#x27;t_module&#x27;).where({id:moduleID}).find();
         let model =this.model(&#x27;t_module_edit&#x27;);
 
-        await model.where({c_module: md.id}).delete();
+        //await model.where({c_module: md.id}).delete();
         let columns = await this.getAllColumns(md.c_datasource,md.c_path);
         if(columns.length ===0){    return {statusCode:200,message:&#x27;没有列数据，请确认数据连接是否正确。&#x27;}; }
         let comments = [];
@@ -599,9 +647,20 @@ export default class extends think.model.base {
         }else{
             Object.assign(comments,columns);
         }
+        let mcols = await this.getModuleEdit(moduleID);
         for (let [k,col] of columns.entries()) {
+            //如果列已经设置过，则跳过
+            let exist = false;
+            for(let mcol of mcols){
+                if(mcol.c_column === col.column){
+                    exist = true;
+                    break;
+                }
+            }
+            if(exist){  continue;   }
+
             let colmd = {c_module:md.id, c_column:col.column, c_coltype:col.type, c_scale:col.length, c_name:this.getColumnComment(comments,col.column),
-                c_desc : col.column,c_editable:true, c_type:&#x27;text&#x27;, c_format:&#x27;&#x27;, c_order:(k+1), c_width:35, c_style:&#x27;&#x27;,
+                c_desc : col.column,c_editable:true, c_type:&#x27;text&#x27;, c_format:&#x27;&#x27;, c_order:(k+1), c_width:28, c_style:&#x27;&#x27;,
                 c_suffix:&#x27;&#x27;, c_isshow:true,c_isrequired:false, c_user:0, c_time: think.datetime(), c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,c_validate_rules:&#x27;&#x27;};
             if([&#x27;id&#x27;,&#x27;c_time&#x27;,&#x27;c_user&#x27;,&#x27;c_group&#x27;].indexOf(col.column) !== -1){
                 colmd.c_type =&#x27;hidden&#x27;;
@@ -621,7 +680,7 @@ export default class extends think.model.base {
         }
         let md = await this.model(&#x27;t_module&#x27;).where({id:moduleID}).find();
         let model =this.model(&#x27;t_module_query&#x27;);
-        await model.where({c_module: md.id}).delete();
+        //await model.where({c_module: md.id}).delete();
         let columns = await this.getAllColumns(md.c_datasource,md.c_path);
         if(columns.length ===0){    return {statusCode:200,message:&#x27;没有列数据，请确认数据连接是否正确。&#x27;}; }
         let comments = [];
@@ -630,7 +689,18 @@ export default class extends think.model.base {
         }else{
             Object.assign(comments,columns);
         }
+        let mcols = await this.getModuleQuery(moduleID);
         for (let [k,col] of columns.entries()) {
+            //如果列已经设置过，则跳过
+            let exist = false;
+            for(let mcol of mcols){
+                if(mcol.c_column === col.column){
+                    exist = true;
+                    break;
+                }
+            }
+            if(exist){  continue;   }
+
             let colmd = {c_module:md.id, c_column:col.column, c_coltype:col.type, c_scale:col.length, c_name:this.getColumnComment(comments,col.column),
                 c_desc : col.column,c_type:(col.column ===&#x27;id&#x27; ? &#x27;hidden&#x27;:&#x27;text&#x27;),c_default:&#x27;&#x27;, c_format:&#x27;&#x27;, c_order:(k+1), c_width:12, c_style:&#x27;&#x27;,
                 c_suffix:&#x27;&#x27;, c_isshow:false,c_panel_index:0, c_user:0, c_time: think.datetime(), c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;};
@@ -645,30 +715,42 @@ export default class extends think.model.base {
         }
         let md = await this.model(&#x27;t_module&#x27;).where({id:moduleID}).find();
         let model =this.model(&#x27;t_module_btn&#x27;);
-        await model.where({c_module: md.id}).delete();
+        //await model.where({c_module: md.id}).delete();
+        let colnames = global.arrGetValuesByColumnName(await this.getModuleBtn(moduleID),&#x27;c_object&#x27;);
 
-        let colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;dialog&#x27;,c_class:&#x27;btn btn-green&#x27;, c_onclick:&#x27;&#x27;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
-            c_title:&#x27;新增&#x27;,c_label:&#x27;新增&#x27;,c_location:0,c_object:md.c_modulename+&#x27;.Add&#x27;, c_url:&#x60;/cmpage/page/edit?modulename=${md.c_modulename}*id=0&#x60;,
-            c_options:&#x60;{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:400 }&#x60;, c_icon:&#x27;plus&#x27;};
-        await model.add(global.checksql(colmd));
+        //global.debug(colnames,&#x27;module.resetModuleBtn - colnames&#x27;);
+        if(colnames.indexOf(md.c_modulename+&#x27;.Add&#x27;) === -1){
+            let colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;dialog&#x27;,c_class:&#x27;btn btn-green&#x27;, c_onclick:&#x27;&#x27;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
+                c_title:&#x27;新增&#x27;,c_label:&#x27;新增&#x27;,c_location:0,c_object:md.c_modulename+&#x27;.Add&#x27;, c_url:&#x60;/cmpage/page/edit?modulename=${md.c_modulename}*id=0&#x60;,
+                c_options:&#x60;{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:500 }&#x60;, c_icon:&#x27;plus&#x27;};
+            await model.add(global.checksql(colmd));
+        }
 
-        colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;#&#x27;,c_class:&#x27;btn btn-orange&#x27;, c_onclick:&#x60;return page${md.c_modulename}ExportData(this);&#x60;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
-            c_title:&#x27;导出&#x27;,c_label:&#x27;导出&#x27;,c_location:5,c_object:md.c_modulename+&#x27;.ExportData&#x27;, c_url:&#x27;#&#x27;, c_options:&#x27;&#x27;, c_icon:&#x27;file-excel-o&#x27;};
-        await model.add(global.checksql(colmd));
+        if(colnames.indexOf(md.c_modulename+&#x27;.ExportData&#x27;) === -1){
+            let colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;#&#x27;,c_class:&#x27;btn btn-orange&#x27;, c_onclick:&#x60;return pageExportData();&#x60;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
+                c_title:&#x27;导出&#x27;,c_label:&#x27;导出&#x27;,c_location:5,c_object:md.c_modulename+&#x27;.ExportData&#x27;, c_url:&#x27;#&#x27;, c_options:&#x27;&#x27;, c_icon:&#x27;file-excel-o&#x27;};
+            await model.add(global.checksql(colmd));
+        }
 
-        colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;dialog&#x27;,c_class:&#x27;btn btn-default&#x27;, c_onclick:&#x27;&#x27;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
-            c_title:&#x27;查看&#x27;,c_label:&#x27;&#x27;,c_location:11,c_object:md.c_modulename+&#x27;.View&#x27;, c_url:&#x60;/cmpage/page/view?modulename=${md.c_modulename}*id=#id#&#x60;,
-            c_options:&#x60;{id:##page${md.c_modulename}View##, mask:true, width:600, height:400 }&#x60;, c_icon:&#x27;info&#x27;};
-        await model.add(global.checksql(colmd));
+        if(colnames.indexOf(md.c_modulename+&#x27;.View&#x27;) === -1){
+            let colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;dialog&#x27;,c_class:&#x27;btn btn-default&#x27;, c_onclick:&#x27;&#x27;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
+                c_title:&#x27;查看&#x27;,c_label:&#x27;&#x27;,c_location:11,c_object:md.c_modulename+&#x27;.View&#x27;, c_url:&#x60;/cmpage/page/view?modulename=${md.c_modulename}*id=#id#&#x60;,
+                c_options:&#x60;{id:##page${md.c_modulename}View##, mask:true, width:600, height:500 }&#x60;, c_icon:&#x27;info&#x27;};
+            await model.add(global.checksql(colmd));
+        }
 
-        colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;dialog&#x27;,c_class:&#x27;btn btn-green&#x27;, c_onclick:&#x27;&#x27;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
-            c_title:&#x27;编辑&#x27;,c_label:&#x27;编辑&#x27;,c_location:12,c_object:md.c_modulename+&#x27;.Edit&#x27;, c_url:&#x60;/cmpage/page/edit?modulename=${md.c_modulename}*id=#id#&#x60;,
-            c_options:&#x60;{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:400 }&#x60;, c_icon:&#x27;edit&#x27;};
-        await model.add(global.checksql(colmd));
+        if(colnames.indexOf(md.c_modulename+&#x27;.Edit&#x27;) === -1){
+            let colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;dialog&#x27;,c_class:&#x27;btn btn-green&#x27;, c_onclick:&#x27;&#x27;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
+                c_title:&#x27;编辑&#x27;,c_label:&#x27;编辑&#x27;,c_location:12,c_object:md.c_modulename+&#x27;.Edit&#x27;, c_url:&#x60;/cmpage/page/edit?modulename=${md.c_modulename}*id=#id#&#x60;,
+                c_options:&#x60;{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:500 }&#x60;, c_icon:&#x27;edit&#x27;};
+            await model.add(global.checksql(colmd));
+        }
 
-        colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;#&#x27;,c_class:&#x27;btn btn-red&#x27;, c_onclick:&#x60;return page${md.c_modulename}Del(#id#,this);&#x60;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
-            c_title:&#x27;删除&#x27;,c_label:&#x27;&#x27;,c_location:13,c_object:md.c_modulename+&#x27;.Del&#x27;, c_url:&#x27;#&#x27;, c_options:&#x27;&#x27;, c_icon:&#x27;times&#x27;};
-        await model.add(global.checksql(colmd));
+        if(colnames.indexOf(md.c_modulename+&#x27;.Del&#x27;) === -1){
+            let colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;#&#x27;,c_class:&#x27;btn btn-red&#x27;, c_onclick:&#x60;return pageDelete(#id#,this);&#x60;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
+                c_title:&#x27;删除&#x27;,c_label:&#x27;&#x27;,c_location:13,c_object:md.c_modulename+&#x27;.Del&#x27;, c_url:&#x27;#&#x27;, c_options:&#x27;&#x27;, c_icon:&#x27;times&#x27;};
+            await model.add(global.checksql(colmd));
+        }
 
         return {statusCode:200,message:&#x27;&#x27;};
     }
@@ -703,7 +785,7 @@ export default class extends think.model.base {
             await think.cache(&#x60;module${module.id}&#x60;,null);
             await think.cache(&#x60;modulename${module.c_modulename}&#x60;,null);
             await think.cache(&#x60;moduleCol${module.id}&#x60;,null);
-            await await await await think.cache(&#x60;moduleQuery${module.id}&#x60;,null);
+            await think.cache(&#x60;moduleQuery${module.id}&#x60;,null);
             await think.cache(&#x60;moduleEdit${module.id}&#x60;,null);
             await think.cache(&#x60;moduleBtn${module.id}&#x60;,null);
         }

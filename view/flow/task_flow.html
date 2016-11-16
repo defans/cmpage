@@ -1,0 +1,14 @@
+
+<div class="bjui-pageHeader">
+    <div class="pull-right"><button type="button" class="btn-close" data-icon="close">关闭</button></div>
+    <div ><span style="background-color:#ff0000;">&nbsp;</span> 红色表示当前节点， <span style="background-color:#ff6600;">&nbsp;</span>
+        橙色表示已执行路径，<span style="background-color:#000000;">&nbsp;</span> 黑色表示终止节点</div>
+</div>
+
+
+<iframe id="mapview_iframe" name="mapview_iframe" width="60%" height="100%" frameborder="0" src="/flow/task/flow_map?taskID=<%= parms.taskID%>"></iframe>
+
+<div style="float:right; display:block; overflow:hidden; width:40%; height:100%; border:solid 1px #CCC; line-height:21px; background:#fff" class="bjui-layout">
+    <div id="taskActListDiv" data-toggle="autoajaxload" data-url="/cmpage/page/list?modulename=FwTaskActList&c_task=<%= parms.taskID%>"></div>
+</div>
+

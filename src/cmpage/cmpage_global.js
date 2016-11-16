@@ -101,6 +101,40 @@ export default class extends think.base {
     };
 
     /**
+     * 对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象<br/>
+     * 一般用于 某数据表记录的字段替换 事先设置的子字符串，子字符串的格式如：#id#
+     * @method  objPropertysReplaceToStr
+     * @return  {string}  替换后的字符串
+     * @param   {string} str 源字符串
+     * @param   {object} obj 源对象
+     */
+    objPropertysReplaceToStr = function(str, obj){
+        if(think.isEmpty(obj))  return str;
+
+        let ret = [];
+        let arr = str.split('');
+        let key ='';
+        let isKey = false;
+        for(let s of arr){
+            if(isKey){
+                if(s === '#'){  //key 结束，替换值加入ret
+                    isKey = false;
+                    ret.push(obj.hasOwnProperty(key) ? obj[key] : '#'+key+'#');
+                }else{
+                    key += s;
+                }
+            }else{
+                if(s === '#'){
+                    isKey = true;
+                    key ='';
+                }else {
+                    ret.push(s);
+                }
+            }
+        }
+        return ret.join('');
+    };
+    /**
      * 在目标对象上增加另一个对象的某些属性，如有重叠，则覆盖其值
      * @method  objPropertysFromOtherObj
      * @return  {object}  新的对象，其属性集是源对象的子集
@@ -117,7 +151,8 @@ export default class extends think.base {
         return ret;
     };
     /**
-     * 对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象
+     * 对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象<br/>
+     * 一般用 global.objFromString(str) 进行转换
      * @method  objToString
      * @return  {string}  序列化后的字符串
      * @param   {object} obj 源对象
@@ -135,7 +170,7 @@ export default class extends think.base {
                 } else if (think.isArray(obj[key])) {
                     let tmp = [];
                     for (let item of obj[key]) {
-                        tmp.push(global.objToString(item));
+                        tmp.push(this.objToString(item));
                     }
                     ret.push(`${key}:[${tmp.join(',')}]`);
                 } else {
@@ -146,12 +181,41 @@ export default class extends think.base {
         }else if(think.isArray(obj)){
             let tmp = [];
             for (let item of obj) {
-                tmp.push(global.objToString(item));
+                tmp.push(this.objToString(item));
             }
-            ret.push(`[${tmp.join(',')}]`);
+            return `[${tmp.join(',')}]`;
         }else{
             return String(obj);
         }
+    };
+
+    /**
+     * 把字符串转换成对象，一般该字符串是从 global.objToString(obj) 转换而来 <br/>
+     * @method  objFromString
+     * @return   {object}  目标对象
+     * @param  {string}  str 序列化后的字符串
+     */
+    objFromString = function(str){
+        return eval("("+ str +")");
+    };
+
+    /**
+     * 把字符串转换成数组对象，其元素是对象，一般该元素是从 global.objToString(obj) 转换而来 <br/>
+     * @method  arrFromString
+     * @return   {Array}  JSON对象数组
+     * @param  {string}  str 序列化后的字符串
+     */
+    arrFromString = function(str){
+        let arr = [];
+        let obj = think.isEmpty(str) ? {} : objFromString(str);
+        if(think.isArray(obj)){
+            for(let item of obj){
+                if(!think.isEmpty(item)){    arr.push(item);  }
+            }
+        }else{
+            if(!think.isEmpty(obj)){    arr.push(obj);  }
+        }
+        return arr;
     };
 
     /**
@@ -166,6 +230,25 @@ export default class extends think.base {
         let ret = [];
         for(let obj of arr){
             ret.push(obj[columnName]);
+        }
+        return ret;
+    };
+
+    /**
+     * 取出数组中的重复值
+     * @method  arrGetUnique
+     * @return  {Array}  新的数组
+     * @param   {Array} arr 源数组
+     */
+    arrGetUnique = function(arr){
+        var n = {},ret=[]; //n为hash表
+        for(var i = 0; i < arr.length; i++) //遍历当前数组
+        {
+            if (!n[arr[i]]) //如果hash表中没有当前项
+            {
+                n[arr[i]] = true; //存入hash表
+                ret.push(arr[i]); //把当前数组的当前项push到临时数组里面
+            }
         }
         return ret;
     };
@@ -190,15 +273,13 @@ export default class extends think.base {
     /***************************其他的全局方法 **************************************/
     debug = (msg,desc)=>{
         if(think.env === 'development'){
-            console.log(think.isObject(msg) ? JSON.stringify(msg).replace(/"/g,'').replace(/\\/g,'').replace(/,/g,',  ') : msg);
-            if(!think.isEmpty(desc)){
-                console.log(' --- '+desc);
-            }
+            //let message = think.isObject(msg) ? JSON.stringify(msg).replace(/"/g,'').replace(/\\/g,'').replace(/,/g,',  ') : msg;
+            let message = this.objToString(msg);
+            //think.log(message,(think.isEmpty(desc) ? '[CMPAGE] ':'['+desc+'] '),false);
+            think.log(function(colors){
+                return colors.yellow(think.isEmpty(desc) ? '[CMPAGE] ':'['+desc+'] ') + message;
+            });
         }
-
-    };
-    log = (msg)=>{
-        console.log(msg);
     };
 
     /**
@@ -349,7 +430,19 @@ export default class extends think.base {
             TERMINATE:7, TERMINATE_name:'终止',
             END:9, END_name:'完成'
         };
+        global.cmpageUI = {
+            enumListColumns : {     //其值表示页面列表的显示字段的数量
+                MAX:100, MIDDLE:5, SMALL: 5, MOBILE: 3
+            },
+            enumListBtns : {     //其值表示页面列表的行按钮的数量
+                MAX:100, MIDDLE:2, SMALL: 2, MOBILE: 1
+            }
 
+        };
+
+        global.flow = {
+            autoExecuting:false
+        };
 
         //暂时不考虑回退和跳转，如有必要，可继承task, task_act来实现具体的某一类业务流程模板
         //global.enumActJumpRule = {

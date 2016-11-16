@@ -30,7 +30,7 @@ export default class extends think.model.base {
         let act = this.act;
         global.debug(taskAct,'task_act.canRun --- taskAct --- 根据节点状态判断');
         global.debug(act,'task_act.canRun --- act --- 根据节点状态判断');
-        if(act.c_type === global.enumActType.START  || act.c_type === global.enumActType.DUMMY
+        if(act.c_type === global.enumActType.START  || act.c_type === global.enumActType.DUMMY || act.c_type === global.enumActType.END
             || (taskAct.c_status === global.enumTaskActStatus.SUSPEND && taskAct.c_from_rule !== global.enumActFromRule.DEFINE) ){
             return true;
         }else if(taskAct.c_status === global.enumTaskActStatus.NO_BEGIN || taskAct.c_status === global.enumTaskActStatus.SUSPEND){
@@ -89,14 +89,28 @@ export default class extends think.model.base {
      */
     async fwRun(isPass){
         global.debug(isPass,'task_act.fwRun - isPass');
-        if(think.isEmpty(isPass) && await this.canRun() ){
+        if(isPass || await this.canRun() ) {
             this.taskAct.c_status = global.enumTaskActStatus.RUN;
             await this.save();
-        }
-        //执行本节点，子类中可以加入其他业务逻辑
+            //执行本节点，子类中可以加入其他业务逻辑
+            if (think.isEmpty(this.act)) {
+                this.act = this.model('act').getActById(this.taskAct.c_act);
+            }
+            let btns = arrFromString(this.act.c_form_btn);
+            debug(btns, 'task_act.fwRun - btns');
+            for (let btn of btns) {
+                if (!think.isEmpty(btn.fn)) {         //如果表单按钮设置有函数调用，则调用
+                    let fnModel = model(btn.model);
+                    if (think.isFunction(fnModel[btn.fn])) {
+                        await fnModel[btn.fn](this.taskAct, this.act, this.user);
+                    }
 
-        //结束本节点
-        await this.fwEnd();
+                }
+            }
+
+            //结束本节点
+            await this.fwEnd();
+        }
     }
 
     /**
@@ -248,8 +262,12 @@ export default class extends think.model.base {
      * @method  save
      */
     async save(){
-        let md = global.objPropertysFromOtherObj({},this.taskAct,['id','c_task','c_act','c_status','c_user',
-                    'c_time_begin','c_time','c_memo','c_link','c_link_type']);
+        let md = objPropertysFromOtherObj({},this.taskAct,['c_task','c_act','c_status','c_user',
+                    'c_memo','c_link','c_link_type']);
+        if(!think.isEmpty(this.user)){
+            md.c_user = this.user.id;
+        }
+        md.c_time = think.datetime();
         if(!think.isEmpty(md)){
             await this.model('fw_task_act').where({id:this.taskAct.id}).update(md);
             await this.addTaskSt();
@@ -326,7 +344,7 @@ export default class extends think.model.base {
      * @params {object} taskAct 任务节点对象
      */
     async getToTaskActs(taskAct){
-        global.debug(taskAct,'task_act.getToTaskActs ---- taskAct');
+        debug(taskAct,'task_act.getToTaskActs ---- taskAct');
         let toArr =await this.model('act_path').getToActIds(taskAct.c_act, taskAct.c_proc);
         let list = await this.query(`select * from fw_task_act where c_task=${taskAct.c_task}`);
         let ret =[];
@@ -358,6 +376,9 @@ export default class extends think.model.base {
      * @params {object} taskActID 任务对象的节点ID
      */
     async getTaskAct(taskActID){
+        return await this.getTaskActById(taskActID);
+    }
+    async getTaskActById(taskActID){
         return await this.model('vw_task_act').where({id:taskActID}).find();
     }
 

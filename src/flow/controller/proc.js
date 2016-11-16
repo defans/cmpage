@@ -24,7 +24,6 @@ export default class extends Base {
         pageModel.modEdits = await module.getModuleEdit(parms.id);
 
         let procEditHtml =await pageModel.htmlGetEdit();
-        await pageModel.getPageOther();
         this.assign('procEditHtml',procEditHtml);
         this.assign('parms',pageModel.mod);
 

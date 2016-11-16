@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -520,7 +556,21 @@
                     </li>
                 
                     <li class="index-item method">
+                        <a href="#" data-tabid="#method" data-anchor="#method_getFlowMap" data-tablink="getFlowMap">getFlowMap</a>
+
+                        
+                        
+                    </li>
+                
+                    <li class="index-item method">
                         <a href="#" data-tabid="#method" data-anchor="#method_getStocks" data-tablink="getStocks">getStocks</a>
+
+                        
+                        
+                    </li>
+                
+                    <li class="index-item method">
+                        <a href="#" data-tabid="#method" data-anchor="#method_getTask" data-tablink="getTask">getTask</a>
 
                         
                         
@@ -541,7 +591,14 @@
                     </li>
                 
                     <li class="index-item method">
-                        <a href="#" data-tabid="#method" data-anchor="#method_htmlGetOther" data-tablink="htmlGetOther">htmlGetOther</a>
+                        <a href="#" data-tabid="#method" data-anchor="#method_getUserFromTask" data-tablink="getUserFromTask">getUserFromTask</a>
+
+                        
+                        
+                    </li>
+                
+                    <li class="index-item method">
+                        <a href="#" data-tabid="#method" data-anchor="#method_save" data-tablink="save">save</a>
 
                         
                         
@@ -549,13 +606,6 @@
                 
                     <li class="index-item method">
                         <a href="#" data-tabid="#method" data-anchor="#method_saveMap" data-tablink="saveMap">saveMap</a>
-
-                        
-                        
-                    </li>
-                
-                    <li class="index-item method">
-                        <a href="#" data-tabid="#method" data-anchor="#method_updateTask" data-tablink="updateTask">updateTask</a>
 
                         
                         
@@ -628,18 +678,6 @@
             
                 <li class="arg">
                     
-                        task
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        user
-                    
-                </li>
-            
-                <li class="arg">
-                    
                         [desc]
                     
                 </li>
@@ -649,10 +687,6 @@
     
     </code>
 
-    
-        <span class="returns-inline">
-            <span class="type">Int</span>
-        </span>
     
 
     
@@ -678,7 +712,7 @@
             
         
         
-        <a href="../files/src_flow_model_task.js.html#l196"><code>src\flow\model\task.js:196</code></a>
+        <a href="../files/src_flow_model_task.js.html#l202"><code>src\flow\model\task.js:202</code></a>
         
         </p>
 
@@ -699,40 +733,6 @@
 
             <table class="table table-bordered">
             <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">task</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>任务对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">user</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程执行人</p>
-
-                    </div>
-
-                    
-                </tr>
             
                 <tr class="param">
                     
@@ -757,20 +757,6 @@
     
 
     
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">Int</span>]
-                    
-                    <p>记录ID</p>
-
-                
-            </div>
-        </div>
-    
 
     
 </div>
@@ -781,36 +767,10 @@
     <code>
     fwEnd
     
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        task
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        proc
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        user
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
     
     </code>
 
-    
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
     
 
     
@@ -836,7 +796,7 @@
             
         
         
-        <a href="../files/src_flow_model_task.js.html#l178"><code>src\flow\model\task.js:178</code></a>
+        <a href="../files/src_flow_model_task.js.html#l191"><code>src\flow\model\task.js:191</code></a>
         
         </p>
 
@@ -852,81 +812,7 @@
     </div>
 
     
-        <div class="params">
-            <h4>Parameters:</h4>
 
-            <table class="table table-bordered">
-            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">task</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>任务对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">proc</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程模板对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">user</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程执行人</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-            </table>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">Object</span>]
-                    
-                    <p>流程实例对象</p>
-
-                
-            </div>
-        </div>
     
 
     
@@ -938,36 +824,10 @@
     <code>
     fwInit
     
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        task
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        proc
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        user
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
     
     </code>
 
-    
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
     
 
     
@@ -993,7 +853,7 @@
             
         
         
-        <a href="../files/src_flow_model_task.js.html#l73"><code>src\flow\model\task.js:73</code></a>
+        <a href="../files/src_flow_model_task.js.html#l100"><code>src\flow\model\task.js:100</code></a>
         
         </p>
 
@@ -1010,81 +870,7 @@
     </div>
 
     
-        <div class="params">
-            <h4>Parameters:</h4>
 
-            <table class="table table-bordered">
-            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">task</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程实例对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">proc</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程模板对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">user</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程发起人</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-            </table>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">Object</span>]
-                    
-                    <p>流程实例对象</p>
-
-                
-            </div>
-        </div>
     
 
     
@@ -1096,36 +882,10 @@
     <code>
     fwRun
     
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        task
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        proc
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        user
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
     
     </code>
 
-    
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
     
 
     
@@ -1151,7 +911,7 @@
             
         
         
-        <a href="../files/src_flow_model_task.js.html#l106"><code>src\flow\model\task.js:106</code></a>
+        <a href="../files/src_flow_model_task.js.html#l127"><code>src\flow\model\task.js:127</code></a>
         
         </p>
 
@@ -1167,81 +927,7 @@
     </div>
 
     
-        <div class="params">
-            <h4>Parameters:</h4>
 
-            <table class="table table-bordered">
-            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">task</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>任务对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">proc</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程模板对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">user</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程执行人</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-            </table>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">Object</span>]
-                    
-                    <p>流程实例对象</p>
-
-                
-            </div>
-        </div>
     
 
     
@@ -1253,30 +939,10 @@
     <code>
     fwStart
     
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        proc
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        user
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
     
     </code>
 
-    
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
     
 
     
@@ -1302,7 +968,7 @@
             
         
         
-        <a href="../files/src_flow_model_task.js.html#l16"><code>src\flow\model\task.js:16</code></a>
+        <a href="../files/src_flow_model_task.js.html#l22"><code>src\flow\model\task.js:22</code></a>
         
         </p>
 
@@ -1318,64 +984,7 @@
     </div>
 
     
-        <div class="params">
-            <h4>Parameters:</h4>
 
-            <table class="table table-bordered">
-            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">proc</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程模板对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">user</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程发起人</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-            </table>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">Object</span>]
-                    
-                    <p>流程实例对象</p>
-
-                
-            </div>
-        </div>
     
 
     
@@ -1387,36 +996,10 @@
     <code>
     fwSuspend
     
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        task
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        proc
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        user
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
     
     </code>
 
-    
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
     
 
     
@@ -1442,7 +1025,7 @@
             
         
         
-        <a href="../files/src_flow_model_task.js.html#l130"><code>src\flow\model\task.js:130</code></a>
+        <a href="../files/src_flow_model_task.js.html#l145"><code>src\flow\model\task.js:145</code></a>
         
         </p>
 
@@ -1458,81 +1041,7 @@
     </div>
 
     
-        <div class="params">
-            <h4>Parameters:</h4>
 
-            <table class="table table-bordered">
-            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">task</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>任务对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">proc</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程模板对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">user</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程执行人</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-            </table>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">Object</span>]
-                    
-                    <p>流程实例对象</p>
-
-                
-            </div>
-        </div>
     
 
     
@@ -1544,24 +1053,69 @@
     <code>
     fwTerminate
     
+        <span class="paren">()</span>
+    
+    </code>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_flow_model_task.js.html#l161"><code>src\flow\model\task.js:161</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description well well-small sign-left3">
+        <div class="stdoc-code"><p>终止一个流程实例(任务)</p>
+</div>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_getFlowMap" class="method item">
+    <h3 class="name">getFlowMap</h3>
+    <code>
+    getFlowMap
+    
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
             
                 <li class="arg">
                     
-                        task
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        proc
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        user
+                        taskID
                     
                 </li>
             
@@ -1572,7 +1126,7 @@
 
     
         <span class="returns-inline">
-            <span class="type">Object</span>
+            <span class="type">String</span>
         </span>
     
 
@@ -1599,7 +1153,7 @@
             
         
         
-        <a href="../files/src_flow_model_task.js.html#l154"><code>src\flow\model\task.js:154</code></a>
+        <a href="../files/src_flow_model_task.js.html#l258"><code>src\flow\model\task.js:258</code></a>
         
         </p>
 
@@ -1610,7 +1164,8 @@
     </div>
 
     <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>终止一个流程实例(任务)</p>
+        <div class="stdoc-code"><p>取流程实例对象的轨迹图,<br/>
+先取流程模板的图片数据，然后修改当前节点和执行路径的属性值</p>
 </div>
     </div>
 
@@ -1623,49 +1178,15 @@
             
                 <tr class="param">
                     
-                       <td> <code class="param-name">task</code>
-                       <td> <span class="type">Object</span>
+                       <td> <code class="param-name">taskID</code>
+                       <td> <span class="type">Int</span>
                        <td>
                     
 
                     
                     </td>
                     <td><div class="param-description">
-                        <p>任务对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">proc</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程模板对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">user</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程执行人</p>
+                        <p>任务对象ID</p>
 
                     </div>
 
@@ -1683,9 +1204,9 @@
             <div class="returns-description">
                 
                     
-                        [<span class="type">Object</span>]
+                        [<span class="type">String</span>]
                     
-                    <p>流程实例对象</p>
+                    <p>流程图形的字符串</p>
 
                 
             </div>
@@ -1744,7 +1265,7 @@
             
         
         
-        <a href="../files/src_flow_model_proc_list.js.html#l91"><code>src\flow\model\proc_list.js:91</code></a>
+        <a href="../files/src_flow_model_proc_list.js.html#l47"><code>src\flow\model\proc_list.js:47</code></a>
         
         </p>
 
@@ -1807,141 +1328,17 @@
 </div>
 
                 
-                    <div id="method_getTaskNo" class="method item">
-    <h3 class="name">getTaskNo</h3>
+                    <div id="method_getTask" class="method item">
+    <h3 class="name">getTask</h3>
     <code>
-    getTaskNo
+    getTask
     
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
             
                 <li class="arg">
                     
-                        proc
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-    </code>
-
-    
-        <span class="returns-inline">
-            <span class="type">String</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_flow_model_task.js.html#l89"><code>src\flow\model\task.js:89</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>根据编号规则生成任务编号<br/>
-子类中可以重写本方法，实现特殊的编号规则</p>
-</div>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <table class="table table-bordered">
-            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">proc</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程模板对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-            </table>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">String</span>]
-                    
-                    <p>新的任务编号</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_getTaskWithStatus" class="method item">
-    <h3 class="name">getTaskWithStatus</h3>
-    <code>
-    getTaskWithStatus
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        task
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        proc
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        user
+                        taskID
                     
                 </li>
             
@@ -1979,7 +1376,7 @@
             
         
         
-        <a href="../files/src_flow_model_task.js.html#l59"><code>src\flow\model\task.js:59</code></a>
+        <a href="../files/src_flow_model_task.js.html#l234"><code>src\flow\model\task.js:234</code></a>
         
         </p>
 
@@ -1990,8 +1387,7 @@
     </div>
 
     <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>取某个任务的当前状态，当前节点存放于 task.taskAct <br/>
-子类中重写本方法，可以增加任务的初始化逻辑，比如业务相关的逻辑</p>
+        <div class="stdoc-code"><p>取流程实例对象，此处可使用缓存机制改进性能</p>
 </div>
     </div>
 
@@ -2004,49 +1400,15 @@
             
                 <tr class="param">
                     
-                       <td> <code class="param-name">task</code>
-                       <td> <span class="type">Object</span>
+                       <td> <code class="param-name">taskID</code>
+                       <td> <span class="type">Int</span>
                        <td>
                     
 
                     
                     </td>
                     <td><div class="param-description">
-                        <p>流程实例对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">proc</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程模板对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">user</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>流程发起人</p>
+                        <p>任务对象ID</p>
 
                     </div>
 
@@ -2077,22 +1439,12 @@
 </div>
 
                 
-                    <div id="method_htmlGetOther" class="method item">
-    <h3 class="name">htmlGetOther</h3>
+                    <div id="method_getTaskNo" class="method item">
+    <h3 class="name">getTaskNo</h3>
     <code>
-    htmlGetOther
+    getTaskNo
     
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        page
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
     
     </code>
 
@@ -2125,7 +1477,7 @@
             
         
         
-        <a href="../files/src_flow_model_proc_list.js.html#l39"><code>src\flow\model\proc_list.js:39</code></a>
+        <a href="../files/src_flow_model_task.js.html#l111"><code>src\flow\model\task.js:111</code></a>
         
         </p>
 
@@ -2136,7 +1488,169 @@
     </div>
 
     <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>重写父类的 htmlGetOther 方法，输出额外的js函数</p>
+        <div class="stdoc-code"><p>根据编号规则生成任务编号<br/>
+子类中可以重写本方法，实现特殊的编号规则</p>
+</div>
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        [<span class="type">String</span>]
+                    
+                    <p>新的任务编号</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_getTaskWithStatus" class="method item">
+    <h3 class="name">getTaskWithStatus</h3>
+    <code>
+    getTaskWithStatus
+    
+        <span class="paren">()</span>
+    
+    </code>
+
+    
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_flow_model_task.js.html#l72"><code>src\flow\model\task.js:72</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description well well-small sign-left3">
+        <div class="stdoc-code"><p>取某个任务的当前状态，当前节点存放于 task.currAct <br/>
+子类中重写本方法，可以增加任务的初始化逻辑，比如业务相关的逻辑</p>
+</div>
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        [<span class="type">Object</span>]
+                    
+                    <p>当前节点的模板对象</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_getUserFromTask" class="method item">
+    <h3 class="name">getUserFromTask</h3>
+    <code>
+    getUserFromTask
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        taskID
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+    </code>
+
+    
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_flow_model_task.js.html#l244"><code>src\flow\model\task.js:244</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description well well-small sign-left3">
+        <div class="stdoc-code"><p>取流程实例的创建用户对象，供没有特定用户，如自动执行等操作调用</p>
 </div>
     </div>
 
@@ -2149,15 +1663,15 @@
             
                 <tr class="param">
                     
-                       <td> <code class="param-name">page</code>
-                       <td> <span class="type">Object</span>
+                       <td> <code class="param-name">taskID</code>
+                       <td> <span class="type">Int</span>
                        <td>
                     
 
                     
                     </td>
                     <td><div class="param-description">
-                        <p>页面设置主信息</p>
+                        <p>任务对象ID</p>
 
                     </div>
 
@@ -2175,13 +1689,70 @@
             <div class="returns-description">
                 
                     
-                        [<span class="type">String</span>]
+                        [<span class="type">Object</span>]
                     
-                    <p>html片段</p>
+                    <p>流程实例的用户对象</p>
 
                 
             </div>
         </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_save" class="method item">
+    <h3 class="name">save</h3>
+    <code>
+    save
+    
+        <span class="paren">()</span>
+    
+    </code>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_flow_model_task.js.html#l221"><code>src\flow\model\task.js:221</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description well well-small sign-left3">
+        <div class="stdoc-code"><p>保存程实例记录，此处可使用缓存机制改进性能</p>
+</div>
+    </div>
+
+    
+
     
 
     
@@ -2236,7 +1807,7 @@
             
         
         
-        <a href="../files/src_flow_model_proc_list.js.html#l131"><code>src\flow\model\proc_list.js:131</code></a>
+        <a href="../files/src_flow_model_proc_list.js.html#l87"><code>src\flow\model\proc_list.js:87</code></a>
         
         </p>
 
@@ -2288,117 +1859,6 @@
                     
                         <span class="type">Object</span>:
                     
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_updateTask" class="method item">
-    <h3 class="name">updateTask</h3>
-    <code>
-    updateTask
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        task
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-    </code>
-
-    
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_flow_model_task.js.html#l213"><code>src\flow\model\task.js:213</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>修改流程实例记录，此处可使用缓存机制改进性能</p>
-</div>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <table class="table table-bordered">
-            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">task</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>任务对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-            </table>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">Object</span>]
-                    
-                    <p>流程实例对象</p>
-
                 
             </div>
         </div>

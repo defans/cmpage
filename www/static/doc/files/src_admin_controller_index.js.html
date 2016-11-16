@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -492,30 +528,65 @@ export default class extends Base {
     let vb={groupName:user.groupName,version:codeMd.c_desc,userName:user.c_name,title:&#x27;CmPage by defans&#x27;};
     let menus = await this.model(&#x27;privilege&#x27;).userGetPrivilegeTree(user.id,user.c_role);
 
-    vb.navList=[];  //主菜单
-    vb.itemList=[]; //二级导航菜单
-    vb.menuList=[];//叶子菜单
-    menus.forEach(function(rec){
-        if(rec.c_type===&#x27;N&#x27; &amp;&amp; rec.isAllow){
-            if(rec.c_pid===1){
-                if(vb.navList.length===0){
-                    rec.liStyle=&quot;class=active&quot;;
-                }
-                vb.navList.push(rec);
-            }else{
-                vb.itemList.push(rec);
-            }
-        }else{
-            if(rec.c_type==&#x27;M&#x27; &amp;&amp; rec.isAllow){
-              vb.menuList.push(rec);
-            }
-        }
-    });
+      //取主菜单
+      let menuHtml = [];
+      let firstMenu = true;
+      for(let menu of menus){
+          if(menu.c_type === &#x27;N&#x27; &amp;&amp; menu.c_pid ===1 ){
+              menuHtml.push(&#x60;&lt;li ${firstMenu ? &#x27;class=&quot;active&quot;&#x27;:&#x27;&#x27;}&gt;&lt;a href=&quot;/admin/index/get_menu?root_id=${menu.id}&quot; data-toggle=&quot;sidenav&quot;
+                     data-tree-options=&quot;{onClick:MainMenuClick}&quot; data-id-key=&quot;targetid&quot;&gt;${menu.c_name}&lt;/a&gt;&lt;/li&gt;&#x60;)
+              firstMenu = false;
+          }
+      }
+      vb.menuHtml = menuHtml;
 
     // global.debug(vb.itemList);
     this.assign(&#x27;vb&#x27;,vb);
     return this.display();
   }
+    /**
+     * 用户密码修改页面，get方式显示编辑页面，post方式执行密码修改
+     * @method  loginPwdEdit
+     * @return {Promise}
+     */
+    async getMenuAction(){
+        let user = await this.session(&#x27;user&#x27;);
+        let rootID = this.get(&#x27;root_id&#x27;);
+        let menus = await this.model(&#x27;privilege&#x27;).userGetPrivilegeTree(user.id,user.c_role,rootID);
+        let ret =[];
+        let nav = [];
+        for(let menu of menus){
+            if(menu.c_pid === rootID &amp;&amp; menu.c_type === &#x27;M&#x27;){
+                menu.external = (menu.c_object === &#x27;Module&#x27;);
+                nav.push({id:&#x60;page${menu.c_object.split(&#x27;.&#x27;).join(&#x27;&#x27;)}&#x60;, name:menu.c_name, target:&#x27;navtab&#x27;,
+                    url:menu.c_desc, external:menu.external});
+            }
+        }
+        if(nav.length &gt;0){
+            ret.push({name:await this.model(&#x27;code&#x27;).getNameById(rootID), children:nav});
+        }
+        let navs = [];
+        for(let menu of menus){
+            if(menu.c_type === &#x27;N&#x27;){
+                navs.push(menu);
+            }
+        }
+        for(let n of navs ){
+            nav = [];
+            for(let menu of menus){
+                if(menu.c_pid === n.id  &amp;&amp; menu.c_type === &#x27;M&#x27;){
+                    menu.external = (menu.c_object === &#x27;Module&#x27;);
+                    nav.push({id:&#x60;page${menu.c_object.split(&#x27;.&#x27;).join(&#x27;&#x27;)}&#x60;, name:menu.c_name, target:&#x27;navtab&#x27;,
+                        url:menu.c_desc, external:menu.external});
+                }
+            }
+            if(nav.length &gt;0){
+                ret.push({name:n.c_name, children:nav});
+            }
+        }
+
+        return this.json(ret);
+    }
 
     /**
      * 用户登录界面，get方式显示登录页面，post方式执行用户登录，如果成功则将用户信息写入session并引导到index页面,
@@ -541,7 +612,7 @@ export default class extends Base {
                     return this.display();
                 }
                 //判断是否有权限登录所选择的账套
-                let groups = this.model(&#x27;groupuser&#x27;).getLoginGroups(this.post(&#x27;loginGroup&#x27;), user.id);
+                let groups = await this.model(&#x27;groupuser&#x27;).getLoginGroups(this.post(&#x27;loginGroup&#x27;), user.id);
                 if(think.isEmpty(groups)){
                     vb.loginName = this.post(&#x27;loginName&#x27;);
                     vb.msg = &#x27;对不起，您不能登录该账套！&#x27;;
@@ -553,6 +624,12 @@ export default class extends Base {
                     user.groupID = parseInt(this.post(&#x27;loginGroup&#x27;));
                     user.groupName = await this.model(&#x27;code&#x27;).getNameById(user.groupID);
                     user.groups = groups;
+                    let width = think.isEmpty(this.post(&#x27;clientWidth&#x27;)) ? 1200 : this.post(&#x27;clientWidth&#x27;);
+                    user.listColumns = width &gt;=1200 ? cmpageUI.enumListColumns.MAX : (width &gt;=970 ? cmpageUI.enumListColumns.MIDDLE :
+                        (width &gt;=768 ? cmpageUI.enumListColumns.SMALL : cmpageUI.enumListColumns.MOBILE ));
+                    user.listBtns = width &gt;=1200 ? cmpageUI.enumListBtns.MAX : (width &gt;=970 ? cmpageUI.enumListBtns.MIDDLE :
+                        (width &gt;=768 ? cmpageUI.enumListBtns.SMALL : cmpageUI.enumListBtns.MOBILE ));
+
                     //console.log(user);
                     await this.model(&#x27;login&#x27;).addLogin(user);
                     await this.session(&#x27;user&#x27;, user);
@@ -593,47 +670,50 @@ export default class extends Base {
             let user = await this.session(&#x27;user&#x27;);
             await this.model(&#x27;t_user&#x27;).where({id:user.id}).update({c_login_pwd:think.md5(this.post(&#x27;newPwd&#x27;))});
             await this.cache(&quot;users&quot;,null);  //清除users缓存
-            return this.json({statusCode:200, message:&#x27;密码已修改，请牢记！&#x27;});
+            return this.json({statusCode:200, message:&#x27;密码已修改，请牢记！&#x27;,closeCurrent:true});
         }
     }
 
-    async keepConnectDbAction(){
-        let cnt = await this.model(&#x27;t_code&#x27;).count();
-        if(cnt &gt;0){
-            return this.json({statusCode:200, message:&#x27;DB is openning &#x27;})
-        }else{
-            return this.json({statusCode:200, message:&#x27;DB has closed &#x27;})
-        }
-
+    async setClientWidthAction(){
+        let user = await this.session(&#x27;user&#x27;);
+        let width = think.isEmpty(this.get(&#x27;width&#x27;)) ? 1200 : this.get(&#x27;width&#x27;);
+        user.listColumns = width &gt;=1200 ? cmpageUI.enumListColumns.MAX : (width &gt;=970 ? cmpageUI.enumListColumns.MIDDLE :
+            (width &gt;=768 ? cmpageUI.enumListColumns.SMALL : cmpageUI.enumListColumns.MOBILE ));
+        user.listBtns = width &gt;=1200 ? cmpageUI.enumListBtns.MAX : (width &gt;=970 ? cmpageUI.enumListBtns.MIDDLE :
+            (width &gt;=768 ? cmpageUI.enumListBtns.SMALL : cmpageUI.enumListBtns.MOBILE ));
+        await this.session(&#x27;user&#x27;, user);
+        return this.json({statusCode:200, message:&#x27;&#x27;});
     }
+
     //开始定时器
-    timerStartAction(){
+    autoExecOpenAction(){
         if(this.ip() != &quot;127.0.0.1&quot;){
-            return this.json({statusCode:300,message:&quot;timer is not start! &quot;+this.ip()});
+            return this.json({statusCode:300,message:&quot;timer is not start, ! &quot;+this.ip()});
         }
-        if(!think.isObject(global.timer)){
-            global.timer = setInterval(function() {
-                request(&#x27;http://127.0.0.1:8300/admin/index/keep_connect_db&#x27;, function (error, response, body) {
+        if(!think.isObject(global.autoExecTimer)){
+            global.autoExecTimer = setInterval(function() {
+                request(&#x27;http://127.0.0.1:8300/flow/task/auto_exec&#x27;, function (error, response, body) {
                     if (!error) {
                         console.log(body);
                     } else {
                         //console.log(&quot;error: &quot; + error);
                     }
+                    flow.autoExecuting =false;
                 });
-            }, 600000);
+            }, 3000);
             return this.json({statusCode:200,message:&quot;timer is start! &quot;+this.ip()});
         }
         return this.json({statusCode:200,message:&quot;timer has be started! &quot;+this.ip()});
     }
 
     //停止定时器
-    timerStopAction(){
+    autoExecCloseAction(){
         if(this.ip() != &quot;127.0.0.1&quot;){
             return this.json({statusCode:300,message:&quot;timer is not stop! &quot;+this.ip()});
         }
-        if(think.isObject(global.timer)){
-            clearInterval(global.timer);
-            global.timer = null;
+        if(think.isObject(global.autoExecTimer)){
+            clearInterval(global.autoExecTimer);
+            global.autoExecTimer = null;
             return this.json({statusCode:200,message:&quot;timer is stop! &quot;+this.ip()});
         }
         return this.json({statusCode:300,message:&quot;timer is not exist! &quot;+this.ip()});

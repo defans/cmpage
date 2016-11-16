@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -484,8 +520,8 @@ export default class extends CMPage {
      * @return {string}  where条件子句
      * @param {Object} page  页面设置主信息
      */
-    async getQueryWhere(page){
-        let where =await super.getQueryWhere(page);
+    async getQueryWhere(){
+        let where =await super.getQueryWhere();
         //global.debug(where);
         return where +&#x27; and c_status&lt;&gt;-1 and c_linktype=1&#x27;;
     }
@@ -496,7 +532,7 @@ export default class extends CMPage {
      * @param {Object} page  页面设置主信息
      * @param {Object} parms  编辑页面传回的FORM参数
      */
-    async pageSave(page,parms){
+    async pageSave(parms){
         //先保存t_emp
         let md =global.objPropertysFromOtherObj({},parms,[&#x27;c_name&#x27;,&#x27;c_sex&#x27;,&#x27;c_phone&#x27;,&#x27;c_email&#x27;,&#x27;c_qq&#x27;,&#x27;c_address&#x27;,&#x27;c_memo&#x27;,&#x27;c_birthday&#x27;,&#x27;c_dept&#x27;,
             &#x27;c_user&#x27;,&#x27;c_time&#x27;,&#x27;c_group&#x27;,&#x27;c_province&#x27;,&#x27;c_city&#x27;,&#x27;c_country&#x27;,&#x27;c_manager&#x27;]);
@@ -523,8 +559,8 @@ export default class extends CMPage {
     /**
      * 根据用户ID取用户名称，一般用于页面模块配置中的‘替换’调用: admin/user:getNameById
      * @method  getNameById
-     * @return {string}  参数名称
-     * @param {int} id  参数ID
+     * @return {string}  用户名称
+     * @param {int} id  用户ID
      */
     async getNameById(id){
         let users =await this.getUsers();
@@ -535,7 +571,21 @@ export default class extends CMPage {
         }
         return &#x27;&#x27;;
     }
-
+    /**
+     * 根据用户ID取用户对象
+     * @method  getNameById
+     * @return {object}  用户对象
+     * @param {int} id  用户ID
+     */
+    async getUserById(id){
+        let users =await this.getUsers();
+        for(let user of users){
+            if(user.id == id){
+                return user;
+            }
+        }
+        return {};
+    }
     /**
      * 根据用户登录名和密码取用户记录对象，
      * @method  getUserByLogin

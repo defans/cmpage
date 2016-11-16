@@ -250,7 +250,7 @@ export default class extends think.model.base {
         }
 
         if(colnames.indexOf(md.c_modulename+'.Del') === -1){
-            let colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'#',c_class:'btn btn-red', c_onclick:`return page${md.c_modulename}Del(#id#,this);`, c_memo:'', c_mui:'',
+            let colmd = {c_module:md.id, c_isshow:true,c_style:'',c_opentype:'#',c_class:'btn btn-red', c_onclick:`return pageDelete(#id#,this);`, c_memo:'', c_mui:'',
                 c_title:'删除',c_label:'',c_location:13,c_object:md.c_modulename+'.Del', c_url:'#', c_options:'', c_icon:'times'};
             await model.add(global.checksql(colmd));
         }

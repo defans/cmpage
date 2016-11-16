@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -485,9 +521,9 @@ export default class extends CMPage {
      * @return {string}  where条件子句
      * @param {Object} page  页面设置主信息
      */
-    async getQueryWhere(page){
-      let where =await super.getQueryWhere(page);
-        let parmsUrl =JSON.parse(page.parmsUrl);
+    async getQueryWhere(){
+      let where =await super.getQueryWhere();
+        let parmsUrl =JSON.parse(this.mod.parmsUrl);
       return where +&#x60; and id not in(select c_user from t_group_user where c_group=${parmsUrl.c_group}) &#x60;;
     }
     /**
@@ -496,15 +532,15 @@ export default class extends CMPage {
      * @return {string}  html片段
      * @param {Object} page  页面设置主信息
      */
-    async htmlGetOther(page) {
-        let parmsUrl =JSON.parse(page.parmsUrl);
-        return &#x60;&lt;a class=&quot;btn btn-green&quot; href=&quot;#&quot; onclick=&quot;return GroupUserAddIds(this,${parmsUrl.c_group});&quot; data-icon=&quot;plus&quot;&gt;加入&lt;/a&gt;
+    async htmlGetOther() {
+        let parmsUrl =JSON.parse(this.mod.parmsUrl);
+        return &#x60;&lt;a class=&quot;btn btn-green&quot; href=&quot;#&quot; onclick=&quot;return GroupUserAddIds(${parmsUrl.c_group});&quot; data-icon=&quot;plus&quot;&gt;加入&lt;/a&gt;
             &lt;script type=&quot;text/javascript&quot;&gt;
-                function GroupUserAddIds(obj, groupID) {
-                    //alert($(&#x27;[name=&quot;ids&quot;]&#x27;).val());
+                function GroupUserAddIds( groupID) {
+                    //alert($(&#x27;[name=&quot;ids&quot;]&#x27;).length);
                     var ids = [];
                     $(&#x27;[name=&quot;ids&quot;]&#x27;).each(function () {
-                        if($(this).attr(&quot;checked&quot;)){
+                        if($(this).parent().hasClass(&quot;checked&quot;)){
                             ids.push($(this).val());
                         }
                     });
@@ -513,8 +549,14 @@ export default class extends CMPage {
                         $(this).alertmsg(&quot;warn&quot;, &quot;请选择要加入的用户。&quot;);
                         return false;
                     }
-                    var url = &quot;/admin/code/group_user_add?groupID=&quot; + groupID + &quot;&amp;userIds=&quot; + ids.join(&#x27;,&#x27;);
-                    $(obj).bjuiajax(&#x27;doAjax&#x27;, { url: url });
+                    BJUI.ajax(&#x27;doajax&#x27;, {
+                        url: &quot;/admin/code/group_user_add?groupID=&quot; + groupID + &quot;&amp;userIds=&quot; + ids.join(&#x27;,&#x27;),
+                        loadingmask: true,
+                        okCallback: function(json, options) {
+                            $(&#x27;#btnSearchGroupUser&#x27;).click();
+                            $(&#x27;#btnSearchGroupUserAdd&#x27;).click();
+                        }
+                    });
 
                     return false;
                 }
@@ -522,8 +564,14 @@ export default class extends CMPage {
 
                     $(this).alertmsg(&quot;confirm&quot;, &quot;是否确定要加入？&quot;,{
                         okCall:function(){
-                            var url = &quot;/admin/code/group_user_add/?groupID=&quot; + groupID + &quot;&amp;userIds=&quot; + id;
-                            $(obj).bjuiajax(&#x27;doAjax&#x27;, { url: url });
+                            BJUI.ajax(&#x27;doajax&#x27;, {
+                                url: &quot;/admin/code/group_user_add?groupID=&quot; + groupID + &quot;&amp;userIds=&quot; + id,
+                                loadingmask: true,
+                                okCallback: function(json, options) {
+                                     $(&#x27;#btnSearchGroupUser&#x27;).click();
+                                    $(&#x27;#btnSearchGroupUserAdd&#x27;).click();
+                                }
+                            });
                         }
                     });
 

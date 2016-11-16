@@ -1,11 +1,6 @@
 
 <iframe id="mapiframe" name="mapiframe" width="70%" height="100%" frameborder="0" src="/flow/proc/flow_map?proc_id=<%= parms.editID%>"></iframe>
 
-<!--<div id="flowMap"  style="float:left;display:block; overflow:auto; width:70%; height:100%; border:solid 1px #CCC; line-height:21px; background:#fff"-->
-     <!--data-toggle="autoajaxload" data-url="/flow/proc/flow_map?proc_id=<%= parms.editID%>" >-->
-    <!--&lt;!&ndash;#include virtual="codeList" &ndash;&gt;-->
-<!--</div>-->
-
 <div style="float:right; display:block; overflow:hidden; width:30%; height:100%; border:solid 1px #CCC; line-height:21px; background:#fff" class="bjui-layout">
 
     <div id="procEdit" style="display:block; overflow:auto; width:100%; height:100%;  border:solid 1px #CCC; line-height:21px; background:#fff">
@@ -70,8 +65,9 @@
             okCall:function(){
                 //alert(src.getDataId());
                 fwCurrentRect.trigger('removerect',[fwCurrentSrc]);
-                $('#FwActEditForm').hide();
-                $('#FwProcEditForm').show();
+//                $('#FwActEditForm').hide();
+//                $('#FwProcEditForm').show();
+                procShow();
                 $(this).bjuiajax('doAjax', { url: '/flow/act/delete?id='+fwCurrentSrc.getDataId() ,callback:function(data){
 //                    $(this).alertmsg(data.statusCode=="200" ? "info":"error",data.message);
                 }});
@@ -119,8 +115,9 @@
                         $('#FwActc_name').val(fwCurrentSrc.text());
                         $('#FwActc_proc').val($('#FwProcID').val());
                         $('#FwActc_class').val('flow/act');
-                        $('#FwActc_map_id').val(fwCurrentSrc.getId());
                     }
+                    //console.log(fwCurrentSrc.getId());
+                    $('#FwActc_map_id').val(fwCurrentSrc.getId());
                     $('#actEditTable').initui();
                 }
             }

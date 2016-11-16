@@ -10,6 +10,7 @@
         <a type="button" class="btn btn-default" href="/cmpage/module/query_delete_no_show?moduleid=<%= md.id%>" data-toggle="doajax" data-confirm-msg="是否确定要删除不显示的条目？">删除非显示项</a>
         <div class="pull-right">
             <button type="button" class="btn-green" data-icon="save" onclick="$('#commpageQueryForm').submit();">保存设置</button>
+            <button type="button" class="btn-default" data-icon="save" onclick=" $('#commpageQueryForm').navtab('refresh');">刷新</button>
             <button type="button" class="btn-close" data-icon="external-link">关 闭</button>
         </div>
     </div>

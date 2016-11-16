@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -457,8 +493,7 @@
     <h1>flow.controller.proc <small>Class</small></h1>
 </div>
  <div class="well well-small sign-left3">
-      <div class="stdoc-code"><p>提供工作流模板设计的URL接口<br/>
-提供工作流引擎的URL调用接口</p>
+      <div class="stdoc-code"><p>提供工作流模板设计的URL接口</p>
 </div>
  </div>
 
@@ -485,35 +520,7 @@
                     </li>
                 
                     <li class="index-item method">
-                        <a href="#" data-tabid="#method" data-anchor="#method_run" data-tablink="run">run</a>
-
-                        
-                        
-                    </li>
-                
-                    <li class="index-item method">
                         <a href="#" data-tabid="#method" data-anchor="#method_saveMap" data-tablink="saveMap">saveMap</a>
-
-                        
-                        
-                    </li>
-                
-                    <li class="index-item method">
-                        <a href="#" data-tabid="#method" data-anchor="#method_start" data-tablink="start">start</a>
-
-                        
-                        
-                    </li>
-                
-                    <li class="index-item method">
-                        <a href="#" data-tabid="#method" data-anchor="#method_suspend" data-tablink="suspend">suspend</a>
-
-                        
-                        
-                    </li>
-                
-                    <li class="index-item method">
-                        <a href="#" data-tabid="#method" data-anchor="#method_terminate" data-tablink="terminate">terminate</a>
 
                         
                         
@@ -554,7 +561,7 @@
 
             
                 <div class="foundat">
-                    Defined in: <a href="../files/src_flow_controller_task.js.html#l3"><code>src\flow\controller\task.js:3</code></a>
+                    Defined in: <a href="../files/src_flow_controller_proc.js.html#l3"><code>src\flow\controller\proc.js:3</code></a>
                 </div>
             
 
@@ -687,7 +694,7 @@
             
         
         
-        <a href="../files/src_flow_controller_proc.js.html#l38"><code>src\flow\controller\proc.js:38</code></a>
+        <a href="../files/src_flow_controller_proc.js.html#l47"><code>src\flow\controller\proc.js:47</code></a>
         
         </p>
 
@@ -713,81 +720,6 @@
                     
                         <span class="type">Promise</span>:
                     
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_run" class="method item">
-    <h3 class="name">run</h3>
-    <code>
-    run
-    
-        <span class="paren">()</span>
-    
-    </code>
-
-    
-        <span class="returns-inline">
-            <span class="type">Json</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_flow_controller_task.js.html#l27"><code>src\flow\controller\task.js:27</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>重新运行一个流程实例, GET调用：/flow/proc/run?task_id=xxx</p>
-</div>
-    </div>
-
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">Json</span>]
-                    
-                    <p>流程实例对象</p>
-
                 
             </div>
         </div>
@@ -835,7 +767,7 @@
             
         
         
-        <a href="../files/src_flow_controller_proc.js.html#l52"><code>src\flow\controller\proc.js:52</code></a>
+        <a href="../files/src_flow_controller_proc.js.html#l61"><code>src\flow\controller\proc.js:61</code></a>
         
         </p>
 
@@ -861,231 +793,6 @@
                     
                         <span class="type">Json</span>:
                     
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_start" class="method item">
-    <h3 class="name">start</h3>
-    <code>
-    start
-    
-        <span class="paren">()</span>
-    
-    </code>
-
-    
-        <span class="returns-inline">
-            <span class="type">Json</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_flow_controller_task.js.html#l11"><code>src\flow\controller\task.js:11</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>启动一个新的流程实例, GET调用：/flow/proc/start?proc_id=xxx</p>
-</div>
-    </div>
-
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">Json</span>]
-                    
-                    <p>流程实例对象</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_suspend" class="method item">
-    <h3 class="name">suspend</h3>
-    <code>
-    suspend
-    
-        <span class="paren">()</span>
-    
-    </code>
-
-    
-        <span class="returns-inline">
-            <span class="type">Json</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_flow_controller_task.js.html#l41"><code>src\flow\controller\task.js:41</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>挂起一个流程实例, GET调用：/flow/proc/suspend?task_id=xxx</p>
-</div>
-    </div>
-
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">Json</span>]
-                    
-                    <p>流程实例对象</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_terminate" class="method item">
-    <h3 class="name">terminate</h3>
-    <code>
-    terminate
-    
-        <span class="paren">()</span>
-    
-    </code>
-
-    
-        <span class="returns-inline">
-            <span class="type">Json</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_flow_controller_task.js.html#l55"><code>src\flow\controller\task.js:55</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>终止一个流程实例, GET调用：/flow/proc/terminate?task_id=xxx</p>
-</div>
-    </div>
-
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">Json</span>]
-                    
-                    <p>流程实例对象</p>
-
                 
             </div>
         </div>

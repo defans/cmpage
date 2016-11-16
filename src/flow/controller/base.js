@@ -17,7 +17,7 @@ export default class extends think.controller.base {
    */
   async __before(){
     //部分 action 下不检查,
-    let blankActions = ["clear_cache"];
+    let blankActions = ["clear_cache","auto_exec"];
     if(blankActions.indexOf(this.http.action) >=0){
       return;
     }

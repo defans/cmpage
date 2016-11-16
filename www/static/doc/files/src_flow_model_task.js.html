@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -474,77 +510,99 @@
  * @class flow.model.task
  */
 export default class extends think.model.base {
+    proc = {};  //当前流程模板
+    task = {};  //当前流程实例
+    user = {};  //当前用户
+    currAct = {};   //当前节点设置
+    currTaskAct = {};   //当前节点实例
+
     /**
      * 创建(启动)一个新的流程实例(任务)
      * @method  fwStart
-     * @return {object}  流程实例对象
-     * @params {object} proc 流程模板对象
-     * @params {object} user 流程发起人
      */
-    async fwStart(proc,user){
+    async fwStart(){
 
-        let task ={c_no:this.getTaskNo(proc), c_proc:proc.id, c_status:global.enumTaskStatus.RUN, c_creater:user.id, c_time_create:think.datetime(),
-               c_priority:global.enumTaskPriority.NOMAL, c_user:user.id, c_time:think.datetime(), c_memo:&#x27;&#x27;, c_link:0 ,c_link_type:&#x27;&#x27;};
+        this.task ={c_no:this.getTaskNo(), c_proc:this.proc.id, c_status:global.enumTaskStatus.RUN, c_creater:this.user.id, c_time_create:think.datetime(),
+               c_priority:global.enumTaskPriority.NOMAL, c_user:this.user.id, c_time:think.datetime(), c_memo:&#x27;&#x27;, c_link:0 ,c_link_type:&#x27;&#x27;};
 
-        task = await this.fwInit(task,proc,user);
+        await this.fwInit();
 
-        if(task.c_status !== global.enumTaskStatus.INIT){
-            await this.addTaskSt(task,user,&#x27;模板设置错误，流程终止&#x27;);
-            return task;
+        if(this.task.c_status !== global.enumTaskStatus.INIT){
+            await this.addTaskSt(&#x27;模板设置错误，流程终止&#x27;);
+            return;
         }
-        task.id = await this.model(&#x27;fw_task&#x27;).add(task);
-        await this.addTaskSt(task,user);
+        await this.save();
 
-        //增加活动节点
-        let acts = this.model(&#x27;act&#x27;).getActsByProcId(proc.id);
+        //console.log(task);
+
+//        console.log(proc);
+        let actModel = this.model(&#x27;act&#x27;);
+        //取该流程模板的节点
+        let acts = await actModel.getActsByProcId(this.proc.id);
+//        console.log(acts);
+        if(think.isEmpty(acts)){
+            await this.addTaskSt(&#x27;未找到该流程模板的活动节点!&#x27;);
+            return;
+        }
+        //按流程走向排序后加入任务节点
+        let actsOrder = await actModel.getActsOrder(this.proc.id,acts);
+        debug(actsOrder,&#x27;task.fwStart - actsOrder&#x27;);
         let taskActModel = this.model(&#x27;fw_task_act&#x27;);
         let taskActStartID = 0;
-        for(let act of acts){
-            let md = {c_task:task.id, c_act:act.id, c_status:global.enumTaskActStatus.NO_BEGIN, c_user:user.id, c_time_begin:think.datetime(),
+        for(let act of actsOrder){
+            let md = {c_task:this.task.id, c_act:act.id, c_status:global.enumTaskActStatus.NO_BEGIN, c_user:this.user.id, c_time_begin:think.datetime(),
                 c_time:think.datetime(), c_memo:&#x27;&#x27;, c_link:0, c_link_type:&#x27;&#x27;};
             md.id = await taskActModel.add(md);
             if(act.c_type === global.enumActType.START){
                 taskActStartID = md.id;
             }
         }
-        task.c_status = global.enumTaskStatus.RUN;
-        await this.updateTask(task);
-        await this.addTaskSt(task,user);
+
+        this.task.c_status = global.enumTaskStatus.RUN;
+        await this.save();
 
         //从开始节点进行run
-        await this.model(&#x27;act&#x27;).fwRun(taskActStartID,user);
+        return await actModel.fwRun(taskActStartID,this.user);
 
-        return task;
     }
 
     /**
-     * 取某个任务的当前状态，当前节点存放于 task.taskAct &lt;br/&gt;
+     * 取某个任务的当前状态，当前节点存放于 task.currAct &lt;br/&gt;
      * 子类中重写本方法，可以增加任务的初始化逻辑，比如业务相关的逻辑
      * @method  getTaskWithStatus
-     * @return {object}  流程实例对象
-     * @params {object} task 流程实例对象
-     * @params {object} proc 流程模板对象
-     * @params {object} user 流程发起人
+     * @return {object} 当前节点的模板对象
      */
-    async getTaskWithStatus(task,user){
-
-        return task;
+    async getTaskWithCurrentAct(task){
+        if(think.isEmpty(this.task)){
+            this.task = task;
+        }
+        global.debug(this.task,&#x27;task.getTaskWithCurrentAct --- this.task&#x27;);
+        this.currAct = {id:0};
+        if(this.task.c_status === global.enumTaskStatus.RUN){
+            let taskActs = await this.model(&#x27;task_act&#x27;).getTaskActs(this.task.id);
+            let actModel = this.model(&#x27;act&#x27;);
+            for(let ta of taskActs){
+                //TODO: 可能要考虑user来进行区分
+                //取当前节点
+                if(ta.c_status === global.enumTaskActStatus.WAIT || ta.c_status === global.enumTaskActStatus.RUN || ta.c_status === global.enumTaskActStatus.SUSPEND){
+                    this.currTaskAct = ta;
+                    this.currAct = await actModel.getActByIdAndProcId(ta.c_act, this.task.c_proc);
+                    break;
+                }
+            }
+        }
+        return this.currAct;
     }
 
     /**
      * 初始化一个的流程实例(任务)&lt;br/&gt;
      * 子类中重写本方法，可以增加任务的初始化逻辑，比如业务相关的逻辑
      * @method  fwInit
-     * @return {object}  流程实例对象
-     * @params {object} task 流程实例对象
-     * @params {object} proc 流程模板对象
-     * @params {object} user 流程发起人
      */
-    async fwInit(task,proc,user){
-        task.c_status = global.enumTaskStatus.INIT;
+    async fwInit(){
+        this.task.c_status = global.enumTaskStatus.INIT;
         //如果不满足启动条件，则重置任务状态为： TERMINATE
 
-        return task;
     }
 
     /**
@@ -552,11 +610,10 @@ export default class extends think.model.base {
      * 子类中可以重写本方法，实现特殊的编号规则
      * @method  getTaskNo
      * @return {string}  新的任务编号
-     * @params {object} proc 流程模板对象
      */
-    getTaskNo(proc){
+    getTaskNo(){
         let no =&#x27;&#x27;;
-        if(!think.isEmpty(proc.c_no_format)){
+        if(!think.isEmpty(this.proc.c_no_format)){
             no = global.datetime(new Date(),&#x27;yyMMddHHmmss&#x27;)+global.getRandomNum(1,10);
         }else{
 
@@ -567,130 +624,192 @@ export default class extends think.model.base {
     /**
      * 运行一个流程实例(任务)
      * @method  fwRun
-     * @return {object}  流程实例对象
-     * @params {object} task 任务对象
-     * @params {object} proc 流程模板对象
-     * @params {object} user 流程执行人
      */
-    async fwRun(task,proc,user){
-        if(task.c_status === global.enumTaskStatus.SUSPEND){
-            task.c_status = global.enumTaskStatus.RUN;
+    async fwRun(){
+        if(this.task.c_status === global.enumTaskStatus.SUSPEND){
+            this.task.c_status = global.enumTaskStatus.RUN;
             //让本实例被挂起的节点继续RUN
-            let taskActs = await this.model(&#x27;task_act&#x27;).getTaskActs(task.id);
-            let actModel =this.model(&#x27;act&#x27;);
+            let taskActs = await this.model(&#x27;task_act&#x27;).getTaskActs(this.task.id);
             for(let taskAct of taskActs){
-                    actModel.fwRun(taskAct.id,user,taskAct);
+                if(taskAct.c_status === global.enumTaskActStatus.SUSPEND){
+                    await this.model(&#x27;act&#x27;).fwRun(taskAct.id,this.user,taskAct);
+                }
             }
-
-            await this.updateTask(task);
-            await this.addTaskSt(task,user);
+            await this.save();
         }
-        return task;
     }
 
     /**
      * 挂起一个流程实例(任务)
      * @method  fwSuspend
-     * @return {object}  流程实例对象
-     * @params {object} task 任务对象
-     * @params {object} proc 流程模板对象
-     * @params {object} user 流程执行人
      */
-    async fwSuspend(task,proc,user){
-        if(task.c_status === global.enumTaskStatus.RUN){
-            task.c_status = global.enumTaskStatus.SUSPEND;
+    async fwSuspend(){
+        if(this.task.c_status === global.enumTaskStatus.RUN){
+            this.task.c_status = global.enumTaskStatus.SUSPEND;
             //当前活动节点挂起
-            let taskActs = await this.model(&#x27;task_act&#x27;).getTaskActs(task.id);
-            let actModel =this.model(&#x27;act&#x27;);
-            for(let taskAct of taskActs){
-                actModel.fwSuspend(taskAct.id,user,taskAct);
+            if(think.isEmpty(this.currTaskAct)){
+                await this.getTaskWithCurrentAct();
             }
-
-            await this.updateTask(task);
-            await this.addTaskSt(task,user);
+            await this.model(&#x27;act&#x27;).fwSuspend(this.currTaskAct.id,user,this.currTaskAct);
+            await this.save();
         }
-        return task;
     }
 
     /**
      * 终止一个流程实例(任务)
      * @method  fwTerminate
-     * @return {object}  流程实例对象
-     * @params {object} task 任务对象
-     * @params {object} proc 流程模板对象
-     * @params {object} user 流程执行人
      */
-    async fwTerminate(task,proc,user){
-        if(task.c_status === global.enumTaskStatus.RUN || task.c_status === global.enumTaskStatus.SUSPEND ){
-            task.c_status = global.enumTaskStatus.TERMINATE;
+    async fwTerminate(){
+        if(this.task.c_status === global.enumTaskStatus.RUN || this.task.c_status === global.enumTaskStatus.SUSPEND ){
+            this.task.c_status = global.enumTaskStatus.TERMINATE;
             //当前活动节点终止
-            let taskActs = await this.model(&#x27;task_act&#x27;).getTaskActs(task.id);
-            let actModel =this.model(&#x27;act&#x27;);
-            for(let taskAct of taskActs){
-                actModel.fwTerminate(taskAct.id,user,taskAct);
+            //if(think.isEmpty(this.currTaskAct)){
+            //    await this.getTaskWithCurrentAct();
+            //}
+            //await this.model(&#x27;act&#x27;).fwTerminate(this.currTaskAct.id,user,this.currTaskAct);
+            let taskActs = await this.model(&#x27;task_act&#x27;).getTaskActs(this.task.id);
+            for(let ta of taskActs){
+                if(ta.c_status !== global.enumTaskActStatus.TERMINATE &amp;&amp; ta.c_status !== global.enumTaskActStatus.END
+                    &amp;&amp; ta.c_status !== global.enumTaskActStatus.NO_BEGIN){
+                    await this.model(&#x27;fw_task_act&#x27;).where({id:ta.id}).update({c_status:enumTaskActStatus.TERMINATE, c_time:think.datetime(),c_user:this.user.id});
+                }
             }
-
-            await this.updateTask(task);
-            await this.addTaskSt(task,user);
+            //调用主关联业务模块的终止函数
+            if(!think.isEmpty(this.proc.c_link_model)){
+                let fnModel = model(this.proc.c_link_model);
+                if (think.isFunction(fnModel[&#x27;fwTerminate&#x27;])) {
+                    await fnModel[&#x27;fwTerminate&#x27;](this.task, this.user);
+                }
+            }
+            await this.save();
         }
-        return task;
     }
 
     /**
      * 正常结束一个流程实例(任务)，一般在结束节点执行完成后调用
      * @method  fwEnd
-     * @return {object}  流程实例对象
-     * @params {object} task 任务对象
-     * @params {object} proc 流程模板对象
-     * @params {object} user 流程执行人
      */
-    async fwEnd(task,proc,user){
-
-        if(task.c_status !== global.enumTaskStatus.RUN || task.c_status === global.enumTaskStatus.SUSPEND ){
-            task.c_status = global.enumTaskStatus.END;
-            await this.updateTask(task);
-            await this.addTaskSt(task,user);
+    async fwEnd(){
+        if(this.task.c_status !== global.enumTaskStatus.RUN || this.task.c_status === global.enumTaskStatus.SUSPEND ){
+            this.task.c_status = global.enumTaskStatus.END;
+            await this.save();
         }
-        return task;
     }
 
     /**
      * 增加流程实例的状态记录，记录流程示例发生状态改变的时间及当时状态
      * @method  addTaskSt
-     * @return {int}  记录ID
-     * @params {object} task 任务对象
-     * @params {object} user 流程执行人
      * @params {string} [desc] 状态描述
      */
-    async addTaskSt(task,user,desc){
-        let md = {c_proc:task.c_proc,c_act:0,c_task:task.id, c_task_act:0,c_time:task.c_time, c_user:task.c_user};
+    async addTaskSt(desc){
+       // console.log(task);
+        let task = this.task;
+        if(task.id &lt;=0){
+            return 0;
+        }
+        let md = {c_proc:task.c_proc,c_act:0,c_task:task.id, c_task_act:0, c_time:task.c_time, c_user:this.user.id, c_status:task.c_status};
         //组成状态描述
-        md.c_desc = think.isEmpty(desc) ?  &#x27;流程&#x27;+ this.model(&#x27;cmpage/utils&#x27;).getEnumName(md.c_status,&#x27;TaskStatus&#x27;) : desc;
+        md.c_desc = think.isEmpty(desc) ?  &#x27;流程&#x27;+ (await this.model(&#x27;cmpage/utils&#x27;).getEnumName(task.c_status,&#x27;TaskStatus&#x27;)) : desc;
         md.id = await this.model(&#x27;fw_task_st&#x27;).add(md);
         await this.model(&#x27;fw_task_st_his&#x27;).add(md);
 
         return md.id;
     }
     /**
-     * 修改流程实例记录，此处可使用缓存机制改进性能
-     * @method  updateTask
-     * @return {object} 流程实例对象
-     * @params {object} task 任务对象
+     * 保存程实例记录，此处可使用缓存机制改进性能
+     * @method  save
      */
-    async updateTask(task){
-        await this.model(&#x27;fw_task&#x27;).where({id:task.id}).update(task);
-
-        return task;
+    async save(){
+        if(this.task.id &gt;0){
+            await this.model(&#x27;fw_task&#x27;).where({id:this.task.id}).update(this.task);
+        }else{
+            this.task.id = await this.model(&#x27;fw_task&#x27;).add(this.task);
+        }
+        await this.addTaskSt();
     }
-    ///**
-    // * 取流程实例对象，此处可使用缓存机制改进性能
-    // * @method  getTask
-    // * @return {object} 流程实例对象
-    // * @params {object} task 任务对象
-    // */
-    //async getTask(taskID){
-    //    return await this.model(&#x27;fw_task&#x27;).where({id:taskID}).find();
-    //}
+
+    /**
+     * 取流程实例对象，此处可使用缓存机制改进性能
+     * @method  getTask
+     * @return {object} 流程实例对象
+     * @params {int} taskID 任务对象ID
+     */
+    async getTask(taskID){
+        return await this.model(&#x27;fw_task&#x27;).where({id:taskID}).find();
+    }
+
+    /**
+     * 取流程实例的创建用户对象，供没有特定用户，如自动执行等操作调用
+     * @method  getUserFromTask
+     * @return {object} 流程实例的用户对象
+     * @params {int} taskID 任务对象ID
+     */
+    async getUserFromTask(taskID){
+        let task = await this.model(&#x27;fw_task&#x27;).where({id:taskID}).find();
+        let user = await this.model(&#x27;admin/user&#x27;).getUserById(task.c_user);
+        user.groupID = task.c_group;
+
+        return user;
+    }
+
+    /**
+     * 取流程实例对象的轨迹图,&lt;br/&gt;
+     * 先取流程模板的图片数据，然后修改当前节点和执行路径的属性值
+     * @method  getFlowMap
+     * @return {string} 流程图形的字符串
+     * @params {int} taskID 任务对象ID
+     */
+    async getFlowMap(taskID){
+        let task = await this.getTask(taskID);
+        let proc = await this.model(&#x27;fw_proc&#x27;).where({id:task.c_proc}).find();
+        if(think.isEmpty(proc.c_map)){
+            return &#x27;{states:{},paths:{},props:{props:{}}}&#x27;;
+        }
+        let flowMap = objFromString(proc.c_map);
+        let taskActs = await this.query(&#x60;select A.*,B.c_map_id from fw_task_act A, fw_act B where A.c_act=B.id and A.c_task=${taskID}&#x60;);
+
+        for(let k in flowMap.paths){
+            flowMap.paths[k].votes = 0;
+        }
+        for(let ta of taskActs){
+            if(ta.c_status === enumTaskActStatus.WAIT || ta.c_status === enumTaskActStatus.SUSPEND
+                ||  ta.c_status === enumTaskActStatus.END ||  ta.c_status === enumTaskActStatus.PENDING){
+                //执行路径
+                for(let k in flowMap.paths){
+                    if(flowMap.paths[k].from === ta.c_map_id || flowMap.paths[k].to === ta.c_map_id){
+                        flowMap.paths[k].votes += 1;
+                    }
+                }
+            }
+            if(ta.c_status === enumTaskActStatus.WAIT || ta.c_status === enumTaskActStatus.SUSPEND ||  ta.c_status === enumTaskActStatus.PENDING){
+                //当前节点
+                debug(ta,&#x27;task.getFlowMap - ta-current&#x27;);
+                debug(flowMap.states[ ta.c_map_id],&#x27;task.getFlowMap - flowMap.states[ta.c_map_id]&#x27;);
+                if(flowMap.states[ ta.c_map_id]){
+                    flowMap.states[ ta.c_map_id].attr.stroke =  &#x27;#ff0000&#x27;;
+                }
+            }else if(ta.c_status === enumTaskActStatus.END ){
+                //历史节点
+                if(flowMap.states[ ta.c_map_id]){
+                    flowMap.states[ ta.c_map_id].attr.stroke =  &#x27;#e87e38&#x27;;
+                }
+            }else if(ta.c_status === enumTaskActStatus.TERMINATE ){
+                //被终止节点
+                if(flowMap.states[ ta.c_map_id]){
+                    flowMap.states[ ta.c_map_id].attr.stroke =  &#x27;#000000&#x27;;
+                }
+            }
+        }
+        for(let k in flowMap.paths){
+            if(flowMap.paths[k].votes === 2){       //执行路径
+                flowMap.paths[k].attr = {path : {stroke : &#x27;#ff6600&#x27; }, arrow : { stroke : &#x27;#ff6600&#x27;, fill : &quot;#ffb584&quot; }};
+            }
+        }
+
+        debug(flowMap.states,&#x27;task.getFlowMap - flowMap.states&#x27;);
+        return global.objToString(flowMap);
+    }
+
 }
 
     </pre>

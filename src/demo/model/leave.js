@@ -91,6 +91,7 @@ export default class extends CMPage {
      */
     async updateStatus(id,status){
         await this.model('t_leave').where({id:id}).update({c_status:status});
+
     }
 
     /**
@@ -112,6 +113,61 @@ export default class extends CMPage {
         return false;
     }
 
+    /**
+     * 销假动作，供流程节点调用，执行成功后继续往下执行,<br/>
+     * @method  finishLeave
+     * @return {boolean} 是否可以通过
+     * @params {object} taskAct 活动节点的实例
+     * @params {object} act 活动节点的模板
+     * @params {object} user 流程执行人
+     */
+    async finishLeave(taskAct, user){
+        let rec = taskAct.domainData;
+        debug(taskAct.domainData,'leave.finishLeave - taskAct.domainData');
+        if(!think.isEmpty(rec)){
+            if(datetime(rec.c_time_end) < datetime() && taskAct.c_domain_st >0){
+                //增加状态记录
+                let md ={};
+                md.c_status = taskAct.c_domain_st;
+                md.c_task = taskAct.c_task;
+                md.c_link = taskAct.task_link;
+                md.c_link_type = taskAct.task_link_type;
+                md.c_task_act = taskAct.id;
+                md.c_user = user.id;
+                md.c_time = think.datetime();
+                md.c_group = user.groupID;
+                await this.model('t_appr').add(md);
+                await this.updateStatus(taskAct.task_link,taskAct.c_domain_st);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 终止动作，供流程终止时调用，名称固定 <br/>
+     * @method  fwTerminate
+     * @params {object} task 流程实例对象
+     * @params {object} user 流程执行人
+     */
+    async fwTerminate(task, user){
+        debug(task,'leave.fwTerminate - task');
+        if(!think.isEmpty(task) && task.c_link >0){
+            //增加状态记录
+            let md ={};
+            md.c_status = 1199;
+            md.c_task = task.id;
+            md.c_link = task.c_link;
+            md.c_link_type = task.c_link_type;
+            md.c_task_act = 0;
+            md.c_user = user.id;
+            md.c_time = think.datetime();
+            md.c_group = user.groupID;
+            await this.model('t_appr').add(md);
+            await this.updateStatus(task.c_link,1199);
+        }
+    }
+
     ///**
     // * 生成列表每一行的内容
     // */
@@ -121,6 +177,19 @@ export default class extends CMPage {
     //            <p style='color:#005094;'>地址：${row["c_address"]} / ${row["c_time"].substr(0,10)} </p>`;
     //}
 
+    /**
+     * 取流程节点相关的按钮设置，组合按钮的HTML输出</br>
+     * @method  htmlGetActBtns
+     * @return {string} HTML页面片段
+     */
+    async htmlGetActBtns(rec) {
+        //debug(rec,'leave.htmlGetActBtns - rec');
+        if(rec.hasOwnProperty('id') && rec.c_status !== 1197){
+            return await super.htmlGetActBtns(rec);
+        }else{
+            return '';      //如果是新增页面，则不显示流程按钮
+        }
+    }
 
 
 }

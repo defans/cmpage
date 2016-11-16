@@ -110,6 +110,7 @@ a:link {color: #285e8e;}
                     <label class="t" style="color:#c000ff;">友情提醒：</label>
                     <label id="loginMsg" style="color:#c000ff;"  ><%= vb.msg%></label>
     			</div>
+                <input id="clientWidth" name="clientWidth" type="hidden" value="1200">
     		</form>
         </div>
 	</div>
@@ -149,6 +150,7 @@ a:link {color: #285e8e;}
             $("#LoginPwd").focus();
             return false;
         }
+        $("#clientWidth").val(document.documentElement.clientWidth);
         //正式使用时去掉下面的注释
 //        var inputCode = document.getElementById("inputCode").value;
 //        if(inputCode.length <=0)

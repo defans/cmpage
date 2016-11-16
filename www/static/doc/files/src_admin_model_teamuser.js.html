@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -485,18 +521,18 @@ export default class extends CMPage {
      * @return {string}  html片段
      * @param {Object} page  页面设置主信息
      */
-    async htmlGetOther(page){
-      let parms =JSON.parse(page.parmsUrl);
+    async htmlGetOther(){
+      let parms =JSON.parse(this.mod.parmsUrl);
       return &#x60;&lt;a class=&quot;btn btn-green&quot; href=&quot;/cmpage/page/list?modulename=TeamUserAdd&amp;c_team=${parms.c_team}&quot;
                         data-toggle=&quot;dialog&quot; data-options=&quot;{id:&#x27;pageTeamUserAdd&#x27;, mask:true, width:800, height:600 }&quot;
                         data-on-close=&quot;pageTeamUserEdit_onClose&quot; data-icon=&quot;plus&quot;&gt;加入用户&lt;/a&gt;
-                &lt;a class=&quot;btn btn-red&quot; href=&quot;#&quot; onclick=&quot;return TeamUserDelIds(this,${ parms.c_team});&quot;  data-icon=&quot;times&quot;&gt;剔除&lt;/a&gt;
+                &lt;a class=&quot;btn btn-red&quot; href=&quot;#&quot; onclick=&quot;return TeamUserDelIds();&quot;  data-icon=&quot;times&quot;&gt;剔除&lt;/a&gt;
             &lt;script type=&quot;text/javascript&quot;&gt;
-            function TeamUserDelIds(obj, teamID) {
+            function TeamUserDelIds() {
                 //alert($(&#x27;[name=&quot;ids&quot;]&#x27;).val());
                 var ids = [];
                 $(&#x27;[name=&quot;ids&quot;]&#x27;).each(function () {
-                    if($(this).attr(&quot;checked&quot;)){
+                    if($(this).parent().hasClass(&quot;checked&quot;)){
                         ids.push($(this).val());
                     }
                 });
@@ -508,10 +544,12 @@ export default class extends CMPage {
 
                 $(this).alertmsg(&quot;confirm&quot;, &quot;是否确定要剔除选中的用户？&quot;, {
                     okCall: function () {
-                        var url = &quot;/admin/code/team_user_del?userIds=&quot; + ids.join(&#x27;,&#x27;);
-                        $(obj).bjuiajax(&#x27;doAjax&#x27;, { url: url, callback: function () {
-                            $(&quot;#btnSearchTeamUser&quot;).click();
-                        }
+                        BJUI.ajax(&#x27;doajax&#x27;, {
+                            url: &quot;/admin/code/team_user_del?ids=&quot; + ids.join(&#x27;,&#x27;),
+                            loadingmask: true,
+                            okCallback: function(json, options) {
+                                $(&quot;#btnSearchTeamUser&quot;).click();
+                            }
                         });
                     }
                 });

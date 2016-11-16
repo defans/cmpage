@@ -22,14 +22,6 @@ export default class extends CMPage {
 
         return md;
     }
-    /**
-     * 根据 page.c_other的设置，对页面相关参数进行设置
-     */
-    async getPageOther(){
-        //console.log(ret);
-        this.mod.editCloseBtn =true;
-        return await super.getPageOther();
-    }
 
 
     /**
@@ -99,9 +91,10 @@ export default class extends CMPage {
      * @param {int} procID  流程模板ID
      */
     async saveFlowMap(parms){
-        let flowMap = eval(`(${parms.flowMap})`);
+        let flowMap = objFromString(parms.flowMap);
         if(think.isObject(flowMap)){
             let actModel = this.model('fw_act');
+            let actids =[];
             for(let k in flowMap.states){
                 if(flowMap.states[k].data_id == 0){
                     let rect =flowMap.states[k];
@@ -110,8 +103,10 @@ export default class extends CMPage {
                             c_from_rule:1, c_votes:0,c_to_rule:1, c_cc_rule:1,c_jump_rule:1,c_back_rule:1, c_status:0,c_map_id:k};
                     flowMap.states[k].data_id =await actModel.add(act);
                 }
+                actids.push(flowMap.states[k].data_id);
             }
             let pathModel = this.model('fw_act_path');
+            await pathModel.query(`delete from fw_act_path where c_from not in(${actids.join(',')}) or c_to not in(${actids.join(',')}) or c_from is null or c_to is null`);
             for(let k in flowMap.paths){
                 if(flowMap.paths[k].data_id == 0){
                     let path =flowMap.paths[k];

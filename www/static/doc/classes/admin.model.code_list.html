@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -477,6 +513,13 @@
                     </li>
                 
                     <li class="index-item method">
+                        <a href="#" data-tabid="#method" data-anchor="#method_htmlGetBtnHeader" data-tablink="htmlGetBtnHeader">htmlGetBtnHeader</a>
+
+                        
+                        
+                    </li>
+                
+                    <li class="index-item method">
                         <a href="#" data-tabid="#method" data-anchor="#method_pageEditInit" data-tablink="pageEditInit">pageEditInit</a>
 
                         
@@ -552,17 +595,7 @@
     <code>
     getQueryWhere
     
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        page
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
     
     </code>
 
@@ -611,32 +644,6 @@
     </div>
 
     
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <table class="table table-bordered">
-            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">page</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>页面设置主信息</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-            </table>
-        </div>
-    
 
     
         <div class="returns">
@@ -658,28 +665,12 @@
 </div>
 
                 
-                    <div id="method_pageEditInit" class="method item">
-    <h3 class="name">pageEditInit</h3>
+                    <div id="method_htmlGetBtnHeader" class="method item">
+    <h3 class="name">htmlGetBtnHeader</h3>
     <code>
-    pageEditInit
+    htmlGetBtnHeader
     
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        pageEdits
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        page
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
     
     </code>
 
@@ -712,7 +703,82 @@
             
         
         
-        <a href="../files/src_admin_model_code_list.js.html#l31"><code>src\admin\model\code_list.js:31</code></a>
+        <a href="../files/src_admin_model_code_list.js.html#l60"><code>src\admin\model\code_list.js:60</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description well well-small sign-left3">
+        <div class="stdoc-code"><p>取顶部按钮的设置，分靠左和靠右两块，组合成HTML输出</p>
+</div>
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        [<span class="type">String</span>]
+                    
+                    <p>HTML片段</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_pageEditInit" class="method item">
+    <h3 class="name">pageEditInit</h3>
+    <code>
+    pageEditInit
+    
+        <span class="paren">()</span>
+    
+    </code>
+
+    
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_admin_model_code_list.js.html#l30"><code>src\admin\model\code_list.js:30</code></a>
         
         </p>
 
@@ -727,49 +793,6 @@
 </div>
     </div>
 
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <table class="table table-bordered">
-            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">pageEdits</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>编辑页面的设置信息</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">page</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>页面设置主信息</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-            </table>
-        </div>
     
 
     
@@ -799,12 +822,6 @@
     
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        page
-                    
-                </li>
             
                 <li class="arg">
                     
@@ -846,7 +863,7 @@
             
         
         
-        <a href="../files/src_admin_model_code_list.js.html#l50"><code>src\admin\model\code_list.js:50</code></a>
+        <a href="../files/src_admin_model_code_list.js.html#l47"><code>src\admin\model\code_list.js:47</code></a>
         
         </p>
 
@@ -867,23 +884,6 @@
 
             <table class="table table-bordered">
             <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">page</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>页面设置主信息</p>
-
-                    </div>
-
-                    
-                </tr>
             
                 <tr class="param">
                     

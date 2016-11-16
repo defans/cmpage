@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -464,69 +500,131 @@
 /**
  * 提供工作流模板设计的URL接口&lt;br/&gt;
  * 提供工作流引擎的URL调用接口
- * @class flow.controller.proc
+ * @class flow.controller.task
  */
 import Base from &#x27;./base.js&#x27;;
 
 export default class extends Base {
     /**
-     * 启动一个新的流程实例, GET调用：/flow/proc/start?proc_id=xxx
+     * 启动一个新的流程实例, GET调用：/flow/task/start?procID=xxx
      * @method  start
      * @return {json}  流程实例对象
      */
     async startAction(){
-        let user = await think.session(&#x27;user&#x27;);
-        let procID = this.get(&#x27;proc_id&#x27;);
+        let procID = this.get(&#x27;procID&#x27;);
+        let ret = {statusCode:300,message:&#x27;流程模板不存在或设置有错误!&#x27;,task:{}};
 
-        let task = await this.model(&#x27;proc&#x27;).fwStart(procID,user);
+        let procModel = this.model(&#x27;proc&#x27;);
+        await procModel.fwInit(0,await this.session(&#x27;user&#x27;),procID);
+        await procModel.fwStart();
 
-        //根据任务的当前状态分别处理
+        let task = procModel.taskModel.task;
+        let currAct = procModel.taskModel.currAct;
+        let currTaskAct = procModel.taskModel.currTaskAct;
+        if(think.isEmpty(task) || task.id ===0){
+//            ret.message = task.message;
+            return this.json(ret);
+        }
+        let utilsModel = this.model(&#x27;cmpage/utils&#x27;);
+        ret = {statusCode:200,message:&#x60;流程已经${await utilsModel.getEnumName(task.c_status,&#x27;TaskStatus&#x27;)}!&#x60;,task:task, currAct:currAct, currTaskAct:currTaskAct};
+        if(task.c_status === global.enumTaskStatus.RUN){
+            ret.message = &#x60;当前节点:${await this.model(&#x27;act&#x27;).getNameById(currAct.id)},
+                            状态${await utilsModel.getEnumName(currAct.c_status,&#x27;TaskActStatus&#x27;)}&#x60;;
+            if(currTaskAct.c_status === global.enumTaskActStatus.WAIT &amp;&amp; !think.isEmpty(currAct.c_form)){
+                //根据设定弹出相关界面
+                debug(currAct,&#x27;c:task.start - currAct - 弹出界面&#x27;);
+                currAct.form =eval(&quot;(&quot;+ currAct.c_form +&quot;)&quot;);  // JSON.parse(currAct.c_form);
+                if(!think.isEmpty(currAct.form[&#x27;modulename&#x27;])){
+                    currAct.form.url = &#x60;/cmpage/page/edit?modulename=${currAct.form[&#x27;modulename&#x27;]}&amp;id=0&amp;taskID=${task.id}&amp;taskActID=${currTaskAct.id}&amp;status=${currAct.c_domain_st}&#x60;;
+                }
+                currAct.form.url = currAct.form.url.replace(/#taskID#/g,task.id).replace(/#taskActID#/g,currAct.id);
+                currAct.form.opentype = think.isEmpty(currAct.form[&#x27;opentype&#x27;]) ? &#x27;dialog&#x27;:currAct.form[&#x27;opentype&#x27;];
+                currAct.form.id = think.isEmpty(currAct.form[&#x27;id&#x27;]) ? &#x27;fwTaskAct&#x27;+currAct.id:currAct.form[&#x27;id&#x27;];
+                currAct.form.title = think.isEmpty(currAct.form[&#x27;title&#x27;]) ? currAct.c_name:currAct.form[&#x27;title&#x27;];
+                currAct.form.height = think.isEmpty(currAct.form[&#x27;height&#x27;]) ? 400:currAct.form[&#x27;height&#x27;];
+                currAct.form.mask = true;
+                ret.task = task;
+                ret.currAct = currAct;
+            }
+        }
 
-        return this.json({statusCode:200,message:&#x27;流程启动成功!&#x27;,task:task});
+        //TODO: 根据任务的当前状态分别处理,其他的让前端处理
+
+        return this.json(ret);
     }
 
     /**
-     * 重新运行一个流程实例, GET调用：/flow/proc/run?task_id=xxx
+     * 重新运行一个流程实例, GET调用：/flow/task/run?task_id=xxx
      * @method  run
      * @return {json}  流程实例对象
      */
     async runAction(){
-        let user = await think.session(&#x27;user&#x27;);
-        let taskID = this.get(&#x27;task_id&#x27;);
+        let user = await this.session(&#x27;user&#x27;);
+        let taskID = this.get(&#x27;taskID&#x27;);
+        let procModel = this.model(&#x27;proc&#x27;);
+        await procModel.fwInit(procID,await this.session(&#x27;user&#x27;));
 
         let task = await this.model(&#x27;proc&#x27;).fwRun(taskID,user);
 
-        return this.json({statusCode:200,message:&#x27;流程启动成功!&#x27;,task:task});
-}
+        return this.json({statusCode:200,message:&#x27;流程重新运行成功!&#x27;,task:task});
+    }
 
     /**
-     * 挂起一个流程实例, GET调用：/flow/proc/suspend?task_id=xxx
+     * 挂起一个流程实例, GET调用：/flow/task/suspend?task_id=xxx
      * @method  suspend
      * @return {json}  流程实例对象
      */
     async suspendAction(){
-        let user = await think.session(&#x27;user&#x27;);
-        let taskID = this.get(&#x27;task_id&#x27;);
+        let user = await this.session(&#x27;user&#x27;);
+        let taskID = this.get(&#x27;taskID&#x27;);
 
         let task = await this.model(&#x27;proc&#x27;).fwSuspend(taskID,user);
 
-        return this.json({statusCode:200,message:&#x27;流程启动成功!&#x27;,task:task});
+        return this.json({statusCode:200,message:&#x27;流程已成功挂起!&#x27;,task:task});
     }
 
     /**
-     * 终止一个流程实例, GET调用：/flow/proc/terminate?task_id=xxx
+     * 终止一个流程实例, GET调用：/flow/task/terminate?task_id=xxx
      * @method  terminate
      * @return {json}  流程实例对象
      */
     async terminateAction(){
-        let user = await think.session(&#x27;user&#x27;);
-        let taskID = this.get(&#x27;task_id&#x27;);
+        let user = await this.session(&#x27;user&#x27;);
+        let taskID = this.get(&#x27;taskID&#x27;);
 
         let task = await this.model(&#x27;proc&#x27;).fwTerminate(taskID,user);
 
-        return this.json({statusCode:200,message:&#x27;流程启动成功!&#x27;,task:task});
+        return this.json({statusCode:200,message:&#x27;流程已成功终止!&#x27;,task:task});
     }
 
+    /**
+     * 自动执行, GET调用：/flow/task/auto_exec
+     * @method  autoExec
+     * @return {json}  状态消息
+     */
+    async autoExecAction(){
+        if(!flow.autoExecuting){
+            flow.autoExecuting =true;
+            await this.model(&#x27;act&#x27;).fwAutoExec();
+            flow.autoExecuting =false;
+            return this.json({statusCode:200,message:&#x27;流程的自动执行操作成功!&#x27;});
+        }
+        return this.json({statusCode:200,message:&#x27;流程正在自动执行中......&#x27;});
+    }
+
+    flowAction(){
+        let parms = this.get();
+        this.assign(&#x27;parms&#x27;,parms);
+        return this.display();
+    }
+
+    async flowMapAction(){
+        let taskID = this.get(&quot;taskID&quot;);
+        let flowMap = await this.model(&#x27;task&#x27;).getFlowMap(taskID);
+        this.assign(&#x27;flowMap&#x27;,flowMap);
+
+        return this.display();
+    }
 }
     </pre>
 </div>

@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -562,6 +598,40 @@ export default class extends think.base {
     };
 
     /**
+     * 对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象&lt;br/&gt;
+     * 一般用于 某数据表记录的字段替换 事先设置的子字符串，子字符串的格式如：#id#
+     * @method  objPropertysReplaceToStr
+     * @return  {string}  替换后的字符串
+     * @param   {string} str 源字符串
+     * @param   {object} obj 源对象
+     */
+    objPropertysReplaceToStr = function(str, obj){
+        if(think.isEmpty(obj))  return str;
+
+        let ret = [];
+        let arr = str.split(&#x27;&#x27;);
+        let key =&#x27;&#x27;;
+        let isKey = false;
+        for(let s of arr){
+            if(isKey){
+                if(s === &#x27;#&#x27;){  //key 结束，替换值加入ret
+                    isKey = false;
+                    ret.push(obj.hasOwnProperty(key) ? obj[key] : &#x27;#&#x27;+key+&#x27;#&#x27;);
+                }else{
+                    key += s;
+                }
+            }else{
+                if(s === &#x27;#&#x27;){
+                    isKey = true;
+                    key =&#x27;&#x27;;
+                }else {
+                    ret.push(s);
+                }
+            }
+        }
+        return ret.join(&#x27;&#x27;);
+    };
+    /**
      * 在目标对象上增加另一个对象的某些属性，如有重叠，则覆盖其值
      * @method  objPropertysFromOtherObj
      * @return  {object}  新的对象，其属性集是源对象的子集
@@ -578,35 +648,106 @@ export default class extends think.base {
         return ret;
     };
     /**
-     * 对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象
+     * 对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象&lt;br/&gt;
+     * 一般用 global.objFromString(str) 进行转换
      * @method  objToString
      * @return  {string}  序列化后的字符串
      * @param   {object} obj 源对象
      */
     objToString = function(obj){
         let ret = [];
-        for(let key in obj){
-            if(think.isDate(obj[key])){
-                ret.push(&#x60;${key}:&#x27;${think.datetime(obj[key])}&#x27;&#x60;);
-            }else if(think.isString(obj[key])) {
-                ret.push(&#x60;${key}:&#x27;${obj[key]}&#x27;&#x60;);
-            }else if(think.isObject(obj[key])) {
-                ret.push(&#x60;${key}:${ this.objToString(obj[key]) }&#x60;);
-            }else if(think.isArray(obj[key])) {
-                let tmp = &#x27;&#x27;;
-                for(let item of obj[key]){
-                    if(think.isObject(item)){
-                        tmp += this.objToString(item);
-                    }else{
-                        tmp += item;
+        if(think.isObject(obj)) {
+            for (let key in obj) {
+                if (think.isDate(obj[key])) {
+                    ret.push(&#x60;${key}:&#x27;${think.datetime(obj[key])}&#x27;&#x60;);
+                } else if (think.isString(obj[key])) {
+                    ret.push(&#x60;${key}:&#x27;${obj[key]}&#x27;&#x60;);
+                } else if (think.isObject(obj[key])) {
+                    ret.push(&#x60;${key}:${ this.objToString(obj[key]) }&#x60;);
+                } else if (think.isArray(obj[key])) {
+                    let tmp = [];
+                    for (let item of obj[key]) {
+                        tmp.push(this.objToString(item));
                     }
+                    ret.push(&#x60;${key}:[${tmp.join(&#x27;,&#x27;)}]&#x60;);
+                } else {
+                    ret.push(&#x60;${key}:${obj[key]}&#x60;);
                 }
-                ret.push(&#x60;${key}:[${tmp}]&#x60;);
-            }else {
-                ret.push(&#x60;${key}:${obj[key]}&#x60;);
+            }
+            return &quot;{&quot; + ret.join(&#x27;, &#x27;) + &quot;}&quot;;
+        }else if(think.isArray(obj)){
+            let tmp = [];
+            for (let item of obj) {
+                tmp.push(this.objToString(item));
+            }
+            return &#x60;[${tmp.join(&#x27;,&#x27;)}]&#x60;;
+        }else{
+            return String(obj);
+        }
+    };
+
+    /**
+     * 把字符串转换成对象，一般该字符串是从 global.objToString(obj) 转换而来 &lt;br/&gt;
+     * @method  objFromString
+     * @return   {object}  目标对象
+     * @param  {string}  str 序列化后的字符串
+     */
+    objFromString = function(str){
+        return eval(&quot;(&quot;+ str +&quot;)&quot;);
+    };
+
+    /**
+     * 把字符串转换成数组对象，其元素是对象，一般该元素是从 global.objToString(obj) 转换而来 &lt;br/&gt;
+     * @method  arrFromString
+     * @return   {Array}  JSON对象数组
+     * @param  {string}  str 序列化后的字符串
+     */
+    arrFromString = function(str){
+        let arr = [];
+        let obj = think.isEmpty(str) ? {} : objFromString(str);
+        if(think.isArray(obj)){
+            for(let item of obj){
+                if(!think.isEmpty(item)){    arr.push(item);  }
+            }
+        }else{
+            if(!think.isEmpty(obj)){    arr.push(obj);  }
+        }
+        return arr;
+    };
+
+    /**
+     * 从一个对象数组中取某一列（属性）值组成的数组，一般用于处理select返回的结果集
+     * @method  arrGetValuesByColumnName
+     * @return  {Array}  新的数组，由源数组元素的某个属性值组成
+     * @param   {Array} arr 对象数组
+     * @param   {object} fromObj 源对象
+     * @param   {string} columnName 属性名称
+     */
+    arrGetValuesByColumnName = function(arr,columnName){
+        let ret = [];
+        for(let obj of arr){
+            ret.push(obj[columnName]);
+        }
+        return ret;
+    };
+
+    /**
+     * 取出数组中的重复值
+     * @method  arrGetUnique
+     * @return  {Array}  新的数组
+     * @param   {Array} arr 源数组
+     */
+    arrGetUnique = function(arr){
+        var n = {},ret=[]; //n为hash表
+        for(var i = 0; i &lt; arr.length; i++) //遍历当前数组
+        {
+            if (!n[arr[i]]) //如果hash表中没有当前项
+            {
+                n[arr[i]] = true; //存入hash表
+                ret.push(arr[i]); //把当前数组的当前项push到临时数组里面
             }
         }
-        return &quot;{&quot;+ret.join(&#x27;, &#x27;)+&quot;}&quot;;
+        return ret;
     };
 
     /**
@@ -627,12 +768,15 @@ export default class extends think.base {
     };
 
     /***************************其他的全局方法 **************************************/
-    debug = (msg)=&gt;{
-        if(think.env === &#x27;development&#x27;)
-            console.log(think.isObject(msg) ? JSON.stringify(msg).replace(/&quot;/g,&#x27;&#x27;).replace(/\\/g,&#x27;&#x27;).replace(/,/g,&#x27;,  &#x27;) : msg);
-    };
-    log = (msg)=&gt;{
-        console.log(msg);
+    debug = (msg,desc)=&gt;{
+        if(think.env === &#x27;development&#x27;){
+            //let message = think.isObject(msg) ? JSON.stringify(msg).replace(/&quot;/g,&#x27;&#x27;).replace(/\\/g,&#x27;&#x27;).replace(/,/g,&#x27;,  &#x27;) : msg;
+            let message = this.objToString(msg);
+            //think.log(message,(think.isEmpty(desc) ? &#x27;[CMPAGE] &#x27;:&#x27;[&#x27;+desc+&#x27;] &#x27;),false);
+            think.log(function(colors){
+                return colors.yellow(think.isEmpty(desc) ? &#x27;[CMPAGE] &#x27;:&#x27;[&#x27;+desc+&#x27;] &#x27;) + message;
+            });
+        }
     };
 
     /**
@@ -678,111 +822,125 @@ export default class extends think.base {
      * @return  {无}
      */
     cmpageInit = () =&gt;{
-        //用 c_ 开头,值&gt;0 ,是为了和数据库中一致
+        //值&gt;0 ,是为了和数据库中其他的参数值设置方式保持一致
         global.enumStatusExecute = {
-            SUCCESS: {id:1, c_name:&#x27;执行成功&#x27;},
-            FAIL: {id:2, c_name:&#x27;执行失败&#x27;},
-            ERROR: {id:3, c_name:&#x27;执行错误&#x27;}
+            SUCCESS:1, SUCCESS_name:&#x27;执行成功&#x27;,
+            FAIL:2, FAIL_name:&#x27;执行失败&#x27;,
+            ERROR:3, ERROR_name:&#x27;执行错误&#x27;
         };
 
         global.enumLogType = {
-            ADD: {id:1, c_name:&#x27;新增&#x27;},
-            UPDATE: {id:2, c_name:&#x27;修改&#x27;}
+            ADD:1, ADD_name:&#x27;新增&#x27;,
+            UPDATE:2, UPDATE_name:&#x27;修改&#x27;
         };
 
         //工作流相关参数
         global.enumProcType = {
-            NORMAL: {id:1, c_name:&#x27;常规类型&#x27;},
-            APPROVE: {id:2, c_name:&#x27;审核类型&#x27;}
+            NORMAL:1, NORMAL_name:&#x27;常规类型&#x27;,
+            APPROVE:2, APPROVE_name:&#x27;审核类型&#x27;
         };
         global.enumProcWayCreate = {
-            MAN: {id:1, c_name:&#x27;手动执行&#x27;},
-            TRIGGER: {id:2, c_name:&#x27;自动触发&#x27;},
-            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+            MAN:1, MAN_name:&#x27;手动执行&#x27;,
+            TRIGGER:2, TRIGGER_name:&#x27;自动触发&#x27;,
+            DEFINE:9, DEFINE_name:&#x27;自定义&#x27;
         };
         global.enumProcAssignType = {
-            ALL: {id:1, c_name:&#x27;所有人&#x27;},
-            DEPT: {id:2, c_name:&#x27;部门&#x27;},
-            ROLE: {id:3, c_name:&#x27;角色&#x27;},
-            TEAM: {id:4, c_name:&#x27;团队&#x27;},
-            USER: {id:5, c_name:&#x27;用户&#x27;},
-            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+            ALL:1, ALL_name:&#x27;所有人&#x27;,
+            DEPT:2, DEPT_name:&#x27;部门&#x27;,
+            ROLE:3, ROLE_name:&#x27;角色&#x27;,
+            TEAM:4, TEAM_name:&#x27;团队&#x27;,
+            USER:5, USER_name:&#x27;用户&#x27;,
+            DEFINE:9, DEFINE_name:&#x27;自定义&#x27;
         };
         global.enumActType = {
-            NORMAL_MAN: {id:1, c_name:&#x27;人为参与&#x27;},
-            NORMAL_AUTO: {id:2, c_name:&#x27;自动执行&#x27;},
-            START: {id:3, c_name:&#x27;开始节点&#x27;},
-            DUMMY: {id:4, c_name:&#x27;哑活动&#x27;},
-            END: {id:9, c_name:&#x27;结束节点&#x27;}
+            NORMAL_MAN:1, NORMAL_MAN_name:&#x27;人为参与&#x27;,
+            NORMAL_AUTO:2, NORMAL_AUTO_name:&#x27;自动执行&#x27;,
+            START:3, START_name:&#x27;开始节点&#x27;,
+            DUMMY:4, DUMMY_name:&#x27;哑活动&#x27;,
+            END:9, END_name:&#x27;结束节点&#x27;
         };
         global.enumActFromRule = {
-            ORDER: {id:1, c_name:&#x27;顺序&#x27;},
-            AND_JOIN: {id:2, c_name:&#x27;与汇聚&#x27;},
-            OR_JOIN: {id:3, c_name:&#x27;或汇聚&#x27;},
-            VOTES_JOIN: {id:4, c_name:&#x27;投票汇聚&#x27;},
-            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+            ORDER:1, ORDER_name:&#x27;顺序&#x27;,
+            AND_JOIN:2, AND_JOIN_name:&#x27;与汇聚&#x27;,
+            OR_JOIN:3, OR_JOIN_name:&#x27;或汇聚&#x27;,
+            VOTES_JOIN:4, VOTES_JOIN_name:&#x27;投票汇聚&#x27;,
+            DEFINE:9, DEFINE_name:&#x27;自定义&#x27;
         };
         global.enumActToRule = {
-            ORDER: {id:1, c_name:&#x27;顺序&#x27;},
-            AND_SPLIT: {id:2, c_name:&#x27;与分支&#x27;},
-            OR_SPLIT: {id:3, c_name:&#x27;或分支&#x27;},
-            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+            ORDER:1, ORDER_name:&#x27;顺序&#x27;,
+            AND_SPLIT:2, AND_SPLIT_name:&#x27;与分支&#x27;,
+            OR_SPLIT:3, OR_SPLIT_name:&#x27;或分支&#x27;,
+            DEFINE:9, DEFINE_name:&#x27;自定义&#x27;
         };
         global.enumActCcRule = {
-            NO: {id:1, c_name:&#x27;不通知&#x27;},
-            MAN: {id:2, c_name:&#x27;手动通知&#x27;},
-            AUTO: {id:3, c_name:&#x27;自动发送&#x27;},
-            MAN_AND_AUTO: {id:4, c_name:&#x27;手动和自动&#x27;},
-            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+            NO:1, NO_name:&#x27;不通知&#x27;,
+            MAN:2, MAN_name:&#x27;手动通知&#x27;,
+            AUTO:3, AUTO_name:&#x27;自动发送&#x27;,
+            MAN_AND_AUTO:4, MAN_AND_AUTO_name:&#x27;手动和自动&#x27;,
+            DEFINE:9, DEFINE_name:&#x27;自定义&#x27;
         };
         global.enumActAssignType = {
-            DEPT: {id:2, c_name:&#x27;部门&#x27;},
-            ROLE: {id:3, c_name:&#x27;角色&#x27;},
-            TEAM: {id:4, c_name:&#x27;团队&#x27;},
-            USER: {id:5, c_name:&#x27;用户&#x27;},
-            SELF: {id:6, c_name:&#x27;发起人自己&#x27;},
-            PREV: {id:7, c_name:&#x27;上一步执行人&#x27;},
-            DEFINE: {id:9, c_name:&#x27;自定义&#x27;}
+            DEPT:2, DEPT_name:&#x27;部门&#x27;,
+            ROLE:3, ROLE_name:&#x27;角色&#x27;,
+            TEAM:4, TEAM_name:&#x27;团队&#x27;,
+            USER:5, USER_name:&#x27;用户&#x27;,
+            SELF:6, SELF_name:&#x27;发起人自己&#x27;,
+            PREV:7, PREV_name:&#x27;上一步执行人&#x27;,
+            DEFINE:9, DEFINE_name:&#x27;自定义&#x27;
         };
         global.enumActAssignWay = {
-            ALL: {id:1, c_name:&#x27;所有人&#x27;},
-            LEAST_WORKING_LIST: {id:2, c_name:&#x27;最少工作量&#x27;},   //任务将分配给指定群体中的工作量最少的人员，工作量的多少可以通过TO_DO_TASK_LIST的统计数据得到
-            FCFA: {id:3, c_name:&#x27;先来先分配&#x27;},   //（First Coming First Assigning）
-            PRIORITY: {id:4, c_name:&#x27;优先数大者&#x27;},   //基于优先数分配（c_type==ROLE），每个角色中的人员都有一个优先数，数大者得
-            ROUND_ROBIN: {id:5, c_name:&#x27;令牌轮转&#x27;},    //轮转法（c_type==ROLE），ROUND_ROBIN_TOKEN为轮转令牌，任务将分配给携有轮转令牌的人员
-            SELECT: {id:6, c_name:&#x27;提供选择&#x27;}   //，上一个活动的执行人来选择
+            ALL:1, ALL_name:&#x27;所有人&#x27;,
+            LEAST_WORKING_LIST:2, LEAST_WORKING_LIST_name:&#x27;最少工作量&#x27;,   //任务将分配给指定群体中的工作量最少的人员，工作量的多少可以通过TO_DO_TASK_LIST的统计数据得到
+            FCFA:3, FCFA_name:&#x27;先来先分配&#x27;,   //（First Coming First Assigning）
+            PRIORITY:4, PRIORITY_name:&#x27;优先数大者&#x27;,   //基于优先数分配（c_type==ROLE），每个角色中的人员都有一个优先数，数大者得
+            ROUND_ROBIN:5, ROUND_ROBIN_name:&#x27;令牌轮转&#x27;,    //轮转法（c_type==ROLE），ROUND_ROBIN_TOKEN为轮转令牌，任务将分配给携有轮转令牌的人员
+            SELECT:6, SELECT_name:&#x27;提供选择&#x27;   //，上一个活动的执行人来选择
         };
         global.enumActAssignTypeExe = {
-            EXE: {id:1, c_name:&#x27;执行&#x27;},
-            EXE_AND_BEFORE_CC: {id:2, c_name:&#x27;执行并事前通知&#x27;},
-            AFTER_CC: {id:3, c_name:&#x27;事后通知&#x27;}
+            EXE:1, EXE_name:&#x27;执行&#x27;,
+            EXE_AND_BEFORE_CC:2, EXE_AND_BEFORE_CC_name:&#x27;执行并事前通知&#x27;,
+            AFTER_CC:3, AFTER_CC_name:&#x27;事后通知&#x27;
         };
         global.enumTaskStatus = {
-            INIT: {id:1, c_name:&#x27;初始化&#x27;},
-            RUN: {id:2, c_name:&#x27;运行中&#x27;},
-            SUSPEND: {id:3, c_name:&#x27;挂起&#x27;},
-            TERMINATE: {id:4, c_name:&#x27;终止&#x27;},
-            END: {id:9, c_name:&#x27;完成&#x27;}
+            INIT:1, INIT_name:&#x27;初始化&#x27;,
+            RUN:2, RUN_name:&#x27;运行中&#x27;,
+            SUSPEND:3, SUSPEND_name:&#x27;挂起&#x27;,
+            TERMINATE:4, TERMINATE_name:&#x27;终止&#x27;,
+            END:9, END_name:&#x27;完成&#x27;
         };
         global.enumTaskPriority = {
-            NOMAL: {id:1, c_name:&#x27;一般&#x27;},
-            HIGH: {id:2, c_name:&#x27;高&#x27;},
-            HIGHER: {id:3, c_name:&#x27;很高&#x27;},
-            HIGHEST: {id:4, c_name:&#x27;最高&#x27;},
-            LOW: {id:5, c_name:&#x27;低&#x27;},
-            LOWER: {id:6, c_name:&#x27;很低&#x27;},
-            LOWEST: {id:7, c_name:&#x27;最低&#x27;}
+            NOMAL:1, NOMAL_name:&#x27;一般&#x27;,
+            HIGH:2, HIGH_name:&#x27;高&#x27;,
+            HIGHER:3, HIGHER_name:&#x27;很高&#x27;,
+            HIGHEST:4, HIGHEST_name:&#x27;最高&#x27;,
+            LOW:5, LOW_name:&#x27;低&#x27;,
+            LOWER:6, LOWER_name:&#x27;很低&#x27;,
+            LOWEST:7, LOWEST_name:&#x27;最低&#x27;
         };
         global.enumTaskActStatus = {
-            NO_BEGIN: {id:1, c_name:&#x27;未开始&#x27;},
-            INIT: {id:2, c_name:&#x27;初始化&#x27;},
-            WAIT: {id:2, c_name:&#x27;等待中&#x27;},
-            RUN: {id:4, c_name:&#x27;运行中&#x27;},
-            SUSPEND: {id:5, c_name:&#x27;挂起&#x27;},
-            PENDING: {id:6, c_name:&#x27;汇聚中&#x27;},
-            TERMINATE: {id:7, c_name:&#x27;终止&#x27;},
-            END: {id:9, c_name:&#x27;完成&#x27;}
+            NO_BEGIN:1, NO_BEGIN_name:&#x27;未开始&#x27;,
+            INIT:2, INIT_name:&#x27;初始化&#x27;,
+            WAIT:3, WAIT_name:&#x27;等待中&#x27;,
+            RUN:4, RUN_name:&#x27;运行中&#x27;,
+            SUSPEND:5, SUSPEND_name:&#x27;挂起&#x27;,
+            PENDING:6, PENDING_name:&#x27;汇聚中&#x27;,
+            TERMINATE:7, TERMINATE_name:&#x27;终止&#x27;,
+            END:9, END_name:&#x27;完成&#x27;
         };
+        global.cmpageUI = {
+            enumListColumns : {     //其值表示页面列表的显示字段的数量
+                MAX:100, MIDDLE:5, SMALL: 5, MOBILE: 3
+            },
+            enumListBtns : {     //其值表示页面列表的行按钮的数量
+                MAX:100, MIDDLE:2, SMALL: 2, MOBILE: 1
+            }
+
+        };
+
+        global.flow = {
+            autoExecuting:false
+        };
+
         //暂时不考虑回退和跳转，如有必要，可继承task, task_act来实现具体的某一类业务流程模板
         //global.enumActJumpRule = {
         //    NO: {id:1, c_name:&#x27;不能跳转&#x27;},

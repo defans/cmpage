@@ -103,7 +103,7 @@ export default class extends think.model.base {
      * @params {int} [procID] 模板ID,当 taskID===0 时，取procID的值
      */
     async fwInit(taskID,user,procID){
-        let task = taskID >0 ? this.model('fw_task').where({id:taskID}).find() : {};
+        let task = taskID >0 ? await this.model('fw_task').where({id:taskID}).find() : {};
         let proc = await this.getProcById(taskID >0 ? task.c_proc : procID);
         this.taskModel = this.model(think.isEmpty(proc.c_class) ? 'flow/task' : proc.c_class);
         this.taskModel.proc = proc;
@@ -144,8 +144,8 @@ export default class extends think.model.base {
     }
     async getProcs(){
         return await think.cache("procProcs", () => {
-            return this.query('select id,c_name,c_desc,c_type,c_class,c_no_format,c_way_create,c_time_from,c_time_to,c_status,c_user,c_time,c_group  ' +
-                'from fw_proc  where c_status=0 order by id');
+            return this.query('select id,c_name,c_desc,c_type,c_class,c_no_format,c_way_create,c_time_from,c_time_to,c_status,' +
+                'c_user,c_time,c_group,c_link_model,c_link_type  from fw_proc  where c_status=0 order by id');
         });
     }
 

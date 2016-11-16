@@ -6,20 +6,27 @@ function pageGotoEdit(modulename,editID){
     return true;
 }
 
-/* cmpage/page/edit 工作流相关编辑界面，保存 */
-function pageSaveByTask(modulename,taskActID,status){
+/* cmpage/page/edit 工作流相关编辑界面，保存后刷新或者关闭对话框 */
+function pageSaveByTask(modulename,taskActID,status,flag){
     //var page = pageGetCurrent(obj);
-    BJUI.ajax('ajaxform', {
-        url: '/cmpage/page/save',
-        form: $('#edit'+modulename+'Form'),
-        validate: true,
-        loadingmask: true,
-        okCallback: function(json, options) {
-            //TODO: 关闭界面或者刷新 id>0 的编辑页
-            var rec =json.data;
-            var url = '/cmpage/page/edit?modulename='+modulename+'&id='+rec.id +'&taskID='+rec.c_task+'&taskActID='
-                +taskActID+'&status='+status +'&listIds=';
-            BJUI.dialog('reload', {url:url});
+    BJUI.alertmsg("confirm", "是否确定要执行本操作？", {
+        okCall: function () {
+            BJUI.ajax('ajaxform', {
+                url: '/cmpage/page/save',
+                form: $('#edit' + modulename + 'Form'),
+                validate: true,
+                loadingmask: true,
+                okCallback: function (json, options) {
+                    if (flag === 'close') {
+                        BJUI.dialog('closeCurrent');
+                    } else {
+                        var rec = json.data;
+                        var url = '/cmpage/page/edit?modulename=' + modulename + '&id=' + rec.id + '&taskID=' + rec.c_task + '&taskActID='
+                            + taskActID + '&status=' + status + '&listIds=';
+                        BJUI.dialog('reload', {url: url});
+                    }
+                }
+            });
         }
     });
     return true;
@@ -64,11 +71,11 @@ function pageRefresh(modulename) {
 }
 
 /* cmpage/page/list(lookup) -- close current navtab or dialog */
-function pageClose(obj) {
-    if( $(obj).closest('.navtab-panel').length){
-        BJUI.navtab('closeCurrentTab');
-    }else{
+function pageClose() {
+    if( $.CurrentDialog){
         BJUI.dialog('closeCurrent');
+    }else{
+        BJUI.navtab('closeCurrentTab');
     }
 }
 
@@ -82,10 +89,12 @@ function pageRowSelect(id,obj){
     }
     page.find('#idSelect').val(id);
     page.find('#row'+id).toggleClass('selected');
+    return false;
 }
 
-function pageGetCurrent(obj){
-    return  $(obj).closest('.navtab-panel').length ? $.CurrentNavtab : $.CurrentDialog;
+function pageGetCurrent(){
+    //return  $(obj).closest('.navtab-panel').length ? $.CurrentNavtab : $.CurrentDialog;
+    return  $.CurrentDialog || $.CurrentNavtab;
 }
 
 ///////////////////////////// cmpage/page 相关的界面处理 -- END ////////////////////////////
@@ -153,6 +162,23 @@ function fwStart(procID) {
     return false;
 }
 
+function fwRunAct(taskActID,isPass,modulename) {
+    BJUI.alertmsg("confirm", "是否确定要继续运行本次操作？", {
+        okCall: function () {
+            BJUI.ajax('doajax', {
+                url:  "/flow/task_act/run?taskActID=" + taskActID+(isPass ? '&isPass=true':''),
+                okCallback: function(json, options) {
+                    BJUI.alertmsg(json.message);
+                    if(json.statusCode == 200){
+                        pageRefresh(modulename);
+                        BJUI.dialog('closeCurrent');
+                    }
+                }
+            });
+        }
+    });
+    return false;
+}
 function fwTerminateAct(taskActID) {
     BJUI.alertmsg("confirm", "是否确定要终止或取消本次操作？", {
         okCall: function () {
@@ -179,31 +205,16 @@ function fwSuspendAct(taskActID) {
     });
     return false;
 }
-function fwRunAct(taskActID,isPass,modulename) {
-    BJUI.alertmsg("confirm", "是否确定要继续运行本次操作？", {
-        okCall: function () {
-            BJUI.ajax('doajax', {
-                url:  "/flow/task_act/run?taskActID=" + taskActID+(isPass ? '&isPass=true':''),
-                okCallback: function(json, options) {
-                    BJUI.alertmsg(json.message);
-                    if(json.statusCode == 200){
-                        pageRefresh(modulename);
-                        BJUI.dialog('closeCurrent');
-                    }
-                }
-            });
-        }
-    });
-    return false;
-}
 
-function fwTerminate(taskID) {
+function fwTerminate(taskID,obj) {
     BJUI.alertmsg("confirm", "是否确定要终止本次流程？", {
         okCall: function () {
             BJUI.ajax('doajax', {
                 url: "/flow/task/terminate?taskID=" + taskID,
                 okCallback: function(json, options) {
                     BJUI.alertmsg(json.message);
+                    if(json.statusCode==200)        $(obj).hide();
+                    //pageRefresh(modulename);
                 }
             });
         }
@@ -218,6 +229,7 @@ function fwSuspend(taskID) {
                 url: "/flow/task/suspend?taskID=" + taskID,
                 okCallback: function(json, options) {
                     BJUI.alertmsg(json.message);
+                    pageRefresh(modulename);
                 }
             });
         }
@@ -231,6 +243,7 @@ function fwRun(taskID) {
                 url: "/flow/task/run?taskID=" + taskID,
                 okCallback: function(json, options) {
                     BJUI.alertmsg(json.message);
+                    pageRefresh(modulename);
                 }
             });
         }

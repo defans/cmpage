@@ -69,7 +69,7 @@ export default class extends think.model.base {
     async getNameById(id){
         let codes =await this.getCodes();
         for(let codeMd of codes){
-            if(codeMd.id === id){
+            if(codeMd.id == id){
                 return codeMd.c_name;
             }
         }
@@ -153,7 +153,7 @@ export default class extends think.model.base {
         pid = parseInt(pid);
         let ret =[];
         for(let parm of parms){
-            if(parm.c_pid === pid){
+            if(parm.c_pid == pid){
                 ret.push(parm);
             }
         }
@@ -178,7 +178,7 @@ export default class extends think.model.base {
     async getParmById(id){
         let parms =await this.getParms();
         for(let parm of parms){
-            if(parm.id === id){
+            if(parm.id == id){
                 return parm;
             }
         }

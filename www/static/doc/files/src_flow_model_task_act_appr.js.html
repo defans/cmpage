@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -473,54 +509,39 @@
  * 具体的业务相关的工作流活动的子类也可以继承本类，来增加定制的业务逻辑
  * @class flow.model.task_act_appr
  */
-export default class extends think.model.base {
+import TaskAct from &#x27;./task_act.js&#x27;;
 
+export default class extends TaskAct {
     /**
      * 运行一个流程实例的活动(流程节点)
      * @method  fwRun
      * @return {object}  任务节点对象
-     * @params {object} taskAct 任务节点对象
-     * @params {object} act 流程节点对象
-     * @params {object} user 流程执行人
      */
-    async fwRun(taskAct,act,user){
-        if(await this.canRun(taskAct,act,user)){
-            taskAct.c_status = global.enumTaskActStatus.RUN;
-            await this.fwSave(taskAct);
-            await this.addTaskSt(taskAct,user);
-
-            //如果有状态设置，一般会弹出FORM填写批示等
-            //if(act.c_domain_st &gt;0){
-            //    let appr = {}
-            //}cd
-
-            //结束本节点
-            await this.fwEnd(taskAct,act,user);
-        }
-
-        return taskAct;
-    }
+    //async fwRun(isPass){
+    //    global.debug(isPass,&#x27;task_act.fwRun - isPass&#x27;);
+    //    if(!think.isEmpty(isPass) || await this.canRun() ){
+    //        this.taskAct.c_status = global.enumTaskActStatus.RUN;
+    //        await this.save();
+    //    }
+    //    //执行本节点，子类中可以加入其他业务逻辑
+    //    if(think.isEmpty(this.act)){
+    //        this.act = this.model(&#x27;act&#x27;).getActById(this.taskAct.c_act);
+    //    }
+    //
+    //
+    //    //结束本节点
+    //    await this.fwEnd();
+    //}
 
     /**
      * 取当前节点的业务相关数据，存放于 taskAct.domainData 中 &lt;br/&gt;
      * 子类中可以重写本方法实现具体的取业务数据方法
      * @method  domainGetData
-     * @return {object}  增加业务对象数据后的节点对象
-     * @params {object} taskAct 任务节点对象
-     * @params {object} act 流程节点对象
-     * @params {object} user 流程执行人
      */
-    async domainGetData(taskAct,act,user){
-        let dta = taskAct;
-        dta.domainData = {id:0};
-        dta.link =  await this.model(dta.c_link_type).where({id:dta.c_link}).find();        //t_appr, 二级连接
-        if(dta.link){
-            let link = dta.link;
-            dta.domainData = await this.model(link.c_link_type).where({id:link.c_link}).find();     //例如： t_leave
-        }
+    //async domainGetData(){
+    //
+    //}
 
-        return dta;
-    }
 }
 
     </pre>

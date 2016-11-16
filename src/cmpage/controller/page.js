@@ -167,7 +167,7 @@ export default class extends Base {
         let pageModel = global.model(think.isEmpty(parms.c_path) ? 'cmpage/page':parms.c_path);
         pageModel.mod = parms;
         pageModel.modEdits = await module.getModuleEdit(parms.id);
-        pageModel.getPageOther();
+        //pageModel.getPageOther();
         let editHtml =await pageModel.htmlGetEdit();
         let btnHtml = await pageModel.htmlGetEditBtns();
 

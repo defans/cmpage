@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -474,28 +510,29 @@
  * @class flow.model.proc
  */
 export default class extends think.model.base {
+    taskModel = null;   //当前流程实例的对象
+
     /**
-     * 一个新的流程实例
+     * 开始一个新的流程实例&lt;/br&gt;
+     * 调用前先初始化 fwInit
      * @method  fwStart
      * @return {object}  流程实例对象
      * @params {int} procID 流程模板ID
      * @params {object} [user] 流程发起人
      */
     async fwStart(procID,user){
-        if(think.isEmpty(user)){
-            user = await think.session(&#x27;user&#x27;);
+        if(think.isEmpty(this.taskModel)){
+            await this.fwInit(0,user,procID);
         }
-        let proc =await this.getProcById(procID);
-
-        let taskModel = this.model(proc.c_class);
-
-        let task = await taskModel.fwStart(proc,user);
-
-        //取当前节点
-        task = await taskModel.getTaskWithStatus(task,user);
-
-        return task;
-
+        if(!think.isEmpty(this.taskModel)){
+            await this.taskModel.fwStart();
+            global.debug(this.taskModel.task,&#x27;proc.fwStart --- this.taskModel.task&#x27;);
+            if(!think.isEmpty(this.taskModel.task)){
+                //取当前节点
+                await this.taskModel.getTaskWithCurrentAct();
+                global.debug(this.taskModel.currAct,&#x27;proc.fwStart - taskModel.currAct&#x27;);
+            }
+        }
     }
 
     /**
@@ -506,9 +543,10 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      */
     async fwRun(taskID,user){
-        let parms = await this.fwGetProcParms(taskID,user);
-        let taskModel = this.model(parms[1].c_class);
-        return await taskModel.fwRun(...parms);
+        if(think.isEmpty(this.taskModel)){
+            await this.fwInit(taskID,user);
+        }
+        await this.taskModel.fwRun();
     }
 
     /**
@@ -519,9 +557,10 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      */
     async fwSuspend(taskID,user){
-        let parms = await this.fwGetProcParms(taskID,user);
-        let taskModel = this.model(parms[1].c_class);
-        return await taskModel.fwSuspend(...parms);
+        if(think.isEmpty(this.taskModel)){
+            await this.fwInit(taskID,user);
+        }
+        await this.taskModel.fwSuspend();
     }
 
     /**
@@ -532,9 +571,10 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      */
     async fwTerminate(taskID,user){
-        let parms = await this.fwGetProcParms(taskID,user);
-        let taskModel = this.model(parms[1].c_class);
-        return await taskModel.fwTerminate(...parms);
+        if(think.isEmpty(this.taskModel)){
+            await this.fwInit(taskID,user);
+        }
+        await this.taskModel.fwTerminate();
     }
 
     /**
@@ -545,9 +585,10 @@ export default class extends think.model.base {
      * @params {object} user 流程执行人
      */
     async fwEnd(taskID,user){
-        let parms = await this.fwGetProcParms(taskID,user);
-        let taskModel = this.model(parms[1].c_class);
-        return await taskModel.fwEnd(...parms);
+        if(think.isEmpty(this.taskModel)){
+            await this.fwInit(taskID,user);
+        }
+        await this.taskModel.fwEnd();
     }
 
     /**
@@ -556,15 +597,15 @@ export default class extends think.model.base {
      * @return {Array} 其他方法调用的参数列表
      * @params {int} taskID 模板实例（任务）ID
      * @params {object} user 流程执行人
+     * @params {int} [procID] 模板ID,当 taskID===0 时，取procID的值
      */
-    async fwGetProcParms(taskID,user){
-        if(think.isEmpty(user)){
-            user = await think.session(&#x27;user&#x27;);
-        }
-        let task = this.model(&#x27;fw_task&#x27;).where({id:taskID}).find();
-        let proc =await this.getProcById(task.c_proc);
-
-        return [task,proc,user];
+    async fwInit(taskID,user,procID){
+        let task = taskID &gt;0 ? await this.model(&#x27;fw_task&#x27;).where({id:taskID}).find() : {};
+        let proc = await this.getProcById(taskID &gt;0 ? task.c_proc : procID);
+        this.taskModel = this.model(think.isEmpty(proc.c_class) ? &#x27;flow/task&#x27; : proc.c_class);
+        this.taskModel.proc = proc;
+        this.taskModel.task = task;
+        this.taskModel.user = think.isEmpty(user) ? await think.session(&#x27;user&#x27;) : user;
     }
 
     /**
@@ -576,7 +617,7 @@ export default class extends think.model.base {
     async getProcById(id){
         let list =await this.getProcs();
         for(let md of list){
-            if(md.id === id){
+            if(md.id == id){
                 return md;
             }
         }
@@ -592,7 +633,7 @@ export default class extends think.model.base {
     async getNameById(id){
         let list =await this.getProcs();
         for(let md of list){
-            if(md.id === id){
+            if(md.id == id){
                 return md.c_name;
             }
         }
@@ -600,12 +641,19 @@ export default class extends think.model.base {
     }
     async getProcs(){
         return await think.cache(&quot;procProcs&quot;, () =&gt; {
-            return this.query(&#x27;select id,c_name,c_desc,c_type,c_class,c_no_format,c_way_create,c_time_from,c_time_to,&#x27; +
-                &#x27;c_status,c_user,c_time,c_group  from fw_proc order by id &#x27;);
+            return this.query(&#x27;select id,c_name,c_desc,c_type,c_class,c_no_format,c_way_create,c_time_from,c_time_to,c_status,&#x27; +
+                &#x27;c_user,c_time,c_group,c_link_model,c_link_type  from fw_proc  where c_status=0 order by id&#x27;);
         });
     }
 
-
+    async clearCache(){
+        let procs = await this.query(&#x27;select id from fw_proc where c_status=0 &#x27;);
+        for(let proc of procs){
+            await think.cache(&#x60;procActs${proc.id}&#x60;,null);
+            await think.cache(&#x60;procActPaths${proc.id}&#x60;,null);
+        }
+        await think.cache(&#x27;procProcs&#x27;, null);
+    }
 
 }
 

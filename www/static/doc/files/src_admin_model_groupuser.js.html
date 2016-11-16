@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -484,20 +520,20 @@ export default class extends CMPage {
      * 重写父类的 htmlGetOther 方法，输出额外的按钮和js函数
      * @method  htmlGetOther
      * @return {string}  html片段
-     * @param {Object} page  页面设置主信息
      */
-    async htmlGetOther(page){
-      let parms =JSON.parse(page.parmsUrl);
+    async htmlGetOther(){
+        //global.debug(this.mod,&#x27;groupuser.htmlGetOther - this.mod&#x27;);
+      let parms =JSON.parse(this.mod.parmsUrl);
       return &#x60;&lt;a class=&quot;btn btn-green&quot; href=&quot;/cmpage/page/list?modulename=GroupUserAdd&amp;c_group=${parms.c_group}&quot;
                         data-toggle=&quot;dialog&quot; data-options=&quot;{id:&#x27;pageGroupUserAdd&#x27;, mask:true, width:800, height:600 }&quot;
                         data-on-close=&quot;pageGroupUserEdit_onClose&quot; data-icon=&quot;plus&quot;&gt;加入用户&lt;/a&gt;
-                &lt;a class=&quot;btn btn-red&quot; href=&quot;#&quot; onclick=&quot;return GroupUserDelIds(this,${ parms.c_group});&quot;  data-icon=&quot;times&quot;&gt;剔除&lt;/a&gt;
+                &lt;a class=&quot;btn btn-red&quot; href=&quot;#&quot; onclick=&quot;return GroupUserDelIds();&quot;  data-icon=&quot;times&quot;&gt;剔除&lt;/a&gt;
             &lt;script type=&quot;text/javascript&quot;&gt;
-            function GroupUserDelIds(obj, groupID) {
+            function GroupUserDelIds( ) {
                 //alert($(&#x27;[name=&quot;ids&quot;]&#x27;).val());
                 var ids = [];
                 $(&#x27;[name=&quot;ids&quot;]&#x27;).each(function () {
-                    if($(this).attr(&quot;checked&quot;)){
+                    if($(this).parent().hasClass(&quot;checked&quot;)){
                         ids.push($(this).val());
                     }
                 });
@@ -509,15 +545,17 @@ export default class extends CMPage {
 
                 $(this).alertmsg(&quot;confirm&quot;, &quot;是否确定要剔除选中的用户？&quot;, {
                     okCall: function () {
-                        var url = &quot;/admin/code/group_user_del?userIds=&quot; + ids.join(&#x27;,&#x27;);
-                        $(obj).bjuiajax(&#x27;doAjax&#x27;, { url: url, callback: function () {
-                            $(&quot;#btnSearchGroupUser&quot;).click();
-                        }
+                        BJUI.ajax(&#x27;doajax&#x27;, {
+                            url: &quot;/admin/code/group_user_del?ids=&quot; + ids.join(&#x27;,&#x27;),
+                            loadingmask: true,
+                            okCallback: function(json, options) {
+                                $(&quot;#btnSearchGroupUser&quot;).click();
+                            }
                         });
                     }
                 });
 
-                return false;
+                return true;
             }
             &lt;/script&gt;
         &#x60;;
@@ -530,7 +568,7 @@ export default class extends CMPage {
      * @param {int} userID  用户ID
      * @param {int} groupID  当前登录的账套ID
      */
-    async getLoginGroups(userID,groupID){
+    async getLoginGroups(groupID,userID){
         //假设账套不超过3层
         let codeModel = this.model(&#x27;code&#x27;);
         let cnt = await this.model(&#x27;t_group_user&#x27;).where({c_group:groupID, c_user:userID}).count();
@@ -552,7 +590,7 @@ export default class extends CMPage {
             }
         }
         let groups = await codeModel.getTreeList(groupID);
-        global.debug(groups);
+        //global.debug(groups,&#x27;groupuser.getLoginGroups - grous&#x27;);
         let ret = [];
         ret.push(groupID);
         for(let group of groups){ ret.push(group.id); }

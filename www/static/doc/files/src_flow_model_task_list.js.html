@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>cmpage.model.page_lookup</title>
+    <title>src\flow\model\task_list.js</title>
   
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -454,485 +490,48 @@
             <div id="docs-main">
                 <div class="content">
                     <div class="page-header">
-    <h1>cmpage.model.page_lookup <small>Class</small></h1>
-</div>
- <div class="well well-small sign-left3">
-      <div class="stdoc-code"><p>实现了查找带回的功能，可继承本类做定制化的查找带回页面，调用： /cmpage/page/lookup?modulename=XXX*multiselect=false</p>
-</div>
- </div>
-
-<div class="well well-small sign-left2 container-fluid" id="classesItems">
-    <div class="row">
-    
-        <div class="index-section methods col-sm-4">
-            <h3>Methods</h3>
-            
-            <ul class="index-list methods">
-                
-                    <li class="index-item method">
-                        <a href="#" data-tabid="#method" data-anchor="#method_htmlGetBtnHeader" data-tablink="htmlGetBtnHeader">htmlGetBtnHeader</a>
-
-                        
-                        
-                    </li>
-                
-                    <li class="index-item method">
-                        <a href="#" data-tabid="#method" data-anchor="#method_htmlGetBtnList" data-tablink="htmlGetBtnList">htmlGetBtnList</a>
-
-                        
-                        
-                    </li>
-                
-                    <li class="index-item method">
-                        <a href="#" data-tabid="#method" data-anchor="#method_isShowRowBtns" data-tablink="isShowRowBtns">isShowRowBtns</a>
-
-                        
-                        
-                    </li>
-                
-            </ul>
-            
-        </div>
-    
-        <div class="index-section properties col-sm-4">
-            <h3>Properties</h3>
-            
-        </div>
-    
-        <div class="index-section events col-sm-4">
-            <h3>Events</h3>
-            
-        </div>
-    </div>
+    <h1>src\flow\model\task_list.js <small>File</small></h1>
 </div>
 
-<div>
-    <ul id="itemTab" class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#class">Detail</a></li>
-        
-            <li><a data-toggle="tab" href="#method">Methods</a></li>
-        
-        
-        
-    </ul>
-
-    <div class="tab-content">
-        <div id="class" class="tab-pane active">
-            <div class="well well-small classDetail sign-left1">
-            
-
-            
-
-            
-                <div class="foundat">
-                    Defined in: <a href="../files/src_cmpage_model_page_lookup.js.html#l14"><code>src\cmpage\model\page_lookup.js:14</code></a>
-                </div>
-            
-
-            
-                
-                    Module: <a href="../modules/cmpage.model.html">cmpage.model</a>
-                
-            
-
-            
-        </div>
-
-        
-            
-        </div>
-
-        
-            <div id="method" class="tab-pane">
-                <h2 class="off-left">Methods</h2>
-
-                
-                    <div id="method_htmlGetBtnHeader" class="method item">
-    <h3 class="name">htmlGetBtnHeader</h3>
-    <code>
-    htmlGetBtnHeader
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        page
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-    </code>
-
-    
-        <span class="returns-inline">
-            <span class="type">String</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_cmpage_model_page_lookup.js.html#l65"><code>src\cmpage\model\page_lookup.js:65</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>顶部按钮不需要显示，<br/> 重写父类的方法，子类中也可重写本方法，增加其他按钮</p>
-</div>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <table class="table table-bordered">
-            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">page</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>页面对象，包括前端传过来的参数和当前的用户信息等</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-            </table>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">String</span>]
-                    
-                    <p>HTML片段</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_htmlGetBtnList" class="method item">
-    <h3 class="name">htmlGetBtnList</h3>
-    <code>
-    htmlGetBtnList
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        rec
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        page
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        pageBtns
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-    </code>
-
-    
-        <span class="returns-inline">
-            <span class="type">String</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_cmpage_model_page_lookup.js.html#l32"><code>src\cmpage\model\page_lookup.js:32</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>取列表中按钮的设置，组合成HTML输出,<br/> 重写父类的方法，子类中也可重写本方法，更改返回的字段和值等</p>
-</div>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <table class="table table-bordered">
-            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">rec</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>每行的记录对象</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">page</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>页面对象，包括前端传过来的参数和当前的用户信息等</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">pageBtns</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>按钮设置</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-            </table>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">String</span>]
-                    
-                    <p>HTML片段</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_isShowRowBtns" class="method item">
-    <h3 class="name">isShowRowBtns</h3>
-    <code>
-    isShowRowBtns
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        page
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-    </code>
-
-    
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_cmpage_model_page_lookup.js.html#l22"><code>src\cmpage\model\page_lookup.js:22</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>是否显示列表中的按钮，子类中重写本方法可以改变按钮显示的逻辑</p>
-</div>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <table class="table table-bordered">
-            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
-            
-                <tr class="param">
-                    
-                       <td> <code class="param-name">page</code>
-                       <td> <span class="type">Object</span>
-                       <td>
-                    
-
-                    
-                    </td>
-                    <td><div class="param-description">
-                        <p>页面按钮的设置</p>
-
-                    </div>
-
-                    
-                </tr>
-            
-            </table>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">Boolean</span>]
-                    
-                    <p>是否显示</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-            </div>
-        
-
-        
-
-        
-    </div>
+<div class="file">
+    <pre class="prettyprint linenums" id='src_code'>
+&#x27;use strict&#x27;;
+// +----------------------------------------------------------------------
+// | CmPage [ 通用页面框架 ]
+// +----------------------------------------------------------------------
+// | Licensed under the Apache License, Version 2.0
+// +----------------------------------------------------------------------
+// | Author: defans &lt;defans@sina.cn&gt;
+// +----------------------------------------------------------------------
+
+import CMPage from &#x27;../../cmpage/model/page_mob.js&#x27;;
+
+export default class extends CMPage {
+
+    /**
+     * 是否显示列表中某行的某个按钮，子类中重写本方法可以改变行按钮显示的逻辑
+     * @method  isShowRowBtn
+     * @return {boolean} 是否显示
+     */
+    isShowBtn(rec,btn){
+        if(btn.c_object.indexOf(&#x27;.Terminate&#x27;)&gt;0){
+            return rec.c_status === global.enumTaskStatus.RUN || rec.c_status === global.enumTaskStatus.SUSPEND;
+        }else if(btn.c_object.indexOf(&#x27;.Suspend&#x27;)&gt;0){
+            return rec.c_status === global.enumTaskStatus.RUN;
+        }else if(btn.c_object.indexOf(&#x27;.Run&#x27;)&gt;0) {
+            return rec.c_status === global.enumTaskStatus.SUSPEND;
+        }else if(btn.c_object.indexOf(&#x27;.AutoExecOpen&#x27;)&gt;0){
+                return think.isEmpty(global.autoExecTimer);
+        }else if(btn.c_object.indexOf(&#x27;.AutoExecClose&#x27;)&gt;0){
+            return !think.isEmpty(global.autoExecTimer);
+        }else {
+            return super.isShowBtn(rec,btn);
+        }
+    }
+
+}
+
+    </pre>
 </div>
 
                 </div>

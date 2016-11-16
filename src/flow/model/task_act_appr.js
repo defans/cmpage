@@ -15,30 +15,26 @@
 import TaskAct from './task_act.js';
 
 export default class extends TaskAct {
-    appr = {};      //t_appr的记录对象，也是 t_task.c_link 的关联方
     /**
      * 运行一个流程实例的活动(流程节点)
      * @method  fwRun
      * @return {object}  任务节点对象
      */
-    async fwRun(isPass){
-        global.debug(isPass,'task_act.fwRun - isPass');
-        if(!think.isEmpty(isPass) || await this.canRun() ){
-            this.taskAct.c_status = global.enumTaskActStatus.RUN;
-            await this.save();
-        }
-        //执行本节点，子类中可以加入其他业务逻辑
-        if(think.isEmpty(this.act)){
-            this.act = this.model('act').getActById(this.taskAct.c_act);
-        }
-        let proc
-        if(this.taskAct.c_domain_st >0){
-
-        }
-
-        //结束本节点
-        await this.fwEnd();
-    }
+    //async fwRun(isPass){
+    //    global.debug(isPass,'task_act.fwRun - isPass');
+    //    if(!think.isEmpty(isPass) || await this.canRun() ){
+    //        this.taskAct.c_status = global.enumTaskActStatus.RUN;
+    //        await this.save();
+    //    }
+    //    //执行本节点，子类中可以加入其他业务逻辑
+    //    if(think.isEmpty(this.act)){
+    //        this.act = this.model('act').getActById(this.taskAct.c_act);
+    //    }
+    //
+    //
+    //    //结束本节点
+    //    await this.fwEnd();
+    //}
 
     /**
      * 取当前节点的业务相关数据，存放于 taskAct.domainData 中 <br/>

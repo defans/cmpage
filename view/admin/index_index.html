@@ -273,7 +273,12 @@ Mysql数据库备份文件（/db/cmpage_my.sql）
   var resizeTimer = null;
 
   function doResize(){
-      $('#bjui-top').bjuiajax('doAjax', { url: '/admin/index/set_client_width?width='+document.documentElement.clientWidth ,callback:function(data){}});
+      BJUI.ajax('doajax', {
+          url:  '/admin/index/set_client_width?width='+document.documentElement.clientWidth ,
+          loadingmask: false,
+          okCallback: function(json, options) {
+          }
+      });
       resizeTimer = null;
   }
   window.onresize = function(){

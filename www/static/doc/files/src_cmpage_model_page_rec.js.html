@@ -281,23 +281,7 @@
                     
                        <li>
                             
-                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -332,6 +316,42 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                </dt>
+                <dd>
+                    <ul>
+                   
+                       <li>
+                            
+                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                    </ul>
+                </dd>
+             
+                <dt>
+                    <span class="glyphicon glyphicon-minus"></span>
                     <a href="../modules/flow.controller.html">flow.controller</a>
                 </dt>
                 <dd>
@@ -356,6 +376,22 @@
                        <li>
                             
                            <a href="../classes/flow.controller.proc.html">flow.controller.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task.html">flow.controller.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.controller.task_act.html">flow.controller.task_act</a>
                            <ul>
                                 
                            </ul>
@@ -477,10 +513,9 @@ export default class extends CMPage {
     /**
      * 取列表中按钮的设置，组合成HTML输出
      */
-    async htmlGetBtnList(rec,page,pageBtns){
+    async htmlGetBtnList(rec){
       let html=[];
-      let pageCols = await global.model(&#x27;cmpage/module&#x27;).getModuleCol(page.id);
-      for(let col of pageCols){
+      for(let col of this.modCols){
         if (col.c_isview) {
           html.push(&#x60;${col.c_column}:&#x27;${rec[col.c_column]}&#x27;&#x60;);
         }
@@ -489,10 +524,10 @@ export default class extends CMPage {
       return &#x60; &lt;a href=&quot;javascript:;&quot; data-toggle=&quot;lookupback&quot; data-args=&quot;{${html.join(&#x27;,&#x27;)}}&quot; class=&quot;btn btn-blue&quot; title=&quot;选择本项&quot; data-icon=&quot;check&quot;&gt;选择&lt;/a&gt;&#x60;;
     }
 
-    htmlGetTabs(page){
-        let tabs = page.c_module_rec.split(&#x27;,&#x27;);
+    htmlGetTabs(){
+        let tabs = this.mod.c_module_rec.split(&#x27;,&#x27;);
         let html =[];
-        html.push( &#x60;    &lt;div id=&quot;rec${page.c_modulename}Div&quot; &gt;
+        html.push( &#x60;    &lt;div id=&quot;rec${this.mod.c_modulename}Div&quot; &gt;
             &lt;fieldset&gt;
             &lt;legend&gt;-&lt;/legend&gt;
             &lt;ul class=&quot;nav nav-tabs&quot; role=&quot;tablist&quot;&gt;&#x60;);
@@ -500,7 +535,7 @@ export default class extends CMPage {
         for(let tab of tabs){
             let rec = tab.split(&#x27;:&#x27;);           //如： DocuArriveRec:物料明细:c_docu
             let i = tabs.indexOf(tab);
-            html.push(&#x60;&lt;li ${ i===0 ? &quot;class=active&quot;:&quot;&quot;}&gt;&lt;a href=&quot;#rec${page.c_modulename}List${i}&quot; role=&quot;tab&quot; data-toggle=&quot;tab&quot;&gt;${rec[1]}&lt;/a&gt;&lt;/li&gt;&#x60;);
+            html.push(&#x60;&lt;li ${ i===0 ? &quot;class=active&quot;:&quot;&quot;}&gt;&lt;a href=&quot;#rec${this.mod.c_modulename}List${i}&quot; role=&quot;tab&quot; data-toggle=&quot;tab&quot;&gt;${rec[1]}&lt;/a&gt;&lt;/li&gt;&#x60;);
         }
 
         html.push(&#x60;&lt;/ul&gt; &lt;!-- Tab panes --&gt; &lt;div class=&quot;tab-content&quot;&gt;&#x60;);
@@ -508,8 +543,8 @@ export default class extends CMPage {
         for(let tab of tabs){
             let rec = tab.split(&#x27;:&#x27;);
             let i = tabs.indexOf(tab);
-            html.push(&#x60;&lt;div class=&quot;tab-pane fade ${i ==0 ? &quot;active in&quot;:&quot;&quot;}&quot; id=&quot;rec${page.c_modulename}List${i}&quot;  name=&quot;rec${page.c_modulename}List${i}&quot;
-                dataurl=&quot;/cmpage/page/list?modulename=${rec[0]}&amp;${rec[2]}=${page.editID}&amp;page_rec_view_flag=false&quot; &gt;  &lt;/div&gt;&#x60;);
+            html.push(&#x60;&lt;div class=&quot;tab-pane fade ${i ==0 ? &quot;active in&quot;:&quot;&quot;}&quot; id=&quot;rec${this.mod.c_modulename}List${i}&quot;  name=&quot;rec${this.mod.c_modulename}List${i}&quot;
+                dataurl=&quot;/cmpage/page/list?modulename=${rec[0]}&amp;${rec[2]}=${this.mod.editID}&amp;page_rec_view_flag=false&quot; &gt;  &lt;/div&gt;&#x60;);
         }
 
         html.push(&#x27;&lt;/div&gt;   &lt;/fieldset&gt;   &lt;/div&gt;&#x27;);
@@ -517,18 +552,18 @@ export default class extends CMPage {
         return html.join(&#x27; &#x27;);
     }
 
-    htmlGetJS(page) {
-        let tabs = page.c_module_rec.split(&#x27;,&#x27;);
+    htmlGetJS() {
+        let tabs = this.mod.c_module_rec.split(&#x27;,&#x27;);
         html = [];
         html.push(&#x60; &lt;script type=&quot;text/javascript&quot;&gt;
-         function rec${page.c_modulename}Appr_onClick(flowID,action){
+         function rec${this.mod.c_modulename}Appr_onClick(flowID,action){
             $(this).alertmsg(&quot;confirm&quot;, &quot;是否确定要&quot;+action+&quot;？&quot;,{
                 okCall:function(){
                     $.ajax({
                         type: &quot;POST&quot;,
                         url: &quot;/cmpage/page/edit_rec_appr&quot;,
-                        data: &quot;docuID=${page.editID}&amp;flowID=&quot;+flowID +&quot;&amp;note=&quot;+$(&quot;#${page.c_modulename}_c_note&quot;).val()
-                        +&quot;&amp;tableName=${page.c_table}&amp;parms=${page.parmsUrl}&quot;+&quot;&amp;moduleName=${page.c_modulename}&quot;,
+                        data: &quot;docuID=${this.mod.editID}&amp;flowID=&quot;+flowID +&quot;&amp;note=&quot;+$(&quot;#${this.mod.c_modulename}_c_note&quot;).val()
+                        +&quot;&amp;tableName=${this.mod.c_table}&amp;parms=${this.mod.parmsUrl}&quot;+&quot;&amp;moduleName=${this.mod.c_modulename}&quot;,
                         async: false,
                         success: function (data) {
                             var ret =eval(&quot;(&quot;+data+&quot;)&quot;);
@@ -546,11 +581,11 @@ export default class extends CMPage {
         } &lt;/script&gt;&#x60;);
 
         html.push(&#x60;&lt;script type=&quot;text/javascript&quot;&gt;
-        function rec${page.c_modulename}Save_onClick(){
+        function rec${this.mod.c_modulename}Save_onClick(){
             $.ajax({
                 type: &quot;POST&quot;,
                 url: &quot;/cmpage/page/save&quot;,
-                data: $(&quot;#rec${page.c_modulename}Form&quot;).serialize(),
+                data: $(&quot;#rec${this.mod.c_modulename}Form&quot;).serialize(),
                 async: false,
                 success: function (data) {
                     var ret =eval(&quot;(&quot;+data+&quot;)&quot;);
@@ -559,8 +594,8 @@ export default class extends CMPage {
                     {
                         if(ret.newID &gt;0)
                         {
-                            $(&quot;#rec${page.c_modulename}ID&quot;).val(ret.newID);
-                            $.CurrentNavtab.navtab(&#x27;reload&#x27;, { url:&quot;/cmpage/page/edit_rec?modulename=${page.c_modulename}&amp;id=&quot;+ret.newID, type:&quot;GET&quot;, onLoad:&quot;rec${page.c_modulename}List_load2&quot;})
+                            $(&quot;#rec${this.mod.c_modulename}ID&quot;).val(ret.newID);
+                            $.CurrentNavtab.navtab(&#x27;reload&#x27;, { url:&quot;/cmpage/page/edit_rec?modulename=${this.mod.c_modulename}&amp;id=&quot;+ret.newID, type:&quot;GET&quot;, onLoad:&quot;rec${this.mod.c_modulename}List_load2&quot;})
                         }
                     }
                 }
@@ -568,14 +603,14 @@ export default class extends CMPage {
         } &lt;/script&gt;&#x60;);
 
         html.push(&#x60;&lt;script type=&quot;text/javascript&quot;&gt;
-            function rec${page.c_modulename}List_load2(){
-                var id = $(&quot;#rec${page.c_modulename}ID&quot;).val();
+            function rec${this.mod.c_modulename}List_load2(){
+                var id = $(&quot;#rec${this.mod.c_modulename}ID&quot;).val();
                 &#x60;);
 
         for(let tab of tabs){
             let rec = tab.split(&#x27;:&#x27;);           //如： DocuArriveRec:物料明细:c_docu
             let i = tabs.indexOf(tab);
-            html.push(&#x60;$(this).bjuiajax(&#x27;doLoad&#x27;, {target:$(&quot;#rec${page.c_modulename}List${i}&quot;), url:&quot;/cmpage/page/list?modulename=${rec[0]}&amp;${rec[2]}=${page.editID}&amp;page_rec_view_flag=false&quot; });&#x60;);
+            html.push(&#x60;$(this).bjuiajax(&#x27;doLoad&#x27;, {target:$(&quot;#rec${this.mod.c_modulename}List${i}&quot;), url:&quot;/cmpage/page/list?modulename=${rec[0]}&amp;${rec[2]}=${this.mod.editID}&amp;page_rec_view_flag=false&quot; });&#x60;);
         }
 
         html.push(&#x27;}&lt;/script&gt;&#x27;);
