@@ -21,9 +21,9 @@ export default class extends TaskAct {
      * @return {object}  任务节点对象
      */
     //async fwRun(isPass){
-    //    global.debug(isPass,'task_act.fwRun - isPass');
+    //    cmpage.debug(isPass,'task_act.fwRun - isPass');
     //    if(!think.isEmpty(isPass) || await this.canRun() ){
-    //        this.taskAct.c_status = global.enumTaskActStatus.RUN;
+    //        this.taskAct.c_status = cmpage.enumTaskActStatus.RUN;
     //        await this.save();
     //    }
     //    //执行本节点，子类中可以加入其他业务逻辑

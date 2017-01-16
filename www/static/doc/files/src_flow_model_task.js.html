@@ -281,7 +281,39 @@
                     
                        <li>
                             
+                           <a href="../classes/cmpage.model.base.html">cmpage.model.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.file_list.html">cmpage.model.file_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -311,19 +343,9 @@
                            </ul>
                        </li>
                     
-                    </ul>
-                </dd>
-             
-                <dt>
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
-                </dt>
-                <dd>
-                    <ul>
-                   
                        <li>
                             
-                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <a href="../classes/cmpage.cmpage_global_flow.html">cmpage.cmpage_global_flow</a>
                            <ul>
                                 
                            </ul>
@@ -334,14 +356,54 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                    <a href="../modules/demo.model.html">demo.model</a>
                 </dt>
                 <dd>
                     <ul>
                    
                        <li>
                             
-                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <a href="../classes/flow.model.proc_assign.html">flow.model.proc_assign</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.appr.html">cmpage.model.appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -423,38 +485,6 @@
                            </ul>
                        </li>
                     
-                       <li>
-                            
-                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task.html">flow.model.task</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
                     </ul>
                 </dd>
              
@@ -522,12 +552,12 @@ export default class extends think.model.base {
      */
     async fwStart(){
 
-        this.task ={c_no:this.getTaskNo(), c_proc:this.proc.id, c_status:global.enumTaskStatus.RUN, c_creater:this.user.id, c_time_create:think.datetime(),
-               c_priority:global.enumTaskPriority.NOMAL, c_user:this.user.id, c_time:think.datetime(), c_memo:&#x27;&#x27;, c_link:0 ,c_link_type:&#x27;&#x27;};
+        this.task ={c_no:this.getTaskNo(), c_proc:this.proc.id, c_status:cmpage.enumTaskStatus.RUN, c_creater:this.user.id, c_time_create:think.datetime(),
+               c_priority:cmpage.enumTaskPriority.NOMAL, c_user:this.user.id, c_time:think.datetime(), c_memo:&#x27;&#x27;, c_link:0 ,c_link_type:this.proc.c_link_type};
 
         await this.fwInit();
 
-        if(this.task.c_status !== global.enumTaskStatus.INIT){
+        if(this.task.c_status !== cmpage.enumTaskStatus.INIT){
             await this.addTaskSt(&#x27;模板设置错误，流程终止&#x27;);
             return;
         }
@@ -550,15 +580,15 @@ export default class extends think.model.base {
         let taskActModel = this.model(&#x27;fw_task_act&#x27;);
         let taskActStartID = 0;
         for(let act of actsOrder){
-            let md = {c_task:this.task.id, c_act:act.id, c_status:global.enumTaskActStatus.NO_BEGIN, c_user:this.user.id, c_time_begin:think.datetime(),
+            let md = {c_task:this.task.id, c_act:act.id, c_status:cmpage.enumTaskActStatus.NO_BEGIN, c_user:this.user.id, c_time_begin:think.datetime(),
                 c_time:think.datetime(), c_memo:&#x27;&#x27;, c_link:0, c_link_type:&#x27;&#x27;};
             md.id = await taskActModel.add(md);
-            if(act.c_type === global.enumActType.START){
+            if(act.c_type === cmpage.enumActType.START){
                 taskActStartID = md.id;
             }
         }
 
-        this.task.c_status = global.enumTaskStatus.RUN;
+        this.task.c_status = cmpage.enumTaskStatus.RUN;
         await this.save();
 
         //从开始节点进行run
@@ -576,15 +606,15 @@ export default class extends think.model.base {
         if(think.isEmpty(this.task)){
             this.task = task;
         }
-        global.debug(this.task,&#x27;task.getTaskWithCurrentAct --- this.task&#x27;);
+        //debug(this.task,&#x27;task.getTaskWithCurrentAct --- this.task&#x27;);
         this.currAct = {id:0};
-        if(this.task.c_status === global.enumTaskStatus.RUN){
+        if(this.task.c_status === cmpage.enumTaskStatus.RUN){
             let taskActs = await this.model(&#x27;task_act&#x27;).getTaskActs(this.task.id);
             let actModel = this.model(&#x27;act&#x27;);
             for(let ta of taskActs){
                 //TODO: 可能要考虑user来进行区分
                 //取当前节点
-                if(ta.c_status === global.enumTaskActStatus.WAIT || ta.c_status === global.enumTaskActStatus.RUN || ta.c_status === global.enumTaskActStatus.SUSPEND){
+                if(ta.c_status === cmpage.enumTaskActStatus.WAIT || ta.c_status === cmpage.enumTaskActStatus.RUN || ta.c_status === cmpage.enumTaskActStatus.SUSPEND){
                     this.currTaskAct = ta;
                     this.currAct = await actModel.getActByIdAndProcId(ta.c_act, this.task.c_proc);
                     break;
@@ -600,7 +630,7 @@ export default class extends think.model.base {
      * @method  fwInit
      */
     async fwInit(){
-        this.task.c_status = global.enumTaskStatus.INIT;
+        this.task.c_status = cmpage.enumTaskStatus.INIT;
         //如果不满足启动条件，则重置任务状态为： TERMINATE
 
     }
@@ -614,7 +644,7 @@ export default class extends think.model.base {
     getTaskNo(){
         let no =&#x27;&#x27;;
         if(!think.isEmpty(this.proc.c_no_format)){
-            no = global.datetime(new Date(),&#x27;yyMMddHHmmss&#x27;)+global.getRandomNum(1,10);
+            no = cmpage.datetime(new Date(),&#x27;yyMMddHHmmss&#x27;)+cmpage.getRandomNum(1,10);
         }else{
 
         }
@@ -626,12 +656,12 @@ export default class extends think.model.base {
      * @method  fwRun
      */
     async fwRun(){
-        if(this.task.c_status === global.enumTaskStatus.SUSPEND){
-            this.task.c_status = global.enumTaskStatus.RUN;
+        if(this.task.c_status === cmpage.enumTaskStatus.SUSPEND){
+            this.task.c_status = cmpage.enumTaskStatus.RUN;
             //让本实例被挂起的节点继续RUN
             let taskActs = await this.model(&#x27;task_act&#x27;).getTaskActs(this.task.id);
             for(let taskAct of taskActs){
-                if(taskAct.c_status === global.enumTaskActStatus.SUSPEND){
+                if(taskAct.c_status === cmpage.enumTaskActStatus.SUSPEND){
                     await this.model(&#x27;act&#x27;).fwRun(taskAct.id,this.user,taskAct);
                 }
             }
@@ -644,8 +674,8 @@ export default class extends think.model.base {
      * @method  fwSuspend
      */
     async fwSuspend(){
-        if(this.task.c_status === global.enumTaskStatus.RUN){
-            this.task.c_status = global.enumTaskStatus.SUSPEND;
+        if(this.task.c_status === cmpage.enumTaskStatus.RUN){
+            this.task.c_status = cmpage.enumTaskStatus.SUSPEND;
             //当前活动节点挂起
             if(think.isEmpty(this.currTaskAct)){
                 await this.getTaskWithCurrentAct();
@@ -660,8 +690,8 @@ export default class extends think.model.base {
      * @method  fwTerminate
      */
     async fwTerminate(){
-        if(this.task.c_status === global.enumTaskStatus.RUN || this.task.c_status === global.enumTaskStatus.SUSPEND ){
-            this.task.c_status = global.enumTaskStatus.TERMINATE;
+        if(this.task.c_status === cmpage.enumTaskStatus.RUN || this.task.c_status === cmpage.enumTaskStatus.SUSPEND ){
+            this.task.c_status = cmpage.enumTaskStatus.TERMINATE;
             //当前活动节点终止
             //if(think.isEmpty(this.currTaskAct)){
             //    await this.getTaskWithCurrentAct();
@@ -669,14 +699,14 @@ export default class extends think.model.base {
             //await this.model(&#x27;act&#x27;).fwTerminate(this.currTaskAct.id,user,this.currTaskAct);
             let taskActs = await this.model(&#x27;task_act&#x27;).getTaskActs(this.task.id);
             for(let ta of taskActs){
-                if(ta.c_status !== global.enumTaskActStatus.TERMINATE &amp;&amp; ta.c_status !== global.enumTaskActStatus.END
-                    &amp;&amp; ta.c_status !== global.enumTaskActStatus.NO_BEGIN){
+                if(ta.c_status !== cmpage.enumTaskActStatus.TERMINATE &amp;&amp; ta.c_status !== cmpage.enumTaskActStatus.END
+                    &amp;&amp; ta.c_status !== cmpage.enumTaskActStatus.NO_BEGIN){
                     await this.model(&#x27;fw_task_act&#x27;).where({id:ta.id}).update({c_status:enumTaskActStatus.TERMINATE, c_time:think.datetime(),c_user:this.user.id});
                 }
             }
             //调用主关联业务模块的终止函数
             if(!think.isEmpty(this.proc.c_link_model)){
-                let fnModel = model(this.proc.c_link_model);
+                let fnModel = cmpage.model(this.proc.c_link_model);
                 if (think.isFunction(fnModel[&#x27;fwTerminate&#x27;])) {
                     await fnModel[&#x27;fwTerminate&#x27;](this.task, this.user);
                 }
@@ -690,8 +720,8 @@ export default class extends think.model.base {
      * @method  fwEnd
      */
     async fwEnd(){
-        if(this.task.c_status !== global.enumTaskStatus.RUN || this.task.c_status === global.enumTaskStatus.SUSPEND ){
-            this.task.c_status = global.enumTaskStatus.END;
+        if(this.task.c_status !== cmpage.enumTaskStatus.RUN || this.task.c_status === cmpage.enumTaskStatus.SUSPEND ){
+            this.task.c_status = cmpage.enumTaskStatus.END;
             await this.save();
         }
     }
@@ -765,15 +795,15 @@ export default class extends think.model.base {
         if(think.isEmpty(proc.c_map)){
             return &#x27;{states:{},paths:{},props:{props:{}}}&#x27;;
         }
-        let flowMap = objFromString(proc.c_map);
+        let flowMap = cmpage.objFromString(proc.c_map);
         let taskActs = await this.query(&#x60;select A.*,B.c_map_id from fw_task_act A, fw_act B where A.c_act=B.id and A.c_task=${taskID}&#x60;);
 
         for(let k in flowMap.paths){
             flowMap.paths[k].votes = 0;
         }
         for(let ta of taskActs){
-            if(ta.c_status === enumTaskActStatus.WAIT || ta.c_status === enumTaskActStatus.SUSPEND
-                ||  ta.c_status === enumTaskActStatus.END ||  ta.c_status === enumTaskActStatus.PENDING){
+            if(ta.c_status === cmpage.enumTaskActStatus.WAIT || ta.c_status === cmpage.enumTaskActStatus.SUSPEND
+                ||  ta.c_status === cmpage.enumTaskActStatus.END ||  ta.c_status === cmpage.enumTaskActStatus.PENDING){
                 //执行路径
                 for(let k in flowMap.paths){
                     if(flowMap.paths[k].from === ta.c_map_id || flowMap.paths[k].to === ta.c_map_id){
@@ -781,19 +811,19 @@ export default class extends think.model.base {
                     }
                 }
             }
-            if(ta.c_status === enumTaskActStatus.WAIT || ta.c_status === enumTaskActStatus.SUSPEND ||  ta.c_status === enumTaskActStatus.PENDING){
+            if(ta.c_status === cmpage.enumTaskActStatus.WAIT || ta.c_status === cmpage.enumTaskActStatus.SUSPEND ||  ta.c_status === cmpage.enumTaskActStatus.PENDING){
                 //当前节点
                 debug(ta,&#x27;task.getFlowMap - ta-current&#x27;);
                 debug(flowMap.states[ ta.c_map_id],&#x27;task.getFlowMap - flowMap.states[ta.c_map_id]&#x27;);
                 if(flowMap.states[ ta.c_map_id]){
                     flowMap.states[ ta.c_map_id].attr.stroke =  &#x27;#ff0000&#x27;;
                 }
-            }else if(ta.c_status === enumTaskActStatus.END ){
+            }else if(ta.c_status === cmpage.enumTaskActStatus.END ){
                 //历史节点
                 if(flowMap.states[ ta.c_map_id]){
                     flowMap.states[ ta.c_map_id].attr.stroke =  &#x27;#e87e38&#x27;;
                 }
-            }else if(ta.c_status === enumTaskActStatus.TERMINATE ){
+            }else if(ta.c_status === cmpage.enumTaskActStatus.TERMINATE ){
                 //被终止节点
                 if(flowMap.states[ ta.c_map_id]){
                     flowMap.states[ ta.c_map_id].attr.stroke =  &#x27;#000000&#x27;;
@@ -807,7 +837,7 @@ export default class extends think.model.base {
         }
 
         debug(flowMap.states,&#x27;task.getFlowMap - flowMap.states&#x27;);
-        return global.objToString(flowMap);
+        return cmpage.objToString(flowMap);
     }
 
 }

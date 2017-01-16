@@ -1,8 +1,8 @@
 {
     "project": {
         "name": "",
-        "description": "<h2>CmPage</h2> <p>信息管理系统的NodeJS开源框架</p><p>其UI框架采用BJUI，后端采用ThinkJS，数据库采用MySql，手机端采用MUI</p><br><p>本框架通过配置模块的显示列、编辑列、查询列、按钮等，可以从数据库的表或者视图取数据，生成页面，通过Url: /cmpage/page/list?modulename=User 可以访问User模块，实现了常用的分页列表、新增、编辑、查看、删除、条件查询等功能, 手机端页面功能类似</p><p>运行步骤简述如下（具体参照 thinkjs.org）： </p><p> 1、Mysql数据库备份文件（/db/cmpage_my.sql）  </p><p> 2、在/src/common/config/db.js 中配置数据库连接参数 </p><p> 3、运行：npm install --registry=https://registry.npm.taobao.org --verbose </p><p> 4、运行：npm start 5、手机端项目的目录：/mob，独立项目，非必需，请用HBuider打开，然后用USB连上手机就可以调试了，具体参见 http://www.dcloud.io/runtime.html, 也可以用手机扫描二维码(http://139.129.48.131:8300/admin/index/login ),安装Andriod版本的DEMO。</p><br>",
-        "version": "1.0.7",
+        "description": "<h2>CmPage</h2> <p>企业信息化的NodeJS开源框架</p><p>其UI框架采用BJUI，后端采用ThinkJS，数据库采用MySql和Mssql，手机端采用MUI</p><br><p>本框架通过配置模块的显示列、编辑列、查询列、按钮等，可以从数据库的表或者视图取数据，生成页面，通过Url: /cmpage/page/list?modulename=User 可以访问User模块，实现了常用的分页列表、新增、编辑、查看、删除、条件查询等功能, 手机端页面功能类似</p><p>运行步骤简述如下（具体参照 thinkjs.org）： </p><p> 1、Mysql数据库备份文件（/db/cmpage_my.sql）  </p><p> 2、在/src/common/config/db.js 中配置数据库连接参数 </p><p> 3、运行：npm install --registry=https://registry.npm.taobao.org --verbose </p><p> 4、运行：npm start 5、手机端项目的目录：/mob，独立项目，非必需，请用HBuider打开，然后用USB连上手机就可以调试了，具体参见 http://www.dcloud.io/runtime.html, 也可以用手机扫描二维码(http://139.129.48.131:8300/admin/index/login ),安装Andriod版本的DEMO。</p><br><p> 建议二次开发之前先熟悉源代码，有更多注释，还可以打开其中的调试信息(//debug(xxx,xxx)) 看看运行时的各种返回信息<br>",
+        "version": "1.0.0",
         "url": "/static/doc/index.html",
         "navs": [
             {
@@ -217,6 +217,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "src\\cmpage\\controller\\wechat.js": {
+            "name": "src\\cmpage\\controller\\wechat.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\cmpage\\logic\\page.js": {
             "name": "src\\cmpage\\logic\\page.js",
             "modules": {
@@ -237,6 +244,24 @@
             "fors": {},
             "namespaces": {}
         },
+        "src\\cmpage\\model\\base.js": {
+            "name": "src\\cmpage\\model\\base.js",
+            "modules": {},
+            "classes": {
+                "cmpage.model.base": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\cmpage\\model\\file_list.js": {
+            "name": "src\\cmpage\\model\\file_list.js",
+            "modules": {},
+            "classes": {
+                "cmpage.model.file_list": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\cmpage\\model\\module.js": {
             "name": "src\\cmpage\\model\\module.js",
             "modules": {},
@@ -246,11 +271,9 @@
         },
         "src\\cmpage\\model\\page.js": {
             "name": "src\\cmpage\\model\\page.js",
-            "modules": {
-                "cmthis.mod.model": 1
-            },
+            "modules": {},
             "classes": {
-                "cmthis.mod.model.page": 1
+                "cmpage.model.page": 1
             },
             "fors": {},
             "namespaces": {}
@@ -266,28 +289,24 @@
         },
         "src\\cmpage\\model\\page_lookup.js": {
             "name": "src\\cmpage\\model\\page_lookup.js",
-            "modules": {
-                "cmthis.mob.model": 1
-            },
+            "modules": {},
             "classes": {
-                "cmthis.mob.model.page_lookup": 1
+                "cmpage.model.page_lookup": 1
             },
             "fors": {},
             "namespaces": {}
         },
         "src\\cmpage\\model\\page_mob.js": {
             "name": "src\\cmpage\\model\\page_mob.js",
-            "modules": {
-                "cmpage.model": 1
-            },
+            "modules": {},
             "classes": {
                 "cmpage.model.page_mob": 1
             },
             "fors": {},
             "namespaces": {}
         },
-        "src\\cmpage\\model\\page_rec.js": {
-            "name": "src\\cmpage\\model\\page_rec.js",
+        "src\\cmpage\\model\\page_ms.js": {
+            "name": "src\\cmpage\\model\\page_ms.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -383,6 +402,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "src\\flow\\model\\act_assign.js": {
+            "name": "src\\flow\\model\\act_assign.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\flow\\model\\act_path.js": {
             "name": "src\\flow\\model\\act_path.js",
             "modules": {},
@@ -392,11 +418,38 @@
             "fors": {},
             "namespaces": {}
         },
+        "src\\flow\\model\\appr.js": {
+            "name": "src\\flow\\model\\appr.js",
+            "modules": {
+                "demo.model": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\model\\appr_task.js": {
+            "name": "src\\flow\\model\\appr_task.js",
+            "modules": {},
+            "classes": {
+                "cmpage.model.appr": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\flow\\model\\proc.js": {
             "name": "src\\flow\\model\\proc.js",
             "modules": {},
             "classes": {
                 "flow.model.proc": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\model\\proc_assign.js": {
+            "name": "src\\flow\\model\\proc_assign.js",
+            "modules": {},
+            "classes": {
+                "flow.model.proc_assign": 1
             },
             "fors": {},
             "namespaces": {}
@@ -439,6 +492,17 @@
             "name": "src\\flow\\model\\task_list.js",
             "modules": {},
             "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\flow\\cmpage_global_flow.js": {
+            "name": "src\\flow\\cmpage_global_flow.js",
+            "modules": {
+                "cmpage.model": 1
+            },
+            "classes": {
+                "cmpage.cmpage_global_flow": 1
+            },
             "fors": {},
             "namespaces": {}
         }
@@ -518,40 +582,21 @@
             "submodules": {},
             "classes": {
                 "cmpage.model.area": 1,
+                "cmpage.model.base": 1,
+                "cmpage.model.file_list": 1,
+                "cmpage.model.page": 1,
                 "cmpage.model.page_excel": 1,
+                "cmpage.model.page_lookup": 1,
                 "cmpage.model.page_mob": 1,
                 "cmpage.model.utils": 1,
-                "cmpage.cmpage_global": 1
+                "cmpage.cmpage_global": 1,
+                "cmpage.cmpage_global_flow": 1
             },
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "src\\cmpage\\cmpage_global.js",
+            "file": "src\\flow\\cmpage_global_flow.js",
             "line": 7
-        },
-        "cmthis.mod.model": {
-            "name": "cmthis.mod.model",
-            "submodules": {},
-            "classes": {
-                "cmthis.mod.model.page": 1
-            },
-            "fors": {},
-            "namespaces": {},
-            "tag": "module",
-            "file": "src\\cmpage\\model\\page.js",
-            "line": 15
-        },
-        "cmthis.mob.model": {
-            "name": "cmthis.mob.model",
-            "submodules": {},
-            "classes": {
-                "cmthis.mob.model.page_lookup": 1
-            },
-            "fors": {},
-            "namespaces": {},
-            "tag": "module",
-            "file": "src\\cmpage\\model\\page_lookup.js",
-            "line": 14
         },
         "flow.controller": {
             "name": "flow.controller",
@@ -575,7 +620,21 @@
             "submodules": {},
             "classes": {
                 "flow.model.act": 1,
-                "flow.model.act_path": 1,
+                "flow.model.act_path": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\flow\\model\\act_path.js",
+            "line": 10,
+            "description": "流程模板配置和引擎调用接口的逻辑实现类\n\n注意点 :\n1. 工作流方法调用统一归口到proc.js 和 act.js ;\n2. 根据流程模板设置的实现类，proc.js 和 act.js 会调用该类\n3. 具体的业务逻辑实现类可以继承并扩展 task.js 和 task_act.js等 来实现增加标准以外的业务逻辑\n4. 可以根据具体的业务模块选择适当基类，例如审核类:flow/model/task_act_appr.js\n5. 原则上：业务无关的流程控制逻辑放于 proc.js 和 act.js ，业务相关的流程控制放于task_xxx.js 中"
+        },
+        "demo.model": {
+            "name": "demo.model",
+            "submodules": {},
+            "classes": {
+                "flow.model.proc_assign": 1,
+                "cmpage.model.appr": 1,
                 "flow.model.proc": 1,
                 "flow.model.task": 1,
                 "flow.model.task_act": 1,
@@ -586,7 +645,7 @@
             "tag": "module",
             "file": "src\\flow\\model\\task_act_appr.js",
             "line": 10,
-            "description": "流程模板配置和引擎调用接口的逻辑实现类\n\n注意点 :\n1. 工作流方法调用统一归口到proc.js 和 act.js ;\n2. 根据流程模板设置的实现类，proc.js 和 act.js 会调用该类\n3. 具体的业务逻辑实现类可以继承并扩展 task.js 和 task_act.js等 来实现增加标准以外的业务逻辑\n4. 可以根据具体的业务模块选择适当基类，例如审核类:flow/model/task_act_appr.js\n5. 原则上：业务无关的流程控制逻辑放于 proc.js 和 act.js ，业务相关的流程控制放于task_xxx.js 中"
+            "description": "几种典型的业务模块演示，包括普通页面、主从页面、各种编辑类型、按钮调用方式及工作流的调用等"
         }
     },
     "classes": {
@@ -756,7 +815,7 @@
             "namespace": "",
             "file": "src\\admin\\model\\privilege.js",
             "line": 14,
-            "description": "登录用户的操作类，提供一些操作t_user,vw_user的方法"
+            "description": "用户权限相关的操作类"
         },
         "admin.model.teamuser": {
             "name": "admin.model.teamuser",
@@ -898,15 +957,43 @@
             "line": 23,
             "description": "全国行政区划的操作类，如果内容作调整后，手机端APP部分也应该做调整，因为数据是预存在APP端的"
         },
-        "cmthis.mod.model.page": {
-            "name": "cmthis.mod.model.page",
-            "shortname": "cmthis.mod.model.page",
+        "cmpage.model.base": {
+            "name": "cmpage.model.base",
+            "shortname": "cmpage.model.base",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cmthis.mod.model",
+            "module": "cmpage.model",
+            "namespace": "",
+            "file": "src\\cmpage\\model\\base.js",
+            "line": 14,
+            "description": "业务模块的基类，通过ORM框架 Sequelize 连接各个业务数据库</br>\n连接参数配置于各个module的配置文件中，xxxx/config/db.config </br>\n为了和thinkjs.model的常用方法名保持一致，以下实现了相关方法，通过转换成sql语句用 sequelize.query(sql) 执行 </br>\n如果想使用 sequelize 的ORM方法，可以在子类中通过 this.sequelize.xxxx 来调用</br>\n子类中用think.model,或者cmpage.model来实例化其他类其他模块，本类中的 model 用于设置表名以便生成SQL语句，也为了兼容 thinkjs.model(表名).xxx 的调用方式 </br>\n如果以后版本的 ThinkJS能支持mssql，以上兼容可以使得将 page.js 改回从 think.model.base 继承的时候不需要做太大改动 </br>"
+        },
+        "cmpage.model.file_list": {
+            "name": "cmpage.model.file_list",
+            "shortname": "cmpage.model.file_list",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.model",
+            "namespace": "",
+            "file": "src\\cmpage\\model\\file_list.js",
+            "line": 14,
+            "description": "实现了文件列表页面的功能，定制了移动端的页面"
+        },
+        "cmpage.model.page": {
+            "name": "cmpage.model.page",
+            "shortname": "cmpage.model.page",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.model",
             "namespace": "",
             "file": "src\\cmpage\\model\\page.js",
             "line": 15,
@@ -926,19 +1013,19 @@
             "line": 14,
             "description": "实现了excel导出等处理，可继承本类做定制化的excel文件导出"
         },
-        "cmthis.mob.model.page_lookup": {
-            "name": "cmthis.mob.model.page_lookup",
-            "shortname": "cmthis.mob.model.page_lookup",
+        "cmpage.model.page_lookup": {
+            "name": "cmpage.model.page_lookup",
+            "shortname": "cmpage.model.page_lookup",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cmthis.mob.model",
+            "module": "cmpage.model",
             "namespace": "",
             "file": "src\\cmpage\\model\\page_lookup.js",
             "line": 14,
-            "description": "实现了查找带回的功能，可继承本类做定制化的查找带回页面，调用： /cmpage/page/lookup?modulename=XXX*multiselect=false"
+            "description": "实现了查找带回的功能，可继承本类做定制化的查找带回页面，调用： /cmpage/page/lookup?modulename=xxx*multiselect=0 </br>\n实现了选择加入的功能，可继承本类做定制化的选择加入页面，调用： /cmpage/page/lookup?modulename=xxx*selectadd=1*key=c_id*callmodel=docu/docu_rec*callfn=goodsAdd*callparms=xxx,\n其中key是需要回传的字段名称，callmodel是回调的thinkjs模块，callfn 是回调的函数名称, callparms 是额外的参数，例如：单据主ID等 </br>"
         },
         "cmpage.model.page_mob": {
             "name": "cmpage.model.page_mob",
@@ -1066,6 +1153,20 @@
             "line": 22,
             "description": "提供工作流的活动节点运转的相关方法，对外提供统一归口的调用<br/>\n根据活动节点中的实现类设置，调用具体业务相关的类来实现节点的具体功能"
         },
+        "flow.model.proc_assign": {
+            "name": "flow.model.proc_assign",
+            "shortname": "flow.model.proc_assign",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "demo.model",
+            "namespace": "",
+            "file": "src\\flow\\model\\proc_assign.js",
+            "line": 10,
+            "description": "提供工作流指派及权限处理的相关方法，对外提供统一归口的调用<br/>"
+        },
         "flow.model.act_path": {
             "name": "flow.model.act_path",
             "shortname": "flow.model.act_path",
@@ -1080,6 +1181,20 @@
             "line": 10,
             "description": "提供工作流的活动路径的相关方法，注意供act、task_act及其继承类的调用 <br/>\n一般不需要继承，也没有相关联的业务类"
         },
+        "cmpage.model.appr": {
+            "name": "cmpage.model.appr",
+            "shortname": "cmpage.model.appr",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "demo.model",
+            "namespace": "",
+            "file": "src\\flow\\model\\appr_task.js",
+            "line": 16,
+            "description": "通用的审核操作，把相关业务的审核记录到表 t_appr，并作相应逻辑实现 </br>\n通过工作流的任务机制进行流转(fw_task,fw_task_act)"
+        },
         "flow.model.proc": {
             "name": "flow.model.proc",
             "shortname": "flow.model.proc",
@@ -1088,7 +1203,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "flow.model",
+            "module": "demo.model",
             "namespace": "",
             "file": "src\\flow\\model\\proc.js",
             "line": 10,
@@ -1102,7 +1217,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "flow.model",
+            "module": "demo.model",
             "namespace": "",
             "file": "src\\flow\\model\\task.js",
             "line": 10,
@@ -1116,7 +1231,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "flow.model",
+            "module": "demo.model",
             "namespace": "",
             "file": "src\\flow\\model\\task_act.js",
             "line": 10,
@@ -1130,11 +1245,25 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "flow.model",
+            "module": "demo.model",
             "namespace": "",
             "file": "src\\flow\\model\\task_act_appr.js",
             "line": 10,
             "description": "提供审核类工作流的活动节点运转的相关方法，业务相关，供flow/model/act.js的方法进行调用，在act配置的时候可以设置<br/>\n具体的业务相关的工作流活动的子类也可以继承本类，来增加定制的业务逻辑"
+        },
+        "cmpage.cmpage_global_flow": {
+            "name": "cmpage.cmpage_global_flow",
+            "shortname": "cmpage.cmpage_global_flow",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "cmpage.model",
+            "namespace": "",
+            "file": "src\\flow\\cmpage_global_flow.js",
+            "line": 7,
+            "description": "cmpage的全局方法和变量设置，置入（Object.assign）thinkjs 的 global 中\nflow工作流相关部分"
         }
     },
     "classitems": [
@@ -1296,7 +1425,46 @@
         },
         {
             "file": "src\\admin\\controller\\code.js",
-            "line": 164,
+            "line": 163,
+            "description": "某个用户的权限集合展示，树状结构",
+            "itemtype": "method",
+            "name": "userGetPrivilegeTree",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 182,
+            "description": "保存某个用户的定制权限设置",
+            "itemtype": "method",
+            "name": "userSavePrivilege",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 194,
+            "description": "保存某个用户的定制权限设置",
+            "itemtype": "method",
+            "name": "userSavePrivilege",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "admin.controller.code",
+            "module": "admin.controller"
+        },
+        {
+            "file": "src\\admin\\controller\\code.js",
+            "line": 210,
             "description": "代码树，输入根节点ID为参数 ------- 以下3个操作已废弃，改用 codeTreeAction -----------\n直接通过树增删改节点\n/admin/code?rootid=1",
             "class": "admin.controller.code",
             "module": "admin.controller"
@@ -1342,7 +1510,7 @@
         },
         {
             "file": "src\\admin\\controller\\index.js",
-            "line": 153,
+            "line": 155,
             "description": "用户登出，清除session中的用户信息并引导至用户登录页面",
             "itemtype": "method",
             "name": "exitLogin",
@@ -1355,7 +1523,7 @@
         },
         {
             "file": "src\\admin\\controller\\index.js",
-            "line": 164,
+            "line": 166,
             "description": "用户密码修改页面，get方式显示编辑页面，post方式执行密码修改",
             "itemtype": "method",
             "name": "loginPwdEdit",
@@ -1407,7 +1575,7 @@
         },
         {
             "file": "src\\admin\\controller\\mob.js",
-            "line": 80,
+            "line": 82,
             "description": "用户登录,包括验证账套、角色等",
             "itemtype": "method",
             "name": "login",
@@ -1420,7 +1588,7 @@
         },
         {
             "file": "src\\admin\\controller\\mob.js",
-            "line": 115,
+            "line": 117,
             "description": "退出登录,同时注销session 设置",
             "itemtype": "method",
             "name": "exitLogin",
@@ -1433,7 +1601,7 @@
         },
         {
             "file": "src\\admin\\controller\\mob.js",
-            "line": 126,
+            "line": 128,
             "description": "修改用户密码",
             "itemtype": "method",
             "name": "loginPwdEdit",
@@ -1485,6 +1653,16 @@
                     "name": "id",
                     "description": "参数ID",
                     "type": "Int"
+                },
+                {
+                    "name": "fieldNames",
+                    "description": "字段名称,逗号分隔",
+                    "type": "String"
+                },
+                {
+                    "name": "joinStr",
+                    "description": "连接的字符串",
+                    "type": "String"
                 }
             ],
             "class": "admin.model.code",
@@ -1492,7 +1670,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 78,
+            "line": 95,
             "description": "根据参数ID取参数的记录对象",
             "itemtype": "method",
             "name": "getCodeById",
@@ -1512,7 +1690,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 93,
+            "line": 110,
             "description": "根据父节点ID取参数列表",
             "itemtype": "method",
             "name": "getCodesByPid",
@@ -1532,7 +1710,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 109,
+            "line": 126,
             "description": "根据根节点ID取参数列表，树状",
             "itemtype": "method",
             "name": "getCodesByRoot",
@@ -1552,7 +1730,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 125,
+            "line": 142,
             "description": "根据参数值取性别，一般用于页面模块配置中的‘替换’调用: admin/cdoe:getSexName",
             "itemtype": "method",
             "name": "getSexName",
@@ -1573,7 +1751,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 134,
+            "line": 151,
             "description": "取参数列表，带Parm的这几个方法一般是用户业务相关的参数，根节点ID === 4，用缓存",
             "itemtype": "method",
             "name": "getParms",
@@ -1586,7 +1764,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 144,
+            "line": 161,
             "description": "根据父节点ID取参数列表",
             "itemtype": "method",
             "name": "getParmsByPid",
@@ -1606,7 +1784,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 162,
+            "line": 179,
             "description": "根据父节点的c_object值取参数列表",
             "itemtype": "method",
             "name": "getParmsByPobj",
@@ -1626,7 +1804,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 172,
+            "line": 189,
             "description": "根据参数ID取参数的记录对象",
             "itemtype": "method",
             "name": "getParmById",
@@ -1646,7 +1824,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 187,
+            "line": 204,
             "description": "根据参数的c_object值取参数的记录对象",
             "itemtype": "method",
             "name": "getParmById",
@@ -1666,7 +1844,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 203,
+            "line": 220,
             "description": "清空t_code表的相关缓存",
             "itemtype": "method",
             "name": "clearCodeCache",
@@ -1675,7 +1853,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 216,
+            "line": 234,
             "description": "取账套列表，树状，可以用于页面模块配置中的‘下拉框选择’调用: admin/cdoe:getGroups",
             "itemtype": "method",
             "name": "getGroups",
@@ -1688,7 +1866,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 227,
+            "line": 245,
             "description": "取角色列表，可以用于页面模块配置中的‘下拉框选择’调用: admin/cdoe:getRoles",
             "itemtype": "method",
             "name": "getRoles",
@@ -1701,7 +1879,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 238,
+            "line": 256,
             "description": "取仓库列表，可以用于页面模块配置中的‘下拉框选择’调用: admin/cdoe:getStocks",
             "itemtype": "method",
             "name": "getStocks",
@@ -1714,7 +1892,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 249,
+            "line": 267,
             "description": "取部门列表，树状，可以用于页面模块配置中的‘下拉框选择’调用: admin/cdoe:getDepts",
             "itemtype": "method",
             "name": "getDepts",
@@ -1727,7 +1905,7 @@
         },
         {
             "file": "src\\admin\\model\\code.js",
-            "line": 260,
+            "line": 278,
             "description": "取t_code全表记录，缓存",
             "itemtype": "method",
             "name": "getCodes",
@@ -1753,7 +1931,7 @@
         },
         {
             "file": "src\\admin\\model\\code_list.js",
-            "line": 30,
+            "line": 29,
             "description": "重写父类的 pageEditInit 方法，对初始化编辑页面的值进行修改",
             "itemtype": "method",
             "name": "pageEditInit",
@@ -1766,7 +1944,7 @@
         },
         {
             "file": "src\\admin\\model\\code_list.js",
-            "line": 47,
+            "line": 45,
             "description": "重写父类的 pageSave 方法，保存参数后清除code表的缓存",
             "itemtype": "method",
             "name": "pageSave",
@@ -1786,13 +1964,13 @@
         },
         {
             "file": "src\\admin\\model\\code_list.js",
-            "line": 60,
-            "description": "取顶部按钮的设置，分靠左和靠右两块，组合成HTML输出",
+            "line": 68,
+            "description": "删除记录,<br/>\n子类中可以重写本方法，实现其他的删除逻辑，如判断是否可以删除，删除相关联的其他记录等等",
             "itemtype": "method",
-            "name": "htmlGetBtnHeader",
+            "name": "pageDelete",
             "return": {
-                "description": "HTML片段",
-                "type": "String"
+                "description": "记录对象",
+                "type": "Object"
             },
             "class": "admin.model.code_list",
             "module": "admin.model"
@@ -1832,7 +2010,7 @@
         },
         {
             "file": "src\\admin\\model\\groupuser.js",
-            "line": 67,
+            "line": 66,
             "description": "取某个用户登录账套及其所有子帐套",
             "itemtype": "method",
             "name": "getLoginGroups",
@@ -1877,7 +2055,7 @@
         },
         {
             "file": "src\\admin\\model\\groupuser_add.js",
-            "line": 32,
+            "line": 31,
             "description": "重写父类的 htmlGetOther 方法，输出额外的按钮和js函数，",
             "itemtype": "method",
             "name": "htmlGetOther",
@@ -1949,13 +2127,13 @@
                 },
                 {
                     "name": "logStatus",
-                    "description": "日志状态， global.enum",
+                    "description": "日志状态， cmpage.enum",
                     "type": "Int",
                     "optional": true
                 },
                 {
                     "name": "logType",
-                    "description": "日志类型，global.enum",
+                    "description": "日志类型，cmpage.enum",
                     "type": "Int",
                     "optional": true
                 }
@@ -2041,8 +2219,8 @@
         },
         {
             "file": "src\\admin\\model\\privilege.js",
-            "line": 34,
-            "description": "某个角色的权限树",
+            "line": 36,
+            "description": "某个角色的权限树 <br/>\n允许优先原则，即没有明确禁止的权限都为允许",
             "itemtype": "method",
             "name": "roleGetPrivilegeTree",
             "return": {
@@ -2066,8 +2244,8 @@
         },
         {
             "file": "src\\admin\\model\\privilege.js",
-            "line": 57,
-            "description": "某个用户定制的的权限树，如果没有则返回该用户所属角色的权限树",
+            "line": 60,
+            "description": "某个用户定制的的权限树，如果没有则返回该用户所属角色的权限树 <br/>\n允许优先原则，即没有明确禁止的权限都为允许",
             "itemtype": "method",
             "name": "userGetPrivilegeTree",
             "return": {
@@ -2095,6 +2273,26 @@
             "module": "admin.model"
         },
         {
+            "file": "src\\admin\\model\\privilege.js",
+            "line": 89,
+            "description": "保存某个用户的权限设置",
+            "itemtype": "method",
+            "name": "userSavePrivilege",
+            "return": {
+                "description": "保存的记录条数",
+                "type": "Int"
+            },
+            "params": [
+                {
+                    "name": "parms",
+                    "description": "前端递交的参数，包括userID, 权限ID（多个，以逗号分隔）",
+                    "type": "Object"
+                }
+            ],
+            "class": "admin.model.privilege",
+            "module": "admin.model"
+        },
+        {
             "file": "src\\admin\\model\\teamuser.js",
             "line": 21,
             "description": "重写父类的 htmlGetOther 方法，输出额外的按钮和js函数",
@@ -2109,6 +2307,57 @@
                     "name": "page",
                     "description": "页面设置主信息",
                     "type": "Object"
+                }
+            ],
+            "class": "admin.model.teamuser",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\teamuser.js",
+            "line": 65,
+            "description": "根据团队ID取团队的成员列表，可用于页面模块配置中的‘替换’调用: admin/teamuser:getUsersByTeamId",
+            "itemtype": "method",
+            "name": "getUsersByTeamId",
+            "return": {
+                "description": "团队成员列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "teamID",
+                    "description": "团队ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "admin.model.teamuser",
+            "module": "admin.model"
+        },
+        {
+            "file": "src\\admin\\model\\teamuser.js",
+            "line": 76,
+            "description": "判断某个用户是否是某个团队的成员",
+            "itemtype": "method",
+            "name": "isTeamMember",
+            "return": {
+                "description": "是否是成员",
+                "type": "Boolean"
+            },
+            "params": [
+                {
+                    "name": "teamID",
+                    "description": "团队ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "userID",
+                    "description": "用户ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "users",
+                    "description": "成员列表，用来改善性能, 可选项",
+                    "type": "Array",
+                    "optional": true
                 }
             ],
             "class": "admin.model.teamuser",
@@ -2136,7 +2385,7 @@
         },
         {
             "file": "src\\admin\\model\\teamuser_add.js",
-            "line": 33,
+            "line": 32,
             "description": "重写父类的 htmlGetOther 方法，输出额外的按钮和js函数，",
             "itemtype": "method",
             "name": "htmlGetOther",
@@ -2330,7 +2579,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\mob.js",
-            "line": 82,
+            "line": 91,
             "description": "业务模块的编辑页面，调用： /cmpage/mob/edit",
             "itemtype": "method",
             "name": "edit",
@@ -2343,7 +2592,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\mob.js",
-            "line": 109,
+            "line": 118,
             "description": "保存业务模块记录信息， POST调用： /cmpage/mob/save",
             "itemtype": "method",
             "name": "save",
@@ -2356,8 +2605,8 @@
         },
         {
             "file": "src\\cmpage\\controller\\mob.js",
-            "line": 142,
-            "description": "业务模块的查看页面，一般调用： /cmpage/page/view?modulename=xxx",
+            "line": 151,
+            "description": "业务模块的查看页面，一般调用： /cmpage/mob/view",
             "itemtype": "method",
             "name": "view",
             "return": {
@@ -2408,7 +2657,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 107,
+            "line": 112,
             "description": "模块主表编辑页面，调用：/cmpage/module/edit?id=xxx",
             "itemtype": "method",
             "name": "edit",
@@ -2421,7 +2670,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 131,
+            "line": 138,
             "description": "模块主表编辑页面，调用：/cmpage/module/reset_module_cache",
             "itemtype": "method",
             "name": "resetModuleCache",
@@ -2434,7 +2683,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 144,
+            "line": 151,
             "description": "模块显示列编辑页面，调用：/cmpage/module/col_list?moduleid=xxx",
             "itemtype": "method",
             "name": "colList",
@@ -2447,7 +2696,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 167,
+            "line": 174,
             "description": "重新设置模块显示列，调用：/cmpage/module/col_reset?moduleid=xxx",
             "itemtype": "method",
             "name": "colReset",
@@ -2460,7 +2709,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 181,
+            "line": 188,
             "description": "保存显示列设置， POST调用： /cmpage/module/col_save",
             "itemtype": "method",
             "name": "col_save",
@@ -2473,7 +2722,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 230,
+            "line": 237,
             "description": "模块显示列编辑页面，调用：/cmpage/module/edit_list?moduleid=xxx",
             "itemtype": "method",
             "name": "editList",
@@ -2486,7 +2735,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 251,
+            "line": 258,
             "description": "重新设置模块编辑列，调用：/cmpage/module/edit_reset?moduleid=xxx",
             "itemtype": "method",
             "name": "editReset",
@@ -2499,7 +2748,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 263,
+            "line": 270,
             "description": "保存业务模块编辑列的设置， POST调用： /cmpage/module/edit_save",
             "itemtype": "method",
             "name": "edit_save",
@@ -2512,7 +2761,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 309,
+            "line": 316,
             "description": "模块查询列编辑页面，调用：/cmpage/module/query_list?moduleid=xxx",
             "itemtype": "method",
             "name": "queryList",
@@ -2525,7 +2774,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 331,
+            "line": 338,
             "description": "重新设置模块查询列，调用：/cmpage/module/query_reset?moduleid=xxx",
             "itemtype": "method",
             "name": "queryReset",
@@ -2538,7 +2787,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 345,
+            "line": 352,
             "description": "删除不显示的查询列设置， POST调用： /cmpage/module/query_delete_no_show",
             "itemtype": "method",
             "name": "query_delete_no_show",
@@ -2551,7 +2800,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 358,
+            "line": 365,
             "description": "保存业务模块查询列的设置， POST调用： /cmpage/module/query_save",
             "itemtype": "method",
             "name": "query_save",
@@ -2564,7 +2813,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 403,
+            "line": 410,
             "description": "模块按钮设置页面，调用：/cmpage/module/btn_list?moduleid=xxx",
             "itemtype": "method",
             "name": "btnList",
@@ -2577,7 +2826,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 422,
+            "line": 429,
             "description": "重新设置模块按钮，调用：/cmpage/module/btn_reset?moduleid=xxx",
             "itemtype": "method",
             "name": "btnReset",
@@ -2590,7 +2839,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\module.js",
-            "line": 435,
+            "line": 442,
             "description": "保存业务模块的按钮设置， POST调用： /cmpage/module/btn_save",
             "itemtype": "method",
             "name": "btn_save",
@@ -2616,7 +2865,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\page.js",
-            "line": 88,
+            "line": 90,
             "description": "模块主界面，导出excel文件，一般调用： /cmpage/page/excel_export?modulename=xxx",
             "itemtype": "method",
             "name": "excelExport",
@@ -2629,8 +2878,8 @@
         },
         {
             "file": "src\\cmpage\\controller\\page.js",
-            "line": 135,
-            "description": "删除记录的URL接口，调用： /cmpage/xxx/delete?id=xxx",
+            "line": 138,
+            "description": "删除记录的URL接口，调用： /cmpage/page/delete?modulename=xxx&id=xxx&flag=false</br>\nflag=true: 记录真删除，否则修改记录状态 c_status = -1",
             "itemtype": "method",
             "name": "delete",
             "return": {
@@ -2642,7 +2891,20 @@
         },
         {
             "file": "src\\cmpage\\controller\\page.js",
-            "line": 154,
+            "line": 158,
+            "description": "修改状态，供界面按钮直接调用，工作流相关方法（状态流转类）</br>\n调用： /cmpage/page/update_status?modulename=xxx&id=xxx&actID=xxx&status=xxx",
+            "itemtype": "method",
+            "name": "updateStatus",
+            "return": {
+                "description": "执行修改后的返回信息",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.page",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\page.js",
+            "line": 178,
             "description": "业务模块的编辑页面，一般调用： /cmpage/page/edit?modulename=xxx",
             "itemtype": "method",
             "name": "edit",
@@ -2655,7 +2917,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\page.js",
-            "line": 180,
+            "line": 209,
             "description": "业务模块的编辑页面，主从页面，一般调用： /cmpage/page/rec_edit?modulename=xxx",
             "itemtype": "method",
             "name": "recEdit",
@@ -2668,7 +2930,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\page.js",
-            "line": 206,
+            "line": 240,
             "description": "保存业务模块记录信息， POST调用： /cmpage/page/save",
             "itemtype": "method",
             "name": "save",
@@ -2681,7 +2943,7 @@
         },
         {
             "file": "src\\cmpage\\controller\\page.js",
-            "line": 237,
+            "line": 286,
             "description": "业务模块的查看页面，一般调用： /cmpage/page/view?modulename=xxx",
             "itemtype": "method",
             "name": "view",
@@ -2694,7 +2956,20 @@
         },
         {
             "file": "src\\cmpage\\controller\\page.js",
-            "line": 257,
+            "line": 310,
+            "description": "主从业务模块的查看页面，一般调用： /cmpage/page/view_ms?modulename=xxx",
+            "itemtype": "method",
+            "name": "viewMs",
+            "return": {
+                "description": "HTML片段",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.page",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\page.js",
+            "line": 338,
             "description": "查找带回页面，一般调用： /cmpage/page/lookup?modulename=xxx&multiselect=false",
             "itemtype": "method",
             "name": "lookup",
@@ -2706,8 +2981,60 @@
             "module": "cmpage.controller"
         },
         {
+            "file": "src\\cmpage\\controller\\page.js",
+            "line": 399,
+            "description": "上传文件的URL接口，调用： /cmpage/page/upload_file </br>\n如果多个文件上传，则前端循环调用本接口",
+            "itemtype": "method",
+            "name": "updateFile",
+            "return": {
+                "description": "状态，包含保存后的路径名称，可以作为前端的表单项保存",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.page",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\page.js",
+            "line": 435,
+            "description": "时间轴展示页面，一般调用： /cmpage/page/timeline?modulename=xxx",
+            "itemtype": "method",
+            "name": "timeline",
+            "return": {
+                "description": "时间轴列表数据，取模块的显示列设置",
+                "type": "Promise"
+            },
+            "class": "cmpage.controller.page",
+            "module": "cmpage.controller"
+        },
+        {
             "file": "src\\cmpage\\controller\\utils.js",
-            "line": 22,
+            "line": 35,
+            "description": "根据URL参数直接调用相关model的相关方法， 调用： /cmpage/utils/callFunction?model=xxx&fn=xxx&parms=xxx,xxx",
+            "itemtype": "method",
+            "name": "callFunction",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.utils",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\utils.js",
+            "line": 68,
+            "description": "根据URL参数直接调用相关model的相关方法， 调用： /cmpage/utils/callFunction?model=xxx&fn=xxx&parms=xxx,xxx",
+            "itemtype": "method",
+            "name": "callFunction",
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "cmpage.controller.utils",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\utils.js",
+            "line": 105,
             "description": "清除缓存， 调用： /cmpage/utils/clear_cache",
             "itemtype": "method",
             "name": "clearCache",
@@ -2720,10 +3047,10 @@
         },
         {
             "file": "src\\cmpage\\controller\\utils.js",
-            "line": 36,
+            "line": 119,
             "description": "根据省份取城市列表， 调用： /cmpage/utils/get_citys?province=xxx",
             "itemtype": "method",
-            "name": "get_citys",
+            "name": "getCitys",
             "return": {
                 "description": "",
                 "type": "Json"
@@ -2733,15 +3060,26 @@
         },
         {
             "file": "src\\cmpage\\controller\\utils.js",
-            "line": 49,
+            "line": 132,
             "description": "根据城市取区县列表， 调用： /cmpage/utils/get_countrys?city=xxx",
             "itemtype": "method",
-            "name": "get_countrys",
+            "name": "getCountrys",
             "return": {
                 "description": "",
                 "type": "Json"
             },
             "class": "cmpage.controller.utils",
+            "module": "cmpage.controller"
+        },
+        {
+            "file": "src\\cmpage\\controller\\wechat.js",
+            "line": 18,
+            "description": "index action",
+            "return": {
+                "description": "[]",
+                "type": "Promise"
+            },
+            "class": "cmpage.logic.page",
             "module": "cmpage.controller"
         },
         {
@@ -2956,20 +3294,99 @@
             "module": "cmpage.model"
         },
         {
-            "file": "src\\cmpage\\model\\module.js",
-            "line": 323,
-            "class": "cmthis.mod.model.page",
+            "file": "src\\cmpage\\model\\base.js",
+            "line": 33,
+            "description": "constructor",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "config",
+                    "description": "[description]",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "cmpage.model.base",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\base.js",
+            "line": 51,
+            "description": "创建连接",
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "cmpage.model.base",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\base.js",
+            "line": 115,
+            "description": "执行原生SQL语句，取结果集返回",
+            "return": {
+                "description": "查询结果集",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "sql",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "参数设置",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.base",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\file_list.js",
+            "line": 22,
+            "description": "取模块列表中的MUI设置，组合成HTML输出，一般在子类中通过重写这个方法来达到页面定制的效果",
+            "itemtype": "method",
+            "name": "mobHtmlGetList",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "class": "cmpage.model.file_list",
             "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\module.js",
-            "line": 390,
-            "class": "cmthis.mod.model.page",
+            "line": 450,
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\module.js",
+            "line": 537,
+            "class": "cmpage.model.page",
             "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 29,
+            "line": 32,
+            "description": "初始化设置页面参数",
+            "itemtype": "method",
+            "name": "initPage",
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 47,
             "description": "取查询项的设置，组合成HTML输出",
             "itemtype": "method",
             "name": "htmlGetQuery",
@@ -2977,12 +3394,12 @@
                 "description": "查询的HTML片段，包括 bjui-moreSearch 部分",
                 "type": "Array"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 108,
+            "line": 116,
             "description": "输出额外的按钮和js函数和HTML片段，区别于 getPageOther",
             "itemtype": "method",
             "name": "htmlGetOther",
@@ -2990,15 +3407,42 @@
                 "description": "html片段",
                 "type": "String"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 117,
+            "line": 125,
             "description": "取下拉框的选项集",
             "itemtype": "method",
             "name": "getOptions",
+            "return": {
+                "description": "下拉框选项的HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "md",
+                    "description": "下拉项的设置，其中md.c_default为默认值，可以在调用本方法前修改",
+                    "type": "Object"
+                },
+                {
+                    "name": "isBlank",
+                    "description": "下拉项中是否增加空项，一般查询项是需要的",
+                    "type": "Bool",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 178,
+            "description": "取树状下拉框的选项集",
+            "itemtype": "method",
+            "name": "getOptionsTree",
             "return": {
                 "description": "查询的HTML片段，包括 bjui-moreSearch 部分",
                 "type": "Array"
@@ -3017,12 +3461,12 @@
                     "optdefault": "false"
                 }
             ],
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 166,
+            "line": 227,
             "description": "根据设置取显示的替换值",
             "itemtype": "method",
             "name": "getReplaceText",
@@ -3038,16 +3482,16 @@
                 },
                 {
                     "name": "replaceItems",
-                    "description": "替换的设置值，支持两种方式\n                     1. 函数如：admin/code:getXXXXXX\n                     2. json如：[{##value##:true,##text##:##男##},{##value##:false,##text##:##女##}]",
+                    "description": "替换的设置值，支持两种方式\n                     1. 函数如：admin/code:getXXXXXX\n                     2. json如：[{value:true,text:'男'},{value:false,text:'女'}]",
                     "type": "String"
                 }
             ],
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 204,
+            "line": 266,
             "description": "取顶部按钮的设置，分靠左和靠右两块，组合成HTML输出",
             "itemtype": "method",
             "name": "htmlGetBtnHeader",
@@ -3055,12 +3499,12 @@
                 "description": "HTML片段",
                 "type": "String"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 231,
+            "line": 308,
             "description": "取记录列表每一行的按钮设置，组合成HTML输出，子类中重写本方法可以定制每行按钮的输出效果",
             "itemtype": "method",
             "name": "htmlGetBtnList",
@@ -3075,12 +3519,12 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 275,
+            "line": 363,
             "description": "取分页列表的设置，结合结果数据集，组合成HTML输出，一般不需要重新本方法",
             "itemtype": "method",
             "name": "htmlGetList",
@@ -3088,12 +3532,12 @@
                 "description": "HTML片段",
                 "type": "String"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 369,
+            "line": 458,
             "description": "是否显示列表中某行的某个按钮，子类中重写本方法可以改变行按钮显示的逻辑\n按钮设置的备注中，形如： {isShow:'#c_status#==1192 && xxx>xxx'}",
             "itemtype": "method",
             "name": "isShowBtn",
@@ -3101,12 +3545,12 @@
                 "description": "是否显示",
                 "type": "Boolean"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 387,
+            "line": 478,
             "description": "取结果数据集，子类中重写本方法可以增加逻辑如：对结果集做进一步的数据处理等",
             "itemtype": "method",
             "name": "getDataList",
@@ -3114,12 +3558,25 @@
                 "description": "结果集数据包 {count:xxx, list:[{record}]}",
                 "type": "Object"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 414,
+            "line": 525,
+            "description": "取合计行的HTML片段，子类中重写本方法可以定制合计行的显示",
+            "itemtype": "method",
+            "name": "isShowBtn",
+            "return": {
+                "description": "合计行的HTML片段",
+                "type": "String"
+            },
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 556,
             "description": "取查询项的设置，结合POST参数，得到Where字句，重写本方法可以定制或修改SQL的where子句",
             "itemtype": "method",
             "name": "getQueryWhere",
@@ -3127,12 +3584,12 @@
                 "description": "where 子句， 形如： where xxx and xxx",
                 "type": "String"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 477,
+            "line": 622,
             "description": "根据设置取得页面显示列表返回的字段，一般不需要重写本方法",
             "itemtype": "method",
             "name": "getListFields",
@@ -3140,12 +3597,12 @@
                 "description": "fields 部分， 形如：id,c_name,xxx",
                 "type": "String"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 499,
+            "line": 644,
             "description": "新增的时候，初始化编辑页面的值，子类重写本方法可以定制新增页面的初始值",
             "itemtype": "method",
             "name": "pageEditInit",
@@ -3153,12 +3610,12 @@
                 "description": "新增的记录对象",
                 "type": "Object"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 543,
+            "line": 686,
             "description": "取当前记录对象，用于新增和修改的编辑页面展示",
             "itemtype": "method",
             "name": "getDataRecord",
@@ -3166,12 +3623,12 @@
                 "description": "当前记录对象",
                 "type": "Object"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 572,
+            "line": 718,
             "description": "取编辑页面的设置，组合成列表数据的HTML输出",
             "itemtype": "method",
             "name": "htmlGetEdit",
@@ -3179,12 +3636,42 @@
                 "description": "HTML页面片段",
                 "type": "String"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 667,
+            "line": 849,
+            "description": "改变某些编辑列的样式，子类中可以重写本方法类增加模块编辑页面的操作逻辑",
+            "itemtype": "method",
+            "name": "htmlGetEditInput",
+            "return": {
+                "description": "Edit页面的Input的HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "col",
+                    "description": "Edit页面的当前编辑列设置",
+                    "type": "Object"
+                },
+                {
+                    "name": "colValue",
+                    "description": "Input的值",
+                    "type": "String"
+                },
+                {
+                    "name": "input",
+                    "description": "Edit页面的Input的HTML片段",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 864,
             "description": "取编辑页面的按钮设置，组合按钮的HTML输出",
             "itemtype": "method",
             "name": "htmlGetEditBtns",
@@ -3192,28 +3679,45 @@
                 "description": "HTML页面片段",
                 "type": "String"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 723,
-            "description": "取流程节点相关的按钮设置，组合按钮的HTML输出</br>\n考虑到按钮输出和业务关联度大，定义在此处",
+            "line": 960,
+            "description": "取状态流转类型的流程节点相关的按钮设置，组合成按钮的HTML输出</br>\n考虑到按钮输出和业务关联度大，定义在此处",
             "itemtype": "method",
             "name": "htmlGetActBtns",
             "return": {
                 "description": "按钮数组",
                 "type": "Array"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 817,
+            "line": 1089,
+            "description": "取流程节点相关的按钮设置，组合按钮的HTML输出</br>\n考虑到按钮输出和业务关联度大，定义在此处",
+            "itemtype": "method",
+            "name": "htmlGetTaskActBtns",
+            "return": {
+                "description": "按钮数组",
+                "type": "Array"
+            },
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 1189,
             "description": "编辑页面保存,<br/>\n如果是多个表的数据产生的编辑页，则根据存在于this.mod.c_table中的列更新表，一般需要在子类中继承，例如： admin/user:pageSave",
             "itemtype": "method",
             "name": "pageSave",
+            "return": {
+                "description": "如果有验证错误，则返回格式： {statusCode:300, message:'xxxxxx'}",
+                "type": "Object"
+            },
             "params": [
                 {
                     "name": "parms",
@@ -3221,12 +3725,12 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 849,
+            "line": 1222,
             "description": "保存后的操作日志记录,，通过重写可在子类中定制日志的格式",
             "itemtype": "method",
             "name": "pageSaveLog",
@@ -3246,25 +3750,25 @@
                     "type": "String"
                 }
             ],
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 930,
-            "description": "取查看页面的设置，组合成列表数据的HTML输出",
+            "line": 1303,
+            "description": "取查看页面的设置，组合成列表数据的HTML输出</br>\n如果需要改变查看页面的逻辑，可以重写本方法，或者修改 this.modCols的设置值后调用 super.htmlGetView()",
             "itemtype": "method",
             "name": "htmlGetView",
             "return": {
                 "description": "HTML页面片段",
                 "type": "String"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
-            "line": 969,
+            "line": 1381,
             "description": "删除记录,<br/>\n子类中可以重写本方法，实现其他的删除逻辑，如判断是否可以删除，删除相关联的其他记录等等",
             "itemtype": "method",
             "name": "pageDelete",
@@ -3272,8 +3776,69 @@
                 "description": "记录对象",
                 "type": "Object"
             },
-            "class": "cmthis.mod.model.page",
-            "module": "cmthis.mod.model"
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 1400,
+            "description": "取分页列表的 footer 设置，组合成HTML输出，一般不需要重写本方法",
+            "itemtype": "method",
+            "name": "htmlGetFooter",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 1421,
+            "description": "修改状态，供界面按钮直接调用，工作流相关方法（状态流转类）</br>\n子类中覆写本方法，可以根据业务对象的状态增加其他逻辑",
+            "itemtype": "method",
+            "name": "updateStatus",
+            "return": {
+                "description": "结果输出",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "记录ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "actID",
+                    "description": "流程节点ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "status",
+                    "description": "状态值，一般在t_code表中设置",
+                    "type": "Int"
+                },
+                {
+                    "name": "isSelf",
+                    "description": "自身表单的调用，区别于其他模块的调用",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page.js",
+            "line": 1442,
+            "description": "取模块列表的显示列设置，组合成时间轴HTML输出，一般在子类中通过重写这个方法来达到页面定制的效果",
+            "itemtype": "method",
+            "name": "htmlGetListTimeline",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "class": "cmpage.model.page",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page_excel.js",
@@ -3347,7 +3912,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page_lookup.js",
-            "line": 22,
+            "line": 24,
             "description": "是否显示列表中的按钮，子类中重写本方法可以改变按钮显示的逻辑",
             "itemtype": "method",
             "name": "isShowRowBtns",
@@ -3362,13 +3927,13 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmthis.mob.model.page_lookup",
-            "module": "cmthis.mob.model"
+            "class": "cmpage.model.page_lookup",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page_lookup.js",
-            "line": 32,
-            "description": "取列表中按钮的设置，组合成HTML输出,<br/> 重写父类的方法，子类中也可重写本方法，更改返回的字段和值等",
+            "line": 34,
+            "description": "取列表中按钮的设置，组合成HTML输出,<br/>\n重写父类的方法，子类中也可重写本方法，更改返回的字段和值等",
             "itemtype": "method",
             "name": "htmlGetBtnList",
             "return": {
@@ -3382,12 +3947,32 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmthis.mob.model.page_lookup",
-            "module": "cmthis.mob.model"
+            "class": "cmpage.model.page_lookup",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page_lookup.js",
-            "line": 63,
+            "line": 62,
+            "description": "取查找带回页面中选择行的返回字段及值",
+            "itemtype": "method",
+            "name": "getLookupResult",
+            "return": {
+                "description": "返回字段组成的数组",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "rec",
+                    "description": "每行的记录对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.page_lookup",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_lookup.js",
+            "line": 96,
             "description": "顶部按钮不需要显示，<br/> 重写父类的方法，子类中也可重写本方法，增加其他按钮",
             "itemtype": "method",
             "name": "htmlGetBtnHeader",
@@ -3402,15 +3987,28 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmthis.mob.model.page_lookup",
-            "module": "cmthis.mob.model"
+            "class": "cmpage.model.page_lookup",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_lookup.js",
+            "line": 115,
+            "description": "取模块列表中的MUI设置，组合成HTML输出，一般在子类中通过重写这个方法来达到页面定制的效果",
+            "itemtype": "method",
+            "name": "mobHtmlGetList",
+            "return": {
+                "description": "HTML片段",
+                "type": "String"
+            },
+            "class": "cmpage.model.page_lookup",
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
             "line": 10,
             "description": "page_mob model 实现手机APP的模块接口",
             "class": "cmpage.model.page_mob",
-            "module": "cmthis.mob.model"
+            "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
@@ -3427,7 +4025,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
-            "line": 57,
+            "line": 65,
             "description": "生成列表每一行的按钮组HTML输出，一般在子类中通过重写这个方法来达到定制输出按钮的效果",
             "itemtype": "method",
             "name": "mobHtmlGetListBtns",
@@ -3447,20 +4045,29 @@
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
-            "line": 81,
-            "description": "取模块的MUI设置，一般在子类中通过重写这个方法来增加MUI的配置信息，需要手机端做相应的逻辑实现",
+            "line": 97,
+            "description": "生成列表头部按钮组HTML输出，一般在子类中通过重写这个方法来达到定制输出按钮的效果",
             "itemtype": "method",
-            "name": "mobGetPageMuiSetting",
+            "name": "mobHtmlGetHeaderBtnsFromModule",
             "return": {
-                "description": "MUI的配置对象",
-                "type": "Object"
+                "description": "HTML片段",
+                "type": "String"
             },
             "class": "cmpage.model.page_mob",
             "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
-            "line": 97,
+            "line": 130,
+            "description": "取模块的MUI设置，一般在子类中通过重写这个方法来增加MUI的配置信息，需要手机端做相应的逻辑实现",
+            "itemtype": "method",
+            "name": "mobGetPageMuiSetting",
+            "class": "cmpage.model.page_mob",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_mob.js",
+            "line": 140,
             "description": "生成列表每一行的内容HTML输出，一般在子类中通过重写这个方法来达到定制分页列表的显示效果，例如： demo/customer:mobHtmlGetListRow",
             "itemtype": "method",
             "name": "mobHtmlGetListRow",
@@ -3480,7 +4087,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
-            "line": 114,
+            "line": 161,
             "description": "取业务模块中的查询列设置，组合成APP端HTML输出，为保持和PC端的一致性，一般不需要重写",
             "itemtype": "method",
             "name": "mobHtmlGetQuery",
@@ -3493,7 +4100,7 @@
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
-            "line": 187,
+            "line": 250,
             "description": "取业务模块中的编辑列设置，组合成APP端HTML输出，为保持和PC端的一致性，一般不需要重写",
             "itemtype": "method",
             "name": "mobHtmlGetEdit",
@@ -3505,23 +4112,59 @@
             "module": "cmpage.model"
         },
         {
-            "file": "src\\cmpage\\model\\page_rec.js",
+            "file": "src\\cmpage\\model\\page_mob.js",
+            "line": 347,
+            "description": "改变某些编辑列的样式，子类中可以重写本方法类增加模块编辑页面的操作逻辑",
+            "itemtype": "method",
+            "name": "mobHtmlGetEditInput",
+            "return": {
+                "description": "Edit页面的Input的HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "col",
+                    "description": "Edit页面的当前编辑列设置",
+                    "type": "Object"
+                },
+                {
+                    "name": "colValue",
+                    "description": "Input的值",
+                    "type": "String"
+                },
+                {
+                    "name": "input",
+                    "description": "Edit页面的Input的HTML片段",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.model.page_mob",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\model\\page_ms.js",
             "line": 10,
             "description": "page_rec model 实现主从表页面的编辑和查看",
             "class": "cmpage.model.utils",
             "module": "cmpage.model"
         },
         {
-            "file": "src\\cmpage\\model\\page_rec.js",
-            "line": 16,
-            "description": "取列表中按钮的设置，组合成HTML输出",
+            "file": "src\\cmpage\\model\\page_ms.js",
+            "line": 49,
+            "description": "取结果数据集，子类中重写本方法可以增加逻辑如：对结果集做进一步的数据处理等",
+            "itemtype": "method",
+            "name": "getDataList",
+            "return": {
+                "description": "结果集数据包 {count:xxx, list:[{record}]}",
+                "type": "Object"
+            },
             "class": "cmpage.model.utils",
             "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\model\\utils.js",
-            "line": 20,
-            "description": "从global的enum设置中提取name值, 一般用于页面模块配置中的‘替换’调用: cmpage/utils:getEnumName",
+            "line": 22,
+            "description": "从cmpage的enum设置中提取name值, 一般用于页面模块配置中的‘替换’调用: cmpage/utils:getEnumName",
             "itemtype": "method",
             "name": "getEnumName",
             "return": {
@@ -3536,7 +4179,7 @@
                 },
                 {
                     "name": "enumObj",
-                    "description": "enum对象，在 cmpage/cmpage_global.js中配置",
+                    "description": "enum对象，在 cmpage/cmpage_cmpage.js中配置",
                     "type": "Object"
                 }
             ],
@@ -3545,8 +4188,8 @@
         },
         {
             "file": "src\\cmpage\\model\\utils.js",
-            "line": 40,
-            "description": "从global的enum设置中提取name值, 一般用于页面模块配置中的‘下拉框选择’调用: cmpage/utils:getEnum",
+            "line": 42,
+            "description": "从cmpage的enum设置中提取name值, 一般用于页面模块配置中的‘下拉框选择’调用: cmpage/utils:getEnum",
             "itemtype": "method",
             "name": "getEnum",
             "return": {
@@ -3556,7 +4199,7 @@
             "params": [
                 {
                     "name": "enumObj",
-                    "description": "enum对象，在 cmpage/cmpage_global.js中配置",
+                    "description": "enum对象，在 cmpage/cmpage_cmpage.js中配置",
                     "type": "Object"
                 }
             ],
@@ -3565,69 +4208,13 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 16,
+            "line": 17,
             "class": "cmpage.cmpage_global",
             "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 58,
-            "description": "有小数的格式化输出",
-            "itemtype": "method",
-            "name": "formatNumber",
-            "return": {
-                "description": "格式化输出",
-                "type": "String"
-            },
-            "params": [
-                {
-                    "name": "mum",
-                    "description": "需要格式化的数值",
-                    "type": "Float"
-                },
-                {
-                    "name": "opt",
-                    "description": "格式化配置对象，一般中业务模块的列设置中制定格式如： #####0.00",
-                    "type": "Object"
-                }
-            ],
-            "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
-        },
-        {
-            "file": "src\\cmpage\\cmpage_global.js",
-            "line": 76,
-            "description": "取两个整数间的随机整数",
-            "itemtype": "method",
-            "name": "getRandomNum",
-            "return": {
-                "description": "随机整数",
-                "type": "Int"
-            },
-            "params": [
-                {
-                    "name": "Min",
-                    "description": "最小整数",
-                    "type": "Int"
-                },
-                {
-                    "name": "Max",
-                    "description": "最大整数",
-                    "type": "Int"
-                }
-            ],
-            "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
-        },
-        {
-            "file": "src\\cmpage\\cmpage_global.js",
-            "line": 93,
-            "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
-        },
-        {
-            "file": "src\\cmpage\\cmpage_global.js",
-            "line": 103,
+            "line": 27,
             "description": "对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象<br/>\n一般用于 某数据表记录的字段替换 事先设置的子字符串，子字符串的格式如：#id#",
             "itemtype": "method",
             "name": "objPropertysReplaceToStr",
@@ -3652,7 +4239,7 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 137,
+            "line": 65,
             "description": "在目标对象上增加另一个对象的某些属性，如有重叠，则覆盖其值",
             "itemtype": "method",
             "name": "objPropertysFromOtherObj",
@@ -3682,8 +4269,8 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 153,
-            "description": "对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象<br/>\n一般用 global.objFromString(str) 进行转换",
+            "line": 82,
+            "description": "对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象<br/>\n一般用 cmpage.objFromString(str) 进行转换",
             "itemtype": "method",
             "name": "objToString",
             "return": {
@@ -3702,8 +4289,8 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 192,
-            "description": "把字符串转换成对象，一般该字符串是从 global.objToString(obj) 转换而来 <br/>",
+            "line": 121,
+            "description": "把字符串转换成对象，一般该字符串是从 cmpage.objToString(obj) 转换而来 <br/>",
             "itemtype": "method",
             "name": "objFromString",
             "return": {
@@ -3722,8 +4309,8 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 202,
-            "description": "把字符串转换成数组对象，其元素是对象，一般该元素是从 global.objToString(obj) 转换而来 <br/>",
+            "line": 133,
+            "description": "把字符串转换成数组对象，其元素是对象，一般该元素是从 cmpage.objToString(obj) 转换而来 <br/>",
             "itemtype": "method",
             "name": "arrFromString",
             "return": {
@@ -3742,7 +4329,32 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 221,
+            "line": 151,
+            "description": "从对象数组中查找符合匹配条件的元素，组成新的数组返回 <br/>\n    × 一般用于从记录表中按条件删选出子表",
+            "itemtype": "method",
+            "name": "arrFromString",
+            "return": {
+                "description": "JSON对象数组",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "来源数组",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "where",
+                    "description": "条件对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 175,
             "description": "从一个对象数组中取某一列（属性）值组成的数组，一般用于处理select返回的结果集",
             "itemtype": "method",
             "name": "arrGetValuesByColumnName",
@@ -3772,8 +4384,43 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 237,
-            "description": "取出数组中的重复值",
+            "line": 191,
+            "description": "从一个对象中取某些属性值组成的字符串，一般用于连接某条记录的某些值",
+            "itemtype": "method",
+            "name": "strGetValuesByPropertyName",
+            "return": {
+                "description": "新的字符串，由指定的属性值组成",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "源对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "fromObj",
+                    "description": "源对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "propertyNames",
+                    "description": "属性名称,逗号分隔",
+                    "type": "String"
+                },
+                {
+                    "name": "joinStr",
+                    "description": "连接的字符串",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 210,
+            "description": "去除数组中的重复值",
             "itemtype": "method",
             "name": "arrGetUnique",
             "return": {
@@ -3792,7 +4439,7 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 256,
+            "line": 229,
             "description": "进行CRUD之前转换成合适的值，用来匹配 thinkjs 的CRUD方法",
             "itemtype": "method",
             "name": "checksql",
@@ -3812,13 +4459,33 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 273,
+            "line": 245,
             "class": "cmpage.cmpage_global",
             "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 285,
+            "line": 256,
+            "description": "从URL字符串中解析出参数对象",
+            "itemtype": "method",
+            "name": "parmsFromUrl",
+            "return": {
+                "description": "url参数对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "url",
+                    "description": "URL字符串",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 279,
             "description": "通过形如：demo/customer 参数返回model，数据库配置采用model所在模块的配置",
             "itemtype": "method",
             "name": "model",
@@ -3843,7 +4510,7 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 304,
+            "line": 302,
             "description": "时间格式化输出",
             "itemtype": "method",
             "name": "model",
@@ -3868,20 +4535,104 @@
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 322,
-            "description": "cmpage的全局变量初始化，如enum等",
-            "itemtype": "method",
-            "name": "cmpageInit",
-            "return": {
-                "description": "",
-                "type": "无"
-            },
+            "line": 320,
+            "description": "cmpage的全局变量初始化，如enum等\n值>0 ,是为了和数据库中其他的参数值设置方式保持一致",
             "class": "cmpage.cmpage_global",
             "module": "cmpage.model"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
-            "line": 463,
+            "line": 348,
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 390,
+            "description": "有小数的格式化输出",
+            "itemtype": "method",
+            "name": "formatNumber",
+            "return": {
+                "description": "格式化输出",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "mum",
+                    "description": "需要格式化的数值",
+                    "type": "Float"
+                },
+                {
+                    "name": "opt",
+                    "description": "格式化配置对象，一般中业务模块的列设置中制定格式如： #####0.00",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 408,
+            "description": "取两个整数间的随机整数",
+            "itemtype": "method",
+            "name": "getRandomNum",
+            "return": {
+                "description": "随机整数",
+                "type": "Int"
+            },
+            "params": [
+                {
+                    "name": "Min",
+                    "description": "最小整数",
+                    "type": "Int"
+                },
+                {
+                    "name": "Max",
+                    "description": "最大整数",
+                    "type": "Int"
+                }
+            ],
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 425,
+            "description": "过滤敏感字符串",
+            "itemtype": "method",
+            "name": "",
+            "return": {
+                "description": "过滤后的字符串",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "str",
+                    "description": "源字符串",
+                    "type": "String"
+                }
+            ],
+            "class": "cmpage.cmpage_global",
+            "module": "cmpage.model"
+        },
+        {
+            "file": "src\\cmpage\\cmpage_global.js",
+            "line": 441,
+            "description": "根据文件名称判断文件是否是图片类型",
+            "itemtype": "method",
+            "name": "",
+            "return": {
+                "description": "是否图片文件",
+                "type": "Boolean"
+            },
+            "params": [
+                {
+                    "name": "filename",
+                    "description": "文件名称",
+                    "type": "String"
+                }
+            ],
             "class": "cmpage.cmpage_global",
             "module": "cmpage.model"
         },
@@ -3907,7 +4658,7 @@
         },
         {
             "file": "src\\flow\\controller\\act.js",
-            "line": 44,
+            "line": 45,
             "description": "删除流程节点并删除相关的路径信息， GET调用： /flow/act/delete?id=xxx",
             "itemtype": "method",
             "name": "delete",
@@ -3920,7 +4671,7 @@
         },
         {
             "file": "src\\flow\\controller\\act.js",
-            "line": 56,
+            "line": 57,
             "description": "删除流程节点的路径信息， GET调用： /flow/act/delete_path?id=xxx",
             "itemtype": "method",
             "name": "deletePath",
@@ -3933,7 +4684,7 @@
         },
         {
             "file": "src\\flow\\controller\\act.js",
-            "line": 68,
+            "line": 69,
             "description": "编辑流程节点内容， GET调用： /flow/act/edit?id=xxx",
             "itemtype": "method",
             "name": "edit",
@@ -3972,7 +4723,7 @@
         },
         {
             "file": "src\\flow\\controller\\proc.js",
-            "line": 47,
+            "line": 49,
             "description": "取流程模板的图形信息 调用： /flow/proc/flow_map?proc_id=xxx",
             "itemtype": "method",
             "name": "flowMap",
@@ -3985,7 +4736,7 @@
         },
         {
             "file": "src\\flow\\controller\\proc.js",
-            "line": 61,
+            "line": 63,
             "description": "保存流程模板的图形信息，如果某个节点和路径的data_id==0，则增加相应记录 POST调用： /flow/proc/save_map",
             "itemtype": "method",
             "name": "saveMap",
@@ -4325,6 +5076,38 @@
         {
             "file": "src\\flow\\model\\act.js",
             "line": 250,
+            "description": "取某个节点的有效去向节点，过滤掉或者自动完成非人为参与的节点，供其他方法调用",
+            "itemtype": "method",
+            "name": "getToActsFromId",
+            "return": {
+                "description": "去向节点集",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "actID",
+                    "description": "当前节点",
+                    "type": "Int"
+                },
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int",
+                    "optional": true
+                },
+                {
+                    "name": "toActs",
+                    "description": "去向节点集",
+                    "type": "Array",
+                    "optional": true
+                }
+            ],
+            "class": "flow.model.act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act.js",
+            "line": 280,
             "description": "根据ID取活动(流程节点)参数，供其他方法调用",
             "itemtype": "method",
             "name": "getActById",
@@ -4344,7 +5127,7 @@
         },
         {
             "file": "src\\flow\\model\\act.js",
-            "line": 266,
+            "line": 296,
             "description": "根据ID和模板ID取活动(流程节点)参数，供其他方法调用<br/>\n模板较多的时候，用本方法来改进性能",
             "itemtype": "method",
             "name": "getActByIdAndProcId",
@@ -4357,6 +5140,11 @@
                     "name": "id",
                     "description": "活动节点ID",
                     "type": "Int"
+                },
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int"
                 }
             ],
             "class": "flow.model.act",
@@ -4364,7 +5152,7 @@
         },
         {
             "file": "src\\flow\\model\\act.js",
-            "line": 283,
+            "line": 314,
             "description": "根据ID取活动节点的名称，一般用于页面模块配置中的‘替换’调用: flow/act:getNameById",
             "itemtype": "method",
             "name": "getNameById",
@@ -4380,6 +5168,205 @@
                 }
             ],
             "class": "flow.model.act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act.js",
+            "line": 330,
+            "description": "取活动节点的列表，一般用于页面模块配置中的‘替换’调用: flow/act:getActs",
+            "itemtype": "method",
+            "name": "getActs",
+            "return": {
+                "description": "活动节点列表",
+                "type": "Array"
+            },
+            "class": "flow.model.act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act.js",
+            "line": 342,
+            "description": "根据流程模板ID取活动节点的列表，一般用于页面模块配置中的‘替换’调用: flow/act:getActsByProcId",
+            "itemtype": "method",
+            "name": "getActsByProcId",
+            "return": {
+                "description": "活动节点列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.act",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_assign.js",
+            "line": 18,
+            "description": "新增的时候，初始化编辑页面的值，子类重写本方法可以定制新增页面的初始值",
+            "itemtype": "method",
+            "name": "pageEditInit",
+            "return": {
+                "description": "新增的记录对象",
+                "type": "Object"
+            },
+            "class": "flow.model.proc_assign",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_assign.js",
+            "line": 31,
+            "description": "改变某些编辑列的样式，子类中可以重写本方法类增加模块编辑页面的操作逻辑",
+            "itemtype": "method",
+            "name": "htmlGetEditInput",
+            "return": {
+                "description": "Edit页面的Input的HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "col",
+                    "description": "Edit页面的当前编辑列设置",
+                    "type": "Object"
+                },
+                {
+                    "name": "colValue",
+                    "description": "Input的值",
+                    "type": "String"
+                },
+                {
+                    "name": "input",
+                    "description": "Edit页面的Input的HTML片段",
+                    "type": "String"
+                }
+            ],
+            "class": "flow.model.proc_assign",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_assign.js",
+            "line": 73,
+            "description": "根据模板节点ID和用户属性取该节点的权限，供其他方法调用<br/>",
+            "itemtype": "method",
+            "name": "getAssignByUser",
+            "return": {
+                "description": "权限对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "actID",
+                    "description": "流程模板的节点ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "用户对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.proc_assign",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_assign.js",
+            "line": 98,
+            "description": "根据取流程节点指派记录的ID，取关联人的名称，一般用于页面模块配置中的‘替换’调用: flow/act_assign:getLinkNameById",
+            "itemtype": "method",
+            "name": "getLinkNameById",
+            "return": {
+                "description": "关联名称",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "关联ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.proc_assign",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_assign.js",
+            "line": 116,
+            "description": "根据ID取活动(流程节点)的指派记录对象，供其他方法调用",
+            "itemtype": "method",
+            "name": "getAssignById",
+            "return": {
+                "description": "活动(流程节点)参数对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.proc_assign",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_assign.js",
+            "line": 132,
+            "description": "根据ID和模板节点ID取活动(流程节点)的指派记录对象，供其他方法调用<br/>\n模板较多的时候，用本方法来改进性能",
+            "itemtype": "method",
+            "name": "getAssignByActId",
+            "return": {
+                "description": "活动(流程节点)参数对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "actID",
+                    "description": "流程模板的节点ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.proc_assign",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_assign.js",
+            "line": 150,
+            "description": "取活动节点的指派对象列表，一般用于页面模块配置中的‘替换’调用: flow/act_assign:getAssigns",
+            "itemtype": "method",
+            "name": "getAssigns",
+            "return": {
+                "description": "活动节点列表",
+                "type": "Array"
+            },
+            "class": "flow.model.proc_assign",
+            "module": "flow.model"
+        },
+        {
+            "file": "src\\flow\\model\\act_assign.js",
+            "line": 160,
+            "description": "根据流程模板节点ID取活动节点的指派记录列表，一般用于页面模块配置中的‘替换’调用: flow/act_assign:getAssignsByActId",
+            "itemtype": "method",
+            "name": "getAssignsByActId",
+            "return": {
+                "description": "活动节点列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "actID",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.proc_assign",
             "module": "flow.model"
         },
         {
@@ -4523,6 +5510,104 @@
             "module": "flow.model"
         },
         {
+            "file": "src\\flow\\model\\appr.js",
+            "line": 24,
+            "description": "取查询项的设置，结合POST参数，得到Where字句",
+            "class": "cmpage.model.appr",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\appr.js",
+            "line": 32,
+            "description": "审核页面初始化，从URL传入参数",
+            "itemtype": "method",
+            "name": "pageEditInit",
+            "return": {
+                "description": "新增的记录对象",
+                "type": "Object"
+            },
+            "class": "cmpage.model.appr",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\appr.js",
+            "line": 50,
+            "description": "编辑页面保存,<br/>\n保存之前需要更新关联对象的状态",
+            "itemtype": "method",
+            "name": "pageSave",
+            "params": [
+                {
+                    "name": "parms",
+                    "description": "前端传入的FORM参数",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.appr",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\appr_task.js",
+            "line": 24,
+            "description": "取查询项的设置，结合POST参数，得到Where字句",
+            "class": "cmpage.model.appr",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\appr_task.js",
+            "line": 32,
+            "description": "审核页面初始化，从URL传入参数",
+            "itemtype": "method",
+            "name": "pageEditInit",
+            "return": {
+                "description": "新增的记录对象",
+                "type": "Object"
+            },
+            "class": "cmpage.model.appr",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\appr_task.js",
+            "line": 52,
+            "description": "编辑页面保存,<br/>\n保存后需要更新关联对象的状态",
+            "itemtype": "method",
+            "name": "pageSave",
+            "params": [
+                {
+                    "name": "parms",
+                    "description": "前端传入的FORM参数",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.appr",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\appr_task.js",
+            "line": 76,
+            "description": "增加审核状态记录,<br/>\n增加后需要更新关联对象的状态",
+            "itemtype": "method",
+            "name": "addStatus",
+            "params": [
+                {
+                    "name": "taskAct",
+                    "description": "任务节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "act",
+                    "description": "流程模板节点对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "user",
+                    "description": "当前用户对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "cmpage.model.appr",
+            "module": "demo.model"
+        },
+        {
             "file": "src\\flow\\model\\proc.js",
             "line": 18,
             "description": "开始一个新的流程实例</br>\n调用前先初始化 fwInit",
@@ -4546,7 +5631,7 @@
                 }
             ],
             "class": "flow.model.proc",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\proc.js",
@@ -4571,7 +5656,7 @@
                 }
             ],
             "class": "flow.model.proc",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\proc.js",
@@ -4596,7 +5681,7 @@
                 }
             ],
             "class": "flow.model.proc",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\proc.js",
@@ -4621,7 +5706,7 @@
                 }
             ],
             "class": "flow.model.proc",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\proc.js",
@@ -4646,7 +5731,7 @@
                 }
             ],
             "class": "flow.model.proc",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\proc.js",
@@ -4677,7 +5762,7 @@
                 }
             ],
             "class": "flow.model.proc",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\proc.js",
@@ -4697,7 +5782,7 @@
                 }
             ],
             "class": "flow.model.proc",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\proc.js",
@@ -4717,28 +5802,194 @@
                 }
             ],
             "class": "flow.model.proc",
-            "module": "flow.model"
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_assign.js",
+            "line": 18,
+            "description": "新增的时候，初始化编辑页面的值，子类重写本方法可以定制新增页面的初始值",
+            "itemtype": "method",
+            "name": "pageEditInit",
+            "return": {
+                "description": "新增的记录对象",
+                "type": "Object"
+            },
+            "class": "flow.model.proc_assign",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_assign.js",
+            "line": 33,
+            "description": "改变某些编辑列的样式，子类中可以重写本方法类增加模块编辑页面的操作逻辑",
+            "itemtype": "method",
+            "name": "htmlGetEditInput",
+            "return": {
+                "description": "Edit页面的Input的HTML片段",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "col",
+                    "description": "Edit页面的当前编辑列设置",
+                    "type": "Object"
+                },
+                {
+                    "name": "colValue",
+                    "description": "Input的值",
+                    "type": "String"
+                },
+                {
+                    "name": "input",
+                    "description": "Edit页面的Input的HTML片段",
+                    "type": "String"
+                }
+            ],
+            "class": "flow.model.proc_assign",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_assign.js",
+            "line": 76,
+            "description": "根据模板ID和用户属性取该流程的按钮权限，供其他方法调用<br/>",
+            "itemtype": "method",
+            "name": "getAssignByUser",
+            "return": {
+                "description": "权限对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "user",
+                    "description": "用户对象",
+                    "type": "Object"
+                }
+            ],
+            "class": "flow.model.proc_assign",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_assign.js",
+            "line": 96,
+            "description": "根据取流程指派记录的ID，取关联人的名称，一般用于页面模块配置中的‘替换’调用: flow/proc_assign:getLinkNameById",
+            "itemtype": "method",
+            "name": "getLinkNameById",
+            "return": {
+                "description": "模板名称",
+                "type": "String"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.proc_assign",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_assign.js",
+            "line": 113,
+            "description": "根据ID取任务的指派记录对象，供其他方法调用",
+            "itemtype": "method",
+            "name": "getAssignById",
+            "return": {
+                "description": "活动(流程节点)参数对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.proc_assign",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_assign.js",
+            "line": 129,
+            "description": "根据ID和模板ID取任务的指派记录对象，供其他方法调用<br/>\n模板较多的时候，用本方法来改进性能",
+            "itemtype": "method",
+            "name": "getAssignByProcId",
+            "return": {
+                "description": "活动(流程节点)参数对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "id",
+                    "description": "活动节点ID",
+                    "type": "Int"
+                },
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.proc_assign",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_assign.js",
+            "line": 147,
+            "description": "取任务的指派记录列表，一般用于页面模块配置中的‘替换’调用: flow/proc_assign:getAssigns",
+            "itemtype": "method",
+            "name": "getAssigns",
+            "return": {
+                "description": "活动节点列表",
+                "type": "Array"
+            },
+            "class": "flow.model.proc_assign",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_assign.js",
+            "line": 157,
+            "description": "根据流程模板ID取任务的指派记录列表，一般用于页面模块配置中的‘替换’调用: flow/proc_assign:getAssignsByProcId",
+            "itemtype": "method",
+            "name": "getAssignsByProcId",
+            "return": {
+                "description": "活动节点列表",
+                "type": "Array"
+            },
+            "params": [
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.proc_assign",
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\proc_list.js",
             "line": 15,
             "description": "初始化编辑页面的值",
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\proc_list.js",
             "line": 27,
             "description": "编辑页面保存,\n如果是多个表的视图，则根据存在于page.c_table中的列更新表，一般需要在子类中继承",
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\proc_list.js",
             "line": 40,
             "description": "根据模板的类型自动生成活动节点",
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\proc_list.js",
@@ -4758,13 +6009,13 @@
                 }
             ],
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\proc_list.js",
             "line": 61,
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\proc_list.js",
@@ -4784,7 +6035,27 @@
                 }
             ],
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\model\\proc_list.js",
+            "line": 129,
+            "description": "复制流程模板生成新的流程模板，模板名称 xxxxx_copy",
+            "itemtype": "method",
+            "name": "copyToNewProc",
+            "return": {
+                "description": "拷贝状态，包括新的流程模板对象",
+                "type": "Object"
+            },
+            "params": [
+                {
+                    "name": "procID",
+                    "description": "流程模板ID",
+                    "type": "Int"
+                }
+            ],
+            "class": "flow.model.task",
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task.js",
@@ -4793,7 +6064,7 @@
             "itemtype": "method",
             "name": "fwStart",
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task.js",
@@ -4806,7 +6077,7 @@
                 "type": "Object"
             },
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task.js",
@@ -4815,7 +6086,7 @@
             "itemtype": "method",
             "name": "fwInit",
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task.js",
@@ -4828,7 +6099,7 @@
                 "type": "String"
             },
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task.js",
@@ -4837,7 +6108,7 @@
             "itemtype": "method",
             "name": "fwRun",
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task.js",
@@ -4846,7 +6117,7 @@
             "itemtype": "method",
             "name": "fwSuspend",
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task.js",
@@ -4855,7 +6126,7 @@
             "itemtype": "method",
             "name": "fwTerminate",
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task.js",
@@ -4864,7 +6135,7 @@
             "itemtype": "method",
             "name": "fwEnd",
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task.js",
@@ -4881,7 +6152,7 @@
                 }
             ],
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task.js",
@@ -4890,7 +6161,7 @@
             "itemtype": "method",
             "name": "save",
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task.js",
@@ -4910,7 +6181,7 @@
                 }
             ],
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task.js",
@@ -4930,7 +6201,7 @@
                 }
             ],
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task.js",
@@ -4950,7 +6221,7 @@
                 }
             ],
             "class": "flow.model.task",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -4963,7 +6234,7 @@
                 "type": "Boolean"
             },
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -4972,7 +6243,7 @@
             "itemtype": "method",
             "name": "defineFromRule",
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -4981,7 +6252,7 @@
             "itemtype": "method",
             "name": "fwRun",
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -4990,7 +6261,7 @@
             "itemtype": "method",
             "name": "fwSuspend",
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -4999,7 +6270,7 @@
             "itemtype": "method",
             "name": "fwTerminate",
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -5008,7 +6279,7 @@
             "itemtype": "method",
             "name": "fwEnd",
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -5028,7 +6299,7 @@
                 }
             ],
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -5041,7 +6312,7 @@
                 "type": "Object"
             },
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -5054,7 +6325,7 @@
                 "type": "Object"
             },
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -5063,7 +6334,7 @@
             "itemtype": "method",
             "name": "save",
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -5079,7 +6350,7 @@
                 }
             ],
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -5099,7 +6370,7 @@
                 }
             ],
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -5119,7 +6390,7 @@
                 }
             ],
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -5139,7 +6410,7 @@
                 }
             ],
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -5159,7 +6430,7 @@
                 }
             ],
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act.js",
@@ -5179,7 +6450,7 @@
                 }
             ],
             "class": "flow.model.task_act",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act_appr.js",
@@ -5192,7 +6463,7 @@
                 "type": "Object"
             },
             "class": "flow.model.task_act_appr",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_act_appr.js",
@@ -5201,7 +6472,7 @@
             "itemtype": "method",
             "name": "domainGetData",
             "class": "flow.model.task_act_appr",
-            "module": "flow.model"
+            "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\task_list.js",
@@ -5213,11 +6484,58 @@
                 "description": "是否显示",
                 "type": "Boolean"
             },
-            "class": "",
-            "module": "flow.model"
+            "class": "cmpage.cmpage_global_flow",
+            "module": "demo.model"
+        },
+        {
+            "file": "src\\flow\\cmpage_global_flow.js",
+            "line": 15,
+            "description": "cmpage的全局变量初始化，如enum等\n值>0 ,是为了和数据库中其他的参数值设置方式保持一致",
+            "class": "cmpage.cmpage_global_flow",
+            "module": "cmpage.model"
         }
     ],
     "warnings": [
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\cmpage\\model\\page.js:849"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\cmpage\\model\\page.js:849"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\cmpage\\model\\page.js:849"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\cmpage\\model\\page.js:1421"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\cmpage\\model\\page.js:1421"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\cmpage\\model\\page.js:1421"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\cmpage\\model\\page.js:1421"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\cmpage\\model\\page_mob.js:347"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\cmpage\\model\\page_mob.js:347"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\cmpage\\model\\page_mob.js:347"
+        },
         {
             "message": "replacing incorrect tag: params with param",
             "line": " src\\flow\\model\\act.js:30"
@@ -5300,7 +6618,47 @@
         },
         {
             "message": "replacing incorrect tag: params with param",
-            "line": " src\\flow\\model\\act.js:266"
+            "line": " src\\flow\\model\\act.js:250"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:250"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:280"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act.js:296"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_assign.js:31"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_assign.js:31"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_assign.js:31"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_assign.js:73"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_assign.js:73"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_assign.js:116"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\act_assign.js:132"
         },
         {
             "message": "replacing incorrect tag: params with param",
@@ -5396,6 +6754,34 @@
         },
         {
             "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc_assign.js:33"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc_assign.js:33"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc_assign.js:33"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc_assign.js:76"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc_assign.js:76"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc_assign.js:113"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " src\\flow\\model\\proc_assign.js:129"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
             "line": " src\\flow\\model\\task.js:202"
         },
         {
@@ -5440,19 +6826,35 @@
         },
         {
             "message": "Missing item type\n代码树，输入根节点ID为参数 ------- 以下3个操作已废弃，改用 codeTreeAction -----------\n直接通过树增删改节点\n/admin/code?rootid=1",
-            "line": " src\\admin\\controller\\code.js:164"
+            "line": " src\\admin\\controller\\code.js:210"
         },
         {
             "message": "Missing item type\nconfig",
             "line": " src\\cmpage\\config\\config.js:2"
         },
         {
-            "message": "Missing item type",
-            "line": " src\\cmpage\\model\\module.js:323"
+            "message": "Missing item type\nindex action",
+            "line": " src\\cmpage\\controller\\wechat.js:18"
+        },
+        {
+            "message": "Missing item type\nconstructor",
+            "line": " src\\cmpage\\model\\base.js:33"
+        },
+        {
+            "message": "Missing item type\n创建连接",
+            "line": " src\\cmpage\\model\\base.js:51"
+        },
+        {
+            "message": "Missing item type\n执行原生SQL语句，取结果集返回",
+            "line": " src\\cmpage\\model\\base.js:115"
         },
         {
             "message": "Missing item type",
-            "line": " src\\cmpage\\model\\module.js:390"
+            "line": " src\\cmpage\\model\\module.js:450"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\cmpage\\model\\module.js:537"
         },
         {
             "message": "Missing item type\npage_mob model 实现手机APP的模块接口",
@@ -5460,27 +6862,23 @@
         },
         {
             "message": "Missing item type\npage_rec model 实现主从表页面的编辑和查看",
-            "line": " src\\cmpage\\model\\page_rec.js:10"
-        },
-        {
-            "message": "Missing item type\n取列表中按钮的设置，组合成HTML输出",
-            "line": " src\\cmpage\\model\\page_rec.js:16"
+            "line": " src\\cmpage\\model\\page_ms.js:10"
         },
         {
             "message": "Missing item type",
-            "line": " src\\cmpage\\cmpage_global.js:16"
+            "line": " src\\cmpage\\cmpage_global.js:17"
         },
         {
             "message": "Missing item type",
-            "line": " src\\cmpage\\cmpage_global.js:93"
+            "line": " src\\cmpage\\cmpage_global.js:245"
+        },
+        {
+            "message": "Missing item type\ncmpage的全局变量初始化，如enum等\n值>0 ,是为了和数据库中其他的参数值设置方式保持一致",
+            "line": " src\\cmpage\\cmpage_global.js:320"
         },
         {
             "message": "Missing item type",
-            "line": " src\\cmpage\\cmpage_global.js:273"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\cmpage\\cmpage_global.js:463"
+            "line": " src\\cmpage\\cmpage_global.js:348"
         },
         {
             "message": "Missing item type\nconfig",
@@ -5493,6 +6891,14 @@
         {
             "message": "Missing item type\nindex action logic",
             "line": " src\\flow\\logic\\index.js:8"
+        },
+        {
+            "message": "Missing item type\n取查询项的设置，结合POST参数，得到Where字句",
+            "line": " src\\flow\\model\\appr.js:24"
+        },
+        {
+            "message": "Missing item type\n取查询项的设置，结合POST参数，得到Where字句",
+            "line": " src\\flow\\model\\appr_task.js:24"
         },
         {
             "message": "Missing item type\n初始化编辑页面的值",
@@ -5509,6 +6915,10 @@
         {
             "message": "Missing item type",
             "line": " src\\flow\\model\\proc_list.js:61"
+        },
+        {
+            "message": "Missing item type\ncmpage的全局变量初始化，如enum等\n值>0 ,是为了和数据库中其他的参数值设置方式保持一致",
+            "line": " src\\flow\\cmpage_global_flow.js:15"
         }
     ]
 }

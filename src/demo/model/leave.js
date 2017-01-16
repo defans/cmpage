@@ -26,12 +26,11 @@ export default class extends CMPage {
      */
     async pageEditInit(){
         let md =await super.pageEditInit();
-        let parmsUrl =JSON.parse(this.mod.parmsUrl);
         md.c_user = this.mod.user.id;
         md.c_status = 1192;     //系统参数 -- 工作流参数 -- 业务模块状态 -- 请假状态 -- 待申请
         //c_task 是通过URL参数传过来的，也就是说已经启动了新的流程实例，本新增页面是由流程来调用的
         //当然也可以用常规的‘新增’页面，保存的时候判断如果没有启动流程实例，则启动新的实例，不过这个需要修改流程模板了
-        md.c_task = parmsUrl.taskID;
+        md.c_task = this.mod.parmsUrl.taskID;
 
         return md
     }
@@ -62,10 +61,10 @@ export default class extends CMPage {
      */
     async pageSave(parms){
         await super.pageSave(parms);
-        global.debug(this.rec,'leave.pageSave - this.rec');
+        cmpage.debug(this.rec,'leave.pageSave - this.rec');
         if(parms.id ==0 && this.rec.id >0){
             let parmsUrl = JSON.parse(parms.parmsUrl);
-            //global.debug(parmsUrl,'leave.pageSave - parmsUrl');
+            //cmpage.debug(parmsUrl,'leave.pageSave - parmsUrl');
             //增加审核状态
             let appr = {c_link:this.rec.id, c_link_type:'t_leave', c_modulename:'Leave', c_task:this.rec.c_task,
                 c_task_act:parmsUrl.taskActID, c_status:this.rec.c_status, c_user:this.mod.user.id, c_time:think.datetime(),c_group:this.mod.user.groupID};
@@ -82,19 +81,6 @@ export default class extends CMPage {
     }
 
     /**
-     * 编辑页面保存,<br/>
-     * 如果是多个表的数据产生的编辑页，则根据存在于this.mod.c_table中的列更新表，一般需要在子类中继承，例如： admin/user:pageSave
-     * @method  updateStatus
-     * @return {object} 记录对象
-     * @param  {int} id 记录ID
-     * @param  {int} status 状态ID,一般在t_code表中设置
-     */
-    async updateStatus(id,status){
-        await this.model('t_leave').where({id:id}).update({c_status:status});
-
-    }
-
-    /**
      * 条件判断，一般供流程节点调用以判断是否可以继续往下执行,<br/>
      * 此处逻辑较简单，可以直接在流程模板的路径节点中设置，本方法是为了演示而写 <br />
      * taskAct.domainData 是t_leave的一条记录
@@ -106,11 +92,28 @@ export default class extends CMPage {
      */
     async isApprLevel3(taskAct, act, user){
         let rec = taskAct.domainData;
-        global.debug(taskAct.domainData,'leave.isApprLevel3 - taskAct.domainData');
+        cmpage.debug(taskAct.domainData,'leave.isApprLevel3 - taskAct.domainData');
         if(!think.isEmpty(rec)){
             return rec.c_days >3;
         }
         return false;
+    }
+
+    /**
+     * 修改记录的状态,<br/>
+     * 一般供 appr.js 调用
+     * @method  updateStatus
+     * @return {object} 记录对象
+     * @param  {object} apprMd t_appr的记录对象
+     */
+    async updateStatus(apprMd){
+        debug(apprMd,'leave.updateStatus - apprMd');
+        let md = {c_status:apprMd.c_status};
+        if(apprMd.c_status == 1195){
+            md.c_person_appr = apprMd.c_user;
+            md.c_time_appr = apprMd.c_time;
+        }
+        await this.model('t_leave').where({id:apprMd.c_link}).update(md);
     }
 
     /**
@@ -125,7 +128,7 @@ export default class extends CMPage {
         let rec = taskAct.domainData;
         debug(taskAct.domainData,'leave.finishLeave - taskAct.domainData');
         if(!think.isEmpty(rec)){
-            if(datetime(rec.c_time_end) < datetime() && taskAct.c_domain_st >0){
+            if(cmpage.datetime(rec.c_time_end) < cmpage.datetime() && taskAct.c_domain_st >0){
                 //增加状态记录
                 let md ={};
                 md.c_status = taskAct.c_domain_st;
@@ -136,8 +139,8 @@ export default class extends CMPage {
                 md.c_user = user.id;
                 md.c_time = think.datetime();
                 md.c_group = user.groupID;
-                await this.model('t_appr').add(md);
-                await this.updateStatus(taskAct.task_link,taskAct.c_domain_st);
+                md.id = await this.model('t_appr').add(md);
+                await this.updateStatus(md);
                 return true;
             }
         }
@@ -163,8 +166,8 @@ export default class extends CMPage {
             md.c_user = user.id;
             md.c_time = think.datetime();
             md.c_group = user.groupID;
-            await this.model('t_appr').add(md);
-            await this.updateStatus(task.c_link,1199);
+            md.id = await this.model('t_appr').add(md);
+            await this.updateStatus(md);
         }
     }
 
@@ -182,10 +185,10 @@ export default class extends CMPage {
      * @method  htmlGetActBtns
      * @return {string} HTML页面片段
      */
-    async htmlGetActBtns(rec) {
+    async htmlGetTaskActBtns(rec) {
         //debug(rec,'leave.htmlGetActBtns - rec');
         if(rec.hasOwnProperty('id') && rec.c_status !== 1197){
-            return await super.htmlGetActBtns(rec);
+            return await super.htmlGetTaskActBtns(rec);
         }else{
             return '';      //如果是新增页面，则不显示流程按钮
         }

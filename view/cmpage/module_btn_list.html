@@ -32,7 +32,7 @@
                 <th title="图标"><input type="text" name="editList[#index#].c_icon"  value="" size="5"></th>
                 <th title="onclick"><input type="text" name="editList[#index#].c_onclick"  value="" size="5"></th>
                 <th title="备注"><textarea name="editList[#index#].c_memo" data-toggle="autoheight" rows="1"></textarea></th>
-                <th title="MUI"><textarea name="editList[#index#].c_mui" data-toggle="autoheight" rows="1"></textarea></th>
+                <!--<th title="MUI"><textarea name="editList[#index#].c_mui" data-toggle="autoheight" rows="1"></textarea></th>-->
 
                 <th title="" data-addtool="false" >
 
@@ -55,7 +55,7 @@
                     <td ><%= item.c_icon%></td>
                     <td ><%= item.c_onclick%></td>
                     <td ><%= item.c_memo%></td>
-                    <td ><%= item.c_mui%></td>
+                    <!--<td ><%= item.c_mui%></td>-->
                     <td data-noedit="true">
                         <a href="/cmpage/module/delete?id=<%= item.id%>&table=t_module_btn&flag=true" class="btn btn-red row-del" data-confirm-msg="确定要删除该行信息吗？">删</a>
                     </td>

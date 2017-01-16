@@ -281,7 +281,39 @@
                     
                        <li>
                             
+                           <a href="../classes/cmpage.model.base.html">cmpage.model.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.file_list.html">cmpage.model.file_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -311,19 +343,9 @@
                            </ul>
                        </li>
                     
-                    </ul>
-                </dd>
-             
-                <dt>
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
-                </dt>
-                <dd>
-                    <ul>
-                   
                        <li>
                             
-                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <a href="../classes/cmpage.cmpage_global_flow.html">cmpage.cmpage_global_flow</a>
                            <ul>
                                 
                            </ul>
@@ -334,14 +356,54 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                    <a href="../modules/demo.model.html">demo.model</a>
                 </dt>
                 <dd>
                     <ul>
                    
                        <li>
                             
-                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <a href="../classes/flow.model.proc_assign.html">flow.model.proc_assign</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.appr.html">cmpage.model.appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -423,38 +485,6 @@
                            </ul>
                        </li>
                     
-                       <li>
-                            
-                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task.html">flow.model.task</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
                     </ul>
                 </dd>
              
@@ -504,7 +534,7 @@
 // | Author: defans &lt;defans@sina.cn&gt;
 // +----------------------------------------------------------------------
 
-
+import Base from &#x27;./base.js&#x27;;
 export default class extends think.model.base {
 
     //数据库中字段的类型
@@ -513,8 +543,8 @@ export default class extends think.model.base {
     }
     //分页列表中各项的显示类型
     showTypes(){
-        return [{value:&quot;text&quot;,text:&quot;文本&quot;},{value:&quot;checkbox&quot;,text:&quot;是否选中&quot;},{value:&quot;replace&quot;,text:&quot;替换&quot;},{value:&quot;html&quot;,text:&quot;HTML&quot;},
-        {value:&quot;navtab&quot;,text:&quot;Tab页面&quot;},{value:&quot;dialog&quot;,text:&quot;对话框&quot;},{value:&quot;kindeditor&quot;,text:&quot;富文本&quot;}];
+        return [{value:&quot;text&quot;,text:&quot;文本&quot;},{value:&quot;checkbox&quot;,text:&quot;是否选中&quot;},{value:&quot;replace&quot;,text:&quot;替换&quot;},{value:&quot;html&quot;,text:&quot;HTML&quot;}];    //,
+        //{value:&quot;navtab&quot;,text:&quot;Tab页面&quot;},{value:&quot;dialog&quot;,text:&quot;对话框&quot;},{value:&quot;kindeditor&quot;,text:&quot;富文本&quot;}];
     }
     //分页列表中最后一行是合计的设置类型
     sumTypes(){
@@ -525,12 +555,13 @@ export default class extends think.model.base {
     editTypes(){
         return [{value:&quot;text&quot;,text:&quot;文本&quot;},{value:&quot;textarea&quot;,text:&quot;多行文本&quot;},{value:&quot;number&quot;,text:&quot;数字&quot;},{value:&quot;datetime&quot;,text:&quot;日期时间&quot;},
             {value:&quot;checkbox&quot;,text:&quot;是否选中&quot;},{value:&quot;select&quot;,text:&quot;下拉选择&quot;},{value:&quot;selectBlank&quot;,text:&quot;下拉可空&quot;},{value:&quot;lookup&quot;,text:&quot;查找带回&quot;},
-            {value:&quot;hidden&quot;,text:&quot;隐藏&quot;},{value:&quot;areaSelect&quot;,text:&quot;地区联动&quot;},{value:&quot;readonly&quot;,text:&quot;只读&quot;},{value:&quot;readonlyReplace&quot;,text:&quot;只读替换&quot;},{value:&quot;kindeditor&quot;,text:&quot;富文本&quot;}];
+            {value:&quot;hidden&quot;,text:&quot;隐藏&quot;},{value:&quot;areaSelect&quot;,text:&quot;地区联动&quot;},{value:&quot;readonly&quot;,text:&quot;只读&quot;},//{value:&quot;readonlyReplace&quot;,text:&quot;只读替换&quot;},
+            {value:&quot;kindeditor&quot;,text:&quot;富文本&quot;},{value:&quot;selectTree&quot;,text:&quot;下拉树单选&quot;},{value:&quot;selectTreeMultiple&quot;,text:&quot;下拉树多选&quot;},{value:&quot;fileUpload&quot;,text:&quot;文件上传&quot;}];
     }
     //查询项的控件类型
     queryTypes(){
         return [{value:&quot;text&quot;,text:&quot;文本&quot;},{value:&quot;number&quot;,text:&quot;数字&quot;},{value:&quot;datetime&quot;,text:&quot;时间&quot;},{value:&quot;checkbox&quot;,text:&quot;是否选中&quot;},{value:&quot;select&quot;,text:&quot;下拉选择&quot;},
-            {value:&quot;fixed&quot;,text:&quot;固定&quot;},{value:&quot;lookup&quot;,text:&quot;查找带回&quot;},{value:&quot;hidden&quot;,text:&quot;隐藏&quot;},
+            {value:&quot;selectTree&quot;,text:&quot;下拉树单选&quot;},{value:&quot;selectTreeMultiple&quot;,text:&quot;下拉树多选&quot;},{value:&quot;fixed&quot;,text:&quot;固定&quot;},{value:&quot;lookup&quot;,text:&quot;查找带回&quot;},{value:&quot;hidden&quot;,text:&quot;隐藏&quot;},
             {value:&quot;provinceSelect&quot;,text:&quot;省份选择&quot;},{value:&quot;citySelect&quot;,text:&quot;城市选择&quot;},{value:&quot;countrySelect&quot;,text:&quot;区县选择&quot;}];
     }
 
@@ -541,21 +572,36 @@ export default class extends think.model.base {
     }
 
     //从数据源取字段名称和类型
-    async getAllColumns(table,path){
+    async getAllColumns(datasource,table,path){
         let thinkModule = think.isEmpty(path) ? &#x27;common&#x27;:path.split(&#x27;/&#x27;)[0];
         let config = think.config(&quot;db&quot;,undefined,thinkModule);
         let sql=&#x27;&#x27;;
         if( config.type === &#x27;postgresql&#x27;){
             sql = &#x60;SELECT    a.attnum,  a.attname AS field,  t.typname AS type,   case when a.attlen &gt;0 then a.attlen else a.atttypmod end AS length,  a.attnotnull AS notnull,  col_description(a.attrelid,a.attnum) as comment
-                FROM   pg_class c,   pg_attribute a,   pg_type t WHERE   c.relname = &#x27;${table}&#x27;  and a.attnum &gt; 0  and a.attrelid = c.oid  and a.atttypid = t.oid &#x60;;;
+                FROM   pg_class c,   pg_attribute a,   pg_type t WHERE   c.relname = &#x27;${datasource}&#x27;  and a.attnum &gt; 0  and a.attrelid = c.oid  and a.atttypid = t.oid &#x60;;;
+        }else if(config.type === &#x27;mssql&#x27;){
+            sql = &#x60;SELECT a.colorder, a.name as [column],b.name as [type],collen=a.length
+                 FROM syscolumns a left join systypes b on a.xusertype=b.xusertype  inner join sysobjects d on a.id=d.id   and   d.name&lt;&gt;&#x27;dtproperties&#x27;
+                where d.name=&#x27;${datasource}&#x27; order by a.id,a.colorder&#x60;;
         }else
         {
-            sql = &#x60;SHOW FULL COLUMNS FROM ${table}&#x60;;
+            sql = &#x60;SHOW FULL COLUMNS FROM ${datasource}&#x60;;
         }
         let ret =[];
-        let list= await think.model(&#x27;utils&#x27;,config,thinkModule).query(sql);
+        let list= await think.model(&#x27;cmpage/base&#x27;,config).query(sql);
         if(config.type === &#x27;postgresql&#x27;){
             ret = list;
+        }else if(config.type === &#x27;mssql&#x27;){
+            ret = list;
+            let comments = await think.model(&#x27;cmpage/base&#x27;,config).query(&#x60;SELECT * FROM sysproperties  where TableName= &#x27;${table}&#x27;&#x60;);
+            for(let comment of comments){
+                for(let col of ret){
+                    if(col.column == comment.ColName){
+                        col.comment = comment.PropValue;
+                        break
+                    }
+                }
+            }
         }else {
             for(let col of list){
                 ret.push({column:col.Field, type:col.Type, comment:col.Comment})
@@ -566,7 +612,7 @@ export default class extends think.model.base {
                 col.type = &#x27;bool&#x27;;
             }else if(col.type.indexOf(&#x27;int&#x27;) ===0 || col.type.indexOf(&#x27;bigint&#x27;) ===0 || col.type.indexOf(&#x27;tinyint&#x27;) ===0 ){
                 col.type = &#x27;int&#x27;;
-            }else if(col.type === &#x27;date&#x27; ){
+            }else if(col.type === &#x27;date&#x27; || col.type === &#x27;smalldatetime&#x27; ){
                 col.type = &#x27;date&#x27;;
             }else if(col.type.indexOf(&#x27;timestamp&#x27;) === 0 || col.type === &#x27;datetime&#x27; ){
                 col.type = &#x27;timestamp&#x27;;
@@ -597,11 +643,11 @@ export default class extends think.model.base {
         let model =this.model(&#x27;t_module_col&#x27;);
 
         //await model.where({c_module: md.id}).delete();
-        let columns = await this.getAllColumns(md.c_datasource,md.c_path);
+        let columns = await this.getAllColumns(md.c_datasource,md.c_table,md.c_path);
         if(columns.length ===0){    return {statusCode:200,message:&#x27;没有列数据，请确认数据连接是否正确。&#x27;}; }
         let comments = [];
         if(md.c_datasource !== md.c_table){
-            comments = await this.getAllColumns(md.c_table,md.c_path);
+            comments = await this.getAllColumns(md.c_table,md.c_table,md.c_path);
         }else{
             Object.assign(comments,columns);
         }
@@ -626,7 +672,7 @@ export default class extends think.model.base {
             }else if(col.type === &#x27;date&#x27;){
                 colmd.c_format = &#x27;yyyy-MM-dd&#x27;;
             }
-            await model.add(global.checksql(colmd));
+            await model.add(cmpage.checksql(colmd));
         }
         return {statusCode:200,message:&#x27;&#x27;};
     }
@@ -639,11 +685,11 @@ export default class extends think.model.base {
         let model =this.model(&#x27;t_module_edit&#x27;);
 
         //await model.where({c_module: md.id}).delete();
-        let columns = await this.getAllColumns(md.c_datasource,md.c_path);
+        let columns = await this.getAllColumns(md.c_datasource,md.c_table,md.c_path);
         if(columns.length ===0){    return {statusCode:200,message:&#x27;没有列数据，请确认数据连接是否正确。&#x27;}; }
         let comments = [];
         if(md.c_datasource !== md.c_table){
-            comments = await this.getAllColumns(md.c_table,md.c_path);
+            comments = await this.getAllColumns(md.c_table,md.c_table,md.c_path);
         }else{
             Object.assign(comments,columns);
         }
@@ -661,7 +707,7 @@ export default class extends think.model.base {
 
             let colmd = {c_module:md.id, c_column:col.column, c_coltype:col.type, c_scale:col.length, c_name:this.getColumnComment(comments,col.column),
                 c_desc : col.column,c_editable:true, c_type:&#x27;text&#x27;, c_format:&#x27;&#x27;, c_order:(k+1), c_width:28, c_style:&#x27;&#x27;,
-                c_suffix:&#x27;&#x27;, c_isshow:true,c_isrequired:false, c_user:0, c_time: think.datetime(), c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,c_validate_rules:&#x27;&#x27;};
+                c_suffix:&#x27;&#x27;, c_isshow:true,c_isrequired:false, c_user:0, c_time: think.datetime(), c_memo:&#x27;&#x27;,c_other:&#x27;&#x27;, c_mui:&#x27;&#x27;,c_validate_rules:&#x27;&#x27;};
             if([&#x27;id&#x27;,&#x27;c_time&#x27;,&#x27;c_user&#x27;,&#x27;c_group&#x27;].indexOf(col.column) !== -1){
                 colmd.c_type =&#x27;hidden&#x27;;
             }else if(col.type===&#x27;bool&#x27;){
@@ -669,7 +715,7 @@ export default class extends think.model.base {
             }else if(col.type===&#x27;timestamp&#x27; || col.type===&#x27;date&#x27;){
                 colmd.c_type = &#x27;datetime&#x27;;
             }
-            await model.add(global.checksql(colmd));
+            await model.add(cmpage.checksql(colmd));
         }
         return {statusCode:200,message:&#x27;&#x27;};
     }
@@ -681,11 +727,11 @@ export default class extends think.model.base {
         let md = await this.model(&#x27;t_module&#x27;).where({id:moduleID}).find();
         let model =this.model(&#x27;t_module_query&#x27;);
         //await model.where({c_module: md.id}).delete();
-        let columns = await this.getAllColumns(md.c_datasource,md.c_path);
+        let columns = await this.getAllColumns(md.c_datasource,md.c_table,md.c_path);
         if(columns.length ===0){    return {statusCode:200,message:&#x27;没有列数据，请确认数据连接是否正确。&#x27;}; }
         let comments = [];
         if(md.c_datasource !== md.c_table){
-            comments = await this.getAllColumns(md.c_table,md.c_path);
+            comments = await this.getAllColumns(md.c_table,md.c_table,md.c_path);
         }else{
             Object.assign(comments,columns);
         }
@@ -704,7 +750,7 @@ export default class extends think.model.base {
             let colmd = {c_module:md.id, c_column:col.column, c_coltype:col.type, c_scale:col.length, c_name:this.getColumnComment(comments,col.column),
                 c_desc : col.column,c_type:(col.column ===&#x27;id&#x27; ? &#x27;hidden&#x27;:&#x27;text&#x27;),c_default:&#x27;&#x27;, c_format:&#x27;&#x27;, c_order:(k+1), c_width:12, c_style:&#x27;&#x27;,
                 c_suffix:&#x27;&#x27;, c_isshow:false,c_panel_index:0, c_user:0, c_time: think.datetime(), c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;};
-            await model.add(global.checksql(colmd));
+            await model.add(cmpage.checksql(colmd));
         }
         return {statusCode:200,message:&#x27;&#x27;};
     }
@@ -716,40 +762,40 @@ export default class extends think.model.base {
         let md = await this.model(&#x27;t_module&#x27;).where({id:moduleID}).find();
         let model =this.model(&#x27;t_module_btn&#x27;);
         //await model.where({c_module: md.id}).delete();
-        let colnames = global.arrGetValuesByColumnName(await this.getModuleBtn(moduleID),&#x27;c_object&#x27;);
+        let colnames = cmpage.arrGetValuesByColumnName(await this.getModuleBtn(moduleID),&#x27;c_object&#x27;);
 
-        //global.debug(colnames,&#x27;module.resetModuleBtn - colnames&#x27;);
+        //cmpage.debug(colnames,&#x27;module.resetModuleBtn - colnames&#x27;);
         if(colnames.indexOf(md.c_modulename+&#x27;.Add&#x27;) === -1){
             let colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;dialog&#x27;,c_class:&#x27;btn btn-green&#x27;, c_onclick:&#x27;&#x27;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
                 c_title:&#x27;新增&#x27;,c_label:&#x27;新增&#x27;,c_location:0,c_object:md.c_modulename+&#x27;.Add&#x27;, c_url:&#x60;/cmpage/page/edit?modulename=${md.c_modulename}*id=0&#x60;,
-                c_options:&#x60;{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:500 }&#x60;, c_icon:&#x27;plus&#x27;};
-            await model.add(global.checksql(colmd));
+                c_options:&#x60;{id:&#x27;page${md.c_modulename}Edit&#x27;, mask:true, width:600, height:500 }&#x60;, c_icon:&#x27;plus&#x27;};
+            await model.add(cmpage.checksql(colmd));
         }
 
         if(colnames.indexOf(md.c_modulename+&#x27;.ExportData&#x27;) === -1){
             let colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;#&#x27;,c_class:&#x27;btn btn-orange&#x27;, c_onclick:&#x60;return pageExportData();&#x60;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
                 c_title:&#x27;导出&#x27;,c_label:&#x27;导出&#x27;,c_location:5,c_object:md.c_modulename+&#x27;.ExportData&#x27;, c_url:&#x27;#&#x27;, c_options:&#x27;&#x27;, c_icon:&#x27;file-excel-o&#x27;};
-            await model.add(global.checksql(colmd));
+            await model.add(cmpage.checksql(colmd));
         }
 
         if(colnames.indexOf(md.c_modulename+&#x27;.View&#x27;) === -1){
             let colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;dialog&#x27;,c_class:&#x27;btn btn-default&#x27;, c_onclick:&#x27;&#x27;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
                 c_title:&#x27;查看&#x27;,c_label:&#x27;&#x27;,c_location:11,c_object:md.c_modulename+&#x27;.View&#x27;, c_url:&#x60;/cmpage/page/view?modulename=${md.c_modulename}*id=#id#&#x60;,
-                c_options:&#x60;{id:##page${md.c_modulename}View##, mask:true, width:600, height:500 }&#x60;, c_icon:&#x27;info&#x27;};
-            await model.add(global.checksql(colmd));
+                c_options:&#x60;{id:&#x27;page${md.c_modulename}View&#x27;, mask:true, width:600, height:500 }&#x60;, c_icon:&#x27;info&#x27;};
+            await model.add(cmpage.checksql(colmd));
         }
 
         if(colnames.indexOf(md.c_modulename+&#x27;.Edit&#x27;) === -1){
             let colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;dialog&#x27;,c_class:&#x27;btn btn-green&#x27;, c_onclick:&#x27;&#x27;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
                 c_title:&#x27;编辑&#x27;,c_label:&#x27;编辑&#x27;,c_location:12,c_object:md.c_modulename+&#x27;.Edit&#x27;, c_url:&#x60;/cmpage/page/edit?modulename=${md.c_modulename}*id=#id#&#x60;,
-                c_options:&#x60;{id:##page${md.c_modulename}Edit##, mask:true, width:600, height:500 }&#x60;, c_icon:&#x27;edit&#x27;};
-            await model.add(global.checksql(colmd));
+                c_options:&#x60;{id:&#x27;page${md.c_modulename}Edit&#x27;, mask:true, width:600, height:500 }&#x60;, c_icon:&#x27;edit&#x27;};
+            await model.add(cmpage.checksql(colmd));
         }
 
         if(colnames.indexOf(md.c_modulename+&#x27;.Del&#x27;) === -1){
             let colmd = {c_module:md.id, c_isshow:true,c_style:&#x27;&#x27;,c_opentype:&#x27;#&#x27;,c_class:&#x27;btn btn-red&#x27;, c_onclick:&#x60;return pageDelete(#id#,this);&#x60;, c_memo:&#x27;&#x27;, c_mui:&#x27;&#x27;,
                 c_title:&#x27;删除&#x27;,c_label:&#x27;&#x27;,c_location:13,c_object:md.c_modulename+&#x27;.Del&#x27;, c_url:&#x27;#&#x27;, c_options:&#x27;&#x27;, c_icon:&#x27;times&#x27;};
-            await model.add(global.checksql(colmd));
+            await model.add(cmpage.checksql(colmd));
         }
 
         return {statusCode:200,message:&#x27;&#x27;};
@@ -761,7 +807,7 @@ export default class extends think.model.base {
 //        if(think.isEmpty(isSet)) {
 //            let modules = await this.query(&#x27;select * from t_module where c_status=0 order by id&#x27;);
 //            //let modules = await this.model(&#x27;t_module&#x27;).where({c_status:0}).order(&#x27;id asc&#x27;).select();
-////        global.debug(modules);
+////        cmpage.debug(modules);
 //            for (let module of modules) {
 //                let moduleCol = await    this.query(&#x60;select * from t_module_col where c_module=${module.id} order by c_order&#x60;);
 //                let moduleQuery = await  this.query(&#x60;select * from t_module_query where c_module=${module.id} order by c_order&#x60;);
@@ -803,18 +849,129 @@ export default class extends think.model.base {
     }
 
     //拷贝模块信息
-    async copyToNewModule(modulename){
-        let list = await this.query(&#x60;select * from t_module where c_modulename =&#x27;${modulename}_copy&#x27;&#x60;);
-        if(list.length &gt;0) {
-            return {statusCode: 300, message: &#x60;模块 ${modulename}_copy 已经存在！&#x60;};
-        }
+    // async copyToNewModule(modulename){
+    //     let list = await this.query(&#x60;select * from t_module where c_modulename =&#x27;${modulename}_copy&#x27;&#x60;);
+    //     if(list.length &gt;0) {
+    //         return {statusCode: 300, message: &#x60;模块 ${modulename}_copy 已经存在！&#x60;};
+    //     }
+    //
+    //     if(think.config(&#x27;db.type&#x27;)===&#x27;postgresql&#x27;){
+    //         await this.query(&#x60;select p_module_copy(&#x27;${modulename}&#x27;)&#x60;);
+    //     }else{
+    //         await this.query(&#x60;call p_module_copy(&#x27;${modulename}&#x27;)&#x60;);
+    //     }
+    //
+    //     return {statusCode: 200, message: &#x60;模块复制成功！&#x60;};
+    // }
+    async copyToNewModule(modulename,newName){
+        newName = think.isEmpty(newName) ? modulename+&#x27;_copy&#x27;:newName;
+        let list = await this.query(&#x60;select * from t_module where c_modulename=&#x27;${modulename}&#x27;&#x60;);
+        if(list.length &lt;=0) return {statusCode: 300, message: &#x60;未取到原模块信息！&#x60;};
+//        debug(list,&#x27;module.copyModuleFromMssql - list&#x27;);
+        let rec = list[0];
+        debug(rec,&#x27;module.copyToNewModule - rec&#x27;);
+//        if(think.isEmpty(rec))  return;
+        let oldID = rec.id;
+        delete rec.id;
+        rec.c_modulename = newName;
 
-        if(think.config(&#x27;db.type&#x27;)===&#x27;postgresql&#x27;){
-            await this.query(&#x60;select p_module_copy(&#x27;${modulename}&#x27;)&#x60;);
-        }else{
-            await this.query(&#x60;call p_module_copy(&#x27;${modulename}&#x27;)&#x60;);
-        }
+        let newID = await this.model(&#x27;t_module&#x27;).add(rec);
+        if(newID ==0 )  return {statusCode: 300, message: &#x60;增加新模块信息失败！&#x60;};
 
+        //复制 cols
+        list = await this.query(&#x60;select * from t_module_col where c_module=${oldID}&#x60;);
+        for(let md of list){
+            md.c_module = newID;
+            delete md.id;
+            await this.model(&#x27;t_module_col&#x27;).add(md);
+        }
+        //复制 querys
+        list = await this.query(&#x60;select * from t_module_query where c_module=${oldID}&#x60;);
+        for(let md of list){
+            md.c_module = newID;
+            delete md.id;
+            await this.model(&#x27;t_module_query&#x27;).add(md);
+        }
+        if(newName.indexOf(&#x27;Lookup&#x27;) &lt; 0){      //查找带回的模块设置不需要按钮和编辑列的设置
+            //复制 btns
+            list = await this.query(&#x60;select * from t_module_btn where c_module=${oldID}&#x60;);
+            for(let md of list){
+                md.c_module = newID;
+                delete md.id;
+                md.c_object = md.c_object.replace(modulename, newName);
+                await this.model(&#x27;t_module_btn&#x27;).add(md);
+            }
+            //复制 edits
+            list = await this.query(&#x60;select * from t_module_edit where c_module=${oldID}&#x60;);
+            for(let md of list){
+                md.c_module = newID;
+                delete md.id;
+                await this.model(&#x27;t_module_edit&#x27;).add(md);
+            }
+        }
+        return {statusCode: 200, message: &#x60;模块复制成功！&#x60;};
+    }
+
+    async copyModuleFromMssql(modulename,config){
+        if(think.isEmpty(config)){
+            config = {
+                type: &#x27;mssql&#x27;,
+                adapter: {
+                  mssql: {
+                      host: &quot;127.0.0.1&quot;,
+                      port:&quot;1433&quot;,
+                      database: &#x27;ERPCommpage&#x27;,
+                      user: &#x27;cmpage&#x27;,
+                      password: &#x27;defans&#x27;
+                  }
+                }
+            };
+        }
+        let fromModel = new Base(&#x27;base&#x27;,config);
+        let toModel = cmpage.model(&#x27;cmpage/base&#x27;);
+        let list = await toModel.query(&#x60;select * from t_module where c_modulename=&#x27;${modulename}&#x27;&#x60;);
+        if(list.length &gt;0)  return {statusCode: 300, message: &#x60;目标模块已经存在！&#x60;};
+
+        list = await fromModel.query(&#x60;select * from t_commpage where c_modulename=&#x27;${modulename}&#x27;&#x60;);
+        if(list.length &lt;=0) return {statusCode: 300, message: &#x60;未取到原模块信息！&#x60;};
+//        debug(list,&#x27;module.copyModuleFromMssql - list&#x27;);
+        let rec = cmpage.objPropertysFromOtherObj({},list[0],&#x27;c_modulename,c_datasource,c_table,c_multiselect,c_pager,c_page_size,c_other,c_user,c_memo&#x27;);
+        debug(rec,&#x27;module.copyModuleFromMssql - rec&#x27;);
+//        if(think.isEmpty(rec))  return;
+        rec.c_sort_by = &#x60;${list[0][&quot;c_sortname&quot;]} ${list[0][&quot;c_sortorder&quot;]}&#x60;;
+        rec.c_time = think.datetime();
+        rec.c_status = 0;
+        let newID = await toModel.model(&#x27;t_module&#x27;).add(rec);
+        if(newID ==0 )  return;
+        let oldID = list[0][&quot;c_id&quot;];
+        //复制 cols
+        list = await fromModel.query(&#x60;select c_column,c_coltype,c_scale,c_name,c_desc,c_format,c_order,c_width,c_style,c_isretrieve,c_isshow,c_isview,
+            c_type,c_type_sum from t_commpage_col where c_commpage=${oldID}&#x60;);
+        for(let md of list){
+            md.c_module = newID;
+            await toModel.model(&#x27;t_module_col&#x27;).add(md);
+        }
+        //复制 querys
+        list = await fromModel.query(&#x60;select c_column,c_coltype,c_scale,c_name,c_desc,c_order,c_isshow,c_op,c_default,c_type,c_format,c_style,c_suffix,
+            c_width from t_commpage_query where c_commpage=${oldID}&#x60;);
+        for(let md of list){
+            md.c_module = newID;
+            await toModel.model(&#x27;t_module_query&#x27;).add(md);
+        }
+        //复制 btns
+        list = await fromModel.query(&#x60;select c_location,c_label,c_object,c_class,c_style,c_url,c_opentype,c_options,c_title,c_icon,c_isshow
+            from t_commpage_btn where c_commpage=${oldID}&#x60;);
+        for(let md of list){
+            md.c_module = newID;
+            await toModel.model(&#x27;t_module_btn&#x27;).add(md);
+        }
+        //复制 edits
+        list = await fromModel.query(&#x60;select c_column,c_coltype,c_scale,c_name,c_desc,c_order,c_isshow,c_editable,c_type,c_format,c_style,
+            c_suffix,c_width,c_isrequired,c_memo from t_commpage_edit where c_commpage=${oldID}&#x60;);
+        for(let md of list){
+            md.c_module = newID;
+            await toModel.model(&#x27;t_module_edit&#x27;).add(md);
+        }
         return {statusCode: 200, message: &#x60;模块复制成功！&#x60;};
     }
     /*******************从缓存中取模块设置，如果没有，则刷新缓存********--begin--****************/
@@ -841,8 +998,10 @@ export default class extends think.model.base {
         });
     }
     async getAliasByName(modulename){
+//        debug(modulename,&#x27;module.getAliasByName - modulename&#x27;);
         let md = await this.getModuleByName(modulename);
-        return !think.isEmpty(md) ? md[0].c_alias: &#x27;&#x27;;
+        //debug(md,&#x27;module.getAliasByName - md&#x27;);
+        return !think.isEmpty(md) ? md.c_alias: &#x27;&#x27;;
     }
 
     async getModuleCol(moduleID){
@@ -875,12 +1034,30 @@ export default class extends think.model.base {
         }
         return cols;
     }
-    async getModuleBtn(moduleID){
+    async getModuleBtn(moduleID,user,objname){
         let cols = await think.cache(&#x60;moduleBtn${moduleID}&#x60;, () =&gt; {
             return this.query(&#x60;select * from t_module_btn where c_module = ${moduleID} order by c_location&#x60;);
         });
+        let privileges = [];
+        if(!think.isEmpty(user)){
+            let rootID =0;
+            if(!think.isEmpty(objname)){
+                let codes = await cmpage.model(&#x27;admin/code&#x27;).getCodesByRoot(1);
+                for(let md of codes){
+                    if(md.c_object === objname){    rootID = md.id; break;}
+                }
+            }
+            privileges = await cmpage.model(&#x27;admin/privilege&#x27;).userGetPrivilegeTree(user.id, user.c_role,rootID );
+        }
         for(let col of cols){
             col.c_isshow = think.isBoolean(col.c_isshow) ? col.c_isshow : (col.c_isshow === 1);
+            //验证用户权限, 允许优先原则
+            for(let priv of privileges){
+                if(priv.c_object === col.c_object){
+                    col.c_isshow = priv.isAllow;
+                    break;
+                }
+            }
         }
         return cols;
     }

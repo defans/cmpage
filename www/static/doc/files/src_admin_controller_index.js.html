@@ -281,7 +281,39 @@
                     
                        <li>
                             
+                           <a href="../classes/cmpage.model.base.html">cmpage.model.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.file_list.html">cmpage.model.file_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -311,19 +343,9 @@
                            </ul>
                        </li>
                     
-                    </ul>
-                </dd>
-             
-                <dt>
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
-                </dt>
-                <dd>
-                    <ul>
-                   
                        <li>
                             
-                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <a href="../classes/cmpage.cmpage_global_flow.html">cmpage.cmpage_global_flow</a>
                            <ul>
                                 
                            </ul>
@@ -334,14 +356,54 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                    <a href="../modules/demo.model.html">demo.model</a>
                 </dt>
                 <dd>
                     <ul>
                    
                        <li>
                             
-                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <a href="../classes/flow.model.proc_assign.html">flow.model.proc_assign</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.appr.html">cmpage.model.appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -418,38 +480,6 @@
                        <li>
                             
                            <a href="../classes/flow.model.act_path.html">flow.model.act_path</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task.html">flow.model.task</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -540,7 +570,7 @@ export default class extends Base {
       }
       vb.menuHtml = menuHtml;
 
-    // global.debug(vb.itemList);
+    // cmpage.debug(vb.itemList);
     this.assign(&#x27;vb&#x27;,vb);
     return this.display();
   }
@@ -600,10 +630,10 @@ export default class extends Base {
         vb.groups = await this.model(&#x27;code&#x27;).getGroups();
         if(this.method() == &#x27;get&#x27;){
             vb.loginName=&#x27;&#x27;;
-           // global.debug(vb);
+           // cmpage.debug(vb);
         }else{
             let user = await this.model(&#x27;user&#x27;).getUserByLogin(this.post(&#x27;loginName&#x27;),this.post(&#x27;loginPwd&#x27;));
-            //global.debug(user);
+            //cmpage.debug(user);
             if(!think.isEmpty(user)){
                 if(user.c_status != 0){
                     vb.loginName = this.post(&#x27;loginName&#x27;);
@@ -625,12 +655,14 @@ export default class extends Base {
                     user.groupName = await this.model(&#x27;code&#x27;).getNameById(user.groupID);
                     user.groups = groups;
                     let width = think.isEmpty(this.post(&#x27;clientWidth&#x27;)) ? 1200 : this.post(&#x27;clientWidth&#x27;);
-                    user.listColumns = width &gt;=1200 ? cmpageUI.enumListColumns.MAX : (width &gt;=970 ? cmpageUI.enumListColumns.MIDDLE :
-                        (width &gt;=768 ? cmpageUI.enumListColumns.SMALL : cmpageUI.enumListColumns.MOBILE ));
-                    user.listBtns = width &gt;=1200 ? cmpageUI.enumListBtns.MAX : (width &gt;=970 ? cmpageUI.enumListBtns.MIDDLE :
-                        (width &gt;=768 ? cmpageUI.enumListBtns.SMALL : cmpageUI.enumListBtns.MOBILE ));
+                    user.listColumns = width &gt;=1200 ? cmpage.ui.enumListColumns.MAX : (width &gt;=970 ? cmpage.ui.enumListColumns.MIDDLE :
+                        (width &gt;=768 ? cmpage.ui.enumListColumns.SMALL : cmpage.ui.enumListColumns.MOBILE ));
+                    user.listBtns = width &gt;=1200 ? cmpage.ui.enumListBtns.MAX : (width &gt;=970 ? cmpage.ui.enumListBtns.MIDDLE :
+                        (width &gt;=768 ? cmpage.ui.enumListBtns.SMALL : cmpage.ui.enumListBtns.MOBILE ));
+                    user.queryColumns = width &gt;=1200 ? cmpage.ui.enumQueryColumns.MAX : (width &gt;=970 ? cmpage.ui.enumQueryColumns.MIDDLE :
+                        (width &gt;=768 ? cmpage.ui.enumQueryColumns.SMALL : cmpage.ui.enumQueryColumns.MOBILE ));
 
-                    //console.log(user);
+                    debug(user,&#x27;admin.index.C.login - user&#x27;);
                     await this.model(&#x27;login&#x27;).addLogin(user);
                     await this.session(&#x27;user&#x27;, user);
                     return this.redirect(&#x27;/admin/index/index&#x27;);
@@ -677,10 +709,12 @@ export default class extends Base {
     async setClientWidthAction(){
         let user = await this.session(&#x27;user&#x27;);
         let width = think.isEmpty(this.get(&#x27;width&#x27;)) ? 1200 : this.get(&#x27;width&#x27;);
-        user.listColumns = width &gt;=1200 ? cmpageUI.enumListColumns.MAX : (width &gt;=970 ? cmpageUI.enumListColumns.MIDDLE :
-            (width &gt;=768 ? cmpageUI.enumListColumns.SMALL : cmpageUI.enumListColumns.MOBILE ));
-        user.listBtns = width &gt;=1200 ? cmpageUI.enumListBtns.MAX : (width &gt;=970 ? cmpageUI.enumListBtns.MIDDLE :
-            (width &gt;=768 ? cmpageUI.enumListBtns.SMALL : cmpageUI.enumListBtns.MOBILE ));
+        user.listColumns = width &gt;=1200 ? cmpage.ui.enumListColumns.MAX : (width &gt;=970 ? cmpage.ui.enumListColumns.MIDDLE :
+            (width &gt;=768 ? cmpage.ui.enumListColumns.SMALL : cmpage.ui.enumListColumns.MOBILE ));
+        user.listBtns = width &gt;=1200 ? cmpage.ui.enumListBtns.MAX : (width &gt;=970 ? cmpage.ui.enumListBtns.MIDDLE :
+            (width &gt;=768 ? cmpage.ui.enumListBtns.SMALL : cmpage.ui.enumListBtns.MOBILE ));
+        user.queryColumns = width &gt;=1200 ? cmpage.ui.enumQueryColumns.MAX : (width &gt;=970 ? cmpage.ui.enumQueryColumns.MIDDLE :
+            (width &gt;=768 ? cmpage.ui.enumQueryColumns.SMALL : cmpage.ui.enumQueryColumns.MOBILE ));
         await this.session(&#x27;user&#x27;, user);
         return this.json({statusCode:200, message:&#x27;&#x27;});
     }
@@ -690,15 +724,16 @@ export default class extends Base {
         if(this.ip() != &quot;127.0.0.1&quot;){
             return this.json({statusCode:300,message:&quot;timer is not start, ! &quot;+this.ip()});
         }
-        if(!think.isObject(global.autoExecTimer)){
-            global.autoExecTimer = setInterval(function() {
+        if(!think.isObject(cmpage.autoExecTimer)){
+            cmpage.autoExecTimer = setInterval(function() {
                 request(&#x27;http://127.0.0.1:8300/flow/task/auto_exec&#x27;, function (error, response, body) {
-                    if (!error) {
-                        console.log(body);
+                    if (!think.isEmpty(error)) {
+                        //console.log(body);
+                        debug(body,&#x27;admin.C.autoExecOpen - error&#x27;);
                     } else {
                         //console.log(&quot;error: &quot; + error);
                     }
-                    flow.autoExecuting =false;
+                    cmpage.flow.autoExecuting =false;
                 });
             }, 3000);
             return this.json({statusCode:200,message:&quot;timer is start! &quot;+this.ip()});
@@ -711,12 +746,19 @@ export default class extends Base {
         if(this.ip() != &quot;127.0.0.1&quot;){
             return this.json({statusCode:300,message:&quot;timer is not stop! &quot;+this.ip()});
         }
-        if(think.isObject(global.autoExecTimer)){
-            clearInterval(global.autoExecTimer);
-            global.autoExecTimer = null;
+        if(think.isObject(cmpage.autoExecTimer)){
+            clearInterval(cmpage.autoExecTimer);
+            cmpage.autoExecTimer = null;
             return this.json({statusCode:200,message:&quot;timer is stop! &quot;+this.ip()});
         }
         return this.json({statusCode:300,message:&quot;timer is not exist! &quot;+this.ip()});
+    }
+
+    installAction(){
+        if(this.ip() != &quot;127.0.0.1&quot;){
+            return this.json({statusCode:300,message:&quot;You should install on localhost! &quot;+this.ip()});
+        }
+        return this.display();
     }
 
     homeAction(){
@@ -727,6 +769,7 @@ export default class extends Base {
     }
 
 }
+
     </pre>
 </div>
 

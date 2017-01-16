@@ -3,14 +3,14 @@
 	"id": "H5AD32FF5",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "CmPage Demo",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.0.2",/*应用版本名称*/
+		"name": "0.8.8",/*应用版本名称*/
 		"code": "83"
 	},
 	"description": "",/*应用描述信息*/
 	"icons": {
 		"72": "icon.png"
 	},
-	"launch_path": "html/login/login.html",/*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
+	"launch_path": "html/admin/login.html",/*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
 	"developer": {
 		"name": "defans",/*开发者名称*/
 		"email": "defans@sina.cn",/*开发者邮箱地址*/
@@ -56,7 +56,7 @@
 		"Invocation": {
 			"description": "使用Native.js能力"
 		},
-		
+
 		"Orientation": {
 			"description": "访问方向感应器"
 		},
@@ -179,7 +179,7 @@
 					"iphone": {
 						 /*iPhone3启动图片选，分辨率：320x480*/
 						/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-						
+
 					},
 					"ipad": {
 						 /*iPad竖屏启动图片，分辨率：768x1004*/
@@ -189,7 +189,7 @@
 						 /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
 						/*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
 						 /*iPad iOS7横屏启动图片，分辨率：1024x768*/
-						
+
 					}
 				},
 				"android": {
@@ -197,7 +197,7 @@
 					 /*大屏启动图片，分辨率：320x442*/
 					 /*高分屏启动图片，分辨率：480x762*/
 					 /*720P高分屏启动图片，分辨率：720x1242*/
-					
+
 				}
 			}
 		}
@@ -217,44 +217,52 @@
 					"html/login/login.html"
 				],
 				"refer": [
-					"html/main.html"
+					"html/admin/main.html"
 				],
 				"priority": 0
 			},
-			"html/main.html": {
+			"html/admin/main.html": {
 				"resources": [
 					"js/main.js",
 					"js/libs/jquery-2.1.4.min.js",
 					"js/update.js",
-					"html/commpage/commpage-list.html",
+					"html/cmpage/cmpage-list.html",
 					"mui/fonts/mui.ttf",
 					"js/app.js",
 					"mui/js/mui.min.js",
 					"mui/css/mui.min.css",
-					"js/plugin.js"
+					"js/plugin.js",
+					"js/admin/update.js",
+					"js/admin/main.js",
+					"js/cmpage.js"
 				],
 				"refer": [
 					"html/menu.html",
-					"html/commpage/commpage-stub.html",
-					"html/commpage/commpage-scan.html"
+					"html/cmpage/cmpage-stub.html",
+					"html/cmpage/cmpage-scan.html",
+					"html/admin/menu.html",
+					"html/cmpage/cmpage-edit.html"
 				],
 				"priority": 0
 			},
-			"html/commpage/commpage-list.html": {
+			"html/cmpage/cmpage-list.html": {
 				"resources": [
-					"js/commpage/commpage-list.js",
+					"js/cmpage/cmpage-list.js",
 					"js/app.js",
 					"mui/js/mui.min.js",
 					"mui/css/mui.min.css",
-					"mui/fonts/mui.ttf"
+					"mui/fonts/mui.ttf",
+					"js/cmpage.js",
+					"/html/cmpage/cmpage-edit.html"
 				],
 				"refer": [
-					"html/commpage/commpage-edit.html",
-					"html/commpage/commpage-search.html",
-					"html/commpage/commpage-view.html",
-					"html/commpage/commpage-appr.html",
-					"html/commpage/commpage-file.html",
-					"html/commpage/commpage-stub.html"
+					"html/cmpage/cmpage-edit.html",
+					"html/cmpage/cmpage-search.html",
+					"html/cmpage/cmpage-view.html",
+					"html/cmpage/cmpage-appr.html",
+					"html/cmpage/cmpage-file.html",
+					"html/cmpage/cmpage-stub.html",
+					"html/cmpage/cmpage-list-file.html"
 				],
 				"priority": 0
 			},
@@ -270,10 +278,10 @@
 				"refer": [],
 				"priority": 0
 			},
-			"html/commpage/commpage-edit.html": {
+			"html/cmpage/cmpage-edit.html": {
 				"resources": [
 					"mui/js/mui.poppicker.js",
-					"js/commpage/commpage-edit.js",
+					"js/cmpage/cmpage-edit.js",
 					"mui/css/mui.listpicker.css",
 					"mui/js/city.data-3.js",
 					"mui/css/mui.dtpicker.css",
@@ -284,14 +292,17 @@
 					"mui/js/mui.min.js",
 					"js/libs/jquery-2.1.4.min.js",
 					"mui/css/mui.min.css",
-					"mui/fonts/mui.ttf"
+					"mui/fonts/mui.ttf",
+					"js/cmpage.js"
 				],
-				"refer": [],
+				"refer": [
+					"html/cmpage/cmpage-list-pop.html"
+				],
 				"priority": 0
 			},
-			"html/commpage/commpage-search.html": {
+			"html/cmpage/cmpage-search.html": {
 				"resources": [
-					"js/commpage/commpage-search.js",
+					"js/cmpage/cmpage-search.js",
 					"mui/js/mui.poppicker.js",
 					"js/app.js",
 					"mui/css/mui.listpicker.css",
@@ -303,26 +314,30 @@
 					"mui/css/mui.poppicker.css",
 					"mui/js/mui.dtpicker.js",
 					"mui/fonts/mui.ttf",
-					"mui/js/mui.listpicker.js"
+					"mui/js/mui.listpicker.js",
+					"js/cmpage.js"
 				],
-				"refer": [],
+				"refer": [
+					"html/cmpage/cmpage-list-pop.html"
+				],
 				"priority": 0
 			},
-			"html/commpage/commpage-view.html": {
+			"html/cmpage/cmpage-view.html": {
 				"resources": [
 					"js/app.js",
 					"mui/js/mui.min.js",
 					"js/libs/jquery-2.1.4.min.js",
 					"mui/css/mui.min.css",
 					"mui/fonts/mui.ttf",
-					"js/commpage/commpage-view.js"
+					"js/cmpage/cmpage-view.js",
+					"js/cmpage.js"
 				],
 				"refer": [],
 				"priority": 0
 			},
-			"html/commpage/commpage-appr.html": {
+			"html/cmpage/cmpage-appr.html": {
 				"resources": [
-					"js/commpage/commpage-appr.js",
+					"js/cmpage/cmpage-appr.js",
 					"js/libs/jquery-2.1.4.min.js",
 					"mui/fonts/mui.ttf",
 					"js/app.js",
@@ -332,51 +347,54 @@
 				"refer": [],
 				"priority": 0
 			},
-			"html/commpage/commpage-file.html": {
+			"html/cmpage/cmpage-file.html": {
 				"resources": [
 					"mui/css/mui.css",
 					"mui/js/mui.previewimage.js",
 					"mui/js/mui.zoom.js",
-					"js/commpage/commpage-file.js",
+					"js/cmpage/cmpage-file.js",
 					"js/app.js",
 					"mui/js/mui.min.js",
 					"mui/fonts/mui.ttf"
 				],
 				"refer": [
-					"html/commpage/commpage-uploader.html"
+					"html/cmpage/cmpage-uploader.html"
 				],
 				"priority": 0
 			},
-			"html/commpage/commpage-uploader.html": {
+			"html/cmpage/cmpage-uploader.html": {
 				"resources": [
-					"js/commpage/commpage-uploader.js",
+					"js/cmpage/cmpage-uploader.js",
 					"css/common.css",
 					"js/app.js",
 					"mui/js/mui.min.js",
 					"mui/css/mui.min.css",
-					"mui/fonts/mui.ttf"
+					"mui/fonts/mui.ttf",
+					"js/cmpage.js"
 				],
 				"refer": [
-					"html/commpage/commpage-filepicker.html"
+					"html/cmpage/cmpage-filepicker.html"
 				],
 				"priority": 0
 			},
-			"html/commpage/commpage-filepicker.html": {
+			"html/cmpage/cmpage-filepicker.html": {
 				"resources": [
-					"js/commpage/commpage-filepicker.js",
+					"js/cmpage/cmpage-filepicker.js",
 					"images/fdisk.png",
 					"images/fup.png",
 					"mui/js/mui.min.js",
 					"css/common.css",
 					"mui/css/mui.min.css",
-					"mui/fonts/mui.ttf"
+					"mui/fonts/mui.ttf",
+					"images/fdir.png",
+					"images/ffile.png"
 				],
 				"refer": [],
 				"priority": 0
 			},
-			"html/commpage/commpage-stub.html": {
+			"html/cmpage/cmpage-stub.html": {
 				"resources": [
-					"js/commpage/commpage-stub.js",
+					"js/cmpage/cmpage-stub.js",
 					"js/app.js",
 					"mui/js/mui.min.js",
 					"js/libs/jquery-2.1.4.min.js",
@@ -384,14 +402,14 @@
 					"mui/fonts/mui.ttf"
 				],
 				"refer": [
-					"html/commpage/commpage-scan.html",
-					"html/commpage/commpage-edit.html"
+					"html/cmpage/cmpage-scan.html",
+					"html/cmpage/cmpage-edit.html"
 				],
 				"priority": 0
 			},
-			"html/commpage/commpage-scan.html": {
+			"html/cmpage/cmpage-scan.html": {
 				"resources": [
-					"js/commpage/commpage-scan.js",
+					"js/cmpage/cmpage-scan.js",
 					"css/common.css",
 					"mui/css/mui.css",
 					"js/app.js",
@@ -399,6 +417,67 @@
 					"mui/fonts/mui.ttf"
 				],
 				"refer": [],
+				"priority": 0
+			},
+			"html/admin/login.html": {
+				"resources": [
+					"js/app.js",
+					"mui/css/mui.css",
+					"js/admin/login.js",
+					"mui/js/mui.min.js",
+					"js/libs/md5.js",
+					"mui/js/mui.js",
+					"mui/css/mui.min.css",
+					"mui/fonts/mui.ttf"
+				],
+				"refer": [
+					"html/admin/main.html"
+				],
+				"priority": 0
+			},
+			"html/admin/menu.html": {
+				"resources": [
+					"js/admin/menu.js",
+					"js/app.js",
+					"images/logo.png",
+					"mui/js/mui.min.js",
+					"mui/css/mui.min.css",
+					"mui/fonts/mui.ttf"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"html/cmpage/cmpage-list-pop.html": {
+				"resources": [
+					"js/cmpage/cmpage-list-pop.js",
+					"js/app.js",
+					"mui/js/mui.min.js",
+					"mui/css/mui.min.css",
+					"mui/fonts/mui.ttf",
+					"js/cmpage/cmpage-list.js",
+					"js/cmpage.js"
+				],
+				"refer": [
+					"html/cmpage/cmpage-search.html",
+					"html/cmpage/cmpage-view.html"
+				],
+				"priority": 0
+			},
+			"html/cmpage/cmpage-list-file.html": {
+				"resources": [
+					"js/cmpage/cmpage-file.js",
+					"mui/js/mui.previewimage.js",
+					"mui/js/mui.zoom.js",
+					"js/app.js",
+					"mui/css/mui.css",
+					"mui/js/mui.min.js",
+					"mui/fonts/mui.ttf",
+					"js/cmpage.js",
+					"js/cmpage/cmpage-list-file.js"
+				],
+				"refer": [
+					"html/cmpage/cmpage-uploader.html"
+				],
 				"priority": 0
 			}
 		},
@@ -419,10 +498,8 @@
 		"idle": {
 			"resources": [
 				"html/msg/msg-list.html",
-				"js/commpage/commpage-searchresult.js",
-				"images/fdir.png",
-				"images/ffile.png",
-				"html/commpage/commpage-searchresult.html",
+				"js/cmpage/cmpage-searchresult.js",
+				"html/cmpage/cmpage-searchresult.html",
 				"js/msg/msg-list.js",
 				"images/msg_unread.jpg",
 				"images/msg.jpg"

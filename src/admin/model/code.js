@@ -51,7 +51,7 @@ export default class extends think.model.base {
         }
         let ret = [];
         for(let codeMd of codes){
-            if(codeMd.c_pid === pid){
+            if(codeMd.c_pid == pid){
                 ret.push(codeMd);
                 let childs =await this.getChildList(codeMd.id, codes, depth);
                 for(let child of childs){ ret.push(child);  }
@@ -65,15 +65,32 @@ export default class extends think.model.base {
      * @method  getNameById
      * @return {string}  参数名称
      * @param {int} id  参数ID
+     * @param   {string} fieldNames 字段名称,逗号分隔
+     * @param   {string} joinStr 连接的字符串
      */
-    async getNameById(id){
+    async getNameById(id,fieldNames,joinStr){
+        //debug(id,'code.getNameById - id');
         let codes =await this.getCodes();
         for(let codeMd of codes){
             if(codeMd.id == id){
-                return codeMd.c_name;
+                if(think.isEmpty(fieldNames)){
+                    return codeMd.c_name;
+                }else{
+                    return cmpage.strGetValuesByPropertyName(codeMd,fieldNames,joinStr)
+                }
             }
         }
         return '';
+    }
+    async getNameWithColorById(id){
+        let md =await this.getCodeById(id);
+        let other = cmpage.objFromString(md.c_other);
+        if(!think.isEmpty(other.color)){
+            //debug(other,'code.getNameWithColorById - other');
+            return `<label style="color:${other.color};">${md.c_name}</label>`
+        }else{
+            return md.c_name;
+        }
     }
     /**
      * 根据参数ID取参数的记录对象
@@ -84,7 +101,7 @@ export default class extends think.model.base {
     async getCodeById(id){
         let codes =await this.getCodes();
         for(let codeMd of codes){
-            if(codeMd.id === id){
+            if(codeMd.id == id){
                 return codeMd;
             }
         }
@@ -100,7 +117,7 @@ export default class extends think.model.base {
         let codes =await this.getCodes();
         let ret =[];
         for(let codeMd of codes){
-            if(codeMd.c_pid === pid){
+            if(codeMd.c_pid == pid){
                 ret.push(codeMd);
             }
         }
@@ -148,9 +165,9 @@ export default class extends think.model.base {
      * @param {int} pid  父节点ID
      */
     async getParmsByPid(pid){
+        if(think.isEmpty(pid))  return [];
+
         let parms =await this.getParms();
-        //let parentID = parseInt(pid);
-        pid = parseInt(pid);
         let ret =[];
         for(let parm of parms){
             if(parm.c_pid == pid){
@@ -193,7 +210,7 @@ export default class extends think.model.base {
     async getParmByObj(obj){
         let parms = await this.getParms();
         for(let parm of parms){
-            if(parm.c_ojbect === obj){
+            if(parm.c_ojbect == obj){
                 return parm;
             }
         }
@@ -210,7 +227,8 @@ export default class extends think.model.base {
         await think.cache('codeStocks',null);
         await think.cache('codeDepts',null);
         await think.cache('codeCodes',null);
-        global.debug('code cache is clear!')
+        await think.cache('codeParms',null);
+        cmpage.debug('code cache is clear!')
     }
 
     /**
@@ -264,7 +282,7 @@ export default class extends think.model.base {
      */
     async getCodes(){
         return await think.cache("codeCodes", () => {
-            return this.query('select * from t_code order by  c_pid,c_ucode ');
+            return this.query('select * from t_code where c_status=0 order by  c_pid,c_ucode ');
         });
     }
 

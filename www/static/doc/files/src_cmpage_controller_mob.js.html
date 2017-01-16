@@ -281,7 +281,39 @@
                     
                        <li>
                             
+                           <a href="../classes/cmpage.model.base.html">cmpage.model.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.file_list.html">cmpage.model.file_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -311,19 +343,9 @@
                            </ul>
                        </li>
                     
-                    </ul>
-                </dd>
-             
-                <dt>
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
-                </dt>
-                <dd>
-                    <ul>
-                   
                        <li>
                             
-                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <a href="../classes/cmpage.cmpage_global_flow.html">cmpage.cmpage_global_flow</a>
                            <ul>
                                 
                            </ul>
@@ -334,14 +356,54 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                    <a href="../modules/demo.model.html">demo.model</a>
                 </dt>
                 <dd>
                     <ul>
                    
                        <li>
                             
-                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <a href="../classes/flow.model.proc_assign.html">flow.model.proc_assign</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.appr.html">cmpage.model.appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -418,38 +480,6 @@
                        <li>
                             
                            <a href="../classes/flow.model.act_path.html">flow.model.act_path</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task.html">flow.model.task</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -534,14 +564,15 @@ export default class extends Base {
         }
         parms.pageIndex = this.post(&#x27;pageIndex&#x27;);
         parms.pageSize = this.post(&#x27;pageSize&#x27;);
-        parms.parmsUrl = this.post(&#x27;parmsUrl&#x27;);
-        Object.assign(vb,page);
+        parms.parmsUrl = JSON.parse(this.post(&#x27;parmsUrl&#x27;)) || {};
+        Object.assign(vb,parms);
+        //debug(parms,&#x27;cmpage.ctrl.mob - parms&#x27;);
 
         let md = await module.getModuleByName(parms.modulename);
         Object.assign(parms,md);
 
         parms.query = this.post();
-        parms.c_page_size = this.post(&#x27;pageSize&#x27;);
+        parms.c_page_size = parms.pageSize;
         //console.log(page);
         parms.user = await this.session(&#x27;user&#x27;);
         //    console.log(page);
@@ -551,25 +582,33 @@ export default class extends Base {
             return think.statusAction(500, this.http);
         }
 
-        let pageModel = global.model(parms.c_path);
+        let pageModel = cmpage.model(parms.c_path);
         if(think.isEmpty(pageModel)){
             let error = new Error(parms.modulename + &quot; 的实现类不存在！&quot;);
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        //global.debug(parms);
+        debug(parms.query,&#x27;cmpage.C.mob - parms.query&#x27;);
+        if(!think.isEmpty(parms.query.c_country)){
+            let area = parms.query.c_country.split(&#x27;,&#x27;);
+            parms.query.c_province = &#x27;&#x27;;
+            parms.query.c_city = &#x27;&#x27;;
+            parms.query.c_country = area[2];
+        }
+        //cmpage.debug(parms);
         pageModel.mod = parms;
         pageModel.modQuerys = await module.getModuleQuery(parms.id);
         pageModel.modCols = await module.getModuleCol(parms.id);
         pageModel.modBtns = await module.getModuleBtn(parms.id);
 
         vb.queryHtml = await pageModel.mobHtmlGetQuery();
-        //      global.debug(vb.queryHtml);
-        //global.debug(data);
+        let btnsHtml = await pageModel.mobHtmlGetHeaderBtns();
+        vb.headerBtnsHtml = btnsHtml[0];
+        vb.popBtnsHtml = btnsHtml[1];
         vb.listHtml = await pageModel.mobHtmlGetList();
         vb.listIds = pageModel.list.ids.join(&#x27;,&#x27;);
         vb.count = pageModel.list.count;
-        //global.debug(vb.listHtml);
+        //cmpage.debug(vb.listHtml);
         vb.statusCode =200;
 
         return this.json(vb);
@@ -588,17 +627,17 @@ export default class extends Base {
         parms.editID = this.post(&quot;editID&quot;);
         //console.log(page);
         parms.user = await this.session(&#x27;user&#x27;);
-        let pageModel = global.model(parms.c_path);
+        let pageModel = cmpage.model(parms.c_path);
         if(think.isEmpty(pageModel)){
             let error = new Error(parms.modulename + &quot; 的实现类不存在！&quot;);
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        //global.debug(parms);
+        //cmpage.debug(parms);
         pageModel.mod = parms;
         pageModel.modEdits = await module.getModuleEdit(parms.id);
 
-        let editHtml =await pageModel.mobHtmlGetEdit(page);
+        let editHtml =await pageModel.mobHtmlGetEdit();
 
         return this.json({statusCode:200, editHtml:editHtml});
     }
@@ -626,7 +665,7 @@ export default class extends Base {
 
         let module = this.model(&#x27;module&#x27;);
         let md = await module.getModuleByName(parms.modulename);
-        let pageModel = global.model(think.isEmpty(md.c_path) ? &#x27;cmpage/page&#x27;:md.c_path);
+        let pageModel = cmpage.model(think.isEmpty(md.c_path) ? &#x27;cmpage/page&#x27;:md.c_path);
         pageModel.mod = md;
         pageModel.mod.user = user;
         pageModel.modEdits = await module.getModuleEdit(md.id);
@@ -637,26 +676,54 @@ export default class extends Base {
     }
 
     /**
-     * 业务模块的查看页面，一般调用： /cmpage/page/view?modulename=xxx
+     * 业务模块的查看页面，一般调用： /cmpage/mob/view
      * @method  view
      * @return {promise}  HTML片段
      */
     async viewAction() {
         let module = this.model(&#x27;module&#x27;);
-        let md = await module.getModuleByName(this.get(&#x27;modulename&#x27;));
-        let pageModel = global.model(think.isEmpty(md.c_path) ? &#x27;cmpage/page&#x27;:md.c_path);
+        let md = await module.getModuleByName(this.post(&#x27;modulename&#x27;));
+        let pageModel = cmpage.model(think.isEmpty(md.c_path) ? &#x27;cmpage/page&#x27;:md.c_path);
         pageModel.mod = md;
-        pageModel.mod.viewID =parseInt( this.get(&#x27;id&#x27;));
+        pageModel.mod.editID =parseInt( this.post(&#x27;curID&#x27;));
         pageModel.mod.user =  await this.session(&#x27;user&#x27;);
+        pageModel.modEdits = await module.getModuleEdit(md.id);
         pageModel.modCols = await module.getModuleCol(md.id);
 
-        let viewHtml = await pageModel.htmlGetView()
-
-        this.assign(&#x27;viewHtml&#x27;,viewHtml);
-        return this.display();
+        let viewHtml = await pageModel.mobHtmlGetView()
+        return this.json({statusCode:200, viewHtml:viewHtml});
     }
 
+//     /**
+//      * 上传文件的URL接口，调用： /cmpage/mob/upload_file &lt;/br&gt;
+//      * 通用的附件上传，保持与表 t_file &lt;/br&gt;
+//      * 如果仅仅是单个文件上传，然后取得保存后的文件路径名，则调用 /cmpage/page/upload_file
+//      * @method  updateFile
+//      * @return {json}  状态
+//      */
+//     async uploadFileAction(){
+//         var path = require(&#x27;path&#x27;);
+//         var fs = require(&#x27;fs&#x27;);
+//         let parms = this.post();
+//         //debug(parms,&#x27;page.C.updateFile - parms&#x27;);
+//         let uploadPath = &#x60;${think.ROOT_PATH}${think.sep}www${think.sep}static${think.sep}upfiles${think.sep}${parms.link_type}${think.sep}${cmpage.datetime().substring(0,4)}&#x60;; //${parms.name}&#x60;;
+//         think.mkdir(uploadPath);
+//         let file = think.extend({}, this.file());
+//         //debug(file,&#x27;page.C.updateFile - file&#x27;);
+//         if(think.isEmpty(file)){
+//             return this.json({statusCode:300, message:&#x27;您上传了无效的文件！&#x27;, filename:&#x27;&#x27;});
+//         }
+//
+// //        debug(uploadPath,&#x27;page.C.updateFile - path&#x27;);
+//         let newPath =  uploadPath + think.sep + file.file.originalFilename;
+//         fs.renameSync(file.file.path, newPath);
+//
+//         let filename = &#x60;/static/upfiles/${parms.link_type}/${cmpage.datetime().substring(0,4)}/${file.file.originalFilename}&#x60;;
+//         return this.json({statusCode:200, message:&#x27;&#x27;, filename: filename});
+//     }
+
 }
+
     </pre>
 </div>
 

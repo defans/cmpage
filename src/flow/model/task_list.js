@@ -18,15 +18,15 @@ export default class extends CMPage {
      */
     isShowBtn(rec,btn){
         if(btn.c_object.indexOf('.Terminate')>0){
-            return rec.c_status === global.enumTaskStatus.RUN || rec.c_status === global.enumTaskStatus.SUSPEND;
+            return rec.c_status === cmpage.enumTaskStatus.RUN || rec.c_status === cmpage.enumTaskStatus.SUSPEND;
         }else if(btn.c_object.indexOf('.Suspend')>0){
-            return rec.c_status === global.enumTaskStatus.RUN;
+            return rec.c_status === cmpage.enumTaskStatus.RUN;
         }else if(btn.c_object.indexOf('.Run')>0) {
-            return rec.c_status === global.enumTaskStatus.SUSPEND;
+            return rec.c_status === cmpage.enumTaskStatus.SUSPEND;
         }else if(btn.c_object.indexOf('.AutoExecOpen')>0){
-                return think.isEmpty(global.autoExecTimer);
+                return think.isEmpty(cmpage.autoExecTimer);
         }else if(btn.c_object.indexOf('.AutoExecClose')>0){
-            return !think.isEmpty(global.autoExecTimer);
+            return !think.isEmpty(cmpage.autoExecTimer);
         }else {
             return super.isShowBtn(rec,btn);
         }

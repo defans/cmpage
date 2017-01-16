@@ -1,92 +1,200 @@
 {
-	"html/login/login.html": {
-		"resources": [
-			"js/app.js",
-			"mui/css/mui.css",
-			"js/login/login.js",
-			"mui/js/mui.min.js",
-			"js/libs/md5.js",
-			"mui/js/mui.js",
-			"mui/css/mui.min.css",
-			"mui/fonts/mui.ttf",
-			"html/login/login.html"
-		],
-		"refer": [
-			"html/login/login.html",
-			"html/main.html"
-		]
-	},
-	"html/menu.html": {
-		"resources": [
-			"images/logo.png",
-			"js/menu.js",
-			"js/app.js",
-			"mui/js/mui.min.js",
-			"mui/css/mui.min.css",
-			"mui/fonts/mui.ttf"
-		]
-	},
-	"html/main.html": {
-		"resources": [
-			"js/main.js",
-			"js/libs/jquery-2.1.4.min.js",
-			"js/update.js",
-			"js/app.js",
-			"mui/js/mui.min.js",
-			"mui/css/mui.min.css",
-			"mui/fonts/mui.ttf",
-			"html/commpage/commpage-list.html"
-		],
-		"refer": [
-			"html/menu.html",
-			"html/commpage/commpage-list.html"
-		]
-	},
-	"html/commpage/commpage-list.html": {
-		"resources": [
-			"js/commpage/commpage-list.js",
-			"js/app.js",
-			"mui/js/mui.min.js",
-			"mui/css/mui.min.css",
-			"mui/fonts/mui.ttf"
-		],
-		"refer": [
-			"html/commpage/commpage-search.html",
-			"html/commpage/commpage-edit.html"
-		]
-	},
-	"html/commpage/commpage-search.html": {
-		"resources": [
-			"mui/js/mui.poppicker.js",
-			"js/commpage/commpage-search.js",
-			"mui/css/mui.listpicker.css",
-			"mui/js/city.data-3.js",
-			"mui/css/mui.dtpicker.css",
-			"mui/css/mui.poppicker.css",
-			"mui/js/mui.dtpicker.js",
-			"mui/js/mui.listpicker.js",
-			"js/app.js",
-			"mui/js/mui.min.js",
-			"js/libs/jquery-2.1.4.min.js",
-			"mui/css/mui.min.css",
-			"mui/fonts/mui.ttf"
-		]
-	},
-	"html/commpage/commpage-edit.html": {
-		"resources": [
-			"mui/js/mui.poppicker.js",
-			"js/commpage/commpage-edit.js",
-			"mui/css/mui.listpicker.css",
-			"mui/js/city.data-3.js",
-			"mui/css/mui.dtpicker.css",
-			"mui/css/mui.poppicker.css",
-			"mui/js/mui.dtpicker.js",
-			"mui/js/mui.listpicker.js",
-			"js/app.js",
-			"mui/js/mui.min.js",
-			"js/libs/jquery-2.1.4.min.js",
-			"mui/css/mui.min.css",
-			"mui/fonts/mui.ttf"
-		]
-	}
+  "html/login/login.html": {
+    "resources": [
+      "js/app.js",
+      "mui/css/mui.css",
+      "js/login/login.js",
+      "mui/js/mui.min.js",
+      "js/libs/md5.js",
+      "mui/js/mui.js",
+      "mui/css/mui.min.css",
+      "mui/fonts/mui.ttf",
+      "html/login/login.html"
+    ],
+    "refer": [
+      "html/login/login.html",
+      "html/admin/main.html"
+    ]
+  },
+  "html/menu.html": {
+    "resources": [
+      "images/logo.png",
+      "js/menu.js",
+      "js/app.js",
+      "mui/js/mui.min.js",
+      "mui/css/mui.min.css",
+      "mui/fonts/mui.ttf"
+    ]
+  },
+  "html/admin/main.html": {
+    "resources": [
+      "js/main.js",
+      "js/libs/jquery-2.1.4.min.js",
+      "js/update.js",
+      "js/app.js",
+      "mui/js/mui.min.js",
+      "mui/css/mui.min.css",
+      "mui/fonts/mui.ttf",
+      "html/cmpage/cmpage-list.html",
+      "js/admin/update.js",
+      "js/admin/main.js",
+      "js/cmpage.js"
+    ],
+    "refer": [
+      "html/menu.html",
+      "html/cmpage/cmpage-list.html",
+      "html/admin/menu.html",
+      "html/cmpage/cmpage-edit.html"
+    ]
+  },
+  "html/cmpage/cmpage-list.html": {
+    "resources": [
+      "js/cmpage/cmpage-list.js",
+      "js/app.js",
+      "mui/js/mui.min.js",
+      "mui/css/mui.min.css",
+      "mui/fonts/mui.ttf",
+      "js/cmpage.js",
+      "/html/cmpage/cmpage-edit.html"
+    ],
+    "refer": [
+      "html/cmpage/cmpage-search.html",
+      "html/cmpage/cmpage-edit.html",
+      "html/cmpage/cmpage-view.html",
+      "/html/cmpage/cmpage-edit.html",
+      "html/cmpage/cmpage-list-file.html"
+    ]
+  },
+  "html/cmpage/cmpage-search.html": {
+    "resources": [
+      "mui/js/mui.poppicker.js",
+      "js/cmpage/cmpage-search.js",
+      "mui/css/mui.listpicker.css",
+      "mui/js/city.data-3.js",
+      "mui/css/mui.dtpicker.css",
+      "mui/css/mui.poppicker.css",
+      "mui/js/mui.dtpicker.js",
+      "mui/js/mui.listpicker.js",
+      "js/app.js",
+      "mui/js/mui.min.js",
+      "js/libs/jquery-2.1.4.min.js",
+      "mui/css/mui.min.css",
+      "mui/fonts/mui.ttf",
+      "js/cmpage.js"
+    ],
+    "refer": [
+      "html/cmpage/cmpage-list-pop.html"
+    ]
+  },
+  "html/cmpage/cmpage-edit.html": {
+    "resources": [
+      "mui/js/mui.poppicker.js",
+      "js/cmpage/cmpage-edit.js",
+      "mui/css/mui.listpicker.css",
+      "mui/js/city.data-3.js",
+      "mui/css/mui.dtpicker.css",
+      "mui/css/mui.poppicker.css",
+      "mui/js/mui.dtpicker.js",
+      "mui/js/mui.listpicker.js",
+      "js/app.js",
+      "mui/js/mui.min.js",
+      "js/libs/jquery-2.1.4.min.js",
+      "mui/css/mui.min.css",
+      "mui/fonts/mui.ttf",
+      "js/cmpage.js"
+    ],
+    "refer": [
+      "html/cmpage/cmpage-list-pop.html"
+    ]
+  },
+  "html/admin/login.html": {
+    "resources": [
+      "js/app.js",
+      "mui/css/mui.css",
+      "js/admin/login.js",
+      "mui/js/mui.min.js",
+      "js/libs/md5.js",
+      "mui/js/mui.js",
+      "mui/css/mui.min.css",
+      "mui/fonts/mui.ttf"
+    ],
+    "refer": [
+      "html/admin/main.html"
+    ]
+  },
+  "html/admin/menu.html": {
+    "resources": [
+      "js/admin/menu.js",
+      "js/app.js",
+      "images/logo.png",
+      "mui/js/mui.min.js",
+      "mui/css/mui.min.css",
+      "mui/fonts/mui.ttf"
+    ]
+  },
+  "html/cmpage/cmpage-list-pop.html": {
+    "resources": [
+      "js/cmpage/cmpage-list-pop.js",
+      "js/app.js",
+      "mui/js/mui.min.js",
+      "mui/css/mui.min.css",
+      "mui/fonts/mui.ttf",
+      "js/cmpage/cmpage-list.js",
+      "js/cmpage.js"
+    ],
+    "refer": [
+      "html/cmpage/cmpage-search.html",
+      "html/cmpage/cmpage-view.html"
+    ]
+  },
+  "html/cmpage/cmpage-view.html": {
+    "resources": [
+      "js/app.js",
+      "mui/js/mui.min.js",
+      "js/libs/jquery-2.1.4.min.js",
+      "mui/css/mui.min.css",
+      "js/cmpage/cmpage-view.js",
+      "mui/fonts/mui.ttf",
+      "js/cmpage.js"
+    ]
+  },
+  "html/cmpage/cmpage-list-file.html": {
+    "resources": [
+      "js/cmpage/cmpage-file.js",
+      "mui/js/mui.previewimage.js",
+      "mui/js/mui.zoom.js",
+      "js/app.js",
+      "mui/css/mui.css",
+      "mui/js/mui.min.js",
+      "mui/fonts/mui.ttf",
+      "js/cmpage.js",
+      "js/cmpage/cmpage-list-file.js"
+    ],
+    "refer": [
+      "html/cmpage/cmpage-uploader.html"
+    ]
+  },
+  "html/cmpage/cmpage-uploader.html": {
+    "resources": [
+      "js/cmpage/cmpage-uploader.js",
+      "css/common.css",
+      "mui/css/mui.min.css",
+      "js/app.js",
+      "mui/js/mui.min.js",
+      "mui/fonts/mui.ttf",
+      "js/cmpage.js"
+    ],
+    "refer": [
+      "html/cmpage/cmpage-filepicker.html"
+    ]
+  },
+  "html/cmpage/cmpage-filepicker.html": {
+    "resources": [
+      "js/cmpage/cmpage-filepicker.js",
+      "images/fdisk.png",
+      "images/fup.png",
+      "images/fdir.png",
+      "images/ffile.png"
+    ]
+  }
 }

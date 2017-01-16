@@ -91,35 +91,93 @@ export default class extends CMPage {
      * @param {int} procID  流程模板ID
      */
     async saveFlowMap(parms){
-        let flowMap = objFromString(parms.flowMap);
+        //debug(parms,'proc_list.saveFlowMap - parms');
+        let flowMap = cmpage.objFromString(parms.flowMap);
         if(think.isObject(flowMap)){
-            let actModel = this.model('fw_act');
             let actids =[];
+            for(let k in flowMap.states){
+                actids.push(flowMap.states[k].data_id);
+            }
+            await this.query(`delete from fw_act where c_proc=${parms.procID} and id not in(${actids.join(',')})`);
             for(let k in flowMap.states){
                 if(flowMap.states[k].data_id == 0){
                     let rect =flowMap.states[k];
                     think.log(rect);
                     let act = {c_name:rect.text.text, c_desc:rect.text.text, c_proc:parms.procID,c_type:1,c_class:'flow/act',c_btn_style:'',c_form:'',
                             c_from_rule:1, c_votes:0,c_to_rule:1, c_cc_rule:1,c_jump_rule:1,c_back_rule:1, c_status:0,c_map_id:k};
-                    flowMap.states[k].data_id =await actModel.add(act);
+                    flowMap.states[k].data_id =await this.model('fw_act').add(act);
                 }
-                actids.push(flowMap.states[k].data_id);
             }
-            let pathModel = this.model('fw_act_path');
-            await pathModel.query(`delete from fw_act_path where c_from not in(${actids.join(',')}) or c_to not in(${actids.join(',')}) or c_from is null or c_to is null`);
+//            await pathModel.query(`delete from fw_act_path where c_proc=${parms.procID} and (c_from not in(${actids.join(',')}) or c_to not in(${actids.join(',')}) or c_from is null or c_to is null)`);
+            //路径全部更新
+            await this.query(`delete from fw_act_path where c_proc=${parms.procID} `);
             for(let k in flowMap.paths){
-                if(flowMap.paths[k].data_id == 0){
                     let path =flowMap.paths[k];
-                    let fromAct = await actModel.where({c_proc:parms.procID,c_map_id:path.from}).find();
-                    let toAct = await actModel.where({c_proc:parms.procID,c_map_id:path.to}).find();
-                    let rec = {c_name:path.text.text, c_proc:parms.procID, c_from:fromAct.id, c_to:toAct.id,  c_status:0};
-                    flowMap.paths[k].data_id = await pathModel.add(rec);
+                    let fromAct = await this.model('fw_act').where({c_proc:parms.procID,c_map_id:path.from}).find();
+                    let toAct = await this.model('fw_act').where({c_proc:parms.procID,c_map_id:path.to}).find();
+                    if(!think.isEmpty(fromAct) && !think.isEmpty(toAct)){
+                        let rec = {c_name:path.text.text, c_proc:parms.procID, c_from:fromAct.id, c_to:toAct.id,  c_status:0};
+                        flowMap.paths[k].data_id = await this.model('fw_act_path').add(rec);
+                    }
+            }
+            let map = cmpage.objToString(flowMap);
+            let actStart = await this.model('fw_act').where({c_proc:parms.procID, c_type:cmpage.enumActType.START}).find();
+            await this.model('fw_proc').where({id:parms.procID}).update({c_map:map, c_act_start:think.isEmpty(actStart) ? 0 : actStart.id});
+        }
+    }
+
+    /**
+     * 复制流程模板生成新的流程模板，模板名称 xxxxx_copy
+     * @method  copyToNewProc
+     * @return {object}  拷贝状态，包括新的流程模板对象
+     * @param {int} procID  流程模板ID
+     */
+    async copyToNewProc(procID){
+        let proc = await this.model('fw_proc').where({id:procID}).find();
+        if(think.isEmpty(proc))  return {statusCode:300, message:'源流程模板不存在!',proc:{}};
+        let actList = await this.model('fw_act').where({c_proc:procID}).select();
+        if(think.isEmpty(actList))  return {statusCode:300, message:'源流程模板未设置流程节点!',proc:{}};
+
+        delete proc.id;
+        proc.c_name += '_copy';
+        proc.c_time = think.datetime();
+        if(!think.isEmpty(this.user))   proc.c_user = this.user.id;
+        proc.id = await this.model('fw_proc').add(proc);    //新的模板主信息
+        let flowMap = cmpage.objFromString(proc.c_map);
+
+        for(let act of actList){
+            let oldActID = act.id;
+            delete act.id;
+            act.c_proc = proc.id;
+            act.id = await this.model('fw_act').add(act);   //新的节点信息
+            //新的节点权限指派
+            await this.query(`insert fw_act_assign(c_act,c_type,c_link,c_way,c_type_exe)
+                select ${act.id},c_type,c_link,c_way,c_type_exe from fw_act_assign where c_act=${oldActID}`);
+            //更新流程图中节点的 data_id
+            for(let p in flowMap.states){
+                if(flowMap.states[p].data_id == oldActID){
+                    flowMap.states[p].data_id = act.id;
                 }
             }
         }
-        let map = global.objToString(flowMap);
-        await this.model('fw_proc').where({id:parms.procID}).update({c_map:map});
+        //重新生成路径信息
+        for(let p in flowMap.paths){
+            let path =flowMap.paths[p];
+            let fromActID = 0, toActID = 0;
+            for(let act of actList){
+                if(act.c_map_id == path.from)   fromActID = act.id;
+                if(act.c_map_id == path.to)     toActID = act.id;
+            }
+            if(fromActID>0 && toActID>0){
+                let rec = {c_name:path.text.text, c_proc:proc.id, c_from:fromActID, c_to:toActID,  c_status:0};
+                flowMap.paths[p].data_id = await this.model('fw_act_path').add(rec);
+            }
+        }
+        for(let act of actList){
+            if(act.id == proc.c_act_start)  proc.c_act_start = act.id;
+        }
+        await this.model('fw_proc').where({id:proc.id}).update({c_map:cmpage.objToString(flowMap), c_act_start:proc.c_act_start});
+        return {statusCode:200, message:'复制成功! 新的流程模板：'+proc.c_name, proc:proc};
     }
-
 
 }

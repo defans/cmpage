@@ -281,7 +281,39 @@
                     
                        <li>
                             
+                           <a href="../classes/cmpage.model.base.html">cmpage.model.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.file_list.html">cmpage.model.file_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -311,19 +343,9 @@
                            </ul>
                        </li>
                     
-                    </ul>
-                </dd>
-             
-                <dt>
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
-                </dt>
-                <dd>
-                    <ul>
-                   
                        <li>
                             
-                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <a href="../classes/cmpage.cmpage_global_flow.html">cmpage.cmpage_global_flow</a>
                            <ul>
                                 
                            </ul>
@@ -334,14 +356,54 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                    <a href="../modules/demo.model.html">demo.model</a>
                 </dt>
                 <dd>
                     <ul>
                    
                        <li>
                             
-                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <a href="../classes/flow.model.proc_assign.html">flow.model.proc_assign</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.appr.html">cmpage.model.appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -423,38 +485,6 @@
                            </ul>
                        </li>
                     
-                       <li>
-                            
-                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task.html">flow.model.task</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
                     </ul>
                 </dd>
              
@@ -523,7 +553,7 @@ export default class extends CMPage {
      */
     async getQueryWhere(){
         let where =await super.getQueryWhere();
-        //global.debug(where);
+        //cmpage.debug(where);
         //where += &#x60; and c_user=${page.user.id}&#x60;;
 
         return where ;
@@ -537,17 +567,17 @@ export default class extends CMPage {
      * @param {string} msg 日志内容
      * @param {int} moduleID  业务模块ID
      * @param {int} [linkID]  关联的记录ID
-     * @param {int} [logStatus]  日志状态， global.enum
-     * @param {int} [logType]  日志类型，global.enum
+     * @param {int} [logStatus]  日志状态， cmpage.enum
+     * @param {int} [logType]  日志类型，cmpage.enum
      */
     async addLog(user,msg,moduleID,linkID,logStatus,logType){
-        //global.debug(logStatus,&#x27;log.addlog -- logStatus&#x27;);
+        //cmpage.debug(logStatus,&#x27;log.addlog -- logStatus&#x27;);
         msg = (msg.length &gt;3800 ? msg.substr(0,3800):msg);
         msg  = think.isObject(msg) ? JSON.stringify(msg).replace(/&quot;/g,&#x27;&#x27;).replace(/\\/g,&#x27;&#x27;).replace(/,/g,&#x27;,  &#x27;) : msg;
         let md ={c_desc:msg, c_group:user.groupID, c_user:user.id, c_time:think.datetime(),c_module:moduleID,
             c_type:(think.isEmpty(logType) ? 0: logType),c_status:(think.isEmpty(logStatus) ? 0: logStatus),c_link:(think.isEmpty(linkID) ? 0: linkID)};
 
-        return await this.model(&#x27;t_log&#x27;).add(global.checksql(md));
+        return await this.model(&#x27;t_log&#x27;).add(cmpage.checksql(md));
     }
 
 

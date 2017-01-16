@@ -10,10 +10,10 @@ export default class extends Base {
         if(this.method() == 'get'){
             vb.loginName='';
             vb.action='index';
-            global.debug(vb);
+            cmpage.debug(vb);
         }else{
             let user = await this.model('user').getUserByLogin(this.post('loginName'),this.post('loginPwd'));
-            global.debug(user);
+            cmpage.debug(user);
             if(!think.isEmpty(user)){
                 if(user.c_status != 0){
                     vb.loginName = this.post('loginName');

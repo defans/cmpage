@@ -17,18 +17,22 @@ YUI.add("yuidoc-meta", function(Y) {
         "admin.model.teamuser_add",
         "admin.model.user",
         "cmpage.cmpage_global",
+        "cmpage.cmpage_global_flow",
         "cmpage.controller.base",
         "cmpage.controller.mob",
         "cmpage.controller.module",
         "cmpage.controller.page",
         "cmpage.controller.utils",
         "cmpage.logic.page",
+        "cmpage.model.appr",
         "cmpage.model.area",
+        "cmpage.model.base",
+        "cmpage.model.file_list",
+        "cmpage.model.page",
         "cmpage.model.page_excel",
+        "cmpage.model.page_lookup",
         "cmpage.model.page_mob",
         "cmpage.model.utils",
-        "cmthis.mob.model.page_lookup",
-        "cmthis.mod.model.page",
         "flow.controller.act",
         "flow.controller.base",
         "flow.controller.proc",
@@ -37,6 +41,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "flow.model.act",
         "flow.model.act_path",
         "flow.model.proc",
+        "flow.model.proc_assign",
         "flow.model.task",
         "flow.model.task_act",
         "flow.model.task_act_appr"
@@ -47,8 +52,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "cmpage.controller",
         "cmpage.logic",
         "cmpage.model",
-        "cmthis.mob.model",
-        "cmthis.mod.model",
+        "demo.model",
         "flow.controller",
         "flow.model"
     ],
@@ -152,7 +156,19 @@ YUI.add("yuidoc-meta", function(Y) {
                     "name": "cmpage.model.area"
                 },
                 {
+                    "name": "cmpage.model.base"
+                },
+                {
+                    "name": "cmpage.model.file_list"
+                },
+                {
+                    "name": "cmpage.model.page"
+                },
+                {
                     "name": "cmpage.model.page_excel"
+                },
+                {
+                    "name": "cmpage.model.page_lookup"
                 },
                 {
                     "name": "cmpage.model.page_mob"
@@ -162,24 +178,34 @@ YUI.add("yuidoc-meta", function(Y) {
                 },
                 {
                     "name": "cmpage.cmpage_global"
+                },
+                {
+                    "name": "cmpage.cmpage_global_flow"
                 }
             ]
         },
         {
-            "displayName": "cmthis.mob.model",
-            "name": "cmthis.mob.model",
+            "displayName": "demo.model",
+            "name": "demo.model",
+            "description": "几种典型的业务模块演示，包括普通页面、主从页面、各种编辑类型、按钮调用方式及工作流的调用等",
             "classes": [
                 {
-                    "name": "cmthis.mob.model.page_lookup"
-                }
-            ]
-        },
-        {
-            "displayName": "cmthis.mod.model",
-            "name": "cmthis.mod.model",
-            "classes": [
+                    "name": "flow.model.proc_assign"
+                },
                 {
-                    "name": "cmthis.mod.model.page"
+                    "name": "cmpage.model.appr"
+                },
+                {
+                    "name": "flow.model.proc"
+                },
+                {
+                    "name": "flow.model.task"
+                },
+                {
+                    "name": "flow.model.task_act"
+                },
+                {
+                    "name": "flow.model.task_act_appr"
                 }
             ]
         },
@@ -215,18 +241,6 @@ YUI.add("yuidoc-meta", function(Y) {
                 },
                 {
                     "name": "flow.model.act_path"
-                },
-                {
-                    "name": "flow.model.proc"
-                },
-                {
-                    "name": "flow.model.task"
-                },
-                {
-                    "name": "flow.model.task_act"
-                },
-                {
-                    "name": "flow.model.task_act_appr"
                 }
             ]
         }

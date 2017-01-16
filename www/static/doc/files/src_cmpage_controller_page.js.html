@@ -281,7 +281,39 @@
                     
                        <li>
                             
+                           <a href="../classes/cmpage.model.base.html">cmpage.model.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.file_list.html">cmpage.model.file_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -311,19 +343,9 @@
                            </ul>
                        </li>
                     
-                    </ul>
-                </dd>
-             
-                <dt>
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
-                </dt>
-                <dd>
-                    <ul>
-                   
                        <li>
                             
-                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <a href="../classes/cmpage.cmpage_global_flow.html">cmpage.cmpage_global_flow</a>
                            <ul>
                                 
                            </ul>
@@ -334,14 +356,54 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                    <a href="../modules/demo.model.html">demo.model</a>
                 </dt>
                 <dd>
                     <ul>
                    
                        <li>
                             
-                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <a href="../classes/flow.model.proc_assign.html">flow.model.proc_assign</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.appr.html">cmpage.model.appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -418,38 +480,6 @@
                        <li>
                             
                            <a href="../classes/flow.model.act_path.html">flow.model.act_path</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task.html">flow.model.task</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -538,16 +568,16 @@ export default class extends Base {
         if(this.method() === &#x27;get&#x27;){
             parms.pageIndex = 1;
             parms.pageSize = md.c_page_size;
-            //global.debug(http._get);
-            parms.parmsUrl = JSON.stringify(this.get());
+            //cmpage.debug(http._get);
+            parms.parmsUrl = this.get();
             parms.query = this.get();
         }else{
             parms.pageIndex = this.post(&#x27;pageCurrent&#x27;);
             parms.pageSize = this.post(&#x27;pageSize&#x27;);
-            parms.parmsUrl = this.post(&#x27;parmsUrl&#x27;);
+            parms.parmsUrl = JSON.parse(this.post(&#x27;parmsUrl&#x27;));
             parms.query = this.post();
         }
-
+        parms.parmsUrl.readonly = !(think.isEmpty(parms.parmsUrl.readonly) || parms.parmsUrl.readonly !=1);
         parms.user = await this.session(&#x27;user&#x27;);
         //    console.log(page);
         if(think.isEmpty(parms.id)){
@@ -555,27 +585,29 @@ export default class extends Base {
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        let pageModel = global.model(parms.c_path);
-        if(think.isEmpty(pageModel)){
-            let error = new Error(parms.modulename + &quot; 的实现类不存在！&quot;);
+        let pageModel = cmpage.model(parms.c_path);
+        if(think.isEmpty(pageModel[&#x27;htmlGetQuery&#x27;])){
+            let error = new Error(&#x60;${parms.modulename} 的实现类(${parms.c_path})不存在！&#x60;);
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        //global.debug(parms);
+        //cmpage.debug(parms);
         pageModel.mod = parms;
+        await pageModel.initPage();
         pageModel.modQuerys = await module.getModuleQuery(parms.id);
         pageModel.modCols = await module.getModuleCol(parms.id);
-        pageModel.modBtns = await module.getModuleBtn(parms.id);
+        pageModel.modBtns = await module.getModuleBtn(parms.id,parms.user,parms.modulename);
         vb.queryHtml = await pageModel.htmlGetQuery();
-        //      global.debug(vb.queryHtml);
-        //global.debug(pageModel.mod, &#x27;controller.page.list - pageModel.mod&#x27;);
+        //      cmpage.debug(vb.queryHtml);
+        //cmpage.debug(pageModel.mod, &#x27;controller.page.list - pageModel.mod&#x27;);
         vb.otherHtml = await pageModel.htmlGetOther();
         vb.btnHeaderHtml = await pageModel.htmlGetBtnHeader();
         //console.log(vb.btnHeaderHtml);
         vb.listHtml = await pageModel.htmlGetList();
         vb.listIds = pageModel.list.ids.join(&#x27;,&#x27;);
         vb.count = pageModel.list.count;
-        //global.debug(vb.listHtml);
+        vb.footerHtml = await pageModel.htmlGetFooter();
+        //cmpage.debug(vb.listHtml);
 
         this.assign(&#x27;vb&#x27;,vb);
         this.assign(&#x27;mod&#x27;,pageModel.mod);
@@ -597,7 +629,7 @@ export default class extends Base {
         parms.query = this.get();
         parms.pageIndex = 1;
         parms.pageSize = 2000;   //最多2000行
-        parms.parmsUrl = this.get(&#x27;parmsUrl&#x27;);
+        parms.parmsUrl = JSON.parse(this.get(&#x27;parmsUrl&#x27;));
 
         parms.user = await this.session(&#x27;user&#x27;);
 //    console.log(parms);
@@ -608,21 +640,22 @@ export default class extends Base {
             return think.statusAction(500, this.http);
         }
 
-        let pageModel = global.model(parms.c_path);
-        if(think.isEmpty(pageModel)){
+        let pageModel = cmpage.model(parms.c_path);
+        if(think.isEmpty(pageModel[&#x27;htmlGetQuery&#x27;])){
             let error = new Error(parms.modulename + &quot; 的实现类不存在！&quot;);
             //将错误信息写到 http 对象上，用于模版里显示
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        //global.debug(parms);
+        //cmpage.debug(parms);
         pageModel.mod = parms;
+        await pageModel.initPage();
         pageModel.modQuerys = await module.getModuleQuery(parms.id);
         pageModel.modCols = await module.getModuleCol(parms.id);
         await pageModel.getDataList();
-        //global.debug(data);
+        //cmpage.debug(data);
         let excel = await this.model(&#x27;page_excel&#x27;).excelExport(pageModel.list,pageModel.modCols);
-        //global.debug(vb.listHtml);
+        //cmpage.debug(vb.listHtml);
         this.header(&#x27;Content-Type&#x27;, &#x27;application/vnd.openxmlformats&#x27;);
         //let filename=[{filename:(think.isEmpty(page.c_alias) ? page.modulename : page.c_alias)}];
         this.header(&quot;Content-Disposition&quot;, &quot;attachment; filename=&quot; +parms.modulename +&quot;.xlsx&quot;);
@@ -630,7 +663,8 @@ export default class extends Base {
     }
 
     /**
-     * 删除记录的URL接口，调用： /cmpage/xxx/delete?id=xxx
+     * 删除记录的URL接口，调用： /cmpage/page/delete?modulename=xxx&amp;id=xxx&amp;flag=false&lt;/br&gt;
+     * flag=true: 记录真删除，否则修改记录状态 c_status = -1
      * @method  delete
      * @return {json}  删除成功状态
      */
@@ -638,12 +672,32 @@ export default class extends Base {
         let page = await this.model(&#x27;module&#x27;).getModuleByName(this.get(&#x27;modulename&#x27;));
         //page.id = this.get(&quot;id&quot;);
         page.user = await this.session(&#x27;user&#x27;);
-        //global.debug(page);
-        let pageModel = global.model(think.isEmpty(page.c_path) ? &#x27;cmpage/page&#x27;:page.c_path);
+        //cmpage.debug(page);
+        let pageModel = cmpage.model(think.isEmpty(page.c_path) ? &#x27;cmpage/page&#x27;:page.c_path);
         pageModel.mod = page;
+        await pageModel.initPage();
         pageModel.mod.recID = this.get(&quot;id&quot;);
-        pageModel.mod.flag = this.get(&quot;flag&quot;);
+        pageModel.mod.flag = this.get(&quot;flag&quot;) == &#x27;undefined&#x27; ? false : this.get(&#x27;flag&#x27;);
         let ret = await pageModel.pageDelete();
+
+        return this.json(ret);
+    }
+    /**
+     * 修改状态，供界面按钮直接调用，工作流相关方法（状态流转类）&lt;/br&gt;
+     * 调用： /cmpage/page/update_status?modulename=xxx&amp;id=xxx&amp;actID=xxx&amp;status=xxx
+     * @method  updateStatus
+     * @return {json}  执行修改后的返回信息
+     */
+    async updateStatusAction(){
+        let page = await this.model(&#x27;module&#x27;).getModuleByName(this.get(&#x27;modulename&#x27;));
+        page.user = await this.session(&#x27;user&#x27;);
+        let pageModel = cmpage.model(think.isEmpty(page.c_path) ? &#x27;cmpage/page&#x27;:page.c_path);
+        pageModel.mod = page;
+        await pageModel.initPage();
+        let recID = this.get(&quot;id&quot;);
+        let actID = this.get(&quot;actID&quot;);
+        let status = this.get(&quot;status&quot;);
+        let ret = await pageModel.updateStatus(recID,actID,status,true);
 
         return this.json(ret);
     }
@@ -654,15 +708,20 @@ export default class extends Base {
      * @return {promise}  HTML片段
      */
     async editAction() {
-        let module = global.model(&#x27;cmpage/module&#x27;);
+        let module = cmpage.model(&#x27;cmpage/module&#x27;);
         let parms = await module.getModuleByName(this.get(&#x27;modulename&#x27;));
-        parms.parmsUrl = JSON.stringify(this.get());
-        parms.editID = this.get(&quot;id&quot;);
+        parms.parmsUrl = this.get();
+        parms.editID = think.isEmpty(this.get(&quot;id&quot;)) ? this.get(&quot;c_id&quot;) : this.get(&quot;id&quot;);
         parms.listIds = think.isEmpty(this.get(&#x27;listIds&#x27;)) ? &#x27;&#x27;:this.get(&#x27;listIds&#x27;);
         parms.user = await this.session(&#x27;user&#x27;);
-        //global.debug(page);
-        let pageModel = global.model(think.isEmpty(parms.c_path) ? &#x27;cmpage/page&#x27;:parms.c_path);
+        //debug(parms,&#x27;page.C.edit - parms&#x27;);
+        let pageModel = cmpage.model(think.isEmpty(parms.c_path) ? &#x27;cmpage/page&#x27;:parms.c_path);
         pageModel.mod = parms;
+        await pageModel.initPage();
+        if(think.isEmpty(pageModel.proc) &amp;&amp; parms.parmsUrl.procID &gt;0){
+            pageModel.proc = await cmpage.model(&#x27;flow/proc&#x27;).getProcById(parms.parmsUrl.procID);
+        }
+
         pageModel.modEdits = await module.getModuleEdit(parms.id);
         //pageModel.getPageOther();
         let editHtml =await pageModel.htmlGetEdit();
@@ -679,24 +738,29 @@ export default class extends Base {
      * @method  recEdit
      * @return {promise}  HTML片段
      */
-    async recEditAction() {
+    async editMsAction() {
         let module = this.model(&#x27;module&#x27;);
         let parms = await module.getModuleByName(this.get(&#x27;modulename&#x27;));
-        parms.parmsUrl = JSON.stringify(this.get());
-        parms.editID = this.get(&quot;id&quot;);
+        parms.parmsUrl = this.get();
+        parms.parmsUrl.readonly = false;
+        parms.editID =  think.isEmpty(this.get(&quot;id&quot;)) ? this.get(&quot;c_id&quot;) : this.get(&quot;id&quot;);
         parms.user = await this.session(&#x27;user&#x27;);
-        //global.debug(page);
-        let pageModel = global.model(parms.c_path);
+        //cmpage.debug(page);
+        let pageModel = cmpage.model(parms.c_path);
         pageModel.mod = parms;
+        await pageModel.initPage();
         pageModel.modEdits = await module.getModuleEdit(parms.id);
         let editHtml =await pageModel.htmlGetEdit();
         let tabsHtml = pageModel.htmlGetTabs();
-        let jsHtml = pageModel.htmlGetJS();
+        let btnHtml = await pageModel.htmlGetEditBtns();
+        //let jsHtml = pageModel.htmlGetJS();
 
         this.assign(&#x27;editHtml&#x27;,editHtml);
         this.assign(&#x27;tabsHtml&#x27;,tabsHtml);
-        this.assign(&#x27;jsHtml&#x27;,jsHtml);
+        //this.assign(&#x27;jsHtml&#x27;,jsHtml);
+        parms.pk = pageModel.pk;
         this.assign(&#x27;parms&#x27;,parms);
+        this.assign(&#x27;btnHtml&#x27;,btnHtml);
         return this.display();
     }
 
@@ -708,25 +772,40 @@ export default class extends Base {
     async saveAction(){
         let parms =this.post();
         let user = await this.session(&#x27;user&#x27;);
-        //global.debug(user);
+        //cmpage.debug(user);
         parms.c_user =user.id;
         parms.c_group = (think.isEmpty(parms.c_group) || parms.c_group == 0) ? user.groupID : parms.c_group;
         parms.c_time = think.datetime();
         parms.c_status= (think.isEmpty(parms.c_status) ? 0 : parms.c_status);
         let ret={statusCode:200,message:&#x27;保存成功!&#x27;,tabid: &#x60;page${parms.modulename}&#x60;,data:{}};
+        let parmsUrl = think.isEmpty(parms.parmsUrl) ? {}: JSON.parse(parms.parmsUrl);
         if(parms.modulename === &#x27;CodeList&#x27;){
-            global.debug(parms.parmsUrl);
-            let parmsUrl = JSON.parse(parms.parmsUrl);
+            cmpage.debug(parms.parmsUrl);
             ret = {statusCode:200,message:&#x27;保存成功!&#x27;,divid: parmsUrl[&#x27;target&#x27;],data:{}};
+        }else if(!think.isEmpty(parmsUrl.moduleOpen)){
+            //如果是弹出框打开 *moduleOpen=dialog
+            if(parmsUrl.moduleOpen ==&#x27;div&#x27;){
+                ret = {statusCode:200,message:&#x27;保存成功!&#x27;,divid: &#x60;page${parms.modulename}&#x60;,data:{}};
+            }else{
+                ret = {statusCode:200,message:&#x27;保存成功!&#x27;,dialogid: &#x60;page${parms.modulename}&#x60;,data:{}};
+            }
         }
 
         let md = await this.model(&#x27;module&#x27;).getModuleByName(parms.modulename);
-        let pageModel = global.model(think.isEmpty(md.c_path) ? &#x27;cmpage/page&#x27;:md.c_path);
+        let pageModel = cmpage.model(think.isEmpty(md.c_path) ? &#x27;cmpage/page&#x27;:md.c_path);
         pageModel.mod = md;
+        await pageModel.initPage();
         pageModel.mod.user = user;
-        pageModel.modEdits = await global.model(&#x27;cmpage/module&#x27;).getModuleEdit(md.id);
-        await pageModel.pageSave(parms);
+        pageModel.mod.editID = parms[pageModel.pk] || 0;
+        pageModel.modEdits = await cmpage.model(&#x27;cmpage/module&#x27;).getModuleEdit(md.id);
+        parms.parmsUrl =parmsUrl;
+        let saveRet = await pageModel.pageSave(parms);
         ret.data = pageModel.rec;
+        ret.data.id = pageModel.rec[pageModel.pk];
+        if(!think.isEmpty(saveRet) &amp;&amp; saveRet.statusCode === 300){
+            ret.statusCode =300;
+            ret.message = saveRet.message;
+        }
 
         return this.json(ret);
     }
@@ -739,15 +818,47 @@ export default class extends Base {
     async viewAction() {
         let module = this.model(&#x27;module&#x27;);
         let md = await module.getModuleByName(this.get(&#x27;modulename&#x27;));
-        let pageModel = global.model(think.isEmpty(md.c_path) ? &#x27;cmpage/page&#x27;:md.c_path);
+        let pageModel = cmpage.model(think.isEmpty(md.c_path) ? &#x27;cmpage/page&#x27;:md.c_path);
         pageModel.mod = md;
-        pageModel.mod.viewID =parseInt( this.get(&#x27;id&#x27;));
+        await pageModel.initPage();
+        pageModel.mod.listIds = think.isEmpty(this.get(&#x27;listIds&#x27;)) ? &#x27;&#x27;:this.get(&#x27;listIds&#x27;);
+        pageModel.mod.editID =parseInt( think.isEmpty(this.get(&#x27;id&#x27;)) ? this.get(&#x27;c_id&#x27;) : this.get(&#x27;id&#x27;));
         pageModel.mod.user =  await this.session(&#x27;user&#x27;);
         pageModel.modCols = await module.getModuleCol(md.id);
 
         let viewHtml = await pageModel.htmlGetView()
+        let btnHtml = await pageModel.htmlGetViewBtn()
 
+        this.assign(&#x27;mod&#x27;,pageModel.mod);
         this.assign(&#x27;viewHtml&#x27;,viewHtml);
+        this.assign(&#x27;btnHtml&#x27;,btnHtml);
+        return this.display();
+    }
+    /**
+     * 主从业务模块的查看页面，一般调用： /cmpage/page/view_ms?modulename=xxx
+     * @method  viewMs
+     * @return {promise}  HTML片段
+     */
+    async viewMsAction() {
+        let module = this.model(&#x27;module&#x27;);
+        let md = await module.getModuleByName(this.get(&#x27;modulename&#x27;));
+        let pageModel = cmpage.model(think.isEmpty(md.c_path) ? &#x27;cmpage/page_ms&#x27;:md.c_path);
+        pageModel.mod = md;
+        pageModel.mod.parmsUrl = this.get();
+        pageModel.mod.parmsUrl.readonly = true;
+        await pageModel.initPage();
+        //pageModel.mod.listIds = think.isEmpty(this.get(&#x27;listIds&#x27;)) ? &#x27;&#x27;:this.get(&#x27;listIds&#x27;);
+        pageModel.mod.editID =parseInt( think.isEmpty(this.get(&#x27;id&#x27;)) ? this.get(&#x27;c_id&#x27;) : this.get(&#x27;id&#x27;));
+        pageModel.mod.user =  await this.session(&#x27;user&#x27;);
+        pageModel.modCols = await module.getModuleCol(md.id);
+
+        let viewHtml = await pageModel.htmlGetView()
+        let tabsHtml = await pageModel.htmlGetTabs()
+
+        this.assign(&#x27;mod&#x27;,pageModel.mod);
+        this.assign(&#x27;viewHtml&#x27;,viewHtml);
+        this.assign(&#x27;tabsHtml&#x27;,tabsHtml);
+//        this.assign(&#x27;btnHtml&#x27;,btnHtml);
         return this.display();
     }
 
@@ -757,62 +868,150 @@ export default class extends Base {
      * @return {promise}  分页列表数据，字段是否返回的设置 c_isview (模块显示列设置)
      */
     async lookupAction(){
-        let http=this.http;
         let vb={};
         let module = this.model(&quot;cmpage/module&quot;);
 
         let parms ={};
         parms.query ={};
         if(this.method() === &#x27;get&#x27;){
-            parms.modulename =http.get(&#x27;modulename&#x27;);
-            parms.returnFields =http.get(&#x27;returnFields&#x27;);
+            parms.modulename =this.get(&#x27;modulename&#x27;);
+            //parms.returnFields =this.get(&#x27;returnFields&#x27;);
             let md = await module.getModuleByName(parms.modulename);
             Object.assign(parms,md);
             parms.pageIndex = 1;
             parms.pageSize = parms.c_page_size;
-            //global.debug(http._get);
-            parms.parmsUrl = JSON.stringify(http._get);
+            //cmpage.debug(http._get);
+            parms.parmsUrl = this.get();
             parms.query = parms.parmsUrl;
         }else{
-            parms.modulename= http.post(&#x27;modulename&#x27;);
-            parms.returnFields =http.get(&#x27;returnFields&#x27;);
+            parms.modulename= this.post(&#x27;modulename&#x27;);
+            //parms.returnFields =think.isEmpty(this.get(&#x27;returnFields&#x27;)) ? this.post(&#x27;returnFields&#x27;) : this.get(&#x27;returnFields&#x27;);
             let md = await module.getModuleByName(parms.modulename);
             Object.assign(parms,md);
-            parms.query = http._post;
-            parms.pageIndex = http.post(&#x27;pageIndex&#x27;);
-            parms.pageSize = http.post(&#x27;pageSize&#x27;);
-            parms.parmsUrl = http.post(&#x27;parmsUrl&#x27;);
+            parms.query = this.post();
+            parms.pageIndex = this.post(&#x27;pageIndex&#x27;);
+            parms.pageSize = this.post(&#x27;pageSize&#x27;);
+            parms.parmsUrl = JSON.parse(this.post(&#x27;parmsUrl&#x27;));
         }
         parms.user = await this.session(&#x27;user&#x27;);
-        let pageModel = global.model(parms.c_path);
-        if(think.isEmpty(pageModel)){
+        let pageModel = cmpage.model(parms.c_path);
+        if(think.isEmpty(pageModel[&#x27;htmlGetQuery&#x27;])){
             let error = new Error(parms.modulename + &quot; 的实现类不存在！&quot;);
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        //global.debug(parms);
+        //cmpage.debug(parms);
         pageModel.mod = parms;
+        await pageModel.initPage();
         pageModel.modQuerys = await module.getModuleQuery(parms.id);
         pageModel.modCols = await module.getModuleCol(parms.id);
-        pageModel.modBtns = await global.model(&#x27;cmpage/module&#x27;).getModuleBtn(parms.id);
+        pageModel.modBtns = await module.getModuleBtn(parms.id);
 
         vb.queryHtml = await pageModel.htmlGetQuery();
-        //global.debug(vb.queryHtml);
+        //cmpage.debug(vb.queryHtml);
         vb.otherHtml = await pageModel.htmlGetOther();
         vb.btnHeaderHtml = await pageModel.htmlGetBtnHeader();
-        //    global.debug(vb.btnHeaderHtml);
+        //    cmpage.debug(vb.btnHeaderHtml);
         vb.listHtml = await pageModel.htmlGetList();
         vb.listIds = pageModel.list.ids.join(&#x27;,&#x27;);
         vb.count = pageModel.list.count;
-        //global.debug(vb.listHtml);
+        vb.footerHtml = await pageModel.htmlGetFooter();
+        //cmpage.debug(vb.listHtml);
 
         this.assign(&#x27;vb&#x27;,vb);
         this.assign(&#x27;mod&#x27;,pageModel.mod);
 
         return this.display();
     }
+    /**
+     * 上传文件的URL接口，调用： /cmpage/page/upload_file &lt;/br&gt;
+     * 如果多个文件上传，则前端循环调用本接口
+     * @method  updateFile
+     * @return {json}  状态，包含保存后的路径名称，可以作为前端的表单项保存
+     */
+    async uploadFileAction(){
+        var path = require(&#x27;path&#x27;);
+        var fs = require(&#x27;fs&#x27;);
+        let parms = this.post();
+        debug(parms,&#x27;page.C.updateFile - parms&#x27;);
+        let uploadPath = &#x60;${think.ROOT_PATH}${think.sep}www${think.sep}static${think.sep}upfiles${think.sep}${parms.link_type}${think.sep}${cmpage.datetime().substring(0,4)}&#x60;; //${parms.name}&#x60;;
+        think.mkdir(uploadPath);
+        let file = think.extend({}, this.file());
+        debug(file,&#x27;page.C.updateFile - file&#x27;);
+        if(think.isEmpty(file)){
+            return this.json({statusCode:300, message:&#x27;您上传了无效的文件！&#x27;, filename:&#x27;&#x27;});
+        }
+
+//        debug(uploadPath,&#x27;page.C.updateFile - path&#x27;);
+        let fileInfo = file.file;
+        if(think.isEmpty(fileInfo)){
+            for(let p in file){
+                if(!think.isEmpty(file[p])){
+                    fileInfo = file[p];
+                    break;
+                }
+            }
+        }
+        let newPath =  uploadPath + think.sep + fileInfo.originalFilename;
+        fs.renameSync(fileInfo.path, newPath);
+
+        let filename = &#x60;/static/upfiles/${parms.link_type}/${cmpage.datetime().substring(0,4)}/${fileInfo.originalFilename}&#x60;;
+        return this.json({statusCode:200, message:&#x27;&#x27;, filename: filename});
+    }
+
+    /**
+     * 时间轴展示页面，一般调用： /cmpage/page/timeline?modulename=xxx
+     * @method  timeline
+     * @return {promise}  时间轴列表数据，取模块的显示列设置
+     */
+    async timelineAction(){
+        let vb={};
+        let module = this.model(&quot;cmpage/module&quot;);
+
+        let parms ={};
+        parms.query ={};
+        if(this.method() === &#x27;get&#x27;){
+            parms.modulename =this.get(&#x27;modulename&#x27;);
+            let md = await module.getModuleByName(parms.modulename);
+            Object.assign(parms,md);
+            parms.pageIndex = 1;
+            parms.pageSize = 50;    //parms.c_page_size;
+            parms.parmsUrl = this.get();
+            parms.query = parms.parmsUrl;
+        }
+        parms.user = await this.session(&#x27;user&#x27;);
+        let pageModel = cmpage.model(parms.c_path);
+        if(think.isEmpty(pageModel[&#x27;htmlGetQuery&#x27;])){
+            let error = new Error(parms.modulename + &quot; 的实现类不存在！&quot;);
+            this.http.error = error;
+            return think.statusAction(500, this.http);
+        }
+        cmpage.debug(parms,&#x27;page.timelineAction - parms&#x27;);
+        pageModel.mod = parms;
+        await pageModel.initPage();
+        pageModel.modQuerys = await module.getModuleQuery(parms.id);
+        pageModel.modCols = await module.getModuleCol(parms.id);
+        pageModel.modBtns = await module.getModuleBtn(parms.id);
+
+//        vb.queryHtml = await pageModel.htmlGetQuery();
+        //cmpage.debug(vb.queryHtml);
+        // vb.otherHtml = await pageModel.htmlGetOther();
+        // vb.btnHeaderHtml = await pageModel.htmlGetBtnHeader();
+        //    cmpage.debug(vb.btnHeaderHtml);
+//        vb.listHtml = await pageModel.htmlGetList();
+        vb.listHtml = await pageModel.htmlGetListTimeline();
+        // vb.count = pageModel.list.count;
+        // vb.footerHtml = await pageModel.htmlGetFooter();
+        //cmpage.debug(vb.listHtml);
+
+        this.assign(&#x27;vb&#x27;,vb);
+//        this.assign(&#x27;mod&#x27;,pageModel.mod);
+
+        return this.display();
+    }
 
 }
+
     </pre>
 </div>
 

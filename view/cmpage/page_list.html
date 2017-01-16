@@ -2,7 +2,7 @@
 <div class="bjui-pageHeader">
     <form id="pagerForm" name="page<%= mod.c_modulename%>Form" data-toggle="ajaxsearch" action="/cmpage/page/list" method="post">
         <input type="hidden" id="modulename" name="modulename" value="<%= mod.c_modulename%>" />
-        <input name="parmsUrl" type="hidden" value="<%= mod.parmsUrl%>" />
+        <input name="parmsUrl" type="hidden" value="<%= JSON.stringify(mod.parmsUrl)%>" />
         <input type="hidden" id="idSelect" name="idSelect" value="" />
         <input type="hidden" name="listIds" value="<%= vb.listIds%>">
 
@@ -14,7 +14,6 @@
         <% }%>
         <div class="bjui-searchBar">
             <%- vb.queryHtml[0]%>
-            <button type="submit" class="btn btn-default" id="btnSearch<%= mod.c_modulename%>" data-icon="search"><%= mod.c_module_rec==="self" ? "":"查询"%></button>
 
             <%- vb.btnHeaderHtml%>
 
@@ -37,49 +36,4 @@
     </table>
 
 </div>
-<% if(mod.c_pager){ %>
-<div class="bjui-pageFooter">
-    <div class="pages">
-        <span>每页&nbsp;</span>
-        <div class="selectPagesize">
-            <select data-toggle="selectpicker" data-toggle-change="changepagesize" >
-                <%if(mod.pageSize == 10) {%>
-                <option value="10" selected>10</option>
-                <%} else {%>
-                <option value="10" >10</option>
-                <%}%>
-                <%if(mod.pageSize == 20) {%>
-                <option value="20" selected>20</option>
-                <%} else {%>
-                <option value="20" >20</option>
-                <%}%>
-                <%if(mod.pageSize == 30) {%>
-                <option value="30" selected>30</option>
-                <%} else {%>
-                <option value="30" >30</option>
-                <%}%>
-                <%if(mod.pageSize == 50) {%>
-                <option value="50" selected>50</option>
-                <%} else {%>
-                <option value="50" >50</option>
-                <%}%>
-            </select>
-        </div>
-        <span>&nbsp;条，共  <%= vb.count%> 条</span>
-    </div>
-    <div class="pagination-box" data-toggle="pagination" data-total="<%=vb.count%>" data-page-size="<%=mod.pageSize%>" data-page-current="<%=mod.pageIndex%>">
-    </div>
-</div>
-
-<% } %>
-
-<script type="text/javascript">
-
-//    function page<%= mod.c_modulename%>Edit_onClose($navtab) {
-//        //$("#pagerForm",$navtab).submit();
-//        //$("#btnSearch<%= mod.c_modulename%>").click();
-//    }
-
-
-</script>
-    
+<%- vb.footerHtml%>

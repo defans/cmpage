@@ -37,14 +37,15 @@ export default class extends Base {
         }
         parms.pageIndex = this.post('pageIndex');
         parms.pageSize = this.post('pageSize');
-        parms.parmsUrl = this.post('parmsUrl');
-        Object.assign(vb,page);
+        parms.parmsUrl = JSON.parse(this.post('parmsUrl')) || {};
+        Object.assign(vb,parms);
+        //debug(parms,'cmpage.ctrl.mob - parms');
 
         let md = await module.getModuleByName(parms.modulename);
         Object.assign(parms,md);
 
         parms.query = this.post();
-        parms.c_page_size = this.post('pageSize');
+        parms.c_page_size = parms.pageSize;
         //console.log(page);
         parms.user = await this.session('user');
         //    console.log(page);
@@ -54,25 +55,33 @@ export default class extends Base {
             return think.statusAction(500, this.http);
         }
 
-        let pageModel = global.model(parms.c_path);
+        let pageModel = cmpage.model(parms.c_path);
         if(think.isEmpty(pageModel)){
             let error = new Error(parms.modulename + " 的实现类不存在！");
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        //global.debug(parms);
+        debug(parms.query,'cmpage.C.mob - parms.query');
+        if(!think.isEmpty(parms.query.c_country)){
+            let area = parms.query.c_country.split(',');
+            parms.query.c_province = '';
+            parms.query.c_city = '';
+            parms.query.c_country = area[2];
+        }
+        //cmpage.debug(parms);
         pageModel.mod = parms;
         pageModel.modQuerys = await module.getModuleQuery(parms.id);
         pageModel.modCols = await module.getModuleCol(parms.id);
         pageModel.modBtns = await module.getModuleBtn(parms.id);
 
         vb.queryHtml = await pageModel.mobHtmlGetQuery();
-        //      global.debug(vb.queryHtml);
-        //global.debug(data);
+        let btnsHtml = await pageModel.mobHtmlGetHeaderBtns();
+        vb.headerBtnsHtml = btnsHtml[0];
+        vb.popBtnsHtml = btnsHtml[1];
         vb.listHtml = await pageModel.mobHtmlGetList();
         vb.listIds = pageModel.list.ids.join(',');
         vb.count = pageModel.list.count;
-        //global.debug(vb.listHtml);
+        //cmpage.debug(vb.listHtml);
         vb.statusCode =200;
 
         return this.json(vb);
@@ -91,17 +100,17 @@ export default class extends Base {
         parms.editID = this.post("editID");
         //console.log(page);
         parms.user = await this.session('user');
-        let pageModel = global.model(parms.c_path);
+        let pageModel = cmpage.model(parms.c_path);
         if(think.isEmpty(pageModel)){
             let error = new Error(parms.modulename + " 的实现类不存在！");
             this.http.error = error;
             return think.statusAction(500, this.http);
         }
-        //global.debug(parms);
+        //cmpage.debug(parms);
         pageModel.mod = parms;
         pageModel.modEdits = await module.getModuleEdit(parms.id);
 
-        let editHtml =await pageModel.mobHtmlGetEdit(page);
+        let editHtml =await pageModel.mobHtmlGetEdit();
 
         return this.json({statusCode:200, editHtml:editHtml});
     }
@@ -129,7 +138,7 @@ export default class extends Base {
 
         let module = this.model('module');
         let md = await module.getModuleByName(parms.modulename);
-        let pageModel = global.model(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
+        let pageModel = cmpage.model(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
         pageModel.mod = md;
         pageModel.mod.user = user;
         pageModel.modEdits = await module.getModuleEdit(md.id);
@@ -140,23 +149,50 @@ export default class extends Base {
     }
 
     /**
-     * 业务模块的查看页面，一般调用： /cmpage/page/view?modulename=xxx
+     * 业务模块的查看页面，一般调用： /cmpage/mob/view
      * @method  view
      * @return {promise}  HTML片段
      */
     async viewAction() {
         let module = this.model('module');
-        let md = await module.getModuleByName(this.get('modulename'));
-        let pageModel = global.model(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
+        let md = await module.getModuleByName(this.post('modulename'));
+        let pageModel = cmpage.model(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
         pageModel.mod = md;
-        pageModel.mod.viewID =parseInt( this.get('id'));
+        pageModel.mod.editID =parseInt( this.post('curID'));
         pageModel.mod.user =  await this.session('user');
+        pageModel.modEdits = await module.getModuleEdit(md.id);
         pageModel.modCols = await module.getModuleCol(md.id);
 
-        let viewHtml = await pageModel.htmlGetView()
-
-        this.assign('viewHtml',viewHtml);
-        return this.display();
+        let viewHtml = await pageModel.mobHtmlGetView()
+        return this.json({statusCode:200, viewHtml:viewHtml});
     }
+
+//     /**
+//      * 上传文件的URL接口，调用： /cmpage/mob/upload_file </br>
+//      * 通用的附件上传，保持与表 t_file </br>
+//      * 如果仅仅是单个文件上传，然后取得保存后的文件路径名，则调用 /cmpage/page/upload_file
+//      * @method  updateFile
+//      * @return {json}  状态
+//      */
+//     async uploadFileAction(){
+//         var path = require('path');
+//         var fs = require('fs');
+//         let parms = this.post();
+//         //debug(parms,'page.C.updateFile - parms');
+//         let uploadPath = `${think.ROOT_PATH}${think.sep}www${think.sep}static${think.sep}upfiles${think.sep}${parms.link_type}${think.sep}${cmpage.datetime().substring(0,4)}`; //${parms.name}`;
+//         think.mkdir(uploadPath);
+//         let file = think.extend({}, this.file());
+//         //debug(file,'page.C.updateFile - file');
+//         if(think.isEmpty(file)){
+//             return this.json({statusCode:300, message:'您上传了无效的文件！', filename:''});
+//         }
+//
+// //        debug(uploadPath,'page.C.updateFile - path');
+//         let newPath =  uploadPath + think.sep + file.file.originalFilename;
+//         fs.renameSync(file.file.path, newPath);
+//
+//         let filename = `/static/upfiles/${parms.link_type}/${cmpage.datetime().substring(0,4)}/${file.file.originalFilename}`;
+//         return this.json({statusCode:200, message:'', filename: filename});
+//     }
 
 }

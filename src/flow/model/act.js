@@ -53,7 +53,7 @@ export default class extends think.model.base {
     async fwRun(taskActID,user,taskAct,isPass){
         if(think.isEmpty(this.taskActModel)){
             await this.fwInit(taskActID,user,taskAct);
-            //global.debug(this.taskActModel.taskAct,'act.fwRun - this.taskActModel.taskAct');
+            //cmpage.debug(this.taskActModel.taskAct,'act.fwRun - this.taskActModel.taskAct');
         }
         await this.taskActModel.fwRun(isPass);
     }
@@ -111,9 +111,9 @@ export default class extends think.model.base {
      */
     async fwInit(taskActID,user,taskAct){
         taskAct = think.isEmpty(taskAct) ? await this.model('vw_task_act').where({id:taskActID}).find() : taskAct;
-        global.debug(taskAct,'act.fwInit - taskAct');
+        cmpage.debug(taskAct,'act.fwInit - taskAct');
         let act =await this.getActByIdAndProcId(taskAct.c_act, taskAct.c_proc);
-        global.debug(act,'act.fwInit - act');
+        cmpage.debug(act,'act.fwInit - act');
         this.taskActModel = this.model(think.isEmpty(act.c_class) ? 'flow/task_act': act.c_class);
         this.taskActModel.taskAct = taskAct;
         this.taskActModel.act = act;
@@ -129,8 +129,8 @@ export default class extends think.model.base {
         let taskActs = await this.query(`select A.*,B.c_form,B.c_domain_st from vw_task_act A,fw_act B where A.c_act = B.id and A.c_status in(3,6) and B.c_type=2 `);
         for(let ta of taskActs){
             if(!think.isEmpty(ta.c_form)){
-                let form = objFromString(ta.c_form);
-                let fnModel = model(form.model);
+                let form = cmpage.objFromString(ta.c_form);
+                let fnModel = cmpage.model(form.model);
                 if (think.isFunction(fnModel[ form.fn ])) {
                     if(!think.isEmpty(ta.task_link_type)){
                         ta.domainData =  await this.model(ta.task_link_type).where({id:ta.task_link}).find();
@@ -182,9 +182,9 @@ export default class extends think.model.base {
         let order = [];
         let actStart = {}, actEnd = {};
         for(let act of this.acts){
-            if(act.c_type === global.enumActType.START){
+            if(act.c_type === cmpage.enumActType.START){
                 actStart =act;
-            }else if(act.c_type === global.enumActType.END){
+            }else if(act.c_type === cmpage.enumActType.END){
                 actEnd = act;
             }
         }
@@ -197,11 +197,11 @@ export default class extends think.model.base {
             order.push(a);
         }
 
-        order = global.arrGetUnique(order);
+        order = cmpage.arrGetUnique(order);
         let ret = [];
         for(let id of order){
             for(let a of this.acts){
-                if(a.id === id){
+                if(a.id == id){
                     ret.push(a);
                     break;
                 }
@@ -217,7 +217,7 @@ export default class extends think.model.base {
         if(layer > 50){ return [];  }
 
         for(let path of paths){
-            if(path.c_from === actID){
+            if(path.c_from == actID){
                 for(let act of this.acts){
                     if(act.id === path.c_to ){
 //                        debug(act,'act.getActsOrder_toActs - act');
@@ -248,6 +248,36 @@ export default class extends think.model.base {
     }
 
     /**
+     * 取某个节点的有效去向节点，过滤掉或者自动完成非人为参与的节点，供其他方法调用
+     * @method  getToActsFromId
+     * @return {Array} 去向节点集
+     * @params {int} actID 当前节点
+     * @params {int} [procID] 流程模板ID
+     * @params {Array} [toActs] 去向节点集
+     */
+    async getToActsFromId(procID, actID, depth){
+        let ret = [];
+        depth = think.isEmpty(depth) ? 1: depth +1;
+        if(depth >5 ) return [];
+        let actIds = await cmpage.model('flow/act_path').getToActIds(actID, procID);
+        for(let id of actIds){
+            let act = await this.getActByIdAndProcId(id,procID);
+            if(act.c_type == cmpage.enumActType.END ){
+                return ret;
+            }else if(act.c_type == cmpage.enumActType.NORMAL_MAN){
+                ret.push(act);
+            }else{
+                let subArr = await this.getToActsFromId(procID, act.id, depth);
+                for(let a of subArr){
+                    ret.push(a);
+                }
+            }
+        }
+        return ret;
+    }
+
+
+    /**
      * 根据ID取活动(流程节点)参数，供其他方法调用
      * @method  getActById
      * @return {object} 活动(流程节点)参数对象
@@ -256,7 +286,7 @@ export default class extends think.model.base {
     async getActById(id){
         let list =await this.getActs();
         for(let md of list){
-            if(md.id === id){
+            if(md.id == id){
                 return md;
             }
         }
@@ -269,11 +299,12 @@ export default class extends think.model.base {
      * @method  getActByIdAndProcId
      * @return {object} 活动(流程节点)参数对象
      * @params {int} id 活动节点ID
+     * @param {int} procID  流程模板ID
      */
     async getActByIdAndProcId(id,procID){
         let list =await this.getActsByProcId(procID);
         for(let md of list){
-            if(md.id === id){
+            if(md.id == id){
                 return md;
             }
         }
@@ -289,12 +320,18 @@ export default class extends think.model.base {
     async getNameById(id){
         let list =await this.getActs();
         for(let md of list){
-            if(md.id === id){
+            if(md.id == id){
                 return md.c_name;
             }
         }
         return '';
     }
+
+    /**
+     * 取活动节点的列表，一般用于页面模块配置中的‘替换’调用: flow/act:getActs
+     * @method  getActs
+     * @return {Array}  活动节点列表
+     */
     async getActs(){
         let acts = await this.getActsCache();
         for(let act of acts){
@@ -302,6 +339,12 @@ export default class extends think.model.base {
         }
         return acts;
     }
+    /**
+     * 根据流程模板ID取活动节点的列表，一般用于页面模块配置中的‘替换’调用: flow/act:getActsByProcId
+     * @method  getActsByProcId
+     * @return {Array}  活动节点列表
+     * @param {int} procID  流程模板ID
+     */
     async getActsByProcId(procID){
         let acts = await this.getActsByProcIdCache(procID);
         for(let act of acts){

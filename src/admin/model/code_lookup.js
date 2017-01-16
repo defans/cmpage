@@ -24,9 +24,8 @@ export default class extends CMPageLookup {
      */
     async getQueryWhere(){
         let where =await super.getQueryWhere();
-        //global.debug(where);
-        let parmsUrl =JSON.parse(this.mod.parmsUrl);
-        return where +' and c_pid='+parmsUrl.c_pid;
+        //cmpage.debug(where);
+        return where +' and c_status = 0 and c_pid='+this.mod.parmsUrl.c_pid;
     }
 
 }

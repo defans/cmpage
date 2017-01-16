@@ -11,7 +11,7 @@
             <a class="btn btn-green" href="javascript:;" onclick="return moduleAdd(this);" data-icon="plus">增加</a>
             <div class="pull-right">
                 <button type="button" class="btn-orange " onclick="return moduleCacheClear();" data-icon="refresh">刷新缓存</button>
-                <a class="btn btn-default" href="/static/doc/index.html" target="_blank" data-icon="book">API文档</a>
+                <a class="btn btn-default" href="/static/help/index.html" target="_blank" data-icon="book">帮助文档</a>
                 <button type="button" class="btn-close " data-icon="close">关闭</button>
             </div>
         </div>
@@ -21,8 +21,9 @@
     <table class="table table-bordered table-hover table-striped" data-width="100%" data-nowrap="false">
         <thead>
         <tr>
+            <th >ID</th>
             <th  >模块名称</th>
-            <th >子模块名称</th>
+            <th >子模块</th>
             <th >数据来源</th>
             <th >数据表</th>
             <th >分页</th>
@@ -35,8 +36,9 @@
         <tbody>
         <%vb.data.forEach(function(item){%>
         <tr data-id="<%=item.id%>">
+            <td><%=item.id%></td>
             <td><a data-title="模块编辑"  data-toggle="dialog" href="/cmpage/module/edit?id=<%= item.id%>" data-id="pageModuleEdit" data-options="{mask:true,width:800,height:350}"><%= item.c_modulename%> </a></td>
-            <td><%=item.c_module_rec%></td>
+            <td><%=item.c_module_slave%></td>
             <td><%=item.c_datasource%></td>
             <td><%=item.c_table%></td>
             <td><%= (item.c_pager ? "是":"否")%></td>
@@ -49,8 +51,9 @@
                 <a data-title="编辑列设置" class="btn btn-default" data-toggle="navtab" href="/cmpage/module/edit_list?moduleid=<%= item.id%>" data-id="pageModuleEditList">编辑列</a>
                 <a data-title="查询列设置" class="btn btn-default" data-toggle="navtab" href="/cmpage/module/query_list?moduleid=<%= item.id%>" data-id="pageModuleQueryList">查询列</a>
                 <a data-confirm-msg="是否确定要删除本模块设置?" class="btn btn-red" data-toggle="doajax" href="/cmpage/module/delete?table=t_module&flag=false&id=<%= item.id%>">删除</a>
-                <a data-confirm-msg="是否确定要复制本模块，新模块名：<%= item.c_modulename%>_copy ?" class="btn btn-red" data-toggle="doajax" href="/cmpage/module/copy?modulename=<%= item.c_modulename%>">复制</a>
-                <a  class="btn btn-orange"  href="#" onclick="return modulePreview('<%= item.c_modulename%>');">预览</a>
+                <a href="javascript:;" class="btn btn-red" onclick="return moduleCopy(this,'<%= item.c_modulename%>');">复制</a>
+                <!-- <a data-confirm-msg="是否确定要复制本模块，新模块名：<%= item.c_modulename%>_copy ?" class="btn btn-red" data-toggle="doajax" href="/cmpage/module/copy?modulename=<%= item.c_modulename%>">复制</a> -->
+                <a class="btn btn-orange"  href="#" onclick="return modulePreview('<%= item.c_modulename%>');">预览</a>
             </td>
         </tr>
         <%})%>
@@ -100,7 +103,26 @@
         parent.window.modulePreview(url, modulename+' 预览');
         return false;
     }
+    function moduleCopy(obj,modulename) {
+        var newname = $('#where_c_modulename').val();
+        if(newname == '')   newname = modulename+'_copy';
+        $(obj).alertmsg('confirm', '是否确定要复制本模块，新模块名：'+newname,
+            {displayMode:'slide', title:'友情提醒',
+            okCall:function(){
+                $.ajax({
+                    type: "POST",
+                    url: "/cmpage/module/copy?modulename="+modulename+"&newname="+$('#where_c_modulename').val(),
+                    data: "",
+                    async: false,
+                    success: function (ret) {
+                        //var ret = eval("(" + data + ")");
+                        if(ret.message !='')   $(this).alertmsg(ret.statusCode == "200" ? "info" : "error", ret.message);
+                    }
+                });
+            }});
 
+        return false;
+    }
     function moduleAdd(obj) {
         if ($("#where_c_modulename").val() == "") {
             $(obj).alertmsg('error', '请输入要增加的模块名称');

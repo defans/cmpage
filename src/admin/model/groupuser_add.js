@@ -26,8 +26,7 @@ export default class extends CMPage {
      */
     async getQueryWhere(){
       let where =await super.getQueryWhere();
-        let parmsUrl =JSON.parse(this.mod.parmsUrl);
-      return where +` and id not in(select c_user from t_group_user where c_group=${parmsUrl.c_group}) `;
+      return where +` and id not in(select c_user from t_group_user where c_group=${this.mod.parmsUrl.c_group}) `;
     }
     /**
      * 重写父类的 htmlGetOther 方法，输出额外的按钮和js函数，
@@ -36,8 +35,7 @@ export default class extends CMPage {
      * @param {Object} page  页面设置主信息
      */
     async htmlGetOther() {
-        let parmsUrl =JSON.parse(this.mod.parmsUrl);
-        return `<a class="btn btn-green" href="#" onclick="return GroupUserAddIds(${parmsUrl.c_group});" data-icon="plus">加入</a>
+        return `<a class="btn btn-green" href="#" onclick="return GroupUserAddIds(${this.mod.parmsUrl.c_group});" data-icon="plus">加入</a>
             <script type="text/javascript">
                 function GroupUserAddIds( groupID) {
                     //alert($('[name="ids"]').length);

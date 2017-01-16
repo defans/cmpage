@@ -26,7 +26,7 @@ export default class extends CMPage {
      */
     async getQueryWhere(){
         let where =await super.getQueryWhere();
-        //global.debug(where);
+        //cmpage.debug(where);
         //where += ` and c_user=${page.user.id}`;
 
         return where ;
@@ -40,17 +40,17 @@ export default class extends CMPage {
      * @param {string} msg 日志内容
      * @param {int} moduleID  业务模块ID
      * @param {int} [linkID]  关联的记录ID
-     * @param {int} [logStatus]  日志状态， global.enum
-     * @param {int} [logType]  日志类型，global.enum
+     * @param {int} [logStatus]  日志状态， cmpage.enum
+     * @param {int} [logType]  日志类型，cmpage.enum
      */
     async addLog(user,msg,moduleID,linkID,logStatus,logType){
-        //global.debug(logStatus,'log.addlog -- logStatus');
+        //cmpage.debug(logStatus,'log.addlog -- logStatus');
         msg = (msg.length >3800 ? msg.substr(0,3800):msg);
         msg  = think.isObject(msg) ? JSON.stringify(msg).replace(/"/g,'').replace(/\\/g,'').replace(/,/g,',  ') : msg;
         let md ={c_desc:msg, c_group:user.groupID, c_user:user.id, c_time:think.datetime(),c_module:moduleID,
             c_type:(think.isEmpty(logType) ? 0: logType),c_status:(think.isEmpty(logStatus) ? 0: logStatus),c_link:(think.isEmpty(linkID) ? 0: linkID)};
 
-        return await this.model('t_log').add(global.checksql(md));
+        return await this.model('t_log').add(cmpage.checksql(md));
     }
 
 

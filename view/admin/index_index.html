@@ -41,12 +41,6 @@
     <script src="/static/bjui/other/jquery.iframe-transport.js"></script>
     <![endif]-->
 
-    <!-- jquery -->
-    <script src="/static/bjui/js/jquery-1.11.3.min.js"></script>
-    <script src="/static/bjui/js/jquery.cookie.js"></script>
-    <!--[if lte IE 9]>
-    <script src="/static/bjui/other/jquery.iframe-transport.js"></script>
-    <![endif]-->
     <!-- B-JUI -->
     <script src="/static/bjui/js/bjui-all.js"></script>
     <script src="/static/bjui/js/bjui-lookup.js"></script>
@@ -101,6 +95,15 @@
                 debug        : true,    // [可选]调试模式 [true|false，默认false]
                 theme        : 'green' // 若有Cookie['bjui_theme'],优先选择Cookie['bjui_theme']。皮肤[五种皮肤:default, orange, purple, blue, red, green]
             })
+            if(document.documentElement.clientWidth <768){
+                BJUI.setRegional('pagination', {
+                    first   : '',
+                    last    : '',
+                    prev    : '',
+                    next    : ''
+                })
+            }
+
             //时钟
             var today = new Date(), time = today.getTime()
             $('#bjui-date').html(today.formatDate('yyyy/MM/dd'))
@@ -110,7 +113,6 @@
                 $('#bjui-clock').html(today.formatDate('HH:mm:ss'))
             }, 1000)
         })
-
         /*window.onbeforeunload = function(){
          return "确定要关闭本系统 ?";
          }*/
@@ -241,7 +243,7 @@ Mysql数据库备份文件（/db/cmpage_my.sql）
 
 手机端项目的目录：/mob，独立项目，非必需，请用HBuider打开，然后用USB连上手机就可以调试了，
     具体参见 http://www.dcloud.io/runtime.html,
-    也可以用手机扫描二维码(http://139.129.48.131:8300/admin/index/login ),安装Andriod版本的DEMO。
+    也可以用手机扫描二维码(http://139.129.48.131:8300/static/mob/cmpage_demo.png ),安装Andriod版本的DEMO。
 
                                 　　　　　　2016-10-23 defans@sina.cn
 
@@ -289,5 +291,6 @@ Mysql数据库备份文件（/db/cmpage_my.sql）
 
 </script>
 
-<script type="text/javascript" src="/static/js/utils.js" ></script>
-<script type="text/javascript" src="/static/js/cmpage.js" ></script>
+<script type="text/javascript" src="/static/js/web_utils.js" ></script>
+<script type="text/javascript" src="/static/js/web_cmpage.js" ></script>
+<script type="text/javascript" src="/static/js/web_flow.js" ></script>

@@ -26,8 +26,7 @@ export default class extends CMPage {
      */
     async getQueryWhere(){
       let where =await super.getQueryWhere();
-        let parmsUrl =JSON.parse(this.mod.parmsUrl);
-      return where +` and id not in(select c_user from t_team_user where c_team=${parmsUrl.c_team}) `;
+      return where +` and id not in(select c_user from t_team_user where c_team=${this.mod.parmsUrl.c_team}) `;
     }
 
     /**
@@ -37,8 +36,7 @@ export default class extends CMPage {
      * @param {Object} page  页面设置主信息
      */
     async htmlGetOther() {
-        let parmsUrl =JSON.parse(this.mod.parmsUrl);
-        return `<a class="btn btn-green" href="#" onclick="return TeamUserAddIds(${parmsUrl.c_team});" data-icon="plus">加入</a>
+        return `<a class="btn btn-green" href="#" onclick="return TeamUserAddIds(${this.mod.parmsUrl.c_team});" data-icon="plus">加入</a>
             <script type="text/javascript">
                 function TeamUserAddIds( teamID) {
                     //alert($('[name="ids"]').val());

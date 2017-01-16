@@ -1,0 +1,75 @@
+
+<div class="bjui-pageHeader">
+    <% if(!vb.isMine){ %>
+    <a class="btn btn-green" href="#" onclick="userp_savePrivilege();"  data-icon="save"> 保存权限 </a>
+    <%}%>
+    <div class="pull-right">
+        <button type="button" class="btn-close " data-icon="close">关闭</button>
+    </div>
+</div>
+
+<div class="bjui-pageContent" style="padding:5px">
+
+    <div style="float:left; display:block; overflow:auto; width:100%; height:100%; border:solid 1px #CCC; line-height:21px; background:#fff">
+
+        <ul id="userpTree" class="ztree" data-toggle="ztree"
+            data-options="{
+                checkEnable:true,
+                setting:{
+                    view: {
+                        fontCss: setFontCss
+                    }
+                }
+            }"
+        >
+            <% treeList.forEach(function(item)  { %>
+            <li data-id="<%= item.id%>" data-pid="<%= item.c_pid%>" data-root="<%= item.c_root%>" data-checked="<%= item.isAllow%>" <%= vb.isMine ? "data-chk-disabled=true  " : " "%>
+                data-open="<%= (item.c_pid == 0) %>" ><%= item.c_name%></li>
+            <%});%>
+        </ul>
+    </div>
+
+    <div class="unitBox" style="margin-left:246px;">
+
+        <ul id="rolepvTree" class="ztree"></ul>
+
+    </div>
+
+    <input type="hidden" id="userp_userID" value="<%= vb.userID%>" />
+    <input type="hidden" id="userp_isMine" value="<%= vb.isMine%>" />
+</div>
+
+
+<SCRIPT type="text/javascript">
+
+    function userp_savePrivilege(){
+        var treeObj = $.fn.zTree.getZTreeObj("userpTree");
+        var nodes = treeObj.getCheckedNodes(false);
+        //递交未选中的权限ID
+        var ids = "";
+        if(nodes.length >0){
+            $.each(nodes,function(i,n){
+                ids += n.id +",";
+            });
+            ids = ids.substr(0,ids.length -1);
+        }
+        $.ajax({
+            type: "POST",
+            url: "/admin/code/user_save_privilege",
+            data: "userID="+$("#userp_userID").val()+"&ids="+ids,
+            async: false,
+            success: function (res) {
+                //var msg = $.parseJSON(res);
+                $(this).alertmsg('info',res.message);
+            }
+        });
+        return true;
+    }
+
+    function setFontCss(treeId, treeNode) {
+        var isMine = $('#userp_isMine').val() ;
+        return treeNode.checked && isMine=='true' ? { color: "blue" } : {};
+    }
+
+</SCRIPT>
+

@@ -75,7 +75,7 @@ export default class extends think.model.base {
      */
     async getColData(item,col){
         if (!think.isEmpty(col.c_format) && col.c_coltype === "decimal") {
-            return global.formatNumber(item[col.c_column], {pattern: col.c_format});
+            return cmpage.formatNumber(item[col.c_column], {pattern: col.c_format});
         } else if (col.c_type === "checkbox") {
             return item[col.c_column] ? "是" : "否";
         } else if (col.c_type === "replace" && !(/^select/.test(col.c_memo))) {

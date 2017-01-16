@@ -281,7 +281,39 @@
                     
                        <li>
                             
+                           <a href="../classes/cmpage.model.base.html">cmpage.model.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.file_list.html">cmpage.model.file_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -311,19 +343,9 @@
                            </ul>
                        </li>
                     
-                    </ul>
-                </dd>
-             
-                <dt>
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
-                </dt>
-                <dd>
-                    <ul>
-                   
                        <li>
                             
-                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <a href="../classes/cmpage.cmpage_global_flow.html">cmpage.cmpage_global_flow</a>
                            <ul>
                                 
                            </ul>
@@ -334,14 +356,54 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                    <a href="../modules/demo.model.html">demo.model</a>
                 </dt>
                 <dd>
                     <ul>
                    
                        <li>
                             
-                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <a href="../classes/flow.model.proc_assign.html">flow.model.proc_assign</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.appr.html">cmpage.model.appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -423,38 +485,6 @@
                            </ul>
                        </li>
                     
-                       <li>
-                            
-                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task.html">flow.model.task</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
                     </ul>
                 </dd>
              
@@ -520,9 +550,8 @@ export default class extends CMPage {
      */
     async getQueryWhere(){
         let where =await super.getQueryWhere();
-        //global.debug(where);
-        let parmsUrl =JSON.parse(this.mod.parmsUrl);
-        return where +&#x27; and c_pid=&#x27;+parmsUrl.c_pid;
+        //cmpage.debug(where);
+        return where +&#x27; and c_status = 0 and c_pid=&#x27;+this.mod.parmsUrl.c_pid;
     }
     /**
      * 重写父类的 pageEditInit 方法，对初始化编辑页面的值进行修改
@@ -532,8 +561,7 @@ export default class extends CMPage {
     async pageEditInit(){
         let md = await super.pageEditInit();
 
-        let parmsUrl = JSON.parse(this.mod.parmsUrl);
-        let pCode = await this.model(&#x27;code&#x27;).getCodeById(parseInt(parmsUrl.c_pid));
+        let pCode = await cmpage.model(&#x27;admin/code&#x27;).getCodeById(parseInt(this.mod.parmsUrl.c_pid));
         md.c_pid = pCode.id;
         md.c_root = pCode.c_root;
         md.c_type = &#x27;N&#x27;;
@@ -548,29 +576,41 @@ export default class extends CMPage {
      * @param {Object} parms  编辑页面传回的FORM参数
      */
     async pageSave(parms){
-        let ret = await super.pageSave( parms);
-        this.model(&#x27;code&#x27;).clearCodeCache();
+        //如果是菜单或者按钮，不允许c_object 重复
+        let rec =parms;
+        rec.id = think.isEmpty(parms.id) ? 0:parms.id;
+        if(rec.c_root ==1 &amp;&amp; !think.isEmpty(rec.c_object) ){
+            let codes = await cmpage.model(&#x27;admin/code&#x27;).getCodes();
+            for(let md of codes){
+                if(md.c_root ===1 &amp;&amp; md.c_object === rec.c_object &amp;&amp; rec.id != md.id){
+                    return cmpage.error(&#x27;对象代码(c_object)设置重复，保存失败！&#x27;,rec);
+                }
+            }
+        }
+        let ret = await super.pageSave( parms );
+        await cmpage.model(&#x27;admin/code&#x27;).clearCodeCache();
 
         return ret;
     }
-
     /**
-     * 取顶部按钮的设置，分靠左和靠右两块，组合成HTML输出
-     * @method  htmlGetBtnHeader
-     * @return {string}  HTML片段
+     * 删除记录,&lt;br/&gt;
+     * 子类中可以重写本方法，实现其他的删除逻辑，如判断是否可以删除，删除相关联的其他记录等等
+     * @method  pageDelete
+     * @return {object} 记录对象
      */
-    async htmlGetBtnHeader(){
-        let parmsUrl =JSON.parse(this.mod.parmsUrl);
-        for(let btn of this.modBtns){
-            if(btn.c_object.indexOf(&#x27;.Edit&#x27;) &gt;0){
-                btn.c_url +=&#x27;&amp;target=&#x27;+parmsUrl.target;
-            }
+    async pageDelete(){
+        let rec = await cmpage.model(&#x27;admin/code&#x27;).getCodeById(this.mod.recID);
+        //debug(rec,&#x27;code_list.pageDelete - rec&#x27;);
+        if(rec.c_pid == 705){
+            //物料分类
+            let cnt = await cmpage.model(&#x27;docu/goods&#x27;).model(&#x27;t_goods&#x27;).where({c_class:rec.id}).count();
+            if(cnt &gt;0) return {statusCode:300,message:&#x27;请先删除该分类下的物料资料！&#x27;,data:{}};
         }
-        return super.htmlGetBtnHeader();
+
+        return await super.pageDelete();
     }
-
-
 }
+
     </pre>
 </div>
 

@@ -145,7 +145,7 @@ function getMsgList(size) {
 		} else {
 			pageIndex += 1;
 		}
-		mui.ajax(app.getDomain() + "/Commpage/PageMobShow", {
+		mui.ajax(app.getDomain() + "/cmpage/PageMobShow", {
 			data: formdata,
 			type: "post",
 			dataType: 'json',

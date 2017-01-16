@@ -25,9 +25,8 @@ export default class extends CMPage {
      * @return {string}  html片段
      */
     async htmlGetOther(){
-        //global.debug(this.mod,'groupuser.htmlGetOther - this.mod');
-      let parms =JSON.parse(this.mod.parmsUrl);
-      return `<a class="btn btn-green" href="/cmpage/page/list?modulename=GroupUserAdd&c_group=${parms.c_group}"
+        //cmpage.debug(this.mod,'groupuser.htmlGetOther - this.mod');
+      return `<a class="btn btn-green" href="/cmpage/page/list?modulename=GroupUserAdd&c_group=${this.mod.parmsUrl.c_group}"
                         data-toggle="dialog" data-options="{id:'pageGroupUserAdd', mask:true, width:800, height:600 }"
                         data-on-close="pageGroupUserEdit_onClose" data-icon="plus">加入用户</a>
                 <a class="btn btn-red" href="#" onclick="return GroupUserDelIds();"  data-icon="times">剔除</a>
@@ -73,7 +72,7 @@ export default class extends CMPage {
      */
     async getLoginGroups(groupID,userID){
         //假设账套不超过3层
-        let codeModel = this.model('code');
+        let codeModel = cmpage.model('admin/code');
         let cnt = await this.model('t_group_user').where({c_group:groupID, c_user:userID}).count();
         if(cnt == 0){
             let groupMd = await codeModel.getCodeById(groupID);
@@ -93,7 +92,7 @@ export default class extends CMPage {
             }
         }
         let groups = await codeModel.getTreeList(groupID);
-        //global.debug(groups,'groupuser.getLoginGroups - grous');
+        //cmpage.debug(groups,'groupuser.getLoginGroups - grous');
         let ret = [];
         ret.push(groupID);
         for(let group of groups){ ret.push(group.id); }

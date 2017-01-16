@@ -29,11 +29,11 @@ export default class extends think.model.base {
         }
         if(!think.isEmpty(this.taskModel)){
             await this.taskModel.fwStart();
-            global.debug(this.taskModel.task,'proc.fwStart --- this.taskModel.task');
+            cmpage.debug(this.taskModel.task,'proc.fwStart --- this.taskModel.task');
             if(!think.isEmpty(this.taskModel.task)){
                 //取当前节点
                 await this.taskModel.getTaskWithCurrentAct();
-                global.debug(this.taskModel.currAct,'proc.fwStart - taskModel.currAct');
+                cmpage.debug(this.taskModel.currAct,'proc.fwStart - taskModel.currAct');
             }
         }
     }
@@ -145,7 +145,7 @@ export default class extends think.model.base {
     async getProcs(){
         return await think.cache("procProcs", () => {
             return this.query('select id,c_name,c_desc,c_type,c_class,c_no_format,c_way_create,c_time_from,c_time_to,c_status,' +
-                'c_user,c_time,c_group,c_link_model,c_link_type  from fw_proc  where c_status=0 order by id');
+                'c_user,c_time,c_group,c_link_model,c_link_type,c_act_start  from fw_proc  where c_status=0 order by id');
         });
     }
 
@@ -154,8 +154,19 @@ export default class extends think.model.base {
         for(let proc of procs){
             await think.cache(`procActs${proc.id}`,null);
             await think.cache(`procActPaths${proc.id}`,null);
+            await think.cache(`procAssigns${proc.id}`,null);
         }
+        let acts = await this.query('select id from fw_act where c_status=0 ');
+        for(let act of acts){
+            await think.cache(`actAssigns${act.id}`,null);
+        }
+
         await think.cache('procProcs', null);
+        await think.cache('procActs', null);
+        await think.cache('procActPaths', null);
+        await think.cache('procAssigns', null);
+        await think.cache('actAssigns', null);
     }
+
 
 }

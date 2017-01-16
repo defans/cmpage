@@ -281,7 +281,39 @@
                     
                        <li>
                             
+                           <a href="../classes/cmpage.model.base.html">cmpage.model.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.file_list.html">cmpage.model.file_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -311,19 +343,9 @@
                            </ul>
                        </li>
                     
-                    </ul>
-                </dd>
-             
-                <dt>
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
-                </dt>
-                <dd>
-                    <ul>
-                   
                        <li>
                             
-                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <a href="../classes/cmpage.cmpage_global_flow.html">cmpage.cmpage_global_flow</a>
                            <ul>
                                 
                            </ul>
@@ -334,14 +356,54 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                    <a href="../modules/demo.model.html">demo.model</a>
                 </dt>
                 <dd>
                     <ul>
                    
                        <li>
                             
-                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <a href="../classes/flow.model.proc_assign.html">flow.model.proc_assign</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.appr.html">cmpage.model.appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -423,38 +485,6 @@
                            </ul>
                        </li>
                     
-                       <li>
-                            
-                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task.html">flow.model.task</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
                     </ul>
                 </dd>
              
@@ -527,7 +557,7 @@ export default class extends Base {
     vb.treeID=&#x60;codeTree${vb.rootID}&#x60;;
     let model = this.model(&#x27;code&#x27;);
     vb.list =await model.getTreeList(vb.rootID,true);
-//    global.debug(JSON.stringify(vb));
+//    cmpage.debug(JSON.stringify(vb));
     this.assign(&#x27;vb&#x27;,vb);
     return this.display();
   }
@@ -545,7 +575,7 @@ export default class extends Base {
         vb.treeID=&#x60;codeTree${vb.rootID}&#x60;;
         let model = this.model(&#x27;code&#x27;);
         vb.list =await model.getTreeList(vb.rootID,true);
-//    global.debug(JSON.stringify(vb));
+//    cmpage.debug(JSON.stringify(vb));
         this.assign(&#x27;vb&#x27;,vb);
         return this.display();
     }
@@ -628,7 +658,7 @@ export default class extends Base {
   async rolePrivilegeAction(){
     let model = this.model(&#x27;code&#x27;);
     let treeList =await model.getTreeList(3,true);
-//    global.debug(JSON.stringify(vb));
+//    cmpage.debug(JSON.stringify(vb));
     this.assign(&#x27;treeList&#x27;,treeList);
     return this.display();
   }
@@ -641,7 +671,7 @@ export default class extends Base {
   async roleGetPrivilegeTreeAction(){
     let roleID = this.http.post(&#x27;roleID&#x27;);
     let treeList =await this.model(&#x27;privilege&#x27;).roleGetPrivilegeTree(roleID);
-//    global.debug(JSON.stringify(vb));
+//    cmpage.debug(JSON.stringify(vb));
     return this.json(treeList);
   }
 
@@ -652,10 +682,56 @@ export default class extends Base {
      */
   async roleSavePrivilegeAction(){
     let parms =this.http.post();
-    //global.debug(rec);
+    //cmpage.debug(rec);
     await this.model(&#x27;privilege&#x27;).roleSavePrivilege(parms);
-    return this.json({statusCode:200,message:&#x27;&#x27;,data:{}});
+    return this.json({statusCode:200,message:&#x27;保存成功!&#x27;,data:{}});
   }
+
+    /**
+     * 某个用户的权限集合展示，树状结构
+     * @method userGetPrivilegeTree
+     * @return {json}
+     */
+    async userGetPrivilegeTreeAction(){
+        let user = await this.session(&#x27;user&#x27;);
+        let parms = this.http.get();
+        if(!think.isEmpty(parms.userID)){
+            user = await this.model(&#x27;user&#x27;).getUserById(parms.userID);
+        }
+        let isMine = !think.isEmpty(parms.isMine);
+        let treeList =await this.model(&#x27;privilege&#x27;).userGetPrivilegeTree(user.id, user.c_role, 1);
+//    cmpage.debug(JSON.stringify(vb));
+        this.assign(&#x27;treeList&#x27;,treeList);
+        this.assign(&#x27;vb&#x27;,{userID:user.id, isMine:isMine});
+        return this.display();
+    }
+
+    /**
+     * 保存某个用户的定制权限设置
+     * @method userSavePrivilege
+     * @return {json}
+     */
+    async userSavePrivilegeAction(){
+        let parms =this.http.post();
+        //cmpage.debug(rec);
+        await this.model(&#x27;privilege&#x27;).userSavePrivilege(parms);
+        return this.json({statusCode:200,message:&#x27;保存成功!&#x27;,data:{}});
+    }
+
+    /**
+     * 保存某个用户的定制权限设置
+     * @method userSavePrivilege
+     * @return {json}
+     */
+    async userSetPwdInitAction(){
+        let userID =this.http.get(&#x27;userID&#x27;);
+        if(think.isEmpty(userID)){
+            return this.json({statusCode:300, message:&#x27;用户ID无效！&#x27;});
+        }
+        await this.model(&#x27;t_user&#x27;).where({id:userID}).update({c_login_pwd:think.md5(&#x27;123456&#x27;)});
+        await this.cache(&quot;users&quot;,null);  //清除users缓存
+        return this.json({statusCode:200, message:&#x27;密码已修改修改为初始密码（123456）！&#x27;});
+    }
 
 
     /**
@@ -669,7 +745,7 @@ export default class extends Base {
         vb.treeID=&#x60;code${vb.rootID}&#x60;;
         let model = this.model(&#x27;code&#x27;);
         vb.list =await model.getTreeList(vb.rootID,true);
-        // global.debug(JSON.stringify(vb));
+        // cmpage.debug(JSON.stringify(vb));
         this.assign(&#x27;vb&#x27;,vb);
         return this.display();
     }
@@ -677,7 +753,7 @@ export default class extends Base {
     async codeSaveAction(){
         let ret={statusCode:200,message:&#x27;&#x27;,data:{}};
         let parms =this.http.post();
-        //global.debug(rec);
+        //cmpage.debug(rec);
 
         let model = this.model(&#x27;t_code&#x27;);
         if(parms.id ==0){
@@ -686,7 +762,7 @@ export default class extends Base {
                 rec[key] =parms[key];
             }});
             ret.data.id =await model.add(rec);
-            global.debug(JSON.stringify(ret));
+            cmpage.debug(JSON.stringify(ret));
         }else if(parms.id &gt;0){
             ret.data.id =parseInt(parms.id);
             await model.where({id: ret.data.id}).update(parms);
@@ -699,7 +775,7 @@ export default class extends Base {
     async codeDelAction(){
         let ret={statusCode:200,message:&#x27;&#x27;,data:{}};
         let parms =this.http.post();
-        //global.debug(rec);
+        //cmpage.debug(rec);
 
         let model = this.model(&#x27;t_code&#x27;);
         if(parms.id &gt;0){
@@ -712,6 +788,7 @@ export default class extends Base {
         return this.display();
     }
 }
+
     </pre>
 </div>
 

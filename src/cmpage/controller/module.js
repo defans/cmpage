@@ -37,7 +37,7 @@ export default class extends Base {
       vb.where = http.post();
       vb.currentPage = vb.where['currentPage'];
     }
-    global.debug(vb);
+    cmpage.debug(vb);
     let model = this.model("module");
 
     let where=' c_status=0 ';
@@ -53,7 +53,7 @@ export default class extends Base {
           rec.c_time= think.datetime(rec.c_time)
       }
     Object.assign(vb,list);
-    //global.debug(vb);
+    //cmpage.debug(vb);
     this.assign("vb",vb);
     return this.display();
   }
@@ -66,19 +66,19 @@ export default class extends Base {
   async saveAction(){
     let ret={statusCode:200,message:'保存成功!',tabid: 'pageModule',data:{}};
     let parms =this.http.post();
-    let md = global.objPropertysFromOtherObj({},parms,['c_modulename','c_datasource','c_table','c_page_size','c_sort_by','c_type','c_other',
-      'c_module_rec','c_edit_column','c_mui','c_memo','c_path','c_alias']);
+    let md = cmpage.objPropertysFromOtherObj({},parms,['c_modulename','c_datasource','c_table','c_page_size','c_sort_by','c_type','c_other',
+      'c_module_slave','c_edit_column','c_mui','c_memo','c_path','c_alias','c_proc']);
     md.c_multiselect = !think.isEmpty(parms.c_multiselect);
     md.c_pager = !think.isEmpty(parms.c_pager);
     md.c_time = think.datetime();
     md.c_status =0;
-    //global.debug(md);
+    //cmpage.debug(md);
 
     let model = this.model('t_module');
     if(parms.id ==0){
       let rec = await model.where({c_modulename:parms.c_modulename}).find();
       if(think.isEmpty(rec)){
-        md.id = await model.add(global.checksql(md));
+        md.id = await model.add(cmpage.checksql(md));
       }else{
           md.id = rec.id;
           ret.statusCode = 300;
@@ -86,7 +86,7 @@ export default class extends Base {
       }
     }else if(parms.id >0){
         md.id = parms.id;
-        await model.where({id:parms.id}).update(global.checksql(md));
+        await model.where({id:parms.id}).update(cmpage.checksql(md));
     }
 
       await think.cache(`module${md.id}`,null);
@@ -100,10 +100,15 @@ export default class extends Base {
      * @return {json} 复制是否成功的信息
      */
     async copyAction(){
-    let modulename =this.http.get('modulename');
-    return this.json(await this.model('module').copyToNewModule(modulename));
-  }
+        let modulename =this.get('modulename');
+        let newName = this.get('newname');
+        return this.json(await this.model('module').copyToNewModule(modulename, newName));
+    }
 
+    async copyModuleFromMssqlAction(){
+        let modulename =this.http.get('modulename');
+        return this.json(await this.model('module').copyModuleFromMssql(modulename));
+    }
     /**
      * 模块主表编辑页面，调用：/cmpage/module/edit?id=xxx
      * @method  edit
@@ -117,12 +122,14 @@ export default class extends Base {
       //如果新增，则初始化
       md.c_modulename=http.get('modulename');
       md.c_datasource = md.c_table = http.get('datasource');
-      Object.assign(md, {id:0,c_multiselect:false, c_pager:true, c_page_size:20, c_sort_by:'id desc',c_edit_column:1, c_path:'cmpage/page',c_alias:md.c_modulename });
+      Object.assign(md, {id:0,c_multiselect:false, c_pager:true, c_page_size:20, c_sort_by:'id desc',c_edit_column:1,
+            c_proc:0,proc_name:'', c_path:'cmpage/page',c_alias:md.c_modulename });
     }else{
       let tmp = await  this.model("t_module").where({id: http.get('id')}).find();
+      tmp.proc_name = await this.model('flow/proc').getNameById(tmp.c_proc);
       Object.assign(md,tmp);
     }
-    global.debug(JSON.stringify(md));
+    cmpage.debug(JSON.stringify(md));
 
     this.assign("md",md);
     return this.display();
@@ -150,7 +157,7 @@ export default class extends Base {
     let http =this.http;
 
     let md =await   this.model('t_module').where({id:http.get('moduleid')}).find();
-    global.debug(md);
+    cmpage.debug(md);
 
     let model = this.model("module");
     let vb={};
@@ -190,12 +197,12 @@ export default class extends Base {
     //let posts = http.post();
     let posts = http.post();
 
-    //global.debug(posts[`editList[0].c_name`]);
+    //cmpage.debug(posts[`editList[0].c_name`]);
     for(let i=0; i< 100 ; i++){
       if (!posts[`editList[${i}].c_order`]){
         break;
       }
-//      global.debug(posts[`editList[${i}].c_column`]);
+//      cmpage.debug(posts[`editList[${i}].c_column`]);
       if(!think.isEmpty(posts[`editList[${i}].c_column`])){
         let md={c_time:think.datetime()};
         md.c_module = posts['c_module'];
@@ -214,11 +221,11 @@ export default class extends Base {
         md.c_type_sum = posts[`editList[${i}].c_type_sum`].trim();
         md.c_mui = posts[`editList[${i}].c_mui`];
         md.c_memo = posts[`editList[${i}].c_memo`];
-        //global.debug(JSON.stringify(md));
+        //cmpage.debug(JSON.stringify(md));
         if(think.isEmpty(posts[`editList[${i}].id`])){
-          await model.add(global.checksql(md));
+          await model.add(cmpage.checksql(md));
         }else{
-          await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(global.checksql(md));
+          await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(cmpage.checksql(md));
         }
 
       }
@@ -288,16 +295,16 @@ export default class extends Base {
         md.c_type = posts[`editList[${i}].c_type`].trim();
         md.c_format = posts[`editList[${i}].c_format`].trim();
         md.c_width = posts[`editList[${i}].c_width`];
-        md.c_style = posts[`editList[${i}].c_style`].trim();
+        // md.c_style = posts[`editList[${i}].c_style`].trim();
         md.c_suffix = posts[`editList[${i}].c_suffix`];
         md.c_validate_rules = posts[`editList[${i}].c_validate_rules`];
-        md.c_mui = posts[`editList[${i}].c_mui`];
+//        md.c_other = posts[`editList[${i}].c_other`];
         md.c_memo = posts[`editList[${i}].c_memo`];
-        global.debug(JSON.stringify(md));
+        cmpage.debug(JSON.stringify(md));
           if(think.isEmpty(posts[`editList[${i}].id`])){
-              await model.add(global.checksql(md));
+              await model.add(cmpage.checksql(md));
           }else{
-              await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(global.checksql(md));
+              await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(cmpage.checksql(md));
           }
 
       }
@@ -385,13 +392,13 @@ export default class extends Base {
         md.c_width = posts[`editList[${i}].c_width`];
         md.c_style = posts[`editList[${i}].c_style`];
         md.c_suffix = posts[`editList[${i}].c_suffix`];
-        md.c_mui = posts[`editList[${i}].c_mui`];
+//        md.c_mui = posts[`editList[${i}].c_mui`];
         md.c_memo = posts[`editList[${i}].c_memo`];
-        //global.debug(md);
+        //cmpage.debug(md);
           if(think.isEmpty(posts[`editList[${i}].id`])){
-              await model.add(global.checksql(md));
+              await model.add(cmpage.checksql(md));
           }else{
-              await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(global.checksql(md));
+              await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(cmpage.checksql(md));
           }
 
       }
@@ -458,13 +465,13 @@ export default class extends Base {
         md.c_title = posts[`editList[${i}].c_title`];
         md.c_icon = posts[`editList[${i}].c_icon`];
         md.c_onclick = posts[`editList[${i}].c_onclick`];
-        md.c_mui = posts[`editList[${i}].c_mui`];
+        //md.c_mui = posts[`editList[${i}].c_mui`];
         md.c_memo = posts[`editList[${i}].c_memo`];
-        global.debug(JSON.stringify(md));
+        cmpage.debug(JSON.stringify(md));
           if(think.isEmpty(posts[`editList[${i}].id`])){
-              await model.add(global.checksql(md));
+              await model.add(cmpage.checksql(md));
           }else{
-              await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(global.checksql(md));
+              await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(cmpage.checksql(md));
           }
       }else{
         break;

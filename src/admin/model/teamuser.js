@@ -25,8 +25,7 @@ export default class extends CMPage {
      * @param {Object} page  页面设置主信息
      */
     async htmlGetOther(){
-      let parms =JSON.parse(this.mod.parmsUrl);
-      return `<a class="btn btn-green" href="/cmpage/page/list?modulename=TeamUserAdd&c_team=${parms.c_team}"
+      return `<a class="btn btn-green" href="/cmpage/page/list?modulename=TeamUserAdd&c_team=${this.mod.parmsUrl.c_team}"
                         data-toggle="dialog" data-options="{id:'pageTeamUserAdd', mask:true, width:800, height:600 }"
                         data-on-close="pageTeamUserEdit_onClose" data-icon="plus">加入用户</a>
                 <a class="btn btn-red" href="#" onclick="return TeamUserDelIds();"  data-icon="times">剔除</a>
@@ -61,6 +60,36 @@ export default class extends CMPage {
             }
             </script>
         `;
+    }
+
+    /**
+     * 根据团队ID取团队的成员列表，可用于页面模块配置中的‘替换’调用: admin/teamuser:getUsersByTeamId
+     * @method  getUsersByTeamId
+     * @return {Array}  团队成员列表
+     * @param {int} teamID  团队ID
+     */
+    async getUsersByTeamId(teamID){
+        return await think.cache("teamUsers"+teamID, () => {
+            return this.query(`select * from t_team_user where c_team=${teamID} order by id `);
+        });
+    }
+    /**
+     * 判断某个用户是否是某个团队的成员
+     * @method  isTeamMember
+     * @return {boolean}    是否是成员
+     * @param {int} teamID  团队ID
+     * @param {int} userID  用户ID
+     * @param {Array} [users]  成员列表，用来改善性能, 可选项
+     */
+    async isTeamMember(teamID,userID,users){
+        //debug(teamID,'teamuser.isTeamMember - teamID');
+        let list =  think.isEmpty(users) ? await this.getUsersByTeamId(teamID) : users;
+        for(let md of list){
+            if(md.c_user == userID){
+                return true;
+            }
+        }
+        return false;
     }
 
 

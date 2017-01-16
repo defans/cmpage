@@ -12,13 +12,13 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="keywords" content="CmPage, ThinkJS, Node.js, B-JUI, MUI, HTML5+, MVC, 权限管理, 工作流, " />
-    <meta name="description" content="CmPage 是一款企业信息管理系统的二次开发框架，采用ThinkJS和B-JUI等开源框架实现。" />
+    <meta name="description" content="CmPage 企业信息化的二次开发框架，采用ThinkJS、B-JUI、MUI等开源框架实现。" />
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
     <meta name="format-detection" content="telephone=no" />
-    <title>CmPage 管理系统框架 采用ThinkJS B-JUI</title>
+    <title>CmPage - 日志记录</title>
     <meta name="renderer" content="webkit" />
     <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link rel="alternate icon" type="image/png" href="http://s.amazeui.org/assets/2.x/i/favicon.png" />
+    <link rel="alternate icon" type="image/png" href="/static/assets/i/favicon.png">
     <link rel="apple-touch-icon-precomposed" href="http://s.amazeui.org/assets/2.x/i/app-icon72x72@2x.png" />
     <meta name="apple-mobile-web-app-title" content="Amaze UI" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -81,7 +81,83 @@
 
 <div class="am-g am-g-fixed" >
   <div class="am-u-sm-12">
-
+      <div class="am-panel am-panel-default am-margin-lg">
+          <div class="am-panel-hd"><h2>V0.8.9 -- 2017.1.16</h2> </div>
+          <div class="am-panel-bd">
+              <ul>
+                  <li>[新增] 增加业务模块的基类，数据库接口改用 Sequelize </li>
+                  <li>[新增] cmpage/base 中增加兼容 think.model.base 的若干操作数据库的方法 </li>
+                  <li>[修改] 单据模块的数据库改用 MS SQLSERVER </li>
+                  <li>[修改] 修正不能从 mssql 中取数据模型的问题 </li>
+                  <li>[新增] 增加采购申请的相关模块 </li>
+                  <li>[新增] 增加通用的选择加入页面 </li>
+                  <li>[修改] 修正了由于多数据库引起的工作流的部分BUG </li>
+                  <li>[新增] 增加采购单的单据审核流程 </li>
+              </ul>
+          </div>
+      </div>
+      <div class="am-panel am-panel-default am-margin-lg">
+          <div class="am-panel-hd"><h2>V0.8.8 -- 2017.1.1</h2> </div>
+          <div class="am-panel-bd">
+              <ul>
+                  <li>[修改] 修改主页面头部按钮的显示方式 </li>
+                  <li>[修改] 修正查找带回页面的查询页面返回错误的问题 </li>
+                  <li>[新增] 手机端查找带回页面新增‘返回清除’按钮 </li>
+                  <li>[新增] 手机端新增附件管理页面，实现照片上传等功能 </li>
+                  <li>[新增] 增加流程模板的复制功能 </li>
+              </ul>
+          </div>
+      </div>
+      <div class="am-panel am-panel-default am-margin-lg">
+          <div class="am-panel-hd"><h2>V0.8.7 -- 2016.12.25</h2> </div>
+          <div class="am-panel-bd">
+              <ul>
+                  <li>[新增] 实现状态流转类的工作流机制 </li>
+                  <li>[新增] 增加时间轴页面 </li>
+                  <li>[新增] 手机端查看页面 </li>
+                  <li>[新增] 重构手机端分页列表、查询和编辑页面 </li>
+                  <li>[修改] 查询的时候过滤掉敏感字符串 </li>
+              </ul>
+          </div>
+      </div>
+      <div class="am-panel am-panel-default am-margin-lg">
+          <div class="am-panel-hd"><h2>V0.8.6 -- 2016.12.12</h2> </div>
+          <div class="am-panel-bd">
+              <ul>
+                  <li>[新增] 查看页面增加‘上一条’和‘下一条’的记录浏览功能 </li>
+                  <li>[修改] 修改page页面显示属性，使其适配于手机浏览器 </li>
+                  <li>[新增] 增加通用的附件管理功能 </li>
+                  <li>[新增] 增加编辑类型：文件上传 </li>
+                  <li>[修改] 业务模块设置的时候可以设置关联的工作流模板 </li>
+                  <li>[修改] 查找带回增加清除按钮 </li>
+              </ul>
+          </div>
+      </div>
+      <div class="am-panel am-panel-default am-margin-lg">
+          <div class="am-panel-hd"><h2>V0.8.5 -- 2016.12.04</h2> </div>
+          <div class="am-panel-bd">
+              <ul>
+                  <li>[修改] 把常用的方法和枚举参数等放入全局对象cmpage中 </li>
+                  <li>[新增] 增加主从页面的编辑页面 </li>
+                  <li>[新增] 查询列和编辑列的类型中增加树状下拉单选或多选 </li>
+                  <li>[新增] 手机端编辑页查找带回功能 </li>
+              </ul>
+          </div>
+      </div>
+      <div class="am-panel am-panel-default am-margin-lg">
+          <div class="am-panel-hd"><h2>V0.8.4 -- 2016.11.27</h2> </div>
+          <div class="am-panel-bd">
+              <ul>
+                  <li>[修改] 设置t_code表中参数时，可以增加颜色设置，在模块列表中显示，例如‘请假状态’</li>
+                  <li>[修改] 根据浏览器宽度设置查询列的数量 </li>
+                  <li>[新增] 流程（任务）的权限指派页面 </li>
+                  <li>[新增] 流程节点的权限指派页面 </li>
+                  <li>[新增] 业务模块中流程相关按钮的权限验证功能 </li>
+                  <li>[修改] 通用页面的按钮显示增加权限验证功能 </li>
+                  <li>[新增] 用户模块新增设置某个用户的定制权限和重置密码的功能 </li>
+              </ul>
+          </div>
+      </div>
       <div class="am-panel am-panel-default am-margin-lg">
           <div class="am-panel-hd"><h2>V0.8.3 -- 2016.11.15</h2> </div>
           <div class="am-panel-bd">
@@ -290,6 +366,18 @@
                   <li>[新增] 模块查询列的设置页面</li>
                   <li>[新增] 模块主信息的设置页面</li>
                   <li>-----</li>
+              </ul>
+          </div>
+      </div>
+      <div class="am-panel am-panel-default am-margin-lg">
+          <div class="am-panel-hd"><h2>CmPage 版本发布策略</h2> </div>
+          <div class="am-panel-bd">
+              <ul>
+                  <li>1~2 周发布一个小版本，如：1.0.1 => 1.0.2（小功能增加，bug 修复等）</li>
+                  <li>1~3 月发布一个中版本，如：1.0.0 => 1.1.0（较大功能增加，部分模块重构等）</li>
+                  <li>1~2 年发布一个大版本，如：1.0.0 => 2.0.0（框架整体设计、重构等）</li>
+                  <li>-----</li>
+                  <li>以上情况会因为一些特殊情况进行调整。</li>
               </ul>
           </div>
       </div>

@@ -281,7 +281,39 @@
                     
                        <li>
                             
+                           <a href="../classes/cmpage.model.base.html">cmpage.model.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.file_list.html">cmpage.model.file_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -311,19 +343,9 @@
                            </ul>
                        </li>
                     
-                    </ul>
-                </dd>
-             
-                <dt>
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
-                </dt>
-                <dd>
-                    <ul>
-                   
                        <li>
                             
-                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <a href="../classes/cmpage.cmpage_global_flow.html">cmpage.cmpage_global_flow</a>
                            <ul>
                                 
                            </ul>
@@ -334,14 +356,54 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                    <a href="../modules/demo.model.html">demo.model</a>
                 </dt>
                 <dd>
                     <ul>
                    
                        <li>
                             
-                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <a href="../classes/flow.model.proc_assign.html">flow.model.proc_assign</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.appr.html">cmpage.model.appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -423,38 +485,6 @@
                            </ul>
                        </li>
                     
-                       <li>
-                            
-                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task.html">flow.model.task</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
                     </ul>
                 </dd>
              
@@ -526,11 +556,11 @@ export default class extends think.model.base {
         }
         if(!think.isEmpty(this.taskModel)){
             await this.taskModel.fwStart();
-            global.debug(this.taskModel.task,&#x27;proc.fwStart --- this.taskModel.task&#x27;);
+            cmpage.debug(this.taskModel.task,&#x27;proc.fwStart --- this.taskModel.task&#x27;);
             if(!think.isEmpty(this.taskModel.task)){
                 //取当前节点
                 await this.taskModel.getTaskWithCurrentAct();
-                global.debug(this.taskModel.currAct,&#x27;proc.fwStart - taskModel.currAct&#x27;);
+                cmpage.debug(this.taskModel.currAct,&#x27;proc.fwStart - taskModel.currAct&#x27;);
             }
         }
     }
@@ -642,7 +672,7 @@ export default class extends think.model.base {
     async getProcs(){
         return await think.cache(&quot;procProcs&quot;, () =&gt; {
             return this.query(&#x27;select id,c_name,c_desc,c_type,c_class,c_no_format,c_way_create,c_time_from,c_time_to,c_status,&#x27; +
-                &#x27;c_user,c_time,c_group,c_link_model,c_link_type  from fw_proc  where c_status=0 order by id&#x27;);
+                &#x27;c_user,c_time,c_group,c_link_model,c_link_type,c_act_start  from fw_proc  where c_status=0 order by id&#x27;);
         });
     }
 
@@ -651,9 +681,20 @@ export default class extends think.model.base {
         for(let proc of procs){
             await think.cache(&#x60;procActs${proc.id}&#x60;,null);
             await think.cache(&#x60;procActPaths${proc.id}&#x60;,null);
+            await think.cache(&#x60;procAssigns${proc.id}&#x60;,null);
         }
+        let acts = await this.query(&#x27;select id from fw_act where c_status=0 &#x27;);
+        for(let act of acts){
+            await think.cache(&#x60;actAssigns${act.id}&#x60;,null);
+        }
+
         await think.cache(&#x27;procProcs&#x27;, null);
+        await think.cache(&#x27;procActs&#x27;, null);
+        await think.cache(&#x27;procActPaths&#x27;, null);
+        await think.cache(&#x27;procAssigns&#x27;, null);
+        await think.cache(&#x27;actAssigns&#x27;, null);
     }
+
 
 }
 

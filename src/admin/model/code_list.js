@@ -23,9 +23,8 @@ export default class extends CMPage {
      */
     async getQueryWhere(){
         let where =await super.getQueryWhere();
-        //global.debug(where);
-        let parmsUrl =JSON.parse(this.mod.parmsUrl);
-        return where +' and c_pid='+parmsUrl.c_pid;
+        //cmpage.debug(where);
+        return where +' and c_status = 0 and c_pid='+this.mod.parmsUrl.c_pid;
     }
     /**
      * 重写父类的 pageEditInit 方法，对初始化编辑页面的值进行修改
@@ -35,8 +34,7 @@ export default class extends CMPage {
     async pageEditInit(){
         let md = await super.pageEditInit();
 
-        let parmsUrl = JSON.parse(this.mod.parmsUrl);
-        let pCode = await this.model('code').getCodeById(parseInt(parmsUrl.c_pid));
+        let pCode = await cmpage.model('admin/code').getCodeById(parseInt(this.mod.parmsUrl.c_pid));
         md.c_pid = pCode.id;
         md.c_root = pCode.c_root;
         md.c_type = 'N';
@@ -51,26 +49,37 @@ export default class extends CMPage {
      * @param {Object} parms  编辑页面传回的FORM参数
      */
     async pageSave(parms){
-        let ret = await super.pageSave( parms);
-        this.model('code').clearCodeCache();
+        //如果是菜单或者按钮，不允许c_object 重复
+        let rec =parms;
+        rec.id = think.isEmpty(parms.id) ? 0:parms.id;
+        if(rec.c_root ==1 && !think.isEmpty(rec.c_object) ){
+            let codes = await cmpage.model('admin/code').getCodes();
+            for(let md of codes){
+                if(md.c_root ===1 && md.c_object === rec.c_object && rec.id != md.id){
+                    return cmpage.error('对象代码(c_object)设置重复，保存失败！',rec);
+                }
+            }
+        }
+        let ret = await super.pageSave( parms );
+        await cmpage.model('admin/code').clearCodeCache();
 
         return ret;
     }
-
     /**
-     * 取顶部按钮的设置，分靠左和靠右两块，组合成HTML输出
-     * @method  htmlGetBtnHeader
-     * @return {string}  HTML片段
+     * 删除记录,<br/>
+     * 子类中可以重写本方法，实现其他的删除逻辑，如判断是否可以删除，删除相关联的其他记录等等
+     * @method  pageDelete
+     * @return {object} 记录对象
      */
-    async htmlGetBtnHeader(){
-        let parmsUrl =JSON.parse(this.mod.parmsUrl);
-        for(let btn of this.modBtns){
-            if(btn.c_object.indexOf('.Edit') >0){
-                btn.c_url +='&target='+parmsUrl.target;
-            }
+    async pageDelete(){
+        let rec = await cmpage.model('admin/code').getCodeById(this.mod.recID);
+        //debug(rec,'code_list.pageDelete - rec');
+        if(rec.c_pid == 705){
+            //物料分类
+            let cnt = await cmpage.model('docu/goods').model('t_goods').where({c_class:rec.id}).count();
+            if(cnt >0) return {statusCode:300,message:'请先删除该分类下的物料资料！',data:{}};
         }
-        return super.htmlGetBtnHeader();
+
+        return await super.pageDelete();
     }
-
-
 }

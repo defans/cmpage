@@ -34,14 +34,14 @@ export default class extends think.controller.base {
     async deleteAction(){
     let ret={statusCode:200,message:'',data:{}};
     let parms =this.http.query;
-    global.debug(parms);
+    cmpage.debug(parms);
 
     let model = this.model(parms.table);
     if(parms.id >0){
-      if(parms.flag == 'true'){
-        await model.where({id: parms.id}).delete();
+      if(think.isEmpty(parms.flag)){
+          await model.where({id: parms.id}).update({c_status:-1});
       }else {
-        await model.where({id: parms.id}).update({c_status:-1});
+          await model.where({id: parms.id}).delete();
       }
 
     }

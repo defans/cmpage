@@ -119,7 +119,7 @@
     } else {
 
         // Browser globals case. Just assign the
-        // result to a property on the global.
+        // result to a property on the cmpage.
         origin = root.WebUploader;
         root.WebUploader = makeExport();
         root.WebUploader.noConflict = function() {

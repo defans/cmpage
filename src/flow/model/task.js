@@ -25,12 +25,12 @@ export default class extends think.model.base {
      */
     async fwStart(){
 
-        this.task ={c_no:this.getTaskNo(), c_proc:this.proc.id, c_status:global.enumTaskStatus.RUN, c_creater:this.user.id, c_time_create:think.datetime(),
-               c_priority:global.enumTaskPriority.NOMAL, c_user:this.user.id, c_time:think.datetime(), c_memo:'', c_link:0 ,c_link_type:''};
+        this.task ={c_no:this.getTaskNo(), c_proc:this.proc.id, c_status:cmpage.enumTaskStatus.RUN, c_creater:this.user.id, c_time_create:think.datetime(),
+               c_priority:cmpage.enumTaskPriority.NOMAL, c_user:this.user.id, c_time:think.datetime(), c_memo:'', c_link:0 ,c_link_type:this.proc.c_link_type};
 
         await this.fwInit();
 
-        if(this.task.c_status !== global.enumTaskStatus.INIT){
+        if(this.task.c_status !== cmpage.enumTaskStatus.INIT){
             await this.addTaskSt('模板设置错误，流程终止');
             return;
         }
@@ -53,15 +53,15 @@ export default class extends think.model.base {
         let taskActModel = this.model('fw_task_act');
         let taskActStartID = 0;
         for(let act of actsOrder){
-            let md = {c_task:this.task.id, c_act:act.id, c_status:global.enumTaskActStatus.NO_BEGIN, c_user:this.user.id, c_time_begin:think.datetime(),
+            let md = {c_task:this.task.id, c_act:act.id, c_status:cmpage.enumTaskActStatus.NO_BEGIN, c_user:this.user.id, c_time_begin:think.datetime(),
                 c_time:think.datetime(), c_memo:'', c_link:0, c_link_type:''};
             md.id = await taskActModel.add(md);
-            if(act.c_type === global.enumActType.START){
+            if(act.c_type === cmpage.enumActType.START){
                 taskActStartID = md.id;
             }
         }
 
-        this.task.c_status = global.enumTaskStatus.RUN;
+        this.task.c_status = cmpage.enumTaskStatus.RUN;
         await this.save();
 
         //从开始节点进行run
@@ -79,15 +79,15 @@ export default class extends think.model.base {
         if(think.isEmpty(this.task)){
             this.task = task;
         }
-        global.debug(this.task,'task.getTaskWithCurrentAct --- this.task');
+        //debug(this.task,'task.getTaskWithCurrentAct --- this.task');
         this.currAct = {id:0};
-        if(this.task.c_status === global.enumTaskStatus.RUN){
+        if(this.task.c_status === cmpage.enumTaskStatus.RUN){
             let taskActs = await this.model('task_act').getTaskActs(this.task.id);
             let actModel = this.model('act');
             for(let ta of taskActs){
                 //TODO: 可能要考虑user来进行区分
                 //取当前节点
-                if(ta.c_status === global.enumTaskActStatus.WAIT || ta.c_status === global.enumTaskActStatus.RUN || ta.c_status === global.enumTaskActStatus.SUSPEND){
+                if(ta.c_status === cmpage.enumTaskActStatus.WAIT || ta.c_status === cmpage.enumTaskActStatus.RUN || ta.c_status === cmpage.enumTaskActStatus.SUSPEND){
                     this.currTaskAct = ta;
                     this.currAct = await actModel.getActByIdAndProcId(ta.c_act, this.task.c_proc);
                     break;
@@ -103,7 +103,7 @@ export default class extends think.model.base {
      * @method  fwInit
      */
     async fwInit(){
-        this.task.c_status = global.enumTaskStatus.INIT;
+        this.task.c_status = cmpage.enumTaskStatus.INIT;
         //如果不满足启动条件，则重置任务状态为： TERMINATE
 
     }
@@ -117,7 +117,7 @@ export default class extends think.model.base {
     getTaskNo(){
         let no ='';
         if(!think.isEmpty(this.proc.c_no_format)){
-            no = global.datetime(new Date(),'yyMMddHHmmss')+global.getRandomNum(1,10);
+            no = cmpage.datetime(new Date(),'yyMMddHHmmss')+cmpage.getRandomNum(1,10);
         }else{
 
         }
@@ -129,12 +129,12 @@ export default class extends think.model.base {
      * @method  fwRun
      */
     async fwRun(){
-        if(this.task.c_status === global.enumTaskStatus.SUSPEND){
-            this.task.c_status = global.enumTaskStatus.RUN;
+        if(this.task.c_status === cmpage.enumTaskStatus.SUSPEND){
+            this.task.c_status = cmpage.enumTaskStatus.RUN;
             //让本实例被挂起的节点继续RUN
             let taskActs = await this.model('task_act').getTaskActs(this.task.id);
             for(let taskAct of taskActs){
-                if(taskAct.c_status === global.enumTaskActStatus.SUSPEND){
+                if(taskAct.c_status === cmpage.enumTaskActStatus.SUSPEND){
                     await this.model('act').fwRun(taskAct.id,this.user,taskAct);
                 }
             }
@@ -147,8 +147,8 @@ export default class extends think.model.base {
      * @method  fwSuspend
      */
     async fwSuspend(){
-        if(this.task.c_status === global.enumTaskStatus.RUN){
-            this.task.c_status = global.enumTaskStatus.SUSPEND;
+        if(this.task.c_status === cmpage.enumTaskStatus.RUN){
+            this.task.c_status = cmpage.enumTaskStatus.SUSPEND;
             //当前活动节点挂起
             if(think.isEmpty(this.currTaskAct)){
                 await this.getTaskWithCurrentAct();
@@ -163,8 +163,8 @@ export default class extends think.model.base {
      * @method  fwTerminate
      */
     async fwTerminate(){
-        if(this.task.c_status === global.enumTaskStatus.RUN || this.task.c_status === global.enumTaskStatus.SUSPEND ){
-            this.task.c_status = global.enumTaskStatus.TERMINATE;
+        if(this.task.c_status === cmpage.enumTaskStatus.RUN || this.task.c_status === cmpage.enumTaskStatus.SUSPEND ){
+            this.task.c_status = cmpage.enumTaskStatus.TERMINATE;
             //当前活动节点终止
             //if(think.isEmpty(this.currTaskAct)){
             //    await this.getTaskWithCurrentAct();
@@ -172,14 +172,14 @@ export default class extends think.model.base {
             //await this.model('act').fwTerminate(this.currTaskAct.id,user,this.currTaskAct);
             let taskActs = await this.model('task_act').getTaskActs(this.task.id);
             for(let ta of taskActs){
-                if(ta.c_status !== global.enumTaskActStatus.TERMINATE && ta.c_status !== global.enumTaskActStatus.END
-                    && ta.c_status !== global.enumTaskActStatus.NO_BEGIN){
+                if(ta.c_status !== cmpage.enumTaskActStatus.TERMINATE && ta.c_status !== cmpage.enumTaskActStatus.END
+                    && ta.c_status !== cmpage.enumTaskActStatus.NO_BEGIN){
                     await this.model('fw_task_act').where({id:ta.id}).update({c_status:enumTaskActStatus.TERMINATE, c_time:think.datetime(),c_user:this.user.id});
                 }
             }
             //调用主关联业务模块的终止函数
             if(!think.isEmpty(this.proc.c_link_model)){
-                let fnModel = model(this.proc.c_link_model);
+                let fnModel = cmpage.model(this.proc.c_link_model);
                 if (think.isFunction(fnModel['fwTerminate'])) {
                     await fnModel['fwTerminate'](this.task, this.user);
                 }
@@ -193,8 +193,8 @@ export default class extends think.model.base {
      * @method  fwEnd
      */
     async fwEnd(){
-        if(this.task.c_status !== global.enumTaskStatus.RUN || this.task.c_status === global.enumTaskStatus.SUSPEND ){
-            this.task.c_status = global.enumTaskStatus.END;
+        if(this.task.c_status !== cmpage.enumTaskStatus.RUN || this.task.c_status === cmpage.enumTaskStatus.SUSPEND ){
+            this.task.c_status = cmpage.enumTaskStatus.END;
             await this.save();
         }
     }
@@ -268,15 +268,15 @@ export default class extends think.model.base {
         if(think.isEmpty(proc.c_map)){
             return '{states:{},paths:{},props:{props:{}}}';
         }
-        let flowMap = objFromString(proc.c_map);
+        let flowMap = cmpage.objFromString(proc.c_map);
         let taskActs = await this.query(`select A.*,B.c_map_id from fw_task_act A, fw_act B where A.c_act=B.id and A.c_task=${taskID}`);
 
         for(let k in flowMap.paths){
             flowMap.paths[k].votes = 0;
         }
         for(let ta of taskActs){
-            if(ta.c_status === enumTaskActStatus.WAIT || ta.c_status === enumTaskActStatus.SUSPEND
-                ||  ta.c_status === enumTaskActStatus.END ||  ta.c_status === enumTaskActStatus.PENDING){
+            if(ta.c_status === cmpage.enumTaskActStatus.WAIT || ta.c_status === cmpage.enumTaskActStatus.SUSPEND
+                ||  ta.c_status === cmpage.enumTaskActStatus.END ||  ta.c_status === cmpage.enumTaskActStatus.PENDING){
                 //执行路径
                 for(let k in flowMap.paths){
                     if(flowMap.paths[k].from === ta.c_map_id || flowMap.paths[k].to === ta.c_map_id){
@@ -284,19 +284,19 @@ export default class extends think.model.base {
                     }
                 }
             }
-            if(ta.c_status === enumTaskActStatus.WAIT || ta.c_status === enumTaskActStatus.SUSPEND ||  ta.c_status === enumTaskActStatus.PENDING){
+            if(ta.c_status === cmpage.enumTaskActStatus.WAIT || ta.c_status === cmpage.enumTaskActStatus.SUSPEND ||  ta.c_status === cmpage.enumTaskActStatus.PENDING){
                 //当前节点
                 debug(ta,'task.getFlowMap - ta-current');
                 debug(flowMap.states[ ta.c_map_id],'task.getFlowMap - flowMap.states[ta.c_map_id]');
                 if(flowMap.states[ ta.c_map_id]){
                     flowMap.states[ ta.c_map_id].attr.stroke =  '#ff0000';
                 }
-            }else if(ta.c_status === enumTaskActStatus.END ){
+            }else if(ta.c_status === cmpage.enumTaskActStatus.END ){
                 //历史节点
                 if(flowMap.states[ ta.c_map_id]){
                     flowMap.states[ ta.c_map_id].attr.stroke =  '#e87e38';
                 }
-            }else if(ta.c_status === enumTaskActStatus.TERMINATE ){
+            }else if(ta.c_status === cmpage.enumTaskActStatus.TERMINATE ){
                 //被终止节点
                 if(flowMap.states[ ta.c_map_id]){
                     flowMap.states[ ta.c_map_id].attr.stroke =  '#000000';
@@ -310,7 +310,7 @@ export default class extends think.model.base {
         }
 
         debug(flowMap.states,'task.getFlowMap - flowMap.states');
-        return global.objToString(flowMap);
+        return cmpage.objToString(flowMap);
     }
 
 }

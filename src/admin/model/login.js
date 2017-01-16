@@ -45,7 +45,7 @@ export default class extends CMPage {
         login.id = await this.model('t_login').add(login);
 
         //再保存t_login_his
-        let loginHis = global.objPropertysFromOtherObj({},login,['c_user','c_ip','c_time_login','c_time_last','c_url_last']);
+        let loginHis = cmpage.objPropertysFromOtherObj({},login,['c_user','c_ip','c_time_login','c_time_last','c_url_last']);
         loginHis.c_login = login.id;
         await this.model('t_login_his').add(loginHis);
         return login.id;

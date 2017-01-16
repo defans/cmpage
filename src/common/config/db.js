@@ -9,8 +9,8 @@ export default {
   log_connect: true,
   adapter: {
     mysql: {
-        host: "192.168.2.132",
-        //host: "127.0.0.1",
+        //host: "192.168.2.132",
+        host: "127.0.0.1",
       port: '',
       database: 'cmpage',
       user: 'cmpage',

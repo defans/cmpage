@@ -1,0 +1,1074 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>CmPage - 帮助文档</title>
+<meta name="keywords" content="CmPage, ThinkJS, Node.js, B-JUI, MUI, HTML5+, MVC, 权限管理, 工作流, " />
+<meta name="description" content="CmPage 企业信息化的二次开发框架，采用ThinkJS、B-JUI、MUI等开源框架实现。" />
+<link rel="alternate icon" type="image/png" href="/static/assets/i/favicon.png">
+<!-- bootstrap - css -->
+<link href="./site/style/bootstrap.min.css" rel="stylesheet">
+<link href="./site/style/style.css" rel="stylesheet">
+<!-- plug - css -->
+<link href="./site/style/FA/css/font-awesome.min.css" rel="stylesheet">
+
+<!--[if lte IE 9]>
+    <script src="./site/js/html5shiv.min.js"></script>
+    <script src="./site/js/respond.min.js"></script>
+<![endif]--><link href="./site/style/docs.css" rel="stylesheet">
+<link href="./site/style/prettify.css" rel="stylesheet">
+<style type="text/css">
+pre.prettyprint{border:none;}
+.bs-docs-section img{max-width:100%;}
+.highlight pre{white-space:pre-wrap;}
+table td .highlight{width:550px;}
+sup{color:#c7254e}
+/*returnTop*/
+p#back-to-top{
+    position:fixed;
+    display:none;
+    bottom:100px;
+/*    right:80px;
+	top:200px;
+	*/
+}
+p#back-to-top a{
+    text-align:center;
+    text-decoration:none;
+    color:#36F;
+    display:block;
+    width:64px;
+    /*使用CSS3中的transition属性给跳转链接中的文字添加渐变效果*/
+    -moz-transition:color 1s;
+    -webkit-transition:color 1s;
+    -o-transition:color 1s;
+}
+p#back-to-top a:hover{
+    color:#979797;
+}
+p#back-to-top a span{
+    background:transparent url(/static/imgs/sprite.png?1202) no-repeat -25px -290px;
+    border-radius:6px;
+    display:block;
+    height:64px;
+    width:56px;
+    margin-bottom:5px;
+    /*使用CSS3中的transition属性给<span>标签背景颜色添加渐变效果*/
+    -moz-transition:background 1s;
+    -webkit-transition:background 1s;
+    -o-transition:background 1s;
+}
+#back-to-top a:hover span{
+    background:transparent url(/static/imgs/sprite.png?1202) no-repeat -25px -290px;
+}
+</style>
+<script src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
+<script>
+$(function(){
+        //当滚动条的位置处于距顶部100像素以下时，跳转链接出现，否则消失
+        $(function () {
+            $(window).scroll(function(){
+                if ($(window).scrollTop()>100){
+                    $("#back-to-top").fadeIn(1500);
+                }
+                else
+                {
+                    $("#back-to-top").fadeOut(1500);
+                }
+            });
+            //当点击跳转链接后，回到页面顶部位置
+            $("#back-to-top").click(function(){
+                $('body,html').animate({scrollTop:0},1000);
+                return false;
+            });
+        });
+    });
+</script>
+</head>
+<body>
+
+
+
+<a name="top"></a>
+<!--[if lte IE 7]>
+        <div id="errorie"><div>您还在使用老掉牙的IE，正常使用系统前请升级您的浏览器到 IE8以上版本 <a target="_blank" href="http://windows.microsoft.com/zh-cn/internet-explorer/ie-8-worldwide-languages">点击升级</a>&nbsp;&nbsp;强烈建议您更改换浏览器：<a href="http://down.tech.sina.com.cn/content/40975.html" target="_blank">谷歌 Chrome</a></div></div>
+    <![endif]-->
+    <header class="navbar navbar-default header">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bjui-navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <img alt="B-JUI" src="../images/logo.png">
+              </a>
+            </div>
+            <!--
+            <nav class="collapse navbar-collapse" id="bjui-navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li ><a href="/"><i class="fa fa-home"></i> 首页</a></li>
+                    <li ><a href="/qa"><i class="fa fa-question"></i> 问答</a></li>
+                    <li class="active"><a href="/doc"><i class="fa fa-book"></i> 文档</a></li>
+                    <li><a href="http://demo.b-jui.com/" target="_blank"><i class="fa fa-television"></i> DEMO</a></li>
+                    <li ><a href="/download"><i class="fa fa-download"></i> 下载</a></li>
+                    <li ><a href="/login"><i class="fa fa-user"></i> 登录</a></li>
+                </ul>
+            </nav>
+            -->
+        </div>
+    </header>
+<div class="container">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="bs-docs-section">
+                            <h1 id="bjui-doc-start" class="page-header">概述</h1>
+                            <div class="bs-callout bs-callout-warning">
+	<h4>
+		特别说明
+	</h4>
+	<p>
+		本文档主要说明了通用模块页面的各种参数设置及逻辑关系，具体类的实现和API说明请参见本框架的API文档。
+	</p>
+     <p >一般如果某一项设置的参数较多的话，采用JSON格式，没有特别说明的话，‘模块’指业务模块，区别于ThinkJS框架中的模块概念 </p>
+    <p >其中，工作流和手机端部分是可选项</p>
+</div>
+                      <ul>
+                              <li>通用业务模块主信息、显示列、查询列、编辑列、按钮等的设置说明 </li>
+                              <li>手机端模块的说明 </li>
+                                <li>工作流设计参数、原理实现等说明 </li>
+                      </ul>
+
+                      <p>&nbsp;</p></div>
+                        <div class="bs-docs-section">
+                            <h1 id="bjui-doc-navtab" class="page-header">模块主信息</h1>
+                            <p>模块主信息设置了页面的非列表属性，包括一些杂项设置，数据库表: t_module, 相关逻辑实现: /src/cmpage/model/module.js </p>
+                            <!--<p><img src="./site/images/mode1.png" width="1694" height="149"></p>-->
+                            <p>&nbsp;</p>
+                          <table class="table table-bordered table-striped table-hover">
+                              <thead>
+                                <tr>
+                                    <th width="20"> 对应字段 </th>
+                                  <th width="20"> 名称 </th>
+                                  <th width="60"> 说明 </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                    <td> c_modulename </td>
+                                    <td> 模块名称 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+                                  <td> 用于模块调用，是业务模块的标记名称，不能重复 </td>
+                                </tr>
+                                <tr>
+                                    <td> c_alias </td>
+                                    <td> 别名 </td>
+                                    <td>业务模块的中文别名 </td>
+                                </tr>
+                                <tr>
+                                    <td> c_source </td>
+                                  <td> 数据来源 </td>
+                                  <td>业务模块列表数据的来源，可以是表或视图 </td>
+                                </tr>
+                                <tr>
+                                    <td> c_table </td>
+                                  <td> 数据表 </td>
+                                  <td> 业务模块新增和编辑记录的对应表，如果有多个表需要更新，继承cmpage/page并覆写pageSave </td>
+                                </tr>
+                                <tr>
+                                    <td> c_proc </td>
+                                  <td> 流程模板ID </td>
+                                  <td> 通过选择关联的流程模板进行设置 </td>
+                                </tr>
+
+                                <tr>
+                                    <td> c_pager </td>
+                                  <td> 是否分页</td>
+                                  <td> 业务模块显示列表的时候是否要分页显示 </td>
+                                </tr>
+                                <tr>
+                                    <td> c_page_size</td>
+                                  <td> 每页行数 </td>
+                                    <td> 设置该模块在操作系统中显示（或查看）的信息的条数</td>
+                                </tr>
+                                <tr>
+                                    <td> c_path </td>
+                                  <td> 模块路径</td>
+                                  <td>实现该业务模块的类名，格式如：demo/customer，默认为：普通页面 cmpage/page，手机页面cmpage/page_mob，
+                                      查找带回cmpage/page_lookup，主从页面：cmpage/page_ms，如要增加业务逻辑，请从这些类继承 </td>
+                                </tr>
+                                <tr>
+                                    <td> c_sort_by </td>
+                                  <td> 排序方式</td>
+                                  <td> 组成SQL查询语句的排序子句，注意字段需要在数据来源中 </td>
+                                </tr>
+                                <tr>
+                                    <td> c_edit_column </td>
+                                  <td> 编辑页列数</td>
+                                  <td> 编辑页面的显示列数，默认为 1，一般如果编辑项较多，尤其是主从页面的时候，可以设置为 2 或 3 </td>
+                                </tr>
+                                <tr>
+                                    <td> c_module_slave </td>
+                                  <td> 子模块</td>
+                                  <td> 主从表的关联设置 </td>
+                                </tr>
+                                <tr>
+                                    <td> c_other </td>
+                                  <td> 其他设置</td>
+                                  <td> 配置模块的其他选项，JSON格式，实现类中通过 this.mod.other.xxx 来读取值，目前可以设置： editHeaderHtml（编辑页面的标题），
+                                      editHideCloseBtn:true（屏蔽编辑页面的关闭按钮）,editHideSaveBtn:true（屏蔽编辑页面的保存按钮），也可以增加一些额外的配置,但是相关的逻辑需要另外实现 </td>
+                                </tr>
+								<tr>
+                                    <td> c_mui </td>
+                                  <td> MUI设置</td>
+                                  <td> 手机端页面的显示设置，例如Customer的列表行模板：{row:'&lt;h5 style="color:black;font-weight:bold;"&gt;#c_name# (#c_phone# / #c_type#)&lt;/h5&gt;
+                                      &lt;p&gt;职业：#c_occupation# / 购买意向：&lt;label style="color:orange">#c_buy_type#&lt;/label&gt;&lt;/p&gt;&lt;p style="color:##005094;"&gt;
+                                      地址：#c_address# / #dayTime#&lt;/p&gt;'} ,#x_xxxx# 会被相应的字段值替代</td>
+                                </tr>
+                                <tr>
+                                    <td> c_memo </td>
+                                  <td> 备注</td>
+                                  <td> 备注信息 </td>
+                                </tr>
+                              </tbody>
+                          </table>
+
+                          <h3 id="bjui-doc-dialog-usage">&nbsp;</h3>
+                            <p>&nbsp;</p>
+                          </p>
+                  </div>
+                        <div class="bs-docs-section">
+                  <h1 id="bjui-doc-alertmsg" class="page-header">显示列设置示</h1>
+                  查找带回和选择加入类型的模块设置规则和普通模块类似(例如：UserLookup模块)，设置查询列和显示列，不设置按钮和编辑列，其中显示列的是否查看(c_isview)表示是否为返回的字段，</br>
+                  调用查找带回页面：/cmpage/page/lookup?modulename=GoodsLookup*returnFields=c_goods,goods_name </br>
+                  调用选择加入页面：/cmpage/page/lookup?modulename=GoodsLookup*callmodulename=OrderApplyRec*callfn=goodsAdd*callparms=#c_order_apply#
+                  <h3 id="bjui-doc-colGeneralParameter">常规参数</h3>
+                  <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th> 对应字段 </th>
+                        <th> 名称 </th>
+                        <th> 说明 </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> c_order</td>
+                        <td> 顺序</td>
+                        <td> 显示列的排列顺序 </td>
+                      </tr>
+                      <tr>
+                        <td> c_name </td>
+                        <td>标题 </td>
+                        <td> 显示列显示的标题抬头</td>
+                      </tr>
+                      <tr>
+                        <td> c_column </td>
+                        <td> 数据列</td>
+                        <td> 数据列名称唯一，组成SQL的 fields </td>
+                      </tr>
+                      <tr>
+                        <td> c_coltype </td>
+                        <td> 数据类型</td>
+                        <td> 显示数据的类型</td>
+                      </tr>
+                      <tr>
+                        <td> c_desc </td>
+                        <td> 说明 </td>
+                        <td> 实际的数据值，可以是SQL子查询或者函数调用，例如：(select c_name from vw_user where id=xxxx.c_user)，其中xxxx是模块的数据来源 c_datasource 的值</td>
+                      </tr>
+                      <tr>
+                        <td> c_isretrieve </td>
+                        <td> 检索</td>
+                        <td> 是否检索该数据列</td>
+                      </tr>
+                      <tr>
+                        <td> c_isshow </td>
+                        <td> 显示</td>
+                        <td>数据列的结果是否显示</td>
+                      </tr>
+                      <tr>
+                        <td> c_isview </td>
+                        <td>  查看</td>
+                        <td>数据列的结果是否能查看，如果是查找带回模块，则表示是否返回该字段</td>
+                      </tr>
+                      <tr>
+                        <td> c_type </td>
+                        <td>  显示类型</td>
+                        <td>数据列的结果显示的类型，具体请参考<a href="#bjui-doc-colDisplayType">显示类型</a></td>
+                      </tr>
+                      <tr>
+                        <td> c_format </td>
+                        <td>  显示格式</td>
+                        <td>数据的格式化显示，如日期： yyyy-MM-dd，数值： #####.00</td>
+                      </tr>
+                      <tr>
+                        <td> c_width </td>
+                        <td>  列宽</td>
+                        <td>显示结果数据列的宽度</td>
+                      </tr>
+                      <tr>
+                        <td> c_style </td>
+                        <td>  列样式</td>
+                        <td>简单的列样式补充，如：text-align:center; 会增加到列表页面每一行数据的列样式中</td>
+                      </tr>
+                      <tr>
+                        <td> c_type_sum </td>
+                        <td>  合计类型</td>
+                        <td>对可计算的数据列进行合计计算，并在列表的最下面一行显示出来</td>
+                      </tr>
+                      <tr>
+                        <td> c_memo </td>
+                        <td>  备注</td>
+                        <td>显示类型的补充设置或者其他额外设置，例如：{isShow:'#c_status#==0 || #c_status#==1218'} )</td>
+                      </tr>
+                      <tr>
+                        <td> c_mui </td>
+                        <td>  MUI</td>
+                        <td>用于手机端页面的显示，一般实现类可以从 cmpage/page_mob 继承，然后重写相关方法来定制显示页面</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <h3 id="bjui-doc-colDisplayType">显示类型</h3>
+                                    <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th> 类型 </th>
+                        <th> 名称 </th>
+                        <th> 说明 </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> text</td>
+                        <td> 文本</td>
+                        <td> 数据直接显示 </td>
+                      </tr>
+                      <tr>
+                        <td> checkbox </td>
+                        <td>是否选中 </td>
+                        <td> 针对数据类型为bool的显示框</td>
+                      </tr>
+                      <tr>
+                        <td> replace </td>
+                        <td> 替换</td>
+                        <td> 1、SQL替换值，2、函数替换，例如：admin/code:getNameById:xxxx,xxxx，框架会把本列的值作为第一个参数，
+                            加上xxxx,xxxx作为后续参数，组成参数列表后调用函数，取返回值替换本列的显示文本</td>
+                      </tr>
+                      <tr>
+                        <td> html </td>
+                        <td> HTML</td>
+                        <td> 1、设置HTML片段，如：&lt;img src='#value#' alt='#value#' &gt;，其中#value#的值会被本字段的值替换；
+                            2、不设置HTML片段，在模块的实现类中通过重写 getDataList 来定制输出</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <h3 id="bjui-doc-alertmsg-options">&nbsp;</h3></div>
+                  <div class="bs-docs-section">
+                    <h1 id="bjui-doc-bjuiajax" class="page-header">查询列设置</h1>
+                    <h3 id="bjui-doc-queryGeneralParameter">常规参数</h3>
+                    <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th width="100"> 对应字段 </th>
+                        <th width="100"> 名称 </th>
+                        <th> 说明 </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> c_order</td>
+                        <td> 顺序</td>
+                        <td> 查询列的排列顺序 </td>
+                      </tr>
+                      <tr>
+                        <td> c_name </td>
+                        <td>标题 </td>
+                        <td> 查询区编辑框的抬头</td>
+                      </tr>
+                      <tr>
+                        <td> c_column </td>
+                        <td> 数据列</td>
+                        <td> 查询区编辑框的名称，唯一</td>
+                      </tr>
+                      <tr>
+                        <td> c_coltype </td>
+                        <td> 数据类型</td>
+                        <td> 查询数据列的类型</td>
+                      </tr>
+                      <tr>
+                        <td> c_desc </td>
+                        <td> 说明 </td>
+                        <td> where语句中实际列名，可重复，例如：c_time&lt;xxx and c_time&lt;xxx </td>
+                      </tr>
+                      <tr>
+                        <td> c_isshow </td>
+                        <td> 是否显示</td>
+                        <td> 是否有这条数据</td>
+                      </tr>
+                      <tr>
+                        <td> c_op </td>
+                        <td> 操作符</td>
+                        <td>用于查询条件，字段值和查询值做比较</td>
+                      </tr>
+                      <tr>
+                        <td> c_default </td>
+                        <td>  默认值</td>
+                        <td>首次打开查询页面，符合该默认条件的值</td>
+                      </tr>
+                      <tr>
+                        <td> c_type </td>
+                        <td>  编辑类型</td>
+                        <td>数据列的结果显示的类型，具体请参考<a href="#bjui-doc-queryEditType">编辑类型</a></td>
+                      </tr>
+                      <tr>
+                        <td> c_format </td>
+                        <td>  显示格式</td>
+                        <td>初始化数据的结果显示</td>
+                      </tr>
+                      <tr>
+                        <td> c_style </td>
+                        <td>  编辑样式</td>
+                        <td>可以写些数据显示的样式例子等备注</td>
+                      </tr>
+                      <tr>
+                        <td> c_width </td>
+                        <td>  宽度</td>
+                        <td>显示结果数据列的宽度</td>
+                      <tr>
+                        <td> c_suffix </td>
+                        <td>  后缀元素</td>
+                        <td>可以写一些输入文本框的注意事项</td>
+                      </tr>
+                      <tr>
+                        <td> c_memo </td>
+                        <td>  备注</td>
+                        <td>备注信息或对编辑类型的补充(例：{isShow:'#c_status#==0 || #c_status#==1218'} )</td>
+                      </tr>
+                      <tr>
+                        <td> c_mui </td>
+                        <td>  MUI</td>
+                        <td>用于手机端页面的显示</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                   <h3 id="bjui-doc-queryEditType">编辑类型</h3>
+                                    <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th> 类型 </th>
+                        <th> 名称 </th>
+                        <th> 说明 </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> text</td>
+                        <td> 文本</td>
+                        <td> 单行文本框 </td>
+                      </tr>
+                      <tr>
+                        <td> number </td>
+                        <td> 数字</td>
+                        <td> 数字文本框</td>
+                      </tr>
+                      <tr>
+                        <td> datetime </td>
+                        <td> 日期时间</td>
+                        <td> 日期时间控件，可设置显示的格式：yyyy-MM-dd 或 yyyy-MM-dd HH:mm:ss  </td>
+                      </tr>
+                      <tr>
+                        <td> checkbox </td>
+                        <td> 是否选中 </td>
+                        <td> checkbox 选择框 </td>
+                      </tr>
+                      <tr>
+                        <td> select </td>
+                        <td> 下拉选择</td>
+                        <td>  下拉列表框，两种设置，1、SQL语句，例如 select id,c_name from vw_user；2、函数调用，例如 admin/code:getParmsByPid:3:c_ucode,c_name</td>
+                      </tr>
+                      <tr>
+                        <td> selectTree </td>
+                        <td> 下拉树单选</td>
+                        <td> 下拉列表框(树形)，单选， 设置如： admin/code:getTreeList:3</td>
+                      </tr>
+                      <tr>
+                        <td> selectTreeMultiple </td>
+                        <td> 下拉树多选</td>
+                        <td> 下拉列表框(树形)，可多选，设置如： admin/code:getTreeList:3</td>
+                      </tr>
+                      <tr>
+                        <td> fixed </td>
+                        <td> 固定</td>
+                        <td> 不在查询区显示，是组成where子句固有的部分，例如：c_status&lt;&gt;-1 或者 c_customer=#value#，#value#的值会被相应URL参数值替代</td>
+                      </tr>
+                      <tr>
+                        <td> lookup </td>
+                        <td> 查找带回</td>
+                        <td>从另外一个模块带回数据，具体请参考<a href="#bjui-doc-findgrid">查找带回说明</a></td>
+                      </tr>
+                      <tr>
+                        <td> hidden </td>
+                        <td> 隐藏</td>
+                        <td>隐藏字段，不需要显示但参与某些计算或者用于传递的字段值</td>
+                      </tr>
+                      <tr>
+                        <td> provinceSelect </td>
+                        <td> 省份选择</td>
+                        <td>下拉列表省份选择</td>
+                      </tr>
+                      <tr>
+                        <td> citySelect </td>
+                        <td> 城市选择</td>
+                        <td>下拉列表城市选择，需要和省份选择组成联动</td>
+                      </tr>
+                      <tr>
+                        <td> countrySelect </td>
+                        <td> 区县选择</td>
+                        <td>下拉列表区县选择，需要和省份、城市选择组成联动</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <h3 id="bjui-doc-alertmsg-options">&nbsp;</h3>
+                  <p>&nbsp;</p></div>
+                  <div class="bs-docs-section">
+                  <h1 id="bjui-doc-datagrid" class="page-header">编辑列设置</h1>
+                  <h3 id="bjui-doc-editGeneralParameter">常规参数</h3>
+                    <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th> 对应字段 </th>
+                        <th> 名称 </th>
+                        <th> 说明 </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> c_order</td>
+                        <td> 顺序</td>
+                        <td> 编辑列的排列顺序 </td>
+                      </tr>
+                      <tr>
+                        <td> c_name </td>
+                        <td>标题 </td>
+                        <td> 编辑框的标题抬头</td>
+                      </tr>
+                      <tr>
+                        <td> c_column </td>
+                        <td> 编辑列</td>
+                        <td> 编辑列名称，唯一，用于编辑框id并在SQL语句中组成 fields 部分</td>
+                      </tr>
+                      <tr>
+                        <td> c_coltype </td>
+                        <td> 数据表中字段类型</td>
+                        <td> 字段类型，已简化成 "varchar", "int","date","timestamp","bool","float" 六种类型</td>
+                      </tr>
+                      <tr>
+                        <td> c_desc </td>
+                        <td> 实际数据值 </td>
+                        <td> 当【新增】记录时框架调用pageEditInit，本设置值无用；当【编辑】记录时用来组成SQL语句检索某一条记录（形如：[c_desc] as [c_column]）；
+                            另外也可以设置函数调用，而不是从数据库中检索值，例如：fn:admin/user:getNameById:c_salesman 其中c_salesman是字段名称，
+                            函数调用是会被相应的字段值替代后作为参数值传递</td>
+                      </tr>
+                      <tr>
+                        <td> c_isshow </td>
+                        <td> 是否检索</td>
+                        <td> 是否从数据库中检索出来</td>
+                      </tr>
+                      <tr>
+                        <td> c_editable </td>
+                        <td> 是否可修改</td>
+                        <td>数据列的结果是否可编辑和修改，并参与组成INSERT和UPDATE语句</td>
+                      </tr>
+                      <tr>
+                        <td> c_type </td>
+                        <td>  编辑类型</td>
+                        <td> 编辑列的类型，具体请参考<a href="#bjui-doc-editEditType">编辑类型</a></td>
+                      </tr>
+                      <tr>
+                        <td> c_format </td>
+                        <td>  显示格式</td>
+                        <td>编辑列的值的显示格式：如日期： yyyy-MM-dd，数值： #####.00，其中日期的格式会影响日期控件的相关设置</td>
+                      </tr>
+                      <tr>
+                        <td> c_isrequired </td>
+                        <td>  是否必填</td>
+                        <td>是否是必填项</td>
+                      </tr>
+                      <tr>
+                        <td> c_validate_rules </td>
+                        <td>  ThinkJS校验</td>
+                        <td> ThinkJS校验规则，例如： mobile，email，currency等，请参考 <a href="https://thinkjs.org/zh-cn/doc/2.2/logic.html" target="_blank">ThinkJS相关文档</a></td>
+                      </tr>
+                      <tr>
+                        <td> c_width </td>
+                        <td>  宽度</td>
+                        <td>编辑框的宽度</td>
+                      </tr>
+                      <tr>
+                        <td> c_suffix </td>
+                        <td>  后缀元素</td>
+                        <td>编辑框后面的元素，可以写一些额外的文本，如说明、注意事项等</td>
+                      </tr>
+                      <tr>
+                        <td> c_memo </td>
+                        <td>  备注</td>
+                        <td> 1、备注信息；2、对编辑类型的补充，3、其他设置，例如：{isShow:'#c_status#==0 || #c_status#==1218'} ，其中设置值应符合JS语法，#xxxx#会被相应字段值替换</td>
+                      </tr>
+                      <tr>
+                        <td> c_other </td>
+                        <td>  其他设置 </td>
+                        <td> 也可以配置框架之外的值，然后在模块实现类中可通过重写 htmlGetEditInput 进行逻辑增加，当然，一般是直接重写该方法来输出定制的编辑框html </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <h3 id="bjui-doc-editEditType">编辑类型</h3>
+                                    <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th width="100"> 类型 </th>
+                        <th width="100"> 名称</th>
+                        <th> 说明 </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> text</td>
+                        <td> 文本</td>
+                        <td> 单行文本框 </td>
+                      </tr>
+                      <tr>
+                        <td> textarea </td>
+                        <td>多行文本 </td>
+                        <td> 多行文本框（例如：rows:3 表示初始显示3行高度）</td>
+                      </tr>
+                      <tr>
+                        <td> number </td>
+                        <td> 数字</td>
+                        <td> 数字文本框</td>
+                      </tr>
+                      <tr>
+                        <td> datetime </td>
+                        <td> 日期时间</td>
+                        <td> 日期时间控件,可通过显示格式（例如：yyyy-MM-dd）来设置 </td>
+                      </tr>
+                      <tr>
+                        <td> checkbox </td>
+                        <td> 是否选中 </td>
+                        <td> checkbox 编辑框 </td>
+                      </tr>
+                      <tr>
+                        <td> select </td>
+                        <td> 下拉选择</td>
+                        <td>  下拉列表框</td>
+                      </tr>
+                      <tr>
+                        <td> selectBlank </td>
+                        <td> 下拉可空</td>
+                        <td>下拉列表框（其中可选择该值为空）</td>
+                      </tr>
+                      <tr>
+                        <td> lookup </td>
+                        <td> 查找带回</td>
+                        <td>从另外一个模块带回数据，具体请参考<a href="#bjui-doc-findgrid">查找带回说明</a>，
+                            调用方式设置：/cmpage/page/lookup?modulename=UserLookup*multiselect=false*returnFields=xxx,xxx，其中returnFields设置指定的返回字段名</td>
+                      </tr>
+                      <tr>
+                        <td> hidden </td>
+                        <td> 隐藏</td>
+                        <td>隐藏字段，不需要显示但参与某些计算或者用于传递的字段值</td>
+                      </tr>
+                      <tr>
+                        <td> areaSelect </td>
+                        <td> 地区联动</td>
+                        <td>用于省市区联动选择</td>
+                      </tr>
+                      <tr>
+                        <td> readonly </td>
+                        <td> 只读</td>
+                        <td>只读框，不能编辑，显示字段值或者替换后的值，两种替换方式：1. 函数如：admin/code:getXXXXXX， 2. json如：[{value:true,text:'男'},{value:false,text:'女'}]</td>
+                      </tr>
+                      <tr>
+                        <td> kindeditor </td>
+                        <td> 富文本</td>
+                        <td>多行文本的扩展，可编辑文本框中的文字，也可加入图片等，数据库中保存的是html片段</td>
+                      </tr>
+                      <tr>
+                        <td> selectTree </td>
+                        <td> 下拉树单选</td>
+                        <td>下拉列表框(树形)，单选，设置如： admin/code:getTreeList:3</td>
+                      </tr>
+                      <tr>
+                        <td> selectTreeMultiple </td>
+                        <td> 下拉树多选</td>
+                        <td>下拉列表框(树形)，可多选，设置如： admin/code:getTreeList:3</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <h3 id="bjui-doc-navtab-method">&nbsp;</h3>
+</div>
+                        <div class="bs-docs-section">
+                          <h1 id="bjui-doc-dialog" class="page-header">按钮设置</h1>
+
+                          <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                              <tr>
+                                <th width="100"> 对应字段 </th>
+                                <th width="100"> 名称 </th>
+                                <th> 说明 </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td> c_location</td>
+                                <td> 位置值</td>
+                                <td> 数字小于10位于查询一排，数字大于10是对于数据的具体操作 </td>
+                              </tr>
+                              <tr>
+                                <td> c_label</td>
+                                <td> 名称</td>
+                                <td> 按钮显示的名称 </td>
+                              </tr>
+                               <tr>
+                                <td> c_object</td>
+                                <td> 权限对象名</td>
+                                <td> 权限控制的关联对象名称，命名规则：模块名.对象名，例如：Customer.Add ，需要在相应菜单下增加对象名(c_object)为 Customer.Add, 然后在角色或用户权限分配的时候指定</td>
+                              </tr>
+                               <tr>
+                                <td> c_isshow</td>
+                                <td> 是否显示</td>
+                                <td> 按钮是否显示 </td>
+                              </tr>
+                               <tr>
+                                <td> c_class</td>
+                                <td> 按钮样式类</td>
+                                <td> 按钮显示的颜色（例：btn btn-green,btn btn-red） </td>
+                              </tr>
+                               <tr>
+                                <td> c_style</td>
+                                <td> 按钮样式</td>
+                                <td> 按钮显示的补充样式 </td>
+                              </tr>
+                               <tr>
+                                <td> c_url</td>
+                                <td> 按钮调用的URL </td>
+                                <td> 点击按钮转向的页面URL(与onclick栏选择其一;例：/cmpage/page/list?modulename=FileList*c_link=#id#*c_link_type=t_customer*c_type=0参数之间用*来间隔，#xxxx#会被相应的字段值替代) </td>
+                              </tr>
+                               <tr>
+                                <td> c_opentype</td>
+                                <td> 打开方式</td>
+                                <td> 打开转向URL页面的显示方式(navtab:列表框，dialog：对话框（例：{id:'pageCustomerEdit', mask:true, width:600, height:500 }）,doajax:弹出确认框（例：{confirmMsg :'是否确定要进行VIP申请？'}）) </td>
+                              </tr>
+                               <tr>
+                                <td> c_options</td>
+                                <td> 打开参数</td>
+                                <td> 打开转向页面的参数(长宽高等) </td>
+                              </tr>
+                               <tr>
+                                <td> c_title</td>
+                                <td> 打开标题</td>
+                                <td> 打开转向页面后的标题显示 </td>
+                              </tr>
+                               <tr>
+                                <td> c_icon</td>
+                                <td> 图标</td>
+                                <td> 按钮上显示的图标(名称请参见 http://9iphp.com/fa-icons ) </td>
+                              </tr>
+                               <tr>
+                                <td> c_onclick</td>
+                                <td> 按钮的onclick</td>
+                                <td> 点击按钮后的动作(与URL栏二选一)，js函数定义在 /static/js/web_xxxx.js 中， </td>
+                              </tr>
+                               <tr>
+                                <td> c_memo</td>
+                                <td> 备注栏</td>
+                                <td> 备注信息或其他设置，(例如是否显示：{isShow:'#c_status#==0 || #c_status#==1218'} ) </td>
+                              </tr>
+                            </tbody>
+                          </table>
+
+                  <h3 id="bjui-doc-findgrid-options">&nbsp;</h3></div>
+                  <div class="bs-docs-section">
+                  <h1 id="bjui-doc-pagination" class="page-header">主从模块设置</h1>
+<p>参考客户拜访模块(主CustomerMs:从CustomerVisit)，从模块的查询列需要增加一列固定类型的设置</p>
+<table class="table table-bordered table-striped table-hover">
+                    <thead>
+                      <tr>
+                      <th> 对应模块 </th>
+                        <th> 对应字段 </th>
+                        <th width="100"> 名称 </th>
+                        <th> 说明 </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                      <td> 主CustomerMs </td>
+                        <td> c_module_slave</td>
+                        <td> 子模块</td>
+                        <td> 在主模块中的主信息中子模块设置中设置关联的子模块({key:'c_customer',modulename:'CustomerVisit',title:'回访记录'}，
+                            其中key为子模块的关联字段；modulename为子模块名称;title为子模块显示的标题，编辑页面会自动检索从表 URL: /cmpage/page/list?modulename=CustomerVisit&c_customer=xxx) </td>
+                      </tr>
+                       <tr>
+                      <td> 从CustomerVisit </td>
+                        <td> c_memo </td>
+                        <td>查询列备注 </td>
+                        <td> 关联字段名=#value#（例：c_customer=#value#）</td>
+                      </tr>
+                      <tr>
+                      <td> 从CustomerVisit </td>
+                        <td> c_type </td>
+                        <td>查询列类型 </td>
+                        <td> 编辑类型为固定</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <h3 id="bjui-doc-findgrid-options">&nbsp;</h3></div>
+                  <div class="bs-docs-section">
+                  <h1 id="bjui-doc-phone" class="page-header">手机模块设置</h1>
+<p>
+
+</p>
+                  <h3 id="bjui-doc-findgrid-options">&nbsp;</h3></div>
+                  <div class="bs-docs-section">
+                  <h1 id="bjui-doc-other" class="page-header">工作流设置</h1>
+<p>
+
+</p>
+                  <h3 id="bjui-doc-findgrid-options">&nbsp;</h3></div>
+                        <div class="bs-docs-section">
+                          <h1 id="bjui-doc-function_description" class="page-header">函数说明</h1>
+                            框架内一些基本函数的说明。<h3 id="bjui-doc-getInitEditSql">1.</h3>
+                        <p>
+
+</p>
+
+<h3 id="bjui-doc-save">2.</h3>
+                         <p>
+</p>
+<h3 id="bjui-doc-getPageDataByOptions">3．</h3>
+                         <p>
+</p>
+<h3 id="bjui-doc-getQueryWhere">4．</h3>
+                         <p>
+</p>
+</div>
+</div>
+<div class="col-md-3">
+                    <div class="bs-docs-sidebar hidden-print hidden-xs hidden-sm" role="complementary">
+                        <ul class="nav bs-docs-sidenav">
+                            <li class="">
+                                    <a href="#bjui-doc-start">概述</a>
+</li>
+                                <li class="">
+                                    <a href="#bjui-doc-navtab">模块主信息</a>
+</li>
+                                <li class="">
+                                    <a href="#bjui-doc-alertmsg">显示列设置</a>
+                                    <ul class="nav">
+                                        <li class=""><a href="#bjui-doc-colGeneralParameter">常规参数</a></li>
+                                        <li class=""><a href="#bjui-doc-colDisplayType">显示类型</a></li>
+                                    </ul>
+</li>
+                                <li class="">
+                                    <a href="#bjui-doc-bjuiajax">查询列设置</a>
+                                    <ul class="nav">
+                                        <li class=""><a href="#bjui-doc-queryGeneralParameter">常规参数</a></li>
+                                        <li class=""><a href="#bjui-doc-queryEditType">编辑类型</a></li>
+                                    </ul>
+</li>
+                                <li class="">
+                                    <a href="#bjui-doc-datagrid">编辑列设置</a>
+                                    <ul class="nav">
+                                        <li class=""><a href="#bjui-doc-editGeneralParameter">常规参数</a></li>
+                                        <li class=""><a href="#bjui-doc-editEditType">编辑类型</a></li>
+                                    </ul>
+</li>
+                            <li class="">
+                                <a href="#bjui-doc-dialog">按钮设置</a>
+                            </li>
+                                <li class="">
+                                    <a href="#bjui-doc-pagination">主从模块设置</a>
+                               </li>
+                                <li class="">
+                                  <a href="#bjui-doc-phone">手机模块设置</a>
+                                    <!--<ul class="nav">
+                                <li class=""><a href="#bjui-doc-pagination-usage">使用</a></li>
+                                <li class=""><a href="#bjui-doc-pagination-options">参数</a></li>
+                                <li class=""><a href="#bjui-doc-pagination-method">方法</a></li>
+                                </ul> --></li>
+                                <li class="">
+                                  <a href="#bjui-doc-other">工作流说明</a>
+                                    <!--<ul class="nav">
+                                <li class=""><a href="#bjui-doc-pagination-usage">使用</a></li>
+                                <li class=""><a href="#bjui-doc-pagination-options">参数</a></li>
+                                <li class=""><a href="#bjui-doc-pagination-method">方法</a></li>
+                                </ul> --></li>
+                                <li class="">
+                                  <a href="#bjui-doc-function_description">函数说明</a>
+                                    <ul class="nav">
+                                <li class=""><a href="#bjui-doc-getInitEditSql">1．</a></li>
+                                <li class=""><a href="#bjui-doc-save">2．</a></li>
+                                <li class=""><a href="#bjui-doc-getPageDataByOptions">3．</a></li>
+                                <li class=""><a href="#bjui-doc-getQueryWhere">4．</a></li>
+                                </ul></li>
+<li class=""><p id="back-to-top"><a href="#top"><span></span>返回顶部</a></p>
+   </li>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+    <div class="container">
+        <div class="text-center">
+            <p>@ 2016  Licensed under <a href="https://opensource.org/licenses/Apache-2.0" target="_blank">Apache-2.0 license</a>. by CmPage Team. &nbsp;&nbsp;&nbsp;&nbsp;
+                友情链接：&nbsp;<a href="http://b-jui.com/" target="_blank">B-JUI </a>&nbsp;
+                <a href="https://thinkjs.org/" target="_blank">ThinkJS</a> &nbsp;<a href="http://dev.dcloud.net.cn/mui/" target="_blank">MUI </a></p>
+        </div>
+    </div>
+</footer>
+<!--<div id="web-gotop"><a class="" href="javascript:;"><span class="glyphicon glyphicon-menu-up"></span> 回顶部</a></div> -->
+</body>
+
+<!-- jquery -->
+<script src="./site/js/jquery.min.js"></script>
+<script src="./site/js/jquery.cookie.js"></script>
+<script src="./site/js/bootstrap.min.js"></script>
+<script src="./site/js/Message.js"></script>
+
+<script type="text/javascript">
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"),
+        r   = window.location.search.substr(1).match(reg)
+
+    if (r != null)
+        return unescape(r[2])
+
+    return null
+}
+
+
+
+function positionTop() {
+    var $this = $('#web-gotop'), $body = $('body'), top = 0
+    var setRight = function() {
+        var contentW = $this.prev().find('> .container').width(), allW = $(window).width()
+
+        if (allW > 1170 + 80) {
+            $this.css('right', (allW - contentW) / 2 - 80)
+        }
+    }
+
+    setRight()
+
+    $(window).scroll(function() {
+        top = $body.scrollTop()
+
+        if (top > 50) {
+            $this.show()
+        } else {
+            $this.hide()
+        }
+    })
+
+    $this.click(function() {
+        top = $body.scrollTop()
+
+        if (top) {
+            $body.animate({scrollTop:0}, 'fast')
+            $this.fadeOut()
+        }
+    })
+
+    $(window).resize(function() {
+        setRight()
+    })
+}
+
+$(function() {
+    $('[data-toggle="tooltip"]').tooltip()
+
+
+    positionTop()
+
+})
+</script><script src="./site/js/ZeroClipboard.js"></script>
+<script src="./site/js/prettify.js"></script>
+<script type="text/javascript">
+!function(a) {
+    "use strict";
+    a(function() {
+        var b = a(window), c = a(document.body);
+        c.scrollspy({
+            target:".bs-docs-sidebar"
+        }), b.on("load", function() {
+            c.scrollspy("refresh");
+        }), a(".bs-docs-container [href=#]").click(function(a) {
+            a.preventDefault();
+        }), setTimeout(function() {
+            var b = a(".bs-docs-sidebar");
+            b.affix({
+                offset:{
+                    top:function() {
+                        var c = b.offset().top, d = parseInt(b.children(0).css("margin-top"), 10), e = a(".bs-docs-nav").height();
+                        return this.top = c - e - d;
+                    },
+                    bottom:function() {
+                        return this.bottom = a(".bs-docs-footer").outerHeight(!0);
+                    }
+                }
+            });
+        }, 100), setTimeout(function() {
+            a(".bs-top").affix();
+        }, 100), function() {
+            var b = a("#bs-theme-stylesheet"), c = a(".bs-docs-theme-toggle"), d = function() {
+                b.attr("href", b.attr("data-href")), c.text("Disable theme preview"), localStorage.setItem("previewTheme", !0);
+            };
+            localStorage.getItem("previewTheme") && d(), c.click(function() {
+                var a = b.attr("href");
+                a && 0 !== a.indexOf("data") ? (b.attr("href", ""), c.text("Preview theme"), localStorage.removeItem("previewTheme")) :d();
+            });
+        }(), a(".tooltip-demo").tooltip({
+            selector:'[data-toggle="tooltip"]',
+            container:"body"
+        }), a(".popover-demo").popover({
+            selector:'[data-toggle="popover"]',
+            container:"body"
+        }), a(".tooltip-test").tooltip(), a(".popover-test").popover(), a(".bs-docs-popover").popover(),
+        a("#loading-example-btn").on("click", function() {
+            var b = a(this);
+            b.button("loading"), setTimeout(function() {
+                b.button("reset");
+            }, 3e3);
+        }), a(".bs-docs-activate-animated-progressbar").on("click", function() {
+            a(this).siblings(".progress").find(".progress-bar-striped").toggleClass("active");
+        }), ZeroClipboard.config({
+            moviePath:"/site/flash/ZeroClipboard.swf",
+            hoverClass:"btn-clipboard-hover"
+        }), a(".highlight").each(function() {
+            var b = '<div class="zero-clipboard"><span class="btn-clipboard">Copy</span></div>';
+            a(this).before(b);
+        });
+        var d = new ZeroClipboard(a(".btn-clipboard")), e = a("#global-zeroclipboard-html-bridge");
+        d.on("load", function() {
+            e.data("placement", "top").attr("title", "Copy to clipboard").tooltip();
+        }), d.on("dataRequested", function(b) {
+            var c = a(this).parent().nextAll(".highlight").first();
+            b.setText(c[0].innerText);
+        }), d.on("complete", function() {
+            e.attr("title", "Copied!").tooltip("fixTitle").tooltip("show").attr("title", "Copy to clipboard").tooltip("fixTitle");
+        }), d.on("noflash wrongflash", function() {
+            e.attr("title", "Flash required").tooltip("fixTitle").tooltip("show");
+        });
+
+        prettyPrint();
+    });
+}(jQuery);
+</script>
+</html>

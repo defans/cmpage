@@ -1,0 +1,23 @@
+
+<div class="bjui-pageContent">
+    <form id="edit<%= parms.c_modulename%>Form" action="/cmpage/page/save" data-toggle="validate" data-alertmsg="true">
+        <input id="<%= parms.c_modulename%>ID" name="id" type="hidden" value="<%= parms.editID%>" />
+        <input name="modulename" type="hidden" value="<%= parms.c_modulename%>" />
+        <input name="parmsUrl" type="hidden" value="<%= JSON.stringify(parms.parmsUrl)%>" />
+        <!-- <div id="edit<%= parms.c_modulename%>Table" class="bjui-row col-<%= parms.parmsUrl.id ==0 ? 1 : parms.c_edit_column%>"> -->
+        <div id="edit<%= parms.c_modulename%>Table" class="bjui-row col-<%= parms.c_edit_column%>">
+            <%- editHtml%>
+        </div>
+    </form>
+        <%- tabsHtml%>
+
+</div>
+
+<div class="bjui-pageFooter" >
+    <ul>
+        <%- btnHtml%>
+        <!-- <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
+        <li ><button type="button" class="btn-green" onclick="return pageSaveMs('<%= parms.c_modulename%>','<%= JSON.stringify(parms.parmsUrl)%>',<%= parms.editID%>,'<%= parms.pk%>');"
+            data-icon="save">保存</button></li> -->
+    </ul>
+</div>

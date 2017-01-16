@@ -30,10 +30,10 @@ export default class extends Base {
         }
         let utilsModel = this.model('cmpage/utils');
         ret = {statusCode:200,message:`流程已经${await utilsModel.getEnumName(task.c_status,'TaskStatus')}!`,task:task, currAct:currAct, currTaskAct:currTaskAct};
-        if(task.c_status === global.enumTaskStatus.RUN){
+        if(task.c_status === cmpage.enumTaskStatus.RUN){
             ret.message = `当前节点:${await this.model('act').getNameById(currAct.id)},
                             状态${await utilsModel.getEnumName(currAct.c_status,'TaskActStatus')}`;
-            if(currTaskAct.c_status === global.enumTaskActStatus.WAIT && !think.isEmpty(currAct.c_form)){
+            if(currTaskAct.c_status === cmpage.enumTaskActStatus.WAIT && !think.isEmpty(currAct.c_form)){
                 //根据设定弹出相关界面
                 debug(currAct,'c:task.start - currAct - 弹出界面');
                 currAct.form =eval("("+ currAct.c_form +")");  // JSON.parse(currAct.c_form);
@@ -106,10 +106,10 @@ export default class extends Base {
      * @return {json}  状态消息
      */
     async autoExecAction(){
-        if(!flow.autoExecuting){
-            flow.autoExecuting =true;
+        if(!cmpage.flow.autoExecuting){
+            cmpage.flow.autoExecuting =true;
             await this.model('act').fwAutoExec();
-            flow.autoExecuting =false;
+            cmpage.flow.autoExecuting =false;
             return this.json({statusCode:200,message:'流程的自动执行操作成功!'});
         }
         return this.json({statusCode:200,message:'流程正在自动执行中......'});

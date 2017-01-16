@@ -25,9 +25,7 @@
 <SCRIPT type="text/javascript">
     function team_onClick(event, treeId, treeNode){
         //event.preventDefault();
-        $(this).bjuiajax('doLoad', {target:$("#teamUserList"), url:"/cmpage/page/list?modulename=TeamUser&c_team="+treeNode.id })
+        $(this).bjuiajax('doLoad', {target:$("#teamUserList"), url:"/cmpage/page/list?modulename=TeamUser&moduleOpen=div&c_team="+treeNode.id })
 
     }
 </SCRIPT>
-
-

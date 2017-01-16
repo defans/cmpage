@@ -50,10 +50,10 @@
                 </th>
                 <th title="显示格式"><input type="text" name="editList[#index#].c_format" value="" size="5"></th>
                 <th title="编辑样式"><input type="text" name="editList[#index#].c_style"  value="" size="5"></th>
-                <th title="宽度"><input type="text" name="editList[#index#].c_width" data-toggle="spinner" data-rule="required" value="15" size="5" onkeyup="javascript:testNum(this);"></th>
+                <th title="宽度"><input type="text" name="editList[#index#].c_width" data-toggle="spinner" data-rule="required" value="12" size="5" onkeyup="javascript:testNum(this);"></th>
                 <th title="后缀元素"><input type="text" name="editList[#index#].c_suffix"  value="" size="5"></th>
                 <th title="备注"><textarea name="editList[#index#].c_memo" data-toggle="autoheight" rows="1"></textarea></th>
-                <th title="MUI"><textarea name="editList[#index#].c_mui" data-toggle="autoheight" rows="1"></textarea></th>
+                <!-- <th title="MUI"><textarea name="editList[#index#].c_mui" data-toggle="autoheight" rows="1"></textarea></th> -->
 
                 <th title="" data-addtool="false" >
 
@@ -77,7 +77,7 @@
                     <td ><%= item.c_width%></td>
                     <td ><%= item.c_suffix%></td>
                     <td ><%= item.c_memo%></td>
-                    <td ><%= item.c_mui%></td>
+                    <!-- <td ><%= item.c_mui%></td> -->
                     <td data-noedit="true">
                         <a href="/cmpage/module/delete?id=<%= item.id%>&table=t_module_query&flag=true" class="btn btn-red row-del" data-confirm-msg="确定要删除该行信息吗？">删</a>
                     </td>
@@ -87,4 +87,3 @@
         </table>
     </form>
 </div>
-

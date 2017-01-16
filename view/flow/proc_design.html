@@ -45,6 +45,8 @@
             </div>
             <div class="bjui-pageFooter" >
                 <ul>
+                    <li style="float:left;"><button id="btnActAssign" style="display:none;" type="button" class="btn btn-green" data-icon="user" data-toggle="dialog"
+                                                    onclick="return actAssignList();">权限指派</button></li>
                     <li style="float:left;"><button id="btnActDelete" style="display:none;" onclick="return actDeleteConfirm();" type="button" class="btn btn-red" data-icon="remove">删除节点</button></li>
                     <li style="float:left;"><button id="btnActPathDelete" style="display:none;" onclick="return actPathDeleteConfirm();" type="button" class="btn btn-red" data-icon="remove">删除路径</button></li>
                     <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
@@ -59,6 +61,19 @@
     var fwCurrentForm ='FwProc';
     var fwCurrentRect = null;
     var fwCurrentSrc = null;
+    function actAssignList(){
+        if(fwCurrentRect === null){ return false;}
+        BJUI.dialog({
+            id:'pageActAssignList',
+            url:'/cmpage/page/list?modulename=FwActAssign&c_act='+fwCurrentSrc.getDataId()+'&moduleOpen=dialog',
+            mask:true,
+            width:800,
+            height:550,
+            title:'['+ fwCurrentSrc.text() +']权限指派'
+        });
+        return false;
+    }
+
     function actDeleteConfirm(){
         if(fwCurrentRect === null){ return false;}
         $(this).alertmsg("confirm", "是否确定要删除节点："+fwCurrentSrc.text()+", 并删除相关的路径信息？ ",{
@@ -101,6 +116,7 @@
         $('#FwActEditForm').show();
         $('#btnActPathDelete').hide();
         $('#btnActDelete').show();
+        $('#btnActAssign').show();
         $('#procHeader').text('流程模板的活动节点');
         fwCurrentForm = 'FwAct';
         var dataID =fwCurrentSrc.getDataId();
@@ -143,6 +159,7 @@
         $('#FwActEditForm').hide();
         $('#btnActPathDelete').show();
         $('#btnActDelete').hide();
+        $('#btnActAssign').hide();
         $('#procHeader').text('流程模板的路径信息');
         fwCurrentForm = 'FwActPath';
         $('#FwActPathID').val(fwCurrentSrc.getDataId());
@@ -167,6 +184,7 @@
         $('#FwActEditForm').hide();
         $('#btnActPathDelete').hide();
         $('#btnActDelete').hide();
+        $('#btnActAssign').hide();
         $('#procHeader').text('流程模板的主信息');
         fwCurrentForm = 'FwProc';
     }

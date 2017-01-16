@@ -281,7 +281,39 @@
                     
                        <li>
                             
+                           <a href="../classes/cmpage.model.base.html">cmpage.model.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.file_list.html">cmpage.model.file_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -311,19 +343,9 @@
                            </ul>
                        </li>
                     
-                    </ul>
-                </dd>
-             
-                <dt>
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
-                </dt>
-                <dd>
-                    <ul>
-                   
                        <li>
                             
-                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <a href="../classes/cmpage.cmpage_global_flow.html">cmpage.cmpage_global_flow</a>
                            <ul>
                                 
                            </ul>
@@ -334,14 +356,54 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                    <a href="../modules/demo.model.html">demo.model</a>
                 </dt>
                 <dd>
                     <ul>
                    
                        <li>
                             
-                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <a href="../classes/flow.model.proc_assign.html">flow.model.proc_assign</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.appr.html">cmpage.model.appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -423,38 +485,6 @@
                            </ul>
                        </li>
                     
-                       <li>
-                            
-                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task.html">flow.model.task</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
                     </ul>
                 </dd>
              
@@ -527,6 +557,8 @@ export default class extends CMPage {
     async mobHtmlGetList() {
         let html = [];
 
+        this.mobGetPageMuiSetting();
+        //debug(this.mui.row, &#x27;page_mob.mobHtmlGetList - this.mui.row&#x27;);
         await this.getDataList();
         for(let row of this.list.data){
             //处理替换值
@@ -534,17 +566,23 @@ export default class extends CMPage {
                 if (col.c_type === &quot;replace&quot; &amp;&amp; !(/^select/.test(col.c_memo))) {
                     row[col.c_column] = await this.getReplaceText(row[col.c_column], col.c_memo);
                 }else if(col.c_coltype === &#x27;timestamp&#x27;){
-                    row[col.c_column] = think.datetime(row[col.c_column]);
+                    row[col.c_column] = cmpage.datetime(row[col.c_column], col.c_format);
                 }
             }
             html.push(&#x27;&lt;li class=&quot;mui-table-view-cell mui-media&quot;&gt;&#x27;);
 
             //加入按钮组
             html.push(await this.mobHtmlGetListBtns(row));
+            if(this.list.data.indexOf(row) ==1){
+                debug(await this.mobHtmlGetListBtns(row), &#x27;page_mob.rowBtns&#x27;);
+            }
 
             //组合生成列表每项的内容
             html.push(&quot;&lt;a class=\&quot;mui-slider-handle list-item\&quot; &gt;&quot;);
             html.push(await this.mobHtmlGetListRow(row));
+            // if(this.list.data.indexOf(row) ==1){
+            //     debug(await this.mobHtmlGetListRow(row), &#x27;page_mob.rowHtml&#x27;);
+            // }
             html.push(&#x27;&lt;/a&gt; &lt;/li&gt;&#x27;);
         }
 
@@ -559,16 +597,24 @@ export default class extends CMPage {
      */
     async mobHtmlGetListBtns(row) {
         let html =[];
-        let mui = this.mobGetPageMuiSetting();
         html.push(&#x27;&lt;div class=&quot;mui-slider-right mui-disabled&quot;&gt;&#x27;);
+        html.push(&#x27;&lt;style&gt; .list-btn {	padding-left: 15px !important;	padding-right: 15px !important;	}	&lt;/style&gt;&#x27;);
         for(let btn of this.modBtns){
             if (btn.c_location &gt; 10 &amp;&amp; btn.c_isshow){
-                if (btn.c_object.indexOf(&quot;.Edit&quot;) &gt; 0)
-                    html.push(&#x60;&lt;a class=&#x27;mui-btn mui-btn-green list-btn&#x27; href=&#x27;${mui.editurl}&#x27;
-                            data-type=&#x27;view&#x27;  data-id=&#x27;${row[&#x27;id&#x27;]}&#x27; &gt;编辑&lt;/a&gt;&quot;&#x60;);
-                else if (btn.c_object.indexOf(&quot;.Del&quot;) &gt; 0)
-                    html.push(&#x60;&lt;a class=&#x27;mui-btn mui-btn-red list-btn&#x27; href=&#x27;/cmpage/page/delete?table=${this.mod.c_datatable}&amp;id=${row[&#x27;id&#x27;]}&amp;flag=false&#x27;
-                            data-type=&#x27;action&#x27; &gt;删除&lt;/a&gt;&#x60;);
+                btn.c_url = cmpage.objPropertysReplaceToStr(btn.c_url, row);
+                if (btn.c_object.indexOf(&quot;.View&quot;) &gt; 0){
+                    html.push(&#x60;&lt;a class=&#x27;mui-btn mui-btn-blue list-btn cmpage-btn-view&#x27; href=&#x27;#&#x27;
+                            data-type=&#x27;view&#x27;  data-id=&#x27;${row[&#x27;id&#x27;]}&#x27; &gt;查看&lt;/a&gt;&#x60;);
+                }else if (btn.c_object.indexOf(&quot;.Edit&quot;) &gt; 0){
+                    html.push(&#x60;&lt;a class=&#x27;mui-btn mui-btn-green list-btn cmpage-btn-view&#x27; href=&#x27;#&#x27;
+                            data-type=&#x27;edit&#x27; data-parmsUrl=&#x27;${JSON.stringify(this.mod.parmsUrl)}&#x27;  data-id=&#x27;${row[&#x27;id&#x27;]}&#x27; &gt;编辑&lt;/a&gt;&#x60;);
+                }else if (btn.c_object.indexOf(&quot;.FileList&quot;) &gt; 0){
+                    html.push(&#x60;&lt;a class=&#x27;mui-btn mui-btn-yellow list-btn cmpage-btn-view&#x27; href=&#x27;#&#x27;
+                            data-type=&#x27;list_file&#x27; data-modulename=&#x27;FileList&#x27;  data-parmsUrl=&#x27;${JSON.stringify(cmpage.parmsFromUrl(this.getReplaceToSpecialChar(btn.c_url)))}&#x27; &gt;附件&lt;/a&gt;&#x60;);
+                }else if (btn.c_object.indexOf(&quot;.Del&quot;) &gt; 0){
+                    html.push(&#x60;&lt;a class=&#x27;mui-btn mui-btn-red list-btn cmpage-btn-action&#x27; href=&#x27;/cmpage/page/delete?modulename=${this.mod.c_modulename}&amp;table=${this.mod.c_table}&amp;id=${row[&#x27;id&#x27;]}&amp;flag=false&#x27;
+                             &gt;删除&lt;/a&gt;&#x60;);
+                }
             }
         }
         html.push(&#x27;&lt;/div&gt;&#x27;);
@@ -576,19 +622,46 @@ export default class extends CMPage {
     }
 
     /**
+     * 生成列表头部按钮组HTML输出，一般在子类中通过重写这个方法来达到定制输出按钮的效果
+     * @method  mobHtmlGetHeaderBtnsFromModule
+     * @return  {string}  HTML片段
+     */
+     async mobHtmlGetHeaderBtnsFromModule() {
+         let html =[];
+         for(let btn of this.modBtns){
+             if (btn.c_location &lt;= 10 &amp;&amp; btn.c_isshow){
+                 if (btn.c_object.indexOf(&quot;.Add&quot;) &gt; 0){
+                     html.push(&#x60;&lt;a class=&#x27;mui-icon mui-icon-plus list-btn cmpage-btn-view&#x27; href=&#x27;#&#x27;
+                             data-type=&#x27;edit&#x27; data-modulename=&#x27;${this.mod.c_modulename}&#x27; data-parmsUrl=&#x27;${JSON.stringify(this.mod.parmsUrl)}&#x27;  data-id=&#x27;0&#x27; &gt;&lt;/a&gt;&#x60;);
+                 }
+             }
+         }
+         return html;
+     }
+    async mobHtmlGetHeaderBtns() {
+        let headerHtml =&#x60;&lt;a href=&quot;cmpage-search.html&quot; class=&quot;mui-icon mui-icon-search mui-pull-right cmpage-btn-search&quot;&gt;&lt;/a&gt;
+        &lt;h1 id=&quot;title&quot; class=&quot;mui-title&quot;&gt;${this.mod.c_alias}&lt;/h1&gt;&#x60;;
+        let html = await this.mobHtmlGetHeaderBtnsFromModule();
+        if(html.length &gt;1){
+            //增加调用弹出菜单的按钮
+            return [&#x60;${headerHtml} &lt;a id=&quot;menu&quot; class=&quot;mui-action-menu mui-icon mui-icon-bars mui-pull-left&quot;&gt;&lt;/a&gt;&lt;/div&gt;&#x60;, html.join(&#x27; &#x27;)];
+        }else if(html.length == 1){
+            //直接显示按钮
+            return [&#x60;${headerHtml} ${html[0]}&lt;/div&gt;&#x60;, &#x27; &#x27;];
+        }else{
+            //增加回退按钮
+            return [&#x60;${headerHtml} &lt;a class=&quot;mui-action-back mui-icon mui-icon-left-nav mui-pull-left&quot;&gt;&lt;/a&gt;&lt;/div&gt;&#x60;, &#x27; &#x27;];
+        }
+    }
+
+    /**
      * 取模块的MUI设置，一般在子类中通过重写这个方法来增加MUI的配置信息，需要手机端做相应的逻辑实现
      * @method  mobGetPageMuiSetting
-     * @return  {object}  MUI的配置对象
      */
     mobGetPageMuiSetting(){
-        let mui = {editurl:&#x27;/html/commpage/commpage-edit.html&#x27;};
-        for(let item of this.mod.c_mui.split(&#x27;,&#x27;)){
-            let its = item.split(&#x27;:&#x27;);
-            if(its[0] === &#x27;editurl&#x27;){
-                mui.editurl = its[1];
-            }
-        }
-        return mui;
+        this.mui = cmpage.objFromString(this.mod.c_mui);
+        // mui.editurl = think.isEmpty(mui.editurl) ? &#x27;/html/cmpage/cmpage-edit.html&#x27; : mui.editurl;
+        // mui.viewurl = think.isEmpty(mui.viewurl) ? &#x27;/html/cmpage/cmpage-view.html&#x27; : mui.viewurl;
     }
 
     /**
@@ -599,11 +672,15 @@ export default class extends CMPage {
      */
     async mobHtmlGetListRow(row) {
         let html =[];
-        for(let col of this.modCols){
-            if (!think.isEmpty(col.c_mui)){
-                let its = col.c_mui.split(&#x27;,&#x27;);
-                html.push(&#x60;&lt;${its[0]}&gt; ${ its[1].replace(/#value#/, row[col.c_column]).replace(/#title#/, col.c_name.trim())} &lt;/${its[0]}&gt;&#x60;);
+        if(think.isEmpty(this.mui) || think.isEmpty(this.mui.row)){
+            for(let col of this.modCols){
+                if (!think.isEmpty(col.c_mui)){
+                    let its = col.c_mui.split(&#x27;,&#x27;);
+                    html.push(&#x60;&lt;${its[0]}&gt; ${ its[1].replace(/#value#/, row[col.c_column]).replace(/#title#/, col.c_name.trim())} &lt;/${its[0]}&gt;&#x60;);
+                }
             }
+        }else{
+            html.push(cmpage.objPropertysReplaceToStr(this.mui.row, row));
         }
         return html.join(&#x27; &#x27;);
     }
@@ -623,28 +700,32 @@ export default class extends CMPage {
         let provinceValue =&#x27;&#x27;;
         let cityValue=&#x27;&#x27;;
 
+        debug(this.mod.query, &#x27;page_mob.mobHtmlGetQuery - this.mod.query&#x27;);
         for(let md of this.modQuerys){
+            if(!think.isEmpty(this.mod.query[md.c_column])){
+                md.c_default = this.mod.query[md.c_column];
+            }
             if (md.c_isshow)
             {
                 if (md.c_coltype === &quot;bool&quot;){
                     html.push(&quot;&lt;div class=&#x27;mui-input-row mui-checkbox&#x27;&gt;&quot;);
                     html.push(&#x60;&lt;label&gt;${md.c_name}:&lt;/label&gt;&#x60;);
                     html.push(&#x60;&lt;input type=&#x27;checkbox&#x27; name=&#x27;${md.c_column}&#x27;${ md.c_default === &#x27;true&#x27; ? &quot; checked&quot; : &quot;&quot;} /&gt;&#x60;);
-                }else if (md.c_type === &quot;select&quot;){
+                }else if (md.c_type === &quot;select&quot; || md.c_type === &quot;selectBlank&quot; ){
                     html.push(&quot;&lt;div class=&#x27;mui-input-row mui-select&#x27;&gt;&quot;);
                     html.push(&#x60;&lt;label&gt;${md.c_name}:&lt;/label&gt;&#x60;);
                     html.push(&#x60;&lt;select name=&#x27;${md.c_column}&#x27; &gt;&#x60;);
-                    html.push( await this.getOptions(md) );
+                    html.push( await this.getOptions(md,true) );
                     html.push(&quot;&lt;/select&gt;&quot;);
                 }else if (md.c_type === &quot;countrySelect&quot;){
                     let countryValue = md.c_default;
-                    let areaModel = global.model(&#x27;cmpage/area&#x27;);
+                    let areaModel = cmpage.model(&#x27;cmpage/area&#x27;);
                     let provinceName = await areaModel.getProvinceName(provinceValue);
                     let cityName = await areaModel.getCityName(cityValue);
                     let countryName = await areaModel.getCountryName(countryValue);
                     html.push(&quot;&lt;div class=&#x27;mui-input-row&#x27;&gt;&quot;);
                     html.push(&quot;&lt;label&gt;地区选择:&lt;/label&gt;&quot;);
-                    html.push(&#x60;&lt;button class=&#x27;mui-btn mui-btn-block citypicker&#x27; style=&#x27;width:65%; border:none; text-align:left; padding-left:0px; height:100%;&#x27;
+                    html.push(&#x60;&lt;button class=&#x27;mui-btn mui-btn-block cmpage-picker-country&#x27; style=&#x27;width:65%; border:none; text-align:left; padding-left:0px; height:100%;&#x27;
                         data-ref=&#x27;${this.mod.c_modulename}_c_country&#x27; type=&#x27;button&#x27;&gt;${provinceName} ${cityName} ${countryName} &lt;/button&gt;
                         &lt;input type=&#x27;hidden&#x27; id=&#x27;${this.mod.c_modulename}_c_country&#x27; name=&#x27;c_country&#x27; value=&#x27;${provinceValue},${cityValue},${countryValue}&#x27; /&gt;&#x60;);
                 }else if (md.c_coltype == &quot;datetime&quot;){
@@ -660,7 +741,7 @@ export default class extends CMPage {
                     }
                     html.push(&quot;&lt;div class=&#x27;mui-input-row&#x27;&gt;&quot;);
                     html.push(&#x60;&lt;label&gt;${md.c_name}:&lt;/label&gt;&#x60;);
-                    html.push(&#x60;&lt;button data-options=&#x27;${JSON.stringify(dateType)}&#x27; data-ref=&#x27;&quot; ${this.mod.c_modulename + md.c_column}&#x27; class=&#x27;btn mui-btn mui-btn-block datepicker&#x27;
+                    html.push(&#x60;&lt;button data-options=&#x27;${JSON.stringify(dateType)}&#x27; data-ref=&#x27;&quot; ${this.mod.c_modulename + md.c_column}&#x27; class=&#x27;btn mui-btn mui-btn-block cmpage-picker-datetime&#x27;
                         style=&#x27;width:65%; border:none; text-align:left; padding-left:0px; height:100%;&#x27;&gt; ${dateTitle}&lt;/button&gt;
                         &lt;input type=&#x27;hidden&#x27; id=&#x27;${this.mod.c_modulename + md.c_column}&#x27; name=&#x27;${md.c_column}&#x27; value=&#x27;${ md.c_default}&#x27; /&gt;&#x60;);
                 }
@@ -668,12 +749,24 @@ export default class extends CMPage {
                     provinceValue = md.c_default;
                 }else if (md.c_type == &quot;citySelect&quot;) {
                     cityValue = md.c_default;
-                }else{
+                }else if (md.c_type == &quot;lookup&quot;) {
+                    let parmsUrl = cmpage.objFromString(md.c_memo);    //形如：{modulename:&#x27;xxx&#x27;, ...}
+                    parmsUrl = think.isEmpty(parmsUrl) ? cmpage.parmsFromUrl(this.getReplaceToSpecialChar(md.c_memo)) : parmsUrl; //形如： /cmpage/page/lookup? ...
+                    let inputHtml = &#x60;&lt;button id=&#x27;${md.c_column}&#x27; name=&#x27;${md.c_column}&#x27; class=&#x27;btn mui-btn mui-btn-block  mui-btn-warning mui-btn-outlined cmpage-btn-lookup&#x27;
+                        data-parmsUrl=&#x27;${ JSON.stringify(parmsUrl)}&#x27; data-modulename=&#x27;${parmsUrl.modulename}&#x27;
+                        style=&#x27;width:65%; border:none; text-align:left; padding-left:0px; height:100%;&#x27;&gt; ${md.c_default}&lt;/button&gt;&#x60;;
+                    debug(inputHtml,&#x27;page_mob.mobHtmlGetQuery - lookup&#x27;);
                     html.push(&quot;&lt;div class=&#x27;mui-input-row&#x27;&gt;&quot;);
                     html.push(&#x60;&lt;label&gt;${md.c_name}:&lt;/label&gt;&#x60;);
+                    html.push(inputHtml);
+                }else{
+                    if(md.c_type != &#x27;hidden&#x27;){
+                        html.push(&quot;&lt;div class=&#x27;mui-input-row&#x27;&gt;&quot;);
+                        html.push(&#x60;&lt;label&gt;${md.c_name}:&lt;/label&gt;&#x60;);
+                    }
                     html.push(&#x60;&lt;input name=&#x27;${md.c_column}&#x27; type=&#x27;${md.c_type}&#x27; value=&#x27;${md.c_default}&#x27; class=&#x27;mui-input-clear&#x27;  /&gt;&#x60;);
                 }
-                if (md.c_type !== &quot;provinceSelect&quot; &amp;&amp; md.c_type !== &quot;citySelect&quot;) {
+                if (md.c_type !== &quot;provinceSelect&quot; &amp;&amp; md.c_type !== &quot;citySelect&quot; &amp;&amp; md.c_type != &#x27;hidden&#x27;) {
                     html.push(&quot;&lt;/div&gt;&quot;);
                 }
             }
@@ -688,74 +781,134 @@ export default class extends CMPage {
      */
     async mobHtmlGetEdit() {
         let html =[];
-        if(this.mod.editID &gt;0) {
-            let fields = [];
-            for (let edit of this.modEdits) {
-                fields.push(&#x60;${edit.c_desc} as ${edit.c_column}&#x60;);
-            }
-            //global.debug(fields);
-            let list = await this.model(this.mod.c_datasource).field(fields.join(&#x27;,&#x27;)).where({id:this.mod.editID}).select();
-            this.rec =list[0];
-        }else{
-            this.rec = await this.pageEditInit();
-        }
-        let md = this.rec;
-//        global.debug(md);
+        let md = await this.getDataRecord();
+
+//        cmpage.debug(md);
         html.push(&#x60;&lt;input type=&#x27;hidden&#x27; name=&#x27;modulename&#x27; value=&#x27;${this.mod.c_modulename}&#x27; /&gt;&#x60;);
         html.push(&#x60;&lt;input name=&#x27;old_record&#x27; type=&#x27;hidden&#x27; value=&#x27;${JSON.stringify(md)}&#x27; /&gt;&#x60;);
         for(let col of this.modEdits){
             if (!col.c_editable  ) {  continue; }
             let colValue = md[col.c_column];
+            if(typeof(colValue) === &#x27;undefined&#x27;){
+                colValue = col.c_coltype ===&#x27;int&#x27; || col.c_coltype ===&#x27;float&#x27; ? 0 :(col.c_coltype ===&#x27;bool&#x27; ? false : &#x27;&#x27;);
+            }
+            if(col.c_desc.indexOf(&#x27;fn:&#x27;)===0){    //非数据库字段
+                let its = col.c_desc.trim().split(&#x27;:&#x27;);        //设置如： fn:admin/code:getNameByPid:c_status
+                let fnModel = cmpage.model(its[1]);     //通过某个模块的某个方法取下拉设置
+                if(think.isFunction(fnModel[its[2]])){
+                    if(its.length === 4){
+                        colValue = await fnModel[ its[2] ]( md[its[3]]);
+                    }else{
+                        colValue = await fnModel[ its[2] ]();
+                    }
+                }
+            }
+
             if(col.c_coltype === &#x27;timestamp&#x27;){  colValue = think.datetime(colValue); }
             if (col.c_type === &quot;hidden&quot; &amp;&amp; col.c_column!==&quot;c_city&quot; &amp;&amp; col.c_column!==&quot;c_province&quot;) {
-                html.push(&#x60;&lt;input name=&quot;${col.c_column}&quot; type=&quot;hidden&quot; value=&quot;${colValue}&quot; /&gt;&#x60;);
+                html.push(&#x60;&lt;input id=&quot;${col.c_column}&quot; name=&quot;${col.c_column}&quot; type=&quot;hidden&quot; value=&quot;${colValue}&quot; /&gt;&#x60;);
                 continue;
             }
             col.c_format = col.c_format.trim();
-            if(col.c_type !== &quot;hidden&quot;){
-                html.push(&#x60;&lt;div class=&#x27;mui-input-row ${col.c_type === &quot;select&quot; ? &quot;mui-select&quot; : (col.c_coltype === &quot;bool&quot; ? &quot;mui-checkbox&quot;:&quot;&quot;)}&#x27;&gt;&#x60;);
-                html.push(&#x60;&lt;label&gt;${col.c_name.trim()}:&lt;/label&gt;&#x60;);
-            }
+
+            let inputHtml =&#x27;&#x27;;
             if (col.c_type === &quot;datetime&quot; ||col.c_type === &quot;date&quot;) {
-                let dateTitle = colValue;
+                //debug(col.c_format,&#x27;page_mob.mobHtmlGetEdit - datetime.col.c_format&#x27;);
+                //col.c_format = think.isEmpty(col.c_format) ? &quot;yyyy-MM-dd&quot; : col.c_format;
+                //colValue =cmpage.datetime(colValue,col.c_format);
+                let dateTitle = &#x27;&#x27;;
                 let dateType = {type:&#x27;date&#x27;};
-                if (md.c_format.indexOf(&quot;HH:&quot;) &gt;= 0){
+                if (col.c_format.indexOf(&quot;HH:&quot;) &gt;= 0){
                     dateTitle = think.isEmpty(dateTitle) ? &quot;选择时间 ...&quot;: dateTitle;
                     dateType =  {type:&#x27;time&#x27;};
-                    if (md.c_format.indexOf(&quot;yyyy-&quot;) &gt;=0){
+                    if (col.c_format.indexOf(&quot;yyyy-&quot;) &gt;=0){
                         dateTitle = think.isEmpty(dateTitle) ? &quot;选择日期 ...&quot;: dateTitle;
                         dateType = {};
                     }
+                }else{
+                    colValue = colValue.substr(0,10);
                 }
-                html.push(&#x60;&lt;button data-options=&#x27;${JSON.stringify(dateType)}&#x27; data-ref=&#x27;&quot; ${this.mod.c_modulename + md.c_column}&#x27; class=&#x27;btn mui-btn mui-btn-block datepicker&#x27;
-                        style=&#x27;width:65%; border:none; text-align:left; padding-left:0px; height:100%;&#x27;&gt; ${dateTitle}&lt;/button&gt;
-                        &lt;input type=&#x27;hidden&#x27; id=&#x27;${this.mod.c_modulename + md.c_column}&#x27; name=&#x27;${md.c_column}&#x27; value=&#x27;${ md.c_default}&#x27; /&gt;&#x60;);
+                inputHtml = &#x60;&lt;button data-options=&#x27;${JSON.stringify(dateType)}&#x27; data-ref=&#x27;${col.c_column}&#x27; class=&#x27;btn mui-btn mui-btn-block cmpage-picker-datetime&#x27;
+                        style=&#x27;width:65%; border:none; text-align:left; padding-left:0px; height:100%;&#x27;&gt; ${think.isEmpty(dateTitle) ? colValue : dateTitle}&lt;/button&gt;
+                        &lt;input type=&#x27;hidden&#x27; id=&#x27;${col.c_column}&#x27; name=&#x27;${col.c_column}&#x27; value=&#x27;${colValue}&#x27; /&gt;&#x60;;
+                //debug(inputHtml,&#x27;page_mob.mobHtmlGetEdit - datetime.inputHtml&#x27;);
             } else if (col.c_type === &quot;select&quot; || col.c_type === &quot;selectBlank&quot; || col.c_type === &quot;readonlyReplace&quot;) {
                 col.c_default = colValue;
                 let isBlank = (col.c_type === &quot;selectBlank&quot; || col.c_type === &quot;readonlyReplace&quot;);
-                html.push(&#x60;&lt;select name=&quot;${col.c_column}&quot; &gt; ${await this.getOptions(col,isBlank )} &lt;/select&gt;&#x60;);
+                inputHtml = &#x60;&lt;select id=&#x27;${col.c_column}&#x27; name=&#x27;${col.c_column}&#x27; &gt; ${await this.getOptions(col,isBlank )} &lt;/select&gt;&#x60;;
             } else if (col.c_type === &quot;textarea&quot;) {
-                html.push(&#x60;&lt;textarea name=&quot;${col.c_column}&quot; rows=&quot;4&quot; &gt;${colValue}&lt;/textarea&gt;&#x60;);
+                inputHtml = &#x60;&lt;textarea  id=&#x27;${col.c_column}&#x27; name=&#x27;${col.c_column}&#x27;  rows=&quot;4&quot; &gt;${colValue}&lt;/textarea&gt;&#x60;;
             } else if (col.c_type === &quot;checkbox&quot;) {
-                html.push(&#x60;&lt;input type=&#x27;checkbox&#x27; name=&#x27;${col.c_column}&#x27; ${colValue ? &quot; checked&quot; : &quot;&quot;} /&gt;&#x60;);
+                inputHtml = &#x60;&lt;input type=&#x27;checkbox&#x27; id=&#x27;${col.c_column}&#x27; name=&#x27;${col.c_column}&#x27;  ${colValue ? &quot; checked&quot; : &quot;&quot;} /&gt;&#x60;;
             }else if (col.c_type == &quot;areaSelect&quot;){
-                let areaModel = global.model(&#x27;cmpage/area&#x27;);
-                html.push(&#x60;&lt;button class=&#x27;mui-btn mui-btn-block citypicker&#x27; style=&#x27;width:65%; border:none; text-align:left; padding-left:0px;&#x27;
-                    data-ref=&#x27;${this.mod.c_modulename}_c_country&#x27; type=&#x27;button&#x27;&gt;${await areaModel.getProvinceName(md[&#x27;c_province&#x27;])}
-                    ${await areaModel.getCityName(md[&#x27;c_city&#x27;])} ${await areaModel.getCountryName(md[&#x27;c_country&#x27;])} &lt;/button&gt;
-                    &lt;input type=&#x27;hidden&#x27; id=&#x27;${this.mod.c_modulename}_c_country&#x27; name=&#x27;c_country&#x27; value=&#x27;${md[&#x27;c_province&#x27;]},${md[&#x27;c_city&#x27;]},${md[&#x27;c_country&#x27;]}&#x27; /&gt;&#x60;);
+                let areaModel = cmpage.model(&#x27;cmpage/area&#x27;);
+                let areaName = &#x60;${await areaModel.getProvinceName(md[&#x27;c_province&#x27;])}${await areaModel.getCityName(md[&#x27;c_city&#x27;])} ${await areaModel.getCountryName(md[&#x27;c_country&#x27;])}&#x60;;
+                inputHtml = &#x60;&lt;button class=&#x27;mui-btn mui-btn-block cmpage-picker-country&#x27; style=&#x27;width:65%; border:none; text-align:left; padding-left:0px;&#x27;
+                    data-ref=&#x27;c_country&#x27; type=&#x27;button&#x27;&gt;${think.isEmpty(areaName) ? &#x27;请选择&#x27;:areaName}&lt;/button&gt;
+                    &lt;input type=&#x27;hidden&#x27; id=&#x27;c_country&#x27; name=&#x27;c_country&#x27; value=&#x27;${md[&#x27;c_province&#x27;]},${md[&#x27;c_city&#x27;]},${md[&#x27;c_country&#x27;]}&#x27; /&gt;&#x60;;
             }else if (col.c_type === &quot;readonly&quot;) {
-                html.push(&#x60;&lt;input name=&quot;${col.c_column}&quot; class=&#x27;mui-input-clear mui-input&#x27; type=&quot;text&quot; value=&quot;${colValue}&quot;  readonly=&quot;readonly&quot;  /&gt;&#x60;);
+                inputHtml = &#x60;&lt;input id=&#x27;${col.c_column}&#x27; name=&#x27;${col.c_column}&#x27;  class=&#x27;mui-input-clear mui-input&#x27; type=&quot;text&quot; value=&quot;${colValue}&quot;  readonly=&quot;readonly&quot;  /&gt;&#x60;;
+            }else if (col.c_type === &quot;lookup&quot;) {
+                let parmsUrl = cmpage.objFromString(col.c_memo);    //形如：{modulename:&#x27;xxx&#x27;, ...}
+                parmsUrl = think.isEmpty(parmsUrl) ? cmpage.parmsFromUrl(this.getReplaceToSpecialChar(col.c_memo)) : parmsUrl; //形如： /cmpage/page/lookup? ...
+                inputHtml = &#x60;&lt;button id=&#x27;${col.c_column}&#x27; name=&#x27;${col.c_column}&#x27; class=&#x27;btn mui-btn mui-btn-block  mui-btn-warning mui-btn-outlined cmpage-btn-lookup&#x27;
+                    data-parmsUrl=&#x27;${ JSON.stringify(parmsUrl)}&#x27; data-modulename=&#x27;${parmsUrl.modulename}&#x27;
+                    style=&#x27;width:65%; border:none; text-align:left; padding-left:0px; height:100%;&#x27;&gt; ${colValue}&lt;/button&gt;&#x60;;
+                debug(inputHtml,&#x27;page_mob.mobHtmlGetEdit - lookup&#x27;);
             }else if(col.c_column !==&#x27;c_province&#x27; &amp;&amp; col.c_column !==&#x27;c_city&#x27;){
-                html.push(&#x60;&lt;input type=&#x27;text&#x27; name=&#x27;${col.c_column}&#x27; class=&#x27;mui-input-clear mui-input&#x27; placeholder=&#x27;请输入${col.c_name}&#x27; value=&#x27;${colValue}&#x27; /&gt;&#x60;);
+                inputHtml = &#x60;&lt;input type=&#x27;text&#x27; name=&#x27;${col.c_column}&#x27; class=&#x27;mui-input-clear mui-input&#x27; placeholder=&#x27;请输入${col.c_name}&#x27; value=&#x27;${colValue}&#x27; /&gt;&#x60;;
             }
-            html.push(&#x27;&lt;/div&gt;&#x27;);
+
+            if(inputHtml.length &gt;0){
+                inputHtml = await this.mobHtmlGetEditInput(col,colValue,inputHtml);
+            }
+            if(col.c_type !== &quot;hidden&quot;){
+                html.push(&#x60;&lt;div class=&#x27;mui-input-row ${col.c_type === &quot;select&quot; ? &quot;mui-select&quot; : (col.c_coltype === &quot;bool&quot; ? &quot;mui-checkbox&quot;:&quot;&quot;)}&#x27;&gt;&#x60;);
+                html.push(&#x60;&lt;label&gt;${col.c_name.trim()}:&lt;/label&gt;&#x60;);
+                html.push(&#x60;${inputHtml}&lt;/div&gt;&#x60;);
+            }
         }
         return html.join(&#x27; &#x27;);
     }
 
-}
+    /**
+     * 改变某些编辑列的样式，子类中可以重写本方法类增加模块编辑页面的操作逻辑
+     * @method  mobHtmlGetEditInput
+     * @return {string} Edit页面的Input的HTML片段
+     * @params {object} col Edit页面的当前编辑列设置
+     * @params {string} colValue Input的值
+     * @params {string} input Edit页面的Input的HTML片段
+     */
+    async mobHtmlGetEditInput(col,colValue,input) {
+        //增加模块编辑页面的操作逻辑，也可以配合页面js方法
 
+        return input;
+    }
+    async mobHtmlGetView(){
+        let html = [];
+        let rec = await this.getDataRecord();
+        //debug(rec,&#x27;page_mob.mobHtmlGetView - rec&#x27;);
+
+        html.push(&quot;&lt;ul class=&#x27;mui-table-view mui-table-view-chevron&#x27;&gt;&quot;);
+        html.push(&quot;&lt;input type=&#x27;hidden&#x27; name=&#x27;modulename&#x27; value=&#x27;&quot; + this.mod.c_modulename + &quot;&#x27; /&gt;&quot;);
+        for(let col of this.modCols){
+            if(!col.c_isview) continue;
+            let value = rec[col.c_column];
+            if (col.c_type === &quot;replace&quot; &amp;&amp; !(/^select/.test(col.c_memo))) {
+                value = await this.getReplaceText(value, col.c_memo);
+            }else if(col.c_coltype === &#x27;timestamp&#x27;){
+                value = cmpage.datetime(value, col.c_format);
+            }
+            html.push(&#x60;&lt;div class=&#x27;mui-input-row ${col.c_type == &quot;select&quot; ? &quot;mui-select&quot; : (col.c_coltype == &quot;bit&quot; ? &quot;mui-checkbox&quot; : &quot;&quot;)}&#x27;&gt;&#x60;);
+            html.push(&#x60;&lt;label&gt;${col.c_name}: &lt;/label&gt;&#x60;);
+            html.push(&#x60;&lt;input type=&#x27;text&#x27; readonly=readonly value=&#x27;${value}&#x27; /&gt;&#x60;);
+            html.push(&quot;&lt;/div&gt;&quot;);
+            html.push(&quot;&lt;/ul&gt;&quot;);
+        }
+
+        return html.join(&#x27;&#x27;);
+    }
+}
 
     </pre>
 </div>

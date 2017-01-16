@@ -25,9 +25,7 @@
 <SCRIPT type="text/javascript">
     function group_onClick(event, treeId, treeNode){
         //event.preventDefault();
-        $(this).bjuiajax('doLoad', {target:$("#groupUserList"), url:"/cmpage/page/list?modulename=GroupUser&c_group="+treeNode.id })
+        $(this).bjuiajax('doLoad', {target:$("#groupUserList"), url:"/cmpage/page/list?modulename=GroupUser&moduleOpen=div&c_group="+treeNode.id })
 
     }
 </SCRIPT>
-
-

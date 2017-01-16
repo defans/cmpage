@@ -1,7 +1,7 @@
 
 <div class="bjui-pageHeader">
     <label>请选择功能模块，然后点击</label>
-    <a class="btn btn-green" href="#" onclick="rolep_savePrivilege();"  data-icon="save"> 保存权限 </a>
+    <a class="btn btn-green" href="#" onclick="return rolep_savePrivilege();"  data-icon="save"> 保存权限 </a>
     <label>进行保存该角色的权限集</label>
 </div>
 <div class="bjui-pageContent" style="padding:5px">
@@ -50,8 +50,8 @@
             data: "roleID="+$("#rolep_roleID").val()+"&ids="+ids,
             async: false,
             success: function (res) {
-                var msg = $.parseJSON(res);
-                $(this).alertmsg('info',msg.message);
+                //var msg = $.parseJSON(res);
+                $(this).alertmsg('info',res.message);
             }
         });
         return true;

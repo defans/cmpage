@@ -43,7 +43,7 @@ export default class extends Base {
       }
       vb.menuHtml = menuHtml;
 
-    // global.debug(vb.itemList);
+    // cmpage.debug(vb.itemList);
     this.assign('vb',vb);
     return this.display();
   }
@@ -103,10 +103,10 @@ export default class extends Base {
         vb.groups = await this.model('code').getGroups();
         if(this.method() == 'get'){
             vb.loginName='';
-           // global.debug(vb);
+           // cmpage.debug(vb);
         }else{
             let user = await this.model('user').getUserByLogin(this.post('loginName'),this.post('loginPwd'));
-            //global.debug(user);
+            //cmpage.debug(user);
             if(!think.isEmpty(user)){
                 if(user.c_status != 0){
                     vb.loginName = this.post('loginName');
@@ -128,12 +128,14 @@ export default class extends Base {
                     user.groupName = await this.model('code').getNameById(user.groupID);
                     user.groups = groups;
                     let width = think.isEmpty(this.post('clientWidth')) ? 1200 : this.post('clientWidth');
-                    user.listColumns = width >=1200 ? cmpageUI.enumListColumns.MAX : (width >=970 ? cmpageUI.enumListColumns.MIDDLE :
-                        (width >=768 ? cmpageUI.enumListColumns.SMALL : cmpageUI.enumListColumns.MOBILE ));
-                    user.listBtns = width >=1200 ? cmpageUI.enumListBtns.MAX : (width >=970 ? cmpageUI.enumListBtns.MIDDLE :
-                        (width >=768 ? cmpageUI.enumListBtns.SMALL : cmpageUI.enumListBtns.MOBILE ));
+                    user.listColumns = width >=1200 ? cmpage.ui.enumListColumns.MAX : (width >=970 ? cmpage.ui.enumListColumns.MIDDLE :
+                        (width >=768 ? cmpage.ui.enumListColumns.SMALL : cmpage.ui.enumListColumns.MOBILE ));
+                    user.listBtns = width >=1200 ? cmpage.ui.enumListBtns.MAX : (width >=970 ? cmpage.ui.enumListBtns.MIDDLE :
+                        (width >=768 ? cmpage.ui.enumListBtns.SMALL : cmpage.ui.enumListBtns.MOBILE ));
+                    user.queryColumns = width >=1200 ? cmpage.ui.enumQueryColumns.MAX : (width >=970 ? cmpage.ui.enumQueryColumns.MIDDLE :
+                        (width >=768 ? cmpage.ui.enumQueryColumns.SMALL : cmpage.ui.enumQueryColumns.MOBILE ));
 
-                    //console.log(user);
+                    debug(user,'admin.index.C.login - user');
                     await this.model('login').addLogin(user);
                     await this.session('user', user);
                     return this.redirect('/admin/index/index');
@@ -180,10 +182,12 @@ export default class extends Base {
     async setClientWidthAction(){
         let user = await this.session('user');
         let width = think.isEmpty(this.get('width')) ? 1200 : this.get('width');
-        user.listColumns = width >=1200 ? cmpageUI.enumListColumns.MAX : (width >=970 ? cmpageUI.enumListColumns.MIDDLE :
-            (width >=768 ? cmpageUI.enumListColumns.SMALL : cmpageUI.enumListColumns.MOBILE ));
-        user.listBtns = width >=1200 ? cmpageUI.enumListBtns.MAX : (width >=970 ? cmpageUI.enumListBtns.MIDDLE :
-            (width >=768 ? cmpageUI.enumListBtns.SMALL : cmpageUI.enumListBtns.MOBILE ));
+        user.listColumns = width >=1200 ? cmpage.ui.enumListColumns.MAX : (width >=970 ? cmpage.ui.enumListColumns.MIDDLE :
+            (width >=768 ? cmpage.ui.enumListColumns.SMALL : cmpage.ui.enumListColumns.MOBILE ));
+        user.listBtns = width >=1200 ? cmpage.ui.enumListBtns.MAX : (width >=970 ? cmpage.ui.enumListBtns.MIDDLE :
+            (width >=768 ? cmpage.ui.enumListBtns.SMALL : cmpage.ui.enumListBtns.MOBILE ));
+        user.queryColumns = width >=1200 ? cmpage.ui.enumQueryColumns.MAX : (width >=970 ? cmpage.ui.enumQueryColumns.MIDDLE :
+            (width >=768 ? cmpage.ui.enumQueryColumns.SMALL : cmpage.ui.enumQueryColumns.MOBILE ));
         await this.session('user', user);
         return this.json({statusCode:200, message:''});
     }
@@ -193,15 +197,16 @@ export default class extends Base {
         if(this.ip() != "127.0.0.1"){
             return this.json({statusCode:300,message:"timer is not start, ! "+this.ip()});
         }
-        if(!think.isObject(global.autoExecTimer)){
-            global.autoExecTimer = setInterval(function() {
+        if(!think.isObject(cmpage.autoExecTimer)){
+            cmpage.autoExecTimer = setInterval(function() {
                 request('http://127.0.0.1:8300/flow/task/auto_exec', function (error, response, body) {
-                    if (!error) {
-                        console.log(body);
+                    if (!think.isEmpty(error)) {
+                        //console.log(body);
+                        debug(body,'admin.C.autoExecOpen - error');
                     } else {
                         //console.log("error: " + error);
                     }
-                    flow.autoExecuting =false;
+                    cmpage.flow.autoExecuting =false;
                 });
             }, 3000);
             return this.json({statusCode:200,message:"timer is start! "+this.ip()});
@@ -214,12 +219,19 @@ export default class extends Base {
         if(this.ip() != "127.0.0.1"){
             return this.json({statusCode:300,message:"timer is not stop! "+this.ip()});
         }
-        if(think.isObject(global.autoExecTimer)){
-            clearInterval(global.autoExecTimer);
-            global.autoExecTimer = null;
+        if(think.isObject(cmpage.autoExecTimer)){
+            clearInterval(cmpage.autoExecTimer);
+            cmpage.autoExecTimer = null;
             return this.json({statusCode:200,message:"timer is stop! "+this.ip()});
         }
         return this.json({statusCode:300,message:"timer is not exist! "+this.ip()});
+    }
+
+    installAction(){
+        if(this.ip() != "127.0.0.1"){
+            return this.json({statusCode:300,message:"You should install on localhost! "+this.ip()});
+        }
+        return this.display();
     }
 
     homeAction(){

@@ -10,10 +10,13 @@
   },
   "dependencies": {
     "babel-runtime": "6.x.x",
-    "pg": "^4.4.3",
-    "excel-export":"0.5.1",
+    "excel-export": "0.5.1",
     "source-map-support": "0.4.0",
-    "thinkjs": "2.2.x"
+    "thinkjs": "2.2.x",
+    "moment":"2.x.x",
+    "request":"2.x.x",
+    "sequelize":"3.x.x",
+    "tedious":"1.x.x"
   },
   "devDependencies": {
     "babel-cli": "6.x.x",

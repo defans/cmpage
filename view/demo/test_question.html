@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>2017年万帮战略发展研讨会</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="/static/mui/css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="/static/mui/css/app.css" />
+		<style>
+			h5 {
+				margin: 5px 7px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+            <a class="mui-icon mui-icon-bars"></a>
+			<h1 class="mui-title">2017年万帮战略发展研讨会</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<h5  >2017年将是新能源电动汽车行业快速发展的一年，如何抓住机遇，推动集团健康快速发展，将是我们共同面临的话题。为了进一步明确集团战略规划和发展方向，广泛听取大家对集团发展的意见、建议，经集团研究决定，将于12月25日召开2017年万帮战略发展研讨会。
+请大家从以下6个议题中选择1-2个议题作为发言主题，并围绕上述主题，高站位思考，集思广益，精心准备，提炼出较为成熟和切实可行的思路、想法、策略和措施，并在会上跟大家分享。</h5>
+				<form id="questionForm" class="mui-input-group">
+                    <div class="mui-input-row mui-checkbox mui-left" style="height:50px;">
+						<label>17年度，怎样建桩最科学？</label>
+						<input id="c_answer" name="c_answer" value="17年度，怎样建桩最科学" type="checkbox" >
+                    </div>
+                    <div class="mui-input-row mui-checkbox mui-left" style="height:50px;">
+						<label>互联互通以后，星星充电的角色该如何扮演？</label>
+						<input id="c_answer" name="c_answer" value="互联互通以后，星星充电的角色该如何扮演" type="checkbox" >
+                    </div>
+                    <div class="mui-input-row mui-checkbox mui-left" style="height:50px;">
+						<label>私人充电与公共充电的用户体验及场景切换？</label>
+						<input id="c_answer" name="c_answer" value="私人充电与公共充电的用户体验及场景切换" type="checkbox" >
+                    </div>
+                    <div class="mui-input-row mui-checkbox mui-left" style="height:50px;">
+						<label>各自业务的新产品、新地区、新业务？</label>
+						<input id="c_answer" name="c_answer" value="各自业务的新产品、新地区、新业务" type="checkbox" >
+                    </div>
+                    <div class="mui-input-row mui-checkbox mui-left" style="height:50px;">
+						<label>集团人力资源的储备如何满足发展的要求？</label>
+						<input id="c_answer" name="c_answer" value="集团人力资源的储备如何满足发展的要求" type="checkbox" >
+                    </div>
+                    <div class="mui-input-row mui-checkbox mui-left" style="height:60px;">
+						<label>大客户开发，谁是我们的大客户，怎样开发？</label>
+						<input id="c_answer" name="c_answer" value="大客户开发，谁是我们的大客户，怎样开发" type="checkbox" >
+                    </div>
+
+					<div class="mui-input-row"  style="height:50px;">
+						<label>姓 名：</label>
+						<input type="text" id="c_name" name="c_name" class="mui-input-clear" placeholder="请输入您的姓名">
+					</div>
+
+				</form>
+                <h5>
+				<!-- <div class="mui-input-row" style="margin: 10px 5px;"> -->
+					<!-- <textarea id="textarea" readonly="readonly" rows="6" placeholder="多行文本框"> -->
+                        请注意：</br>
+                        1、所有参会人员必须从以上议题中选择1-2个话题进行准备；</br>
+                        2、每人的演讲时间控制在8-10分钟；</br>
+                        3、方式不限，（PPT、WORD都可）</br>
+                        4、可以重复递交，以最后一次为准</br>
+                    <!-- </textarea> -->
+				<!-- </div> -->
+                </h5>
+			</div>
+            <button type="button" id="btnSubmit" onclick="return postData();" class="mui-btn mui-btn-primary mui-btn-block">确认递交</button>
+		</div>
+		<script src="/static/mui/js/mui.min.js"></script>
+		<script>
+			mui.init({
+				swipeBack: false //启用右滑关闭功能
+			});
+
+            function postData() {
+            	//console.log(value);
+                answer=document.forms[0].c_answer
+                var val=""
+                for (i=0;i<answer.length;++ i) {
+                    if (answer[i].checked){
+                        val=val + answer[i].value + " :";
+                    }
+                }
+            	mui.ajax("/demo/test/save_question", {
+            		data: {c_name:document.getElementById('c_name').value, c_answer:val},
+            		type: "post",
+            		dataType: 'json',
+            		timeout: 5000,
+            		error: function(request) {
+            			app.alert("服务器获取数据失败！");
+            		},
+            		success: function(data) {
+            			if(data.statusCode == 200) {
+            				mui.alert(data.message);
+            			} else {
+            				mui.alert(data.message);
+            			}
+            		}
+            	});
+            }
+
+		</script>
+	</body>
+
+</html>

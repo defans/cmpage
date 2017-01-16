@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../mui/css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id='stub_header' class="mui-bar mui-bar-nav">
+			<a id="add" class="mui-action-menu mui-icon mui-icon-plus mui-pull-right"></a>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">电桩列表</h1>
+		</header>
+		<div id="pullrefresh" class="mui-content">
+			<form id='stub_search_form' class="mui-input-group">
+			    <div class="mui-input-row">
+			        <label>电桩编号</label>
+			    <input id='stub_sno' type="number" class="mui-input-clear mui-numbox-input" placeholder="请输入8位编号">
+			    </div>
+			    <div class="mui-button-row">
+			        <button id='stub_search' type="button" class="mui-btn mui-btn-primary" >确认搜索</button>
+			    </div>
+			</form>
+
+			<div class="mui-scroll">
+				<ul class="mui-table-view mui-table-list mui-table-view-chevron erp-cmpage-stub">
+
+				</ul>
+			</div>
+
+
+		</div>
+	</body>
+
+	<script src="../../js/libs/jquery-2.1.4.min.js"></script>
+	<script src="../../mui/js/mui.min.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="../../js/cmpage/cmpage-stub.js"></script>
+
+</html>

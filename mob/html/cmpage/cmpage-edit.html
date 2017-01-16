@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../mui/css/mui.min.css">
+		<link href="../../mui/css/mui.listpicker.css" rel="stylesheet" />
+		<link href="../../mui/css/mui.dtpicker.css" rel="stylesheet" />
+		<link href="../../mui/css/mui.poppicker.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">编辑</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view mui-table-view-chevron">
+				<form class="mui-input-group cmpage-edit" onSubmit="return false;">
+				</form>
+				<button id="locateBtn" class="mui-btn mui-btn-warning mui-btn-block" style="margin-bottom: 10px; display: none;" onclick="locate()">定位</button>
+				<button class="mui-btn mui-btn-primary mui-btn-block" onclick="saveData()">保存</button>
+			</ul>
+		</div>
+	</body>
+
+	<!-- <script src="../../js/libs/jquery-2.1.4.min.js"></script> -->
+	<script src="../../mui/js/mui.min.js"></script>
+	<script src="../../mui/js/mui.dtpicker.js"></script>
+	<script src="../../mui/js/mui.listpicker.js"></script>
+	<script src="../../mui/js/mui.poppicker.js"></script>
+	<script src="../../mui/js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/app.js"></script>
+	<script src="../../js/cmpage.js"></script>
+	<script src="../../js/cmpage/cmpage-edit.js"></script>
+
+</html>

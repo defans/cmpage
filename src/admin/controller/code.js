@@ -30,7 +30,7 @@ export default class extends Base {
     vb.treeID=`codeTree${vb.rootID}`;
     let model = this.model('code');
     vb.list =await model.getTreeList(vb.rootID,true);
-//    global.debug(JSON.stringify(vb));
+//    cmpage.debug(JSON.stringify(vb));
     this.assign('vb',vb);
     return this.display();
   }
@@ -48,7 +48,7 @@ export default class extends Base {
         vb.treeID=`codeTree${vb.rootID}`;
         let model = this.model('code');
         vb.list =await model.getTreeList(vb.rootID,true);
-//    global.debug(JSON.stringify(vb));
+//    cmpage.debug(JSON.stringify(vb));
         this.assign('vb',vb);
         return this.display();
     }
@@ -131,7 +131,7 @@ export default class extends Base {
   async rolePrivilegeAction(){
     let model = this.model('code');
     let treeList =await model.getTreeList(3,true);
-//    global.debug(JSON.stringify(vb));
+//    cmpage.debug(JSON.stringify(vb));
     this.assign('treeList',treeList);
     return this.display();
   }
@@ -144,7 +144,7 @@ export default class extends Base {
   async roleGetPrivilegeTreeAction(){
     let roleID = this.http.post('roleID');
     let treeList =await this.model('privilege').roleGetPrivilegeTree(roleID);
-//    global.debug(JSON.stringify(vb));
+//    cmpage.debug(JSON.stringify(vb));
     return this.json(treeList);
   }
 
@@ -155,10 +155,56 @@ export default class extends Base {
      */
   async roleSavePrivilegeAction(){
     let parms =this.http.post();
-    //global.debug(rec);
+    //cmpage.debug(rec);
     await this.model('privilege').roleSavePrivilege(parms);
-    return this.json({statusCode:200,message:'',data:{}});
+    return this.json({statusCode:200,message:'保存成功!',data:{}});
   }
+
+    /**
+     * 某个用户的权限集合展示，树状结构
+     * @method userGetPrivilegeTree
+     * @return {json}
+     */
+    async userGetPrivilegeTreeAction(){
+        let user = await this.session('user');
+        let parms = this.http.get();
+        if(!think.isEmpty(parms.userID)){
+            user = await this.model('user').getUserById(parms.userID);
+        }
+        let isMine = !think.isEmpty(parms.isMine);
+        let treeList =await this.model('privilege').userGetPrivilegeTree(user.id, user.c_role, 1);
+//    cmpage.debug(JSON.stringify(vb));
+        this.assign('treeList',treeList);
+        this.assign('vb',{userID:user.id, isMine:isMine});
+        return this.display();
+    }
+
+    /**
+     * 保存某个用户的定制权限设置
+     * @method userSavePrivilege
+     * @return {json}
+     */
+    async userSavePrivilegeAction(){
+        let parms =this.http.post();
+        //cmpage.debug(rec);
+        await this.model('privilege').userSavePrivilege(parms);
+        return this.json({statusCode:200,message:'保存成功!',data:{}});
+    }
+
+    /**
+     * 保存某个用户的定制权限设置
+     * @method userSavePrivilege
+     * @return {json}
+     */
+    async userSetPwdInitAction(){
+        let userID =this.http.get('userID');
+        if(think.isEmpty(userID)){
+            return this.json({statusCode:300, message:'用户ID无效！'});
+        }
+        await this.model('t_user').where({id:userID}).update({c_login_pwd:think.md5('123456')});
+        await this.cache("users",null);  //清除users缓存
+        return this.json({statusCode:200, message:'密码已修改修改为初始密码（123456）！'});
+    }
 
 
     /**
@@ -172,7 +218,7 @@ export default class extends Base {
         vb.treeID=`code${vb.rootID}`;
         let model = this.model('code');
         vb.list =await model.getTreeList(vb.rootID,true);
-        // global.debug(JSON.stringify(vb));
+        // cmpage.debug(JSON.stringify(vb));
         this.assign('vb',vb);
         return this.display();
     }
@@ -180,7 +226,7 @@ export default class extends Base {
     async codeSaveAction(){
         let ret={statusCode:200,message:'',data:{}};
         let parms =this.http.post();
-        //global.debug(rec);
+        //cmpage.debug(rec);
 
         let model = this.model('t_code');
         if(parms.id ==0){
@@ -189,7 +235,7 @@ export default class extends Base {
                 rec[key] =parms[key];
             }});
             ret.data.id =await model.add(rec);
-            global.debug(JSON.stringify(ret));
+            cmpage.debug(JSON.stringify(ret));
         }else if(parms.id >0){
             ret.data.id =parseInt(parms.id);
             await model.where({id: ret.data.id}).update(parms);
@@ -202,7 +248,7 @@ export default class extends Base {
     async codeDelAction(){
         let ret={statusCode:200,message:'',data:{}};
         let parms =this.http.post();
-        //global.debug(rec);
+        //cmpage.debug(rec);
 
         let model = this.model('t_code');
         if(parms.id >0){

@@ -13,14 +13,15 @@ export default class extends Base {
      * @return {promise}
      */
     async designAction(){
-        let module = global.model('cmpage/module')
+        let module = cmpage.model('cmpage/module')
         let parms = await module.getModuleByName('FwProcList');
         parms.parmsUrl = JSON.stringify(this.get());
         parms.editID = this.get("id");
         parms.user = await this.session('user');
-        //global.debug(page);
+        //cmpage.debug(page);
         let pageModel = this.model('proc_list');
         pageModel.mod = parms;
+        await pageModel.initPage();
         pageModel.modEdits = await module.getModuleEdit(parms.id);
 
         let procEditHtml =await pageModel.htmlGetEdit();
@@ -31,12 +32,13 @@ export default class extends Base {
         parmsAct.parmsUrl= '{}';
         parmsAct.editID =0;
         parmsAct.user = parms.user;
-        let pageAct = global.model('cmpage/page');
+        let pageAct = cmpage.model('cmpage/page');
         pageAct.mod = parmsAct;
+        await pageAct.initPage();
         pageAct.modEdits = await module.getModuleEdit(parmsAct.id);
 
         let actEditHtml = await pageAct.htmlGetEdit();
-        //global.debug(actEditHtml,'flow.controller.proc - actEditHtml');
+        //cmpage.debug(actEditHtml,'flow.controller.proc - actEditHtml');
         this.assign('actEditHtml','<tbody>'+actEditHtml+'</tbody>');
 
         let flowMap = await pageModel.getFlowMap(parms.editID);

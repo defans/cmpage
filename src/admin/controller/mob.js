@@ -64,13 +64,15 @@ export default class extends Base {
                 let nav ={id:menu.id, title:menu.c_name, modules:[]};
                 for(let item of menuList){
                     if(item.c_pid === nav.id && item.c_type === 'M'  && (menu.c_memo !== 'btn' || k >=3 )){
-                        nav.modules.push({title:item.c_name, modulename:item.c_object, parmsUrl:item.c_other, url:item.c_desc});
+                        nav.modules.push({title:item.c_name, modulename:item.c_object.replace('mob.',''), parmsUrl:item.c_other,
+                            url: think.isEmpty(item.c_desc) ? '../cmpage/cmpage-list.html' : item.c_desc });
                     }
                 }
                 navs.push(nav);
             }else if(menu.c_type === 'M' && menu.c_memo === 'btn' && k <3  && menu.isAllow){
                 k ++;
-                btns.push({title:menu.c_name, modulename:menu.c_object, parmsUrl:menu.c_other, url:menu.c_desc});
+                btns.push({title:menu.c_name, modulename:menu.c_object.replace('mob.',''), parmsUrl:menu.c_other,
+                    url: think.isEmpty(menu.c_desc) ? '../cmpage/cmpage-list.html' : menu.c_desc });
             }
         }
 
@@ -88,7 +90,7 @@ export default class extends Base {
         vb.groups = await this.model('code').getGroups();
 
         let user = await this.model('user').getUserByLogin(this.post('loginName'),this.post('loginPwd'),true);
-        //global.debug(user);
+        //cmpage.debug(user);
         if(!think.isEmpty(user)){
             if(user.c_status != 0){
                 return this.json({ id :0, msg : "请等候管理员审核，谢谢！" });

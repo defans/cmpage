@@ -2605,8 +2605,8 @@ if (!Object.isExtensible) {
 // Make it safe to do console.log() always.
 (function(global) {
   'use strict';
-  global.console = global.console || {};
-  var con = global.console;
+  cmpage.console = cmpage.console || {};
+  var con = cmpage.console;
   var prop, method;
   var empty = {};
   var dummy = function() {};

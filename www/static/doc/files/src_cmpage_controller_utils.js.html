@@ -281,7 +281,39 @@
                     
                        <li>
                             
+                           <a href="../classes/cmpage.model.base.html">cmpage.model.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.file_list.html">cmpage.model.file_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -311,19 +343,9 @@
                            </ul>
                        </li>
                     
-                    </ul>
-                </dd>
-             
-                <dt>
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
-                </dt>
-                <dd>
-                    <ul>
-                   
                        <li>
                             
-                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <a href="../classes/cmpage.cmpage_global_flow.html">cmpage.cmpage_global_flow</a>
                            <ul>
                                 
                            </ul>
@@ -334,14 +356,54 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                    <a href="../modules/demo.model.html">demo.model</a>
                 </dt>
                 <dd>
                     <ul>
                    
                        <li>
                             
-                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <a href="../classes/flow.model.proc_assign.html">flow.model.proc_assign</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.appr.html">cmpage.model.appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -423,38 +485,6 @@
                            </ul>
                        </li>
                     
-                       <li>
-                            
-                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task.html">flow.model.task</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
                     </ul>
                 </dd>
              
@@ -516,6 +546,89 @@ import Base from &#x27;./base.js&#x27;;
 
 export default class extends Base {
 
+    async testAction(){
+//        let model = cmpage.model(&#x27;docu/base&#x27;);
+//        let ret = await model.query(&#x27;select top 5 goods_name,goods_ucode from vw_docu_rec&#x27;);
+        //let ret = await model.query(&quot;QueryPage &#x27;vw_docu_rec&#x27;,&#x27;c_id,goods_ucode,goods_name&#x27;,10,2,&#x27;&#x27;,&#x27;c_id&#x27;,0,&#x27;c_id&#x27;&quot;);
+
+         let model = cmpage.model(&#x27;cmpage/base&#x27;);
+         let ret = await model.query(&#x27;select c_name,c_time from t_customer limit 3&#x27;);
+//        let ret = await this.model(&#x27;cmpage/page&#x27;).query(&#x27;select c_name,c_time from t_customer limit 2&#x27;);
+        //debug(ret,&#x27;utils.C.test - ret&#x27;);
+        console.log(ret);
+        return this.json({});
+    }
+
+    /**
+     * 根据URL参数直接调用相关model的相关方法， 调用： /cmpage/utils/callFunction?model=xxx&amp;fn=xxx&amp;parms=xxx,xxx
+     * @method callFunction
+     * @return {json}
+     */
+    async callFunctionAction(){
+        let fnModel = cmpage.model(this.get(&#x27;model&#x27;));
+        let fnName = this.get(&#x27;fn&#x27;);
+        let ret = {statusCode:200, message:&#x27;&#x27;,data:{}};
+        if(think.isFunction(fnModel[ fnName ])){
+            //传入当前用户
+            fnModel.user =  await this.session(&#x27;user&#x27;);
+            if(think.isEmpty(this.get(&#x27;parms&#x27;))){
+                ret.data = await fnModel[ fnName ]();
+            }else{
+                let parms = this.get(&#x27;parms&#x27;).split(&#x27;,&#x27;);
+//                debug(parms, &#x27;utils.C.callFunction - parms&#x27;);
+                ret.data = await fnModel[ fnName ]( ...parms );
+
+            }
+            if(!think.isEmpty(ret.data.statusCode))    ret.statusCode = ret.data.statusCode;
+            if(!think.isEmpty(ret.data.message))    ret.message = ret.data.message;
+        }else{
+            ret = {statusCode:300, message:&#x27;您所调用的方法不存在!&#x27;,data:{}};
+        }
+
+        if(!think.isEmpty(this.get(&#x27;navtabid&#x27;)))   ret.navtabid = this.get(&#x27;navtabid&#x27;);
+        if(!think.isEmpty(this.get(&#x27;dialogid&#x27;)))   ret.dialogid = this.get(&#x27;dialogid&#x27;);
+        if(!think.isEmpty(this.get(&#x27;divid&#x27;)))   ret.divid = this.get(&#x27;divid&#x27;);
+
+        return this.json(ret);
+    }
+
+    /**
+     * 根据URL参数直接调用相关model的相关方法， 调用： /cmpage/utils/callFunction?model=xxx&amp;fn=xxx&amp;parms=xxx,xxx
+     * @method callFunction
+     * @return {json}
+     */
+    async callFunctionByModulenameAction(){
+        let page = await this.model(&#x27;module&#x27;).getModuleByName(this.get(&#x27;modulename&#x27;));
+        page.user = await this.session(&#x27;user&#x27;);
+        //cmpage.debug(page);
+        let pageModel = cmpage.model(think.isEmpty(page.c_path) ? &#x27;cmpage/page&#x27;:page.c_path);
+        pageModel.mod = page;
+        await pageModel.initPage();
+
+        let fnName = this.get(&#x27;fn&#x27;);
+        let ret = {statusCode:200, message:&#x27;&#x27;,data:{}};
+        if(think.isFunction(pageModel[ fnName ])){
+            if(think.isEmpty(this.get(&#x27;parms&#x27;))){
+                ret.data = await pageModel[ fnName ]();
+            }else{
+                let parms = this.get(&#x27;parms&#x27;).split(&#x27;,&#x27;);
+//                debug(parms, &#x27;utils.C.callFunction - parms&#x27;);
+                ret.data = await pageModel[ fnName ]( ...parms );
+
+            }
+            if(!think.isEmpty(ret.data.statusCode))    ret.statusCode = ret.data.statusCode;
+            if(!think.isEmpty(ret.data.message))    ret.message = ret.data.message;
+        }else{
+            ret = {statusCode:300, message:&#x60;您所调用的方法 ${page.c_modulename}/${fnName} 不存在!&#x60;,data:{}};
+        }
+
+        if(!think.isEmpty(this.get(&#x27;navtabid&#x27;)))   ret.navtabid = this.get(&#x27;navtabid&#x27;);
+        if(!think.isEmpty(this.get(&#x27;dialogid&#x27;)))   ret.dialogid = this.get(&#x27;dialogid&#x27;);
+        if(!think.isEmpty(this.get(&#x27;divid&#x27;)))   ret.divid = this.get(&#x27;divid&#x27;);
+
+        return this.json(ret);
+    }
+
     /**
      * 清除缓存， 调用： /cmpage/utils/clear_cache
      * @method  clearCache
@@ -532,7 +645,7 @@ export default class extends Base {
 
     /**
      * 根据省份取城市列表， 调用： /cmpage/utils/get_citys?province=xxx
-     * @method  get_citys
+     * @method  getCitys
      * @return {json}
      */
     async getCitysAction(){
@@ -545,7 +658,7 @@ export default class extends Base {
     }
     /**
      * 根据城市取区县列表， 调用： /cmpage/utils/get_countrys?city=xxx
-     * @method  get_countrys
+     * @method  getCountrys
      * @return {json}
      */
     async getCountrysAction(){
@@ -558,6 +671,7 @@ export default class extends Base {
     }
 
 }
+
     </pre>
 </div>
 

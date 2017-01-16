@@ -281,7 +281,39 @@
                     
                        <li>
                             
+                           <a href="../classes/cmpage.model.base.html">cmpage.model.base</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.file_list.html">cmpage.model.file_list</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page.html">cmpage.model.page</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
                            <a href="../classes/cmpage.model.page_excel.html">cmpage.model.page_excel</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.page_lookup.html">cmpage.model.page_lookup</a>
                            <ul>
                                 
                            </ul>
@@ -311,19 +343,9 @@
                            </ul>
                        </li>
                     
-                    </ul>
-                </dd>
-             
-                <dt>
-                    <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mob.model.html">cmthis.mob.model</a>
-                </dt>
-                <dd>
-                    <ul>
-                   
                        <li>
                             
-                           <a href="../classes/cmthis.mob.model.page_lookup.html">cmthis.mob.model.page_lookup</a>
+                           <a href="../classes/cmpage.cmpage_global_flow.html">cmpage.cmpage_global_flow</a>
                            <ul>
                                 
                            </ul>
@@ -334,14 +356,54 @@
              
                 <dt>
                     <span class="glyphicon glyphicon-minus"></span>
-                    <a href="../modules/cmthis.mod.model.html">cmthis.mod.model</a>
+                    <a href="../modules/demo.model.html">demo.model</a>
                 </dt>
                 <dd>
                     <ul>
                    
                        <li>
                             
-                           <a href="../classes/cmthis.mod.model.page.html">cmthis.mod.model.page</a>
+                           <a href="../classes/flow.model.proc_assign.html">flow.model.proc_assign</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/cmpage.model.appr.html">cmpage.model.appr</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task.html">flow.model.task</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
+                           <ul>
+                                
+                           </ul>
+                       </li>
+                    
+                       <li>
+                            
+                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
                            <ul>
                                 
                            </ul>
@@ -423,38 +485,6 @@
                            </ul>
                        </li>
                     
-                       <li>
-                            
-                           <a href="../classes/flow.model.proc.html">flow.model.proc</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task.html">flow.model.task</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act.html">flow.model.task_act</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
-                       <li>
-                            
-                           <a href="../classes/flow.model.task_act_appr.html">flow.model.task_act_appr</a>
-                           <ul>
-                                
-                           </ul>
-                       </li>
-                    
                     </ul>
                 </dd>
              
@@ -505,14 +535,16 @@
 // +----------------------------------------------------------------------
 
 /**
- @module cmthis.mob.model
+ @module cmpage.model
  */
 
 /**
- * 实现了查找带回的功能，可继承本类做定制化的查找带回页面，调用： /cmpage/page/lookup?modulename=XXX*multiselect=false
- * @class cmthis.mob.model.page_lookup
+ * 实现了查找带回的功能，可继承本类做定制化的查找带回页面，调用： /cmpage/page/lookup?modulename=xxx*multiselect=0 &lt;/br&gt;
+ * 实现了选择加入的功能，可继承本类做定制化的选择加入页面，调用： /cmpage/page/lookup?modulename=xxx*selectadd=1*key=c_id*callmodel=docu/docu_rec*callfn=goodsAdd*callparms=xxx,
+ * 其中key是需要回传的字段名称，callmodel是回调的thinkjs模块，callfn 是回调的函数名称, callparms 是额外的参数，例如：单据主ID等 &lt;/br&gt;
+ * @class cmpage.model.page_lookup
  */
-import CMPage from &#x27;./page.js&#x27;;
+import CMPage from &#x27;./page_mob.js&#x27;;
 
 export default class extends CMPage {
 
@@ -522,23 +554,54 @@ export default class extends CMPage {
      * @return {boolean} 是否显示
      * @param   {object} page 页面按钮的设置
      */
-    isShowRowBtns(){
+    isShowBtns(rec,btn){
         return true;
     }
 
     /**
-     * 取列表中按钮的设置，组合成HTML输出,&lt;br/&gt; 重写父类的方法，子类中也可重写本方法，更改返回的字段和值等
+     * 取列表中按钮的设置，组合成HTML输出,&lt;br/&gt;
+     * 重写父类的方法，子类中也可重写本方法，更改返回的字段和值等
      * @method  htmlGetBtnList
      * @return  {string}  HTML片段
      * @param   {object} rec 每行的记录对象
      */
     async htmlGetBtnList(rec){
+        let ret =&#x27;&#x27;;
+        if(think.isEmpty(this.mod.parmsUrl.callmodulename)){
+            let html =await this.getLookupResult(rec);
+            ret= &#x60; &lt;a href=&quot;javascript:;&quot; data-toggle=&quot;lookupback&quot; data-args=&quot;{${html.join(&#x27;,&#x27;)}}&quot; class=&quot;btn btn-blue&quot; title=&quot;选择本项&quot; data-icon=&quot;check&quot;&gt;选择&lt;/a&gt;&#x60;;
+        }else{
+            let value = 0;
+            for(let col of this.modCols){
+                if (col.c_isview &amp;&amp; col.c_desc == this.pk) {
+                    value = rec[col.c_column];
+                    break;
+                }
+            }
+            if(value &gt;0){
+                let parms = think.isEmpty(this.mod.parmsUrl.callparms) ? value : &#x60;${value},${this.mod.parmsUrl.callparms}&#x60;;
+                ret = &#x60; &lt;a href=&quot;javascript:;&quot; onclick=&quot;return pageSelectAdd(this,&#x27;${this.mod.parmsUrl.callmodulename}&#x27;,&#x27;${this.mod.parmsUrl.callfn}&#x27;,&#x27;${parms}&#x27;);&quot;
+                    class=&quot;btn btn-blue&quot; title=&quot;选择加入&quot; data-icon=&quot;check&quot;&gt;加入&lt;/a&gt;&#x60;;
+            }
+        }
+        return ret;
+    }
+    /**
+     * 取查找带回页面中选择行的返回字段及值
+     * @method  getLookupResult
+     * @return  {Array}  返回字段组成的数组
+     * @param   {object} rec 每行的记录对象
+     */
+    async getLookupResult(rec){
         let html=[];
         let fields= [];
-        //global.debug(this.mod,&#x27;page_lookup.htmlGetBtnList - this.mob&#x27;);
-        if(!think.isEmpty(this.mod[&#x27;returnFields&#x27;])){
-            fields = String(this.mod[&#x27;returnFields&#x27;]).split(&#x27;,&#x27;);
+        if(think.isString(this.mod.parmsUrl))  this.mod.parmsUrl = JSON.parse(this.mod.parmsUrl);
+        //console.log(this.mod);
+        //cmpage.debug(this.mod,&#x27;page_lookup.htmlGetBtnList - this.mob&#x27;);
+        if(!think.isEmpty(this.mod.parmsUrl[&#x27;returnFields&#x27;])){
+            fields = String(this.mod.parmsUrl[&#x27;returnFields&#x27;]).split(&#x27;,&#x27;);
         }
+        cmpage.debug(fields,&#x27;page_lookup.htmlGetBtnList - fields&#x27;);
         for(let col of this.modCols){
             if (col.c_isview) {
                 if(fields.length &gt;0){
@@ -553,9 +616,9 @@ export default class extends CMPage {
                 }
             }
         }
-        //global.debug(html.join(&#x27;,&#x27;));
-        return &#x60; &lt;a href=&quot;javascript:;&quot; data-toggle=&quot;lookupback&quot; data-args=&quot;{${html.join(&#x27;,&#x27;)}}&quot; class=&quot;btn btn-blue&quot; title=&quot;选择本项&quot; data-icon=&quot;check&quot;&gt;选择&lt;/a&gt;&#x60;;
-        }
+        //debug(html.join(&#x27;,&#x27;),&#x27;page_lookup.getLookupResult - data-args&#x27;);
+        return html;
+    }
 
     /**
      * 顶部按钮不需要显示，&lt;br/&gt; 重写父类的方法，子类中也可重写本方法，增加其他按钮
@@ -564,9 +627,75 @@ export default class extends CMPage {
      * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
     async htmlGetBtnHeader(){
-        return &#x27; &#x27;;
+        if(think.isEmpty(this.mod.parmsUrl.callmodulename)) {
+            let html = [];
+            for(let col of this.modCols){
+                if (col.c_isview) {
+                    html.push(&#x60;${col.c_column}:&#x27;${col.c_coltype === &#x27;int&#x27; ? 0 : &#x27; &#x27;}&#x27;&#x60;);
+                }
+            }
+            return &#x60;&lt;a href=&quot;javascript:;&quot; data-toggle=&quot;lookupback&quot; data-args=&quot;{${html.join(&#x27;,&#x27;)}}&quot; class=&quot;btn btn-orange&quot; title=&quot;清除所选&quot; data-icon=&quot;eraser&quot;&gt;清除&lt;/a&gt;&#x60;;
+        }
+        return &#x27;&#x27;;
     }
+
+    /**
+     * 取模块列表中的MUI设置，组合成HTML输出，一般在子类中通过重写这个方法来达到页面定制的效果
+     * @method  mobHtmlGetList
+     * @return  {string}  HTML片段
+     */
+    async mobHtmlGetList() {
+        let html = [];
+
+        this.mobGetPageMuiSetting();
+        await this.getDataList();
+        for(let row of this.list.data){
+            //处理替换值
+            for(let col of this.modCols){
+                if (col.c_type === &quot;replace&quot; &amp;&amp; !(/^select/.test(col.c_memo))) {
+                    row[col.c_column] = await this.getReplaceText(row[col.c_column], col.c_memo);
+                }else if(col.c_coltype === &#x27;timestamp&#x27;){
+                    row[col.c_column] = think.datetime(row[col.c_column]);
+                }
+            }
+            html.push(&#x27;&lt;li class=&quot;mui-table-view-cell mui-media&quot;&gt;&#x27;);
+
+            //加入按钮组
+            //html.push(await this.mobHtmlGetListBtns(row));
+            let btn =await this.getLookupResult(row);
+            btn = &#x60;{${btn.join(&#x27;,&#x27;)}}&#x60;;
+            //debug(btn,&#x27;page_lookup.mobHtmlGetListBtns - btn&#x27;);
+
+            //组合生成列表每项的内容
+            html.push(&#x60;&lt;a class=&#x27;mui-slider-handle list-item cmpage-lookup-back&#x27;  href=&#x27;aaa.html&#x27; data-result=&#x27;${JSON.stringify(cmpage.objFromString(btn))}&#x27; &gt;&#x60;);
+            html.push(await this.mobHtmlGetListRow(row));
+            html.push(&#x27;&lt;/a&gt; &lt;/li&gt;&#x27;);
+        }
+
+        return html.join(&#x27; &#x27;);
+    }
+
+    async mobHtmlGetHeaderBtns() {
+        let html =&#x60;&lt;a href=&quot;cmpage-search.html&quot; class=&quot;mui-icon mui-icon-search mui-pull-right cmpage-btn-search&quot;&gt;&lt;/a&gt;
+        &lt;h1 id=&quot;title&quot; class=&quot;mui-title&quot;&gt;${this.mod.c_alias}&lt;/h1&gt;&#x60;;
+
+        let btn = {};
+        for(let col of this.modCols){
+            if (col.c_isview) {
+                btn[col.c_column] = col.c_coltype === &#x27;int&#x27; ? 0 : &#x27; &#x27;;
+            }
+        }
+        //debug(btn,&#x27;page_lookup.mobHtmlGetHeaderBtns - btn&#x27;);
+
+        html += &#x60;&lt;a class=&#x27;mui-icon mui-icon-minus mui-pull-left cmpage-lookup-back&#x27;  href=&#x27;aaa.html&#x27;
+            data-result=&#x27;${JSON.stringify(btn) }&#x27; &gt;&lt;/a&gt;&#x60;;
+
+        //debug(html,&#x27;page_lookup.mobHtmlGetHeaderBtns - html&#x27;);
+        return [&#x60;${html} &lt;/div&gt;&#x60;, &#x27; &#x27;];
+    }
+
 }
+
     </pre>
 </div>
 

@@ -28,44 +28,44 @@ export default class extends think.model.base {
     async canRun(){
         let taskAct = this.taskAct;
         let act = this.act;
-        global.debug(taskAct,'task_act.canRun --- taskAct --- 根据节点状态判断');
-        global.debug(act,'task_act.canRun --- act --- 根据节点状态判断');
-        if(act.c_type === global.enumActType.START  || act.c_type === global.enumActType.DUMMY || act.c_type === global.enumActType.END
-            || (taskAct.c_status === global.enumTaskActStatus.SUSPEND && taskAct.c_from_rule !== global.enumActFromRule.DEFINE) ){
+        cmpage.debug(taskAct,'task_act.canRun --- taskAct --- 根据节点状态判断');
+        cmpage.debug(act,'task_act.canRun --- act --- 根据节点状态判断');
+        if(act.c_type === cmpage.enumActType.START  || act.c_type === cmpage.enumActType.DUMMY || act.c_type === cmpage.enumActType.END
+            || (taskAct.c_status === cmpage.enumTaskActStatus.SUSPEND && taskAct.c_from_rule !== cmpage.enumActFromRule.DEFINE) ){
             return true;
-        }else if(taskAct.c_status === global.enumTaskActStatus.NO_BEGIN || taskAct.c_status === global.enumTaskActStatus.SUSPEND){
+        }else if(taskAct.c_status === cmpage.enumTaskActStatus.NO_BEGIN || taskAct.c_status === cmpage.enumTaskActStatus.SUSPEND){
             //根据汇聚类型判断
-            if(taskAct.c_from_rule === global.enumActFromRule.DEFINE || act.c_type === global.enumActType.NORMAL_MAN){
+            if(taskAct.c_from_rule === cmpage.enumActFromRule.DEFINE || act.c_type === cmpage.enumActType.NORMAL_MAN){
                 //等待自定义的方法被调用后继续往下走, 人为参与的节点类似
-                global.debug(taskAct,'task_act.canRun --- taskAct --- 等待...');
-                taskAct.c_status = global.enumTaskActStatus.WAIT;
+                cmpage.debug(taskAct,'task_act.canRun --- taskAct --- 等待...');
+                taskAct.c_status = cmpage.enumTaskActStatus.WAIT;
                 await this.save();
                 return false;
-            }else if(taskAct.c_from_rule === global.enumActFromRule.ORDER){
+            }else if(taskAct.c_from_rule === cmpage.enumActFromRule.ORDER){
                 return true;
             }else{
                 let actCnt = await this.getFromTasksWithEnd();
                 if(actCnt.cntEnd >0){
-                    if(taskAct.c_from_rule === global.enumActFromRule.OR_JOIN || (actCnt.cnt === actCnt.cntEnd)
-                    || (taskAct.c_from_rule === global.enumActFromRule.VOTES_JOIN && actCnt.cntEnd >= taskAct.c_votes)){
+                    if(taskAct.c_from_rule === cmpage.enumActFromRule.OR_JOIN || (actCnt.cnt === actCnt.cntEnd)
+                    || (taskAct.c_from_rule === cmpage.enumActFromRule.VOTES_JOIN && actCnt.cntEnd >= taskAct.c_votes)){
                         return true;
                     }else{
-                        taskAct.c_status = global.enumTaskActStatus.PENDING;    //转 汇聚中
+                        taskAct.c_status = cmpage.enumTaskActStatus.PENDING;    //转 汇聚中
                         await this.save();
                         return false;
                     }
                 }else{
-                    taskAct.c_status = global.enumTaskActStatus.PENDING;    //转 汇聚中
+                    taskAct.c_status = cmpage.enumTaskActStatus.PENDING;    //转 汇聚中
                     await this.save();
                     return false;
                 }
             }
-        }else if(taskAct.c_status === global.enumTaskActStatus.PENDING){
+        }else if(taskAct.c_status === cmpage.enumTaskActStatus.PENDING){
             //根据汇聚情况判断
             let actCnt = await this.getFromTasksWithEnd();
             if(actCnt.cntEnd >0){
-                return (taskAct.c_from_rule === global.enumActFromRule.OR_JOIN || (actCnt.cnt === actCnt.cntEnd)
-                    || (taskAct.c_from_rule === global.enumActFromRule.VOTES_JOIN && actCnt.cntEnd >= taskAct.c_votes));
+                return (taskAct.c_from_rule === cmpage.enumActFromRule.OR_JOIN || (actCnt.cnt === actCnt.cntEnd)
+                    || (taskAct.c_from_rule === cmpage.enumActFromRule.VOTES_JOIN && actCnt.cntEnd >= taskAct.c_votes));
             }
         }
         return false;
@@ -77,8 +77,8 @@ export default class extends think.model.base {
      * @method  defineFromRule
      */
     async defineFromRule(){
-        if(this.taskAct.c_status ===global.enumTaskActStatus.WAIT){
-            this.taskAct.c_status = global.enumTaskActStatus.RUN;
+        if(this.taskAct.c_status ===cmpage.enumTaskActStatus.WAIT){
+            this.taskAct.c_status = cmpage.enumTaskActStatus.RUN;
             await this.save();
         }
     }
@@ -88,19 +88,19 @@ export default class extends think.model.base {
      * @method  fwRun
      */
     async fwRun(isPass){
-        global.debug(isPass,'task_act.fwRun - isPass');
+        cmpage.debug(isPass,'task_act.fwRun - isPass');
         if(isPass || await this.canRun() ) {
-            this.taskAct.c_status = global.enumTaskActStatus.RUN;
+            this.taskAct.c_status = cmpage.enumTaskActStatus.RUN;
             await this.save();
             //执行本节点，子类中可以加入其他业务逻辑
             if (think.isEmpty(this.act)) {
                 this.act = this.model('act').getActById(this.taskAct.c_act);
             }
-            let btns = arrFromString(this.act.c_form_btn);
+            let btns = cmpage.arrFromString(this.act.c_form_btn);
             debug(btns, 'task_act.fwRun - btns');
             for (let btn of btns) {
                 if (!think.isEmpty(btn.fn)) {         //如果表单按钮设置有函数调用，则调用
-                    let fnModel = model(btn.model);
+                    let fnModel = cmpage.model(btn.model);
                     if (think.isFunction(fnModel[btn.fn])) {
                         await fnModel[btn.fn](this.taskAct, this.act, this.user);
                     }
@@ -118,8 +118,8 @@ export default class extends think.model.base {
      * @method  fwSuspend
      */
     async fwSuspend(){
-        if(this.taskAct.c_status ===global.enumTaskActStatus.RUN || this.taskAct.c_status ===global.enumTaskActStatus.WAIT){
-            this.taskAct.c_status = global.enumTaskActStatus.SUSPEND;
+        if(this.taskAct.c_status ===cmpage.enumTaskActStatus.RUN || this.taskAct.c_status ===cmpage.enumTaskActStatus.WAIT){
+            this.taskAct.c_status = cmpage.enumTaskActStatus.SUSPEND;
             await this.save();
         }
     }
@@ -129,16 +129,16 @@ export default class extends think.model.base {
      * @method  fwTerminate
      */
     async fwTerminate(){
-        if(this.taskAct.c_status !== global.enumTaskActStatus.TERMINATE && this.taskAct.c_status !== global.enumTaskActStatus.END
-            && this.taskAct.c_status !== global.enumTaskActStatus.NO_BEGIN ){
-            this.taskAct.c_status = global.enumTaskActStatus.TERMINATE;
+        if(this.taskAct.c_status !== cmpage.enumTaskActStatus.TERMINATE && this.taskAct.c_status !== cmpage.enumTaskActStatus.END
+            && this.taskAct.c_status !== cmpage.enumTaskActStatus.NO_BEGIN ){
+            this.taskAct.c_status = cmpage.enumTaskActStatus.TERMINATE;
             await this.save();
             //判断，如果当前节点都已经终止，则终止本流程实例，一般是自动终止的时候要检查，手动的话通过调用proc.fwTerminate来进行
             let taskActs = await this.getTaskActs(this.taskAct.c_task);
             let canTerminate = true;
             for(let ta of taskActs){
-                if(ta.c_status !== global.enumTaskActStatus.TERMINATE && ta.c_status !== global.enumTaskActStatus.END
-                    && ta.c_status !== global.enumTaskActStatus.NO_BEGIN){
+                if(ta.c_status !== cmpage.enumTaskActStatus.TERMINATE && ta.c_status !== cmpage.enumTaskActStatus.END
+                    && ta.c_status !== cmpage.enumTaskActStatus.NO_BEGIN){
                     canTerminate = false;
                 }
             }
@@ -156,22 +156,22 @@ export default class extends think.model.base {
      */
     async fwEnd(){
         let taskAct = this.taskAct;
-        if(taskAct.c_status ===global.enumTaskActStatus.RUN){
-            taskAct.c_status = global.enumTaskActStatus.END;
+        if(taskAct.c_status ===cmpage.enumTaskActStatus.RUN){
+            taskAct.c_status = cmpage.enumTaskActStatus.END;
             await this.save();
-            if(this.act.c_type == global.enumActType.END){
+            if(this.act.c_type == cmpage.enumActType.END){
                 await this.model('proc').fwEnd(this.taskAct.c_task, this.user);
-                global.debug(this.taskAct,'task_act.fwEnd - taskAct - 结束task');
+                cmpage.debug(this.taskAct,'task_act.fwEnd - taskAct - 结束task');
             }else{
                 //找去向节点,根据去向规则进行Run
-                global.debug(taskAct,'task_act.fwEnd --- taskAct --- 此节点处，找去向节点');
+                cmpage.debug(taskAct,'task_act.fwEnd --- taskAct --- 此节点处，找去向节点');
                 let toTaskActs = await this.getToTaskActs(taskAct);
-                if(this.act.c_to_rule === global.enumActToRule.ORDER || this.act.c_to_rule === global.enumActToRule.AND_SPLIT ){
+                if(this.act.c_to_rule === cmpage.enumActToRule.ORDER || this.act.c_to_rule === cmpage.enumActToRule.AND_SPLIT ){
                     for(let ta of toTaskActs ){
                         await this.model('act').fwRun(ta.id,this.user);
-                        global.debug(ta,'task_act.fwEnd --- toTaskActs.ta --- 此处直接往下');
+                        cmpage.debug(ta,'task_act.fwEnd --- toTaskActs.ta --- 此处直接往下');
                     }
-                }else if(this.act.c_to_rule === global.enumActToRule.OR_SPLIT){
+                }else if(this.act.c_to_rule === cmpage.enumActToRule.OR_SPLIT){
                     //或分支为条件分支，有一个满足条件则继续，没有分支能满足条件则任务终止，因此需要表单填写后先进行有效性的验证
                     //根据分支路径上的业务规则进行判断
                     this.toPaths = await this.model('act_path').getToActPaths(this.act.id,this.act.c_proc);
@@ -180,13 +180,13 @@ export default class extends think.model.base {
                             for(let ta of toTaskActs){
                                 if(ta.c_act === path.c_to){
                                     await this.model('act').fwRun(ta.id,this.user);
-                                    global.debug(ta,'task_act.fwEnd --- toTaskActs.ta --- 或分支往下');
+                                    cmpage.debug(ta,'task_act.fwEnd --- toTaskActs.ta --- 或分支往下');
                                     return;
                                 }
                             }
                         }
                     }
-                    //let rand = global.getRandomNum(0,toTaskIds.length -1);
+                    //let rand = cmpage.getRandomNum(0,toTaskIds.length -1);
                     //this.model('act').fwRun(toTaskIds[rand],user);
                 }else{
                     await this.defineToRule();
@@ -209,7 +209,7 @@ export default class extends think.model.base {
         if(!think.isEmpty(path.c_domain)){
             let rule = eval("("+path.c_domain+")");
             if(!think.isEmpty(rule['fn'])){      //通过某个模块的某个方法来判断是否可以通过改路径
-                let fnModel = global.model(rule['model']);
+                let fnModel = cmpage.model(rule['model']);
                 if(think.isFunction(fnModel[ rule['fn'] ])){
                     return await fnModel[  rule['fn'] ](this.taskAct, this.act, user);
                 }
@@ -218,7 +218,7 @@ export default class extends think.model.base {
                 for(let item of rule){
                     where.push(`(${ this.taskAct.domainData[ item['field'] ] } ${item['op']} ${item['value']})`);
                 }
-                global.debug(where.join(' && '),'task_act.defineOrSplit - to path where');
+                cmpage.debug(where.join(' && '),'task_act.defineOrSplit - to path where');
                 return  eval("("+ where.join(' && ') +")");
             }
         }
@@ -235,11 +235,11 @@ export default class extends think.model.base {
     async domainGetData(){
         this.taskAct.domainData = {};
         let task = await this.model('task').getTask(this.taskAct.c_task);
-        global.debug(task,'task_act.deomainGetData - task');
+        cmpage.debug(task,'task_act.deomainGetData - task');
         if(!think.isEmpty(task.c_link_type)){
             this.taskAct.domainData =  await this.model(task.c_link_type).where({id:task.c_link}).find();
         }
-        global.debug(this.taskAct.domainData,'task_act.domainGetData - this.taskAct.domainData');
+        cmpage.debug(this.taskAct.domainData,'task_act.domainGetData - this.taskAct.domainData');
 
         //子类中可以增加其他业务规则
     }
@@ -262,7 +262,7 @@ export default class extends think.model.base {
      * @method  save
      */
     async save(){
-        let md = objPropertysFromOtherObj({},this.taskAct,['c_task','c_act','c_status','c_user',
+        let md = cmpage.objPropertysFromOtherObj({},this.taskAct,['c_task','c_act','c_status','c_user',
                     'c_memo','c_link','c_link_type']);
         if(!think.isEmpty(this.user)){
             md.c_user = this.user.id;
@@ -285,7 +285,7 @@ export default class extends think.model.base {
         let md = {c_proc:taskAct.c_proc,c_act:taskAct.c_act,c_task:taskAct.c_task, c_task_act:taskAct.id,
             c_time:taskAct.c_time, c_user:taskAct.c_user};
         //组成状态描述
-        if(taskAct.c_status === global.enumActType.NORMAL_MAN || taskAct.c_status === global.enumActType.NORMAL_AUTO ){
+        if(taskAct.c_status === cmpage.enumActType.NORMAL_MAN || taskAct.c_status === cmpage.enumActType.NORMAL_AUTO ){
             md.c_desc = think.isEmpty(desc) ? `节点(${await this.model('act').getNameById(taskAct.c_act)})
                     ${this.model('cmpage/utils').getEnumName(md.c_status,'TaskStatus')}` : desc;
             md.id = await this.model('fw_task_st').add(md);
@@ -302,14 +302,14 @@ export default class extends think.model.base {
      * @params {object} taskAct 任务节点对象
      */
     async getFromTasksWithEnd(){
-        global.debug(this.taskAct,'task_act.getFromTasksWithEnd - taskAct');
+        cmpage.debug(this.taskAct,'task_act.getFromTasksWithEnd - taskAct');
         if(think.isEmpty(this.fromTaskActs)){
             this.fromTaskActs = await this.getFromTaskActs(this.taskAct);
         }
-        //global.debug(list);
+        //cmpage.debug(list);
         let cntEnd =0;
         for(let md of this.fromTaskActs){
-            if (md.c_status === global.enumTaskActStatus.END) {
+            if (md.c_status === cmpage.enumTaskActStatus.END) {
                 cntEnd += 1;
             }
         }
@@ -323,7 +323,7 @@ export default class extends think.model.base {
      * @params {object} taskAct 任务节点对象
      */
     async getFromTaskActs(taskAct){
-        global.debug(taskAct,'task_act.getFromTaskIds')
+        cmpage.debug(taskAct,'task_act.getFromTaskIds')
         let fromArr =await this.model('act_path').getFromActIds(taskAct.c_act, taskAct.c_proc);
         let list = await this.model('fw_task_act').where({c_task:taskAct.c_task}).select();
         let ret =[];
