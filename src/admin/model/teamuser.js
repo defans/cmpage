@@ -14,9 +14,9 @@
  * 账套与用户操作类，并配合界面操作输出相应HTML，
  * @class admin.model.teamuser
  */
-import CMPage from '../../cmpage/model/page.js';
+const CMPage = require('../../cmpage/model/page.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
 
     /**
      * 重写父类的 htmlGetOther 方法，输出额外的按钮和js函数

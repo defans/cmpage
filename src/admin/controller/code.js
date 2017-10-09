@@ -14,9 +14,9 @@
  * 代码与参数模块的RUL接口，包括常用参数设置、权限相关配置
  * @class admin.controller.code
  */
-import Base from './base.js';
+const Base = require('./base.js');
 
-export default class extends Base {
+module.exports = class extends Base {
     /**
      * 取代码树，输入根节点ID为参数 <br/>
      * 点击某个节点，右侧显示其子节点列表，增删改后更新左侧树 <br/>
@@ -24,9 +24,9 @@ export default class extends Base {
      * @method codeTree
      * @return {promise}   代码树页面
      */
-  async codeTreeAction(){
+  async code_treeAction(){
     let vb={};
-    vb.rootID=this.http.get('rootid');
+    vb.rootID=this.get('rootid');
     vb.treeID=`codeTree${vb.rootID}`;
     let model = this.model('code');
     vb.list =await model.getTreeList(vb.rootID,true);
@@ -42,9 +42,9 @@ export default class extends Base {
      * @method codeLookup
      * @return {promise}   参数选择页面
      */
-    async codeLookupAction(){
+    async code_lookupAction(){
         let vb={};
-        vb.rootID=this.http.get('rootid');
+        vb.rootID=this.get('rootid');
         vb.treeID=`codeTree${vb.rootID}`;
         let model = this.model('code');
         vb.list =await model.getTreeList(vb.rootID,true);
@@ -58,7 +58,7 @@ export default class extends Base {
      * @method groupUserMain
      * @return {json}
      */
-  async groupUserMainAction(){
+  async group_user_mainAction(){
     let model = this.model('code');
     let treeList =await model.getTreeList(2,true);
     this.assign('treeList',treeList);
@@ -70,7 +70,7 @@ export default class extends Base {
      * @method groupUserAdd
      * @return {json}
      */
-    async groupUserAddAction(){
+    async group_user_addAction(){
         let groupID = this.get('groupID');
         let userIds = this.get('userIds').split(',');
         for(let userID of userIds){
@@ -83,7 +83,7 @@ export default class extends Base {
      * @method groupUserDel
      * @return {json}
      */
-    async groupUserDelAction(){
+    async group_user_delAction(){
         await this.model('t_group_user').where(` id in(${this.get('ids')})`).delete();
         return this.json({statusCode:200,message:'用户删除成功!'});
     }
@@ -93,7 +93,7 @@ export default class extends Base {
      * @method teamUserMain
      * @return {json}
      */
-    async teamUserMainAction(){
+    async team_user_mainAction(){
         let model = this.model('code');
         let treeList =await model.getTreeList(7,true);
         this.assign('treeList',treeList);
@@ -105,7 +105,7 @@ export default class extends Base {
      * @method teamUserAdd
      * @return {json}
      */
-    async teamUserAddAction(){
+    async team_user_addAction(){
         let teamID = this.get('teamID');
         let userIds = this.get('userIds').split(',');
         for(let userID of userIds){
@@ -118,7 +118,7 @@ export default class extends Base {
      * @method teamUserDel
      * @return {json}
      */
-    async teamUserDelAction(){
+    async team_user_delAction(){
         await this.model('t_team_user').where(` id in(${this.get('ids')})`).delete();
         return this.json({statusCode:200,message:'用户删除成功!'});
     }
@@ -128,7 +128,7 @@ export default class extends Base {
      * @method rolePrivilege
      * @return {json}
      */
-  async rolePrivilegeAction(){
+  async role_privilegeAction(){
     let model = this.model('code');
     let treeList =await model.getTreeList(3,true);
 //    cmpage.debug(JSON.stringify(vb));
@@ -141,8 +141,8 @@ export default class extends Base {
      * @method roleGetPrivilegeTree
      * @return {json}
      */
-  async roleGetPrivilegeTreeAction(){
-    let roleID = this.http.post('roleID');
+  async role_get_privilege_treeAction(){
+    let roleID = this.post('roleID');
     let treeList =await this.model('privilege').roleGetPrivilegeTree(roleID);
 //    cmpage.debug(JSON.stringify(vb));
     return this.json(treeList);
@@ -153,8 +153,8 @@ export default class extends Base {
      * @method roleSavePrivilege
      * @return {json}
      */
-  async roleSavePrivilegeAction(){
-    let parms =this.http.post();
+  async role_save_privilegeAction(){
+    let parms =this.post();
     //cmpage.debug(rec);
     await this.model('privilege').roleSavePrivilege(parms);
     return this.json({statusCode:200,message:'保存成功!',data:{}});
@@ -165,9 +165,9 @@ export default class extends Base {
      * @method userGetPrivilegeTree
      * @return {json}
      */
-    async userGetPrivilegeTreeAction(){
+    async user_get_privilege_treeAction(){
         let user = await this.session('user');
-        let parms = this.http.get();
+        let parms = this.get();
         if(!think.isEmpty(parms.userID)){
             user = await this.model('user').getUserById(parms.userID);
         }
@@ -184,8 +184,8 @@ export default class extends Base {
      * @method userSavePrivilege
      * @return {json}
      */
-    async userSavePrivilegeAction(){
-        let parms =this.http.post();
+    async user_save_privilegeAction(){
+        let parms =this.post();
         //cmpage.debug(rec);
         await this.model('privilege').userSavePrivilege(parms);
         return this.json({statusCode:200,message:'保存成功!',data:{}});
@@ -196,8 +196,8 @@ export default class extends Base {
      * @method userSavePrivilege
      * @return {json}
      */
-    async userSetPwdInitAction(){
-        let userID =this.http.get('userID');
+    async user_set_pwd_initAction(){
+        let userID =this.get('userID');
         if(think.isEmpty(userID)){
             return this.json({statusCode:300, message:'用户ID无效！'});
         }
@@ -214,7 +214,7 @@ export default class extends Base {
      */
     async codeAction(){
         let vb={};
-        vb.rootID=this.http.get('rootid');
+        vb.rootID=this.get('rootid');
         vb.treeID=`code${vb.rootID}`;
         let model = this.model('code');
         vb.list =await model.getTreeList(vb.rootID,true);
@@ -225,7 +225,7 @@ export default class extends Base {
 
     async codeSaveAction(){
         let ret={statusCode:200,message:'',data:{}};
-        let parms =this.http.post();
+        let parms =this.post();
         //cmpage.debug(rec);
 
         let model = this.model('t_code');
@@ -247,7 +247,7 @@ export default class extends Base {
 
     async codeDelAction(){
         let ret={statusCode:200,message:'',data:{}};
-        let parms =this.http.post();
+        let parms =this.post();
         //cmpage.debug(rec);
 
         let model = this.model('t_code');

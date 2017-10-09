@@ -15,9 +15,9 @@
  * 加入账套的待选择列表
  * @class admin.model.teamuser_add
  */
-import CMPage from '../../cmpage/model/page.js';
+const CMPage = require('../../cmpage/model/page.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
     /**
      * 重写父类的 getQueryWhere 方法，增加页面模块的条件设置，剔除已经加入该团队的用户，组合成新的Where子句
      * @method  getQueryWhere

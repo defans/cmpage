@@ -8,9 +8,9 @@
 // +----------------------------------------------------------------------
 
 
-import CMPage from '../../cmpage/model/page_mob.js';
+const CMPage = require('../../cmpage/model/page_mob.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
 
     /**
      * 新增的时候，初始化编辑页面的值，子类重写本方法可以定制新增页面的初始值

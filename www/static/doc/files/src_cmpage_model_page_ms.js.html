@@ -555,6 +555,7 @@ export default class extends CMPage {
         // }
         //暂时考虑一个TAB的情况
         let tab = this.mod.c_module_slave;
+        debug(tab,&#x27;page_ms.htmlGetTabs - tab&#x27;);
         html.push(&#x60;&lt;li &quot;class=active&quot;&gt;&lt;a href=&quot;#page${tab.modulename}&quot; role=&quot;tab&quot; data-toggle=&quot;tab&quot;&gt;${tab.title}&lt;/a&gt;&lt;/li&gt;&#x60;);
 
         html.push(&#x60;&lt;/ul&gt; &lt;!-- Tab panes --&gt; &lt;div class=&quot;tab-content&quot;&gt;&#x60;);
@@ -569,7 +570,7 @@ export default class extends CMPage {
             data-toggle=&quot;autoajaxload&quot;&gt;  &lt;/div&gt;&#x60;);
 
         html.push(&#x27;&lt;/div&gt;   &lt;/fieldset&gt;   &lt;/div&gt;&#x27;);
-
+        //debug(html,&#x27;page_ms.htmlGetTabs - html&#x27;);
         return html.join(&#x27; &#x27;);
     }
 
@@ -582,6 +583,80 @@ export default class extends CMPage {
         await super.getDataList();
         this.list.ids = [];     //主从表编辑页面不需要 上一条，下一条按钮
     }
+
+
+
+    /**
+     * 取查看页面的设置，组合成打印页面的HTML输出
+     * @method  htmlGetPrint
+     * @return {string} HTML页面片段
+     */
+      async htmlGetPrint() {
+          let html = [];
+          //主表部分
+          html.push(await super.htmlGetPrint());
+          if(this.mod.editID ==0 || think.isEmpty(this.mod.c_module_slave.modulename)){
+              return html.join(&#x27;&#x27;);
+          }
+          //子表部分
+          let module = await cmpage.model(&quot;cmpage/module&quot;);
+          let md = await module.getModuleByName(this.mod.c_module_slave.modulename);
+          debug(md,&#x27;page_ms.htmlGetPrint - md&#x27;);
+          if(think.isEmpty(md.id))  return html.join(&#x27;&#x27;);
+          let pageModel = cmpage.model(md.c_path);
+          if(think.isEmpty(pageModel[&#x27;htmlGetQuery&#x27;]))  return html.join(&#x27;&#x27;);
+          pageModel.mod = md;
+          pageModel.mod.user = this.mod.user;
+          pageModel.mod.c_pager = false;    //单页
+          pageModel.mod.parmsUrl = {modulename:this.mod.c_module_slave.module};
+          pageModel.mod.parmsUrl[this.mod.c_module_slave.key]=this.mod.editID;
+          await pageModel.initPage();
+          pageModel.modQuerys = await module.getModuleQuery(md.id);
+          pageModel.modCols = await module.getModuleCol(md.id);
+          await pageModel.getDataList();
+          html.push(&#x27;&lt;table class=&quot;printTable&quot; style=&quot;BORDER-COLLAPSE:collapse; margin-top:-1px;&quot; bordercolor=&quot;#000000&quot; cellSpacing=0 width=&quot;100%&quot; align=&quot;center&quot; bgcolor=&quot;#FFFFFF&quot; border=&quot;1&quot;&gt;&#x27;);
+          //标题
+          for(let col of pageModel.modCols){
+              if(col.c_isview)  html.push(&#x60;&lt;td class=&quot;td4&quot;&gt;${col.c_name}&lt;/td&gt;&#x60;);
+          }
+          //数据行
+          for(let item of pageModel.list.data){
+              html.push(&#x27;&lt;tr&gt;&#x27;);
+              for(let col of pageModel.modCols){
+                  if(col.c_isview){
+                      html.push(&#x60;&lt;td style=&quot;${col.c_style}&quot; &gt;&#x60;);
+                      if (item[pageModel.pk] !== 0 ) {
+                          if (!think.isEmpty(col.c_format)) {
+                              if (col.c_coltype === &quot;decimal&quot;) {
+                                  html.push(cmpage.formatNumber(item[col.c_column], {pattern: col.c_format}));
+                              } else if(col.c_coltype === &quot;timestamp&quot; || col.c_coltype === &quot;date&quot;) {
+                                  html.push(cmpage.datetime(item[col.c_column], col.c_format));
+                              }
+                          } else if (col.c_type === &quot;checkbox&quot;) {
+                              html.push(&#x60;&lt;input type=&quot;checkbox&quot;  data-toggle=&quot;icheck&quot; value=&quot;1&quot; disabled  ${item[col.c_column] || item[col.c_column]===1 ? &quot;checked&quot; : &quot;&quot;} /&gt;&#x60;);
+                          } else if (!think.isEmpty(item[col.c_column]) &amp;&amp; col.c_type === &quot;replace&quot; &amp;&amp; !(/^select/.test(col.c_memo))) {
+                              let templete = cmpage.objPropertysReplaceToStr(col.c_memo, item);
+                              html.push(await this.getReplaceText(item[col.c_column],templete));
+                          } else if (col.c_type === &quot;html&quot;) {
+                              let input = think.isEmpty(col.c_memo) ? item[col.c_column] : col.c_memo.replace(/#value#/ig,item[col.c_column]);
+  //                            debug(input,page.htmlGetList - input.html);
+                              html.push(input);
+                          } else {
+                              if (!think.isEmpty(col.c_column)) {
+                                  html.push(item[col.c_column]);
+                              }
+                          }
+                      }
+                      html.push(&#x27;&lt;/td&gt;&#x27;)
+                  }
+              }
+              html.push(&#x27;&lt;/tr&gt;&#x27;);
+          }
+          html.push(await pageModel.htmlGetListSumRow(false));  //合计
+          html.push(&#x27;&lt;/table&gt;&#x27;);
+
+          return html.join(&#x27;&#x27;);
+      }
 
 
 }

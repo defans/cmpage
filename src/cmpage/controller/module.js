@@ -14,9 +14,9 @@
  * 业务模块设置的URL接口
  * @class cmpage.controller.module
  */
-import Base from './base.js';
+const Base = require('./base.js');
 
-export default class extends Base {
+module.exports = class extends Base {
 
   async indexAction(){
     return this.display();
@@ -27,14 +27,13 @@ export default class extends Base {
    * @return {promise}  HTML片段
    */
   async listAction(){
-    let http =this.http;
     let vb={numsPerPage:20,currentPage:1,orderField:"c_time",orderDirection:"desc"};  //初始化
 
-    if(http.method=="GET")  //显示第一页
+    if(this.isGet)  //显示第一页
     {
-      vb.where = http.get();
-    }else if(http.method=="POST"){
-      vb.where = http.post();
+      vb.where = this.get();
+    }else if(this.isPost){
+      vb.where =  this.post();
       vb.currentPage = vb.where['currentPage'];
     }
     cmpage.debug(vb);
@@ -48,7 +47,7 @@ export default class extends Base {
       where += ` and c_datasource like '%${vb.where.c_datasource}%'`
     }
 
-    let list = await  this.model('t_module').where(where).order('c_modulename ').page(vb.currentPage,vb.numsPerPage).countSelect();
+    let list = await  this.model('t_module','cmpage').where(where).order('c_modulename ').page(vb.currentPage,vb.numsPerPage).countSelect();
       for(let rec of list.data){
           rec.c_time= think.datetime(rec.c_time)
       }
@@ -65,7 +64,7 @@ export default class extends Base {
    */
   async saveAction(){
     let ret={statusCode:200,message:'保存成功!',tabid: 'pageModule',data:{}};
-    let parms =this.http.post();
+    let parms =this.post();
     let md = cmpage.objPropertysFromOtherObj({},parms,['c_modulename','c_datasource','c_table','c_page_size','c_sort_by','c_type','c_other',
       'c_module_slave','c_edit_column','c_mui','c_memo','c_path','c_alias','c_proc']);
     md.c_multiselect = !think.isEmpty(parms.c_multiselect);
@@ -74,7 +73,7 @@ export default class extends Base {
     md.c_status =0;
     //cmpage.debug(md);
 
-    let model = this.model('t_module');
+    let model = this.model('t_module','cmpage');
     if(parms.id ==0){
       let rec = await model.where({c_modulename:parms.c_modulename}).find();
       if(think.isEmpty(rec)){
@@ -106,7 +105,7 @@ export default class extends Base {
     }
 
     async copyModuleFromMssqlAction(){
-        let modulename =this.http.get('modulename');
+        let modulename =this.get('modulename');
         return this.json(await this.model('module').copyModuleFromMssql(modulename));
     }
     /**
@@ -115,18 +114,17 @@ export default class extends Base {
      * @return {Promise} HTML页面
      */
   async editAction(){
-    let http =this.http;
     let md={};
-    if(http.get('id')=='0')
+    if( this.get('id')=='0')
     {
       //如果新增，则初始化
-      md.c_modulename=http.get('modulename');
-      md.c_datasource = md.c_table = http.get('datasource');
+      md.c_modulename= this.get('modulename');
+      md.c_datasource = md.c_table =  this.get('datasource');
       Object.assign(md, {id:0,c_multiselect:false, c_pager:true, c_page_size:20, c_sort_by:'id desc',c_edit_column:1,
-            c_proc:0,proc_name:'', c_path:'cmpage/page',c_alias:md.c_modulename });
+            c_proc:0,proc_name:'', c_path:'admin/page',c_alias:md.c_modulename });
     }else{
-      let tmp = await  this.model("t_module").where({id: http.get('id')}).find();
-      tmp.proc_name = await this.model('flow/proc').getNameById(tmp.c_proc);
+      let tmp = await  this.model("t_module",'cmpage').where({id:  this.get('id')}).find();
+      tmp.proc_name = await cmpage.model('flow/proc').getNameById(tmp.c_proc);
       Object.assign(md,tmp);
     }
     cmpage.debug(JSON.stringify(md));
@@ -134,16 +132,20 @@ export default class extends Base {
     this.assign("md",md);
     return this.display();
   }
+  async deleteAction(){
+        await this.model('t_module','cmpage').query(`update t_module set c_modulename=concat(c_modulename,'_del'), c_status=-1 where id=${ this.get('id')} `);
+        return this.json({statusCode:200,message:'删除成功！'});
+  }
 
     /**
      * 模块主表编辑页面，调用：/cmpage/module/reset_module_cache
      * @method  resetModuleCache
      * @return {json}
      */
-  async resetModuleCacheAction(){
+  async reset_module_cacheAction(){
     let ret={statusCode:200,message:'缓存刷新成功!',tabid: '',data:{}};
     await this.model('module').clearModuleCache();
-    await this.model('admin/code').clearCodeCache();
+    await cmpage.model('admin/code').clearCodeCache();
 
     return this.json(ret);
   }
@@ -153,18 +155,16 @@ export default class extends Base {
      * @method  colList
      * @return {Promise} HTML页面
      */
-  async colListAction(){
-    let http =this.http;
-
-    let md =await   this.model('t_module').where({id:http.get('moduleid')}).find();
+  async col_listAction(){
+    let md =await   this.model('t_module','cmpage').where({id: this.get('moduleid')}).find();
     cmpage.debug(md);
 
-    let model = this.model("module");
+    let model = this.model('module');
     let vb={};
     vb.colTypes = model.colTypes();
     vb.showTypes = model.showTypes();
     vb.sumTypes = model.sumTypes();
-    vb.editList = await  this.model('t_module_col').where({c_module:http.get('moduleid')}).order('c_order ').select();
+    vb.editList = await  this.model('t_module_col','cmpage').where({c_module: this.get('moduleid')}).order('c_order ').select();
 
     this.assign("vb",vb);
     this.assign("md",md);
@@ -176,11 +176,10 @@ export default class extends Base {
      * @method  colReset
      * @return {json}
      */
-  async colResetAction(){
-    let http = this.http;
+  async col_resetAction(){
 
-    let model = this.model("module");
-    let ret = await model.resetModuleCol(http.get('moduleid'));
+    let model = this.model('module');
+    let ret = await model.resetModuleCol( this.get('moduleid'));
 
     return this.json(ret);
   }
@@ -190,12 +189,11 @@ export default class extends Base {
      * @method  col_save
      * @return {json} 保存记录的状态信息
      */
-  async colSaveAction(){
-    let http = this.http;
-    let model = this.model("t_module_col");
-    //let moduleID = http.get('moduleid');
-    //let posts = http.post();
-    let posts = http.post();
+  async col_saveAction(){
+    let model = this.model("t_module_col",'cmpage');
+    //let moduleID =  this.get('moduleid');
+    //let posts =  this.post();
+    let posts =  this.post();
 
     //cmpage.debug(posts[`editList[0].c_name`]);
     for(let i=0; i< 100 ; i++){
@@ -239,16 +237,15 @@ export default class extends Base {
      * @method  editList
      * @return {Promise} HTML页面
      */
-  async editListAction(){
-    let http =this.http;
+  async edit_listAction(){
 
-    let md =await   this.model('t_module').where({id:http.get('moduleid')}).find();
-    let model = this.model("module");
+    let md =await   this.model('t_module','cmpage').where({id: this.get('moduleid')}).find();
+    let model = this.model('module');
 
     let vb={};
     vb.colTypes = model.colTypes();
     vb.editTypes = model.editTypes();
-    vb.editList = await  this.model('t_module_edit').where({c_module:http.get('moduleid')}).order('c_order ').select();
+    vb.editList = await  this.model('t_module_edit','cmpage').where({c_module: this.get('moduleid')}).order('c_order ').select();
 
     this.assign("vb",vb);
     this.assign("md",md);
@@ -260,8 +257,8 @@ export default class extends Base {
      * @method  editReset
      * @return {json}
      */
-  async editResetAction(){
-    let model = this.model("module");
+  async edit_resetAction(){
+    let model = this.model('module');
     let ret = await model.resetModuleEdit(this.get('moduleid'));
 
     return this.json(ret);
@@ -272,10 +269,9 @@ export default class extends Base {
      * @method  edit_save
      * @return {json} 保存记录的状态信息
      */
-    async editSaveAction(){
-    let http = this.http;
-    let model = this.model("t_module_edit");
-    let posts = http.post();
+    async edit_saveAction(){
+    let editModel = this.model("t_module_edit","cmpage");
+    let posts =  this.post();
 
     for(let i=0; i< 100 ; i++){
       if (!posts[`editList[${i}].c_order`]){
@@ -302,9 +298,9 @@ export default class extends Base {
         md.c_memo = posts[`editList[${i}].c_memo`];
         cmpage.debug(JSON.stringify(md));
           if(think.isEmpty(posts[`editList[${i}].id`])){
-              await model.add(cmpage.checksql(md));
+              await editModel.add(cmpage.checksql(md));
           }else{
-              await model.where({id: parseInt(posts[`editList[${i}].id`])}).update(cmpage.checksql(md));
+              await editModel.where({id: parseInt(posts[`editList[${i}].id`])}).update(cmpage.checksql(md));
           }
 
       }
@@ -318,17 +314,16 @@ export default class extends Base {
      * @method  queryList
      * @return {Promise} HTML页面
      */
-  async queryListAction(){
-    let http =this.http;
+  async query_listAction(){
 
-    let md =await   this.model('t_module').where({id:http.get('moduleid')}).find();
-    let model = this.model("module");
+    let md =await   this.model('t_module','cmpage').where({id: this.get('moduleid')}).find();
+    let model = this.model('module');
 
     let vb={};
     vb.colTypes = model.colTypes();
     vb.queryTypes = model.queryTypes();
     vb.operations = model.operations();
-    vb.editList = await  this.model('t_module_query').where({c_module:http.get('moduleid')}).order('c_order ').select();
+    vb.editList = await  this.model('t_module_query','cmpage').where({c_module: this.get('moduleid')}).order('c_order ').select();
 
     this.assign("vb",vb);
     this.assign("md",md);
@@ -340,11 +335,10 @@ export default class extends Base {
      * @method  queryReset
      * @return {json}
      */
-    async queryResetAction(){
-    let http = this.http;
+    async query_resetAction(){
 
-    let model = this.model("module");
-    let ret = await model.resetModuleQuery(http.get('moduleid'));
+    let model = this.model('module');
+    let ret = await model.resetModuleQuery( this.get('moduleid'));
 
     return this.json(ret);
   }
@@ -354,10 +348,9 @@ export default class extends Base {
      * @method  query_delete_no_show
      * @return {json} 状态信息
      */
-  async queryDeleteNoShowAction(){
-    let http = this.http;
+  async query_delete_no_showAction(){
 
-    let ret = await this.model('t_module_query').query(`delete from t_module_query where c_module=${http.get('moduleid')} and c_isshow=FALSE`);
+    let ret = await this.model('t_module_query','cmpage').query(`delete from t_module_query where c_module=${ this.get('moduleid')} and c_isshow=FALSE`);
 
     return this.json(ret);
   }
@@ -367,10 +360,9 @@ export default class extends Base {
      * @method  query_save
      * @return {json} 保存记录的状态信息
      */
-  async querySaveAction(){
-    let http = this.http;
-    let model = this.model("t_module_query");
-    let posts = http.post();
+  async query_saveAction(){
+    let model = this.model("t_module_query","cmpage");
+    let posts =  this.post();
 
     for(let i=0; i< 100 ; i++){
       if (!posts[`editList[${i}].c_order`]){
@@ -412,14 +404,12 @@ export default class extends Base {
      * @method  btnList
      * @return {Promise} HTML页面
      */
-  async btnListAction(){
-    let http =this.http;
-
-    let md =await   this.model('t_module').where({id:http.get('moduleid')}).find();
-    let model = this.model("module");
+  async btn_listAction(){
+    let md =await   this.model('t_module','cmpage').where({id: this.get('moduleid')}).find();
+    let model = this.model('module');
 
     let vb={};
-    vb.editList = await  this.model('t_module_btn').where({c_module:http.get('moduleid')}).order('c_location ').select();
+    vb.editList = await  this.model('t_module_btn','cmpage').where({c_module: this.get('moduleid')}).order('c_location ').select();
 //console.log(vb.editList);
     this.assign("vb",vb);
     this.assign("md",md);
@@ -431,8 +421,8 @@ export default class extends Base {
      * @method  btnReset
      * @return {json}
      */
-    async btnResetAction(){
-        let model = this.model("module");
+    async btn_resetAction(){
+        let model = this.model('module');
         let ret = await model.resetModuleBtn(this.get('moduleid'));
         await think.cache(`moduleBtn${ this.get('moduleid')}`,null);
 
@@ -444,10 +434,9 @@ export default class extends Base {
      * @method  btn_save
      * @return {json} 保存记录的状态信息
      */
-  async btnSaveAction(){
-    let http = this.http;
-    let model = this.model("t_module_btn");
-    let posts = http.post();
+  async btn_saveAction(){
+    let model = this.model("t_module_btn","cmpage");
+    let posts =  this.post();
 
     for(let i=0; i< 100 ; i++){
       if(!think.isEmpty(posts[`editList[${i}].c_object`])){

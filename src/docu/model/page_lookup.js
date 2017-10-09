@@ -17,9 +17,9 @@
  * @class docu.model.page
  */
 
-import CMPage from '../../cmpage/model/page_lookup.js';
+const CMPage = require('../../cmpage/model/page_lookup.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
 
     /**
      * 初始化设置页面参数

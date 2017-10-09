@@ -17,7 +17,7 @@
  */
 var nodeExcel = require('excel-export');
 
-export default class extends think.model.base {
+module.exports = class extends think.Model {
 
     /**
      * 根据查询结果集和模块的列设置把数据导出成excel文件
@@ -32,7 +32,7 @@ export default class extends think.model.base {
         //设置每列的属性
         conf.cols = [];
         for(let col of modCols){
-            if (col.c_isview) {
+            if (col.c_isshow) {
                 conf.cols.push(this.getColStyle(col));
             }
         }
@@ -40,7 +40,7 @@ export default class extends think.model.base {
         for(let rec of list.data){
             let row = [];
             for(let col of modCols){
-                if(col.c_isview && col.c_column !=='id'){
+                if(col.c_isshow && col.c_column !=='id'){
                     row.push(await this.getColData(rec,col))
                 }
             }
@@ -93,4 +93,3 @@ export default class extends think.model.base {
         }
     }
 }
-

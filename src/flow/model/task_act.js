@@ -12,14 +12,19 @@
  * 具体的业务相关的工作流活动的子类可以继承本类，来增加定制的业务逻辑
  * @class flow.model.task_act
  */
-export default class extends think.model.base {
-    act = {};  //当前流程模板的节点设置
-    taskAct = {};  //当前流程实例节点
-    user = {};  //当前用户
-    fromTaskActs = [];   //来源节点列表
-    toTaskActs = [];   //去向节点列表
-    toPaths = [];   //去向路径列表
-
+ const Base =require('../../cmpage/model/base.js');
+ module.exports = class extends Base {
+    constructor(name, config = {}) {
+        const moduleModel = think.model('t_module','cmpage');
+        super(name,moduleModel.config);
+    this.act = {};  //当前流程模板的节点设置
+        this.taskAct = {};  //当前流程实例节点
+        this.user = {};  //当前用户
+        this.fromTaskActs = [];   //来源节点列表
+        this.toTaskActs = [];   //去向节点列表
+        this.toPaths = [];   //去向路径列表
+    }
+    
     /**
      * 是否可以运行一个流程实例的活动(流程节点)
      * @method  canRun
@@ -94,7 +99,7 @@ export default class extends think.model.base {
             await this.save();
             //执行本节点，子类中可以加入其他业务逻辑
             if (think.isEmpty(this.act)) {
-                this.act = this.model('act').getActById(this.taskAct.c_act);
+                this.act = cmpage.model('flow/act').getActById(this.taskAct.c_act);
             }
             let btns = cmpage.arrFromString(this.act.c_form_btn);
             debug(btns, 'task_act.fwRun - btns');
@@ -143,7 +148,7 @@ export default class extends think.model.base {
                 }
             }
             if(canTerminate) {
-                await this.model('proc').fwTerminate(this.taskAct.c_task, this.user);
+                await cmpage.model('flow/proc').fwTerminate(this.taskAct.c_task, this.user);
             }
         }
 
@@ -160,7 +165,7 @@ export default class extends think.model.base {
             taskAct.c_status = cmpage.enumTaskActStatus.END;
             await this.save();
             if(this.act.c_type == cmpage.enumActType.END){
-                await this.model('proc').fwEnd(this.taskAct.c_task, this.user);
+                await cmpage.model('flow/proc').fwEnd(this.taskAct.c_task, this.user);
                 cmpage.debug(this.taskAct,'task_act.fwEnd - taskAct - 结束task');
             }else{
                 //找去向节点,根据去向规则进行Run
@@ -168,18 +173,18 @@ export default class extends think.model.base {
                 let toTaskActs = await this.getToTaskActs(taskAct);
                 if(this.act.c_to_rule === cmpage.enumActToRule.ORDER || this.act.c_to_rule === cmpage.enumActToRule.AND_SPLIT ){
                     for(let ta of toTaskActs ){
-                        await this.model('act').fwRun(ta.id,this.user);
+                        await cmpage.model('flow/act').fwRun(ta.id,this.user);
                         cmpage.debug(ta,'task_act.fwEnd --- toTaskActs.ta --- 此处直接往下');
                     }
                 }else if(this.act.c_to_rule === cmpage.enumActToRule.OR_SPLIT){
                     //或分支为条件分支，有一个满足条件则继续，没有分支能满足条件则任务终止，因此需要表单填写后先进行有效性的验证
                     //根据分支路径上的业务规则进行判断
-                    this.toPaths = await this.model('act_path').getToActPaths(this.act.id,this.act.c_proc);
+                    this.toPaths = await cmpage.model('flow/act_path').getToActPaths(this.act.id,this.act.c_proc);
                     for(let path of this.toPaths ){
                         if(await this.defineOrSplit(path)){
                             for(let ta of toTaskActs){
                                 if(ta.c_act === path.c_to){
-                                    await this.model('act').fwRun(ta.id,this.user);
+                                    await cmpage.model('flow/act').fwRun(ta.id,this.user);
                                     cmpage.debug(ta,'task_act.fwEnd --- toTaskActs.ta --- 或分支往下');
                                     return;
                                 }
@@ -234,7 +239,7 @@ export default class extends think.model.base {
      */
     async domainGetData(){
         this.taskAct.domainData = {};
-        let task = await this.model('task').getTask(this.taskAct.c_task);
+        let task = await cmpage.model('flow/task').getTask(this.taskAct.c_task);
         cmpage.debug(task,'task_act.deomainGetData - task');
         if(!think.isEmpty(task.c_link_type)){
             this.taskAct.domainData =  await this.model(task.c_link_type).where({id:task.c_link}).find();
@@ -286,8 +291,8 @@ export default class extends think.model.base {
             c_time:taskAct.c_time, c_user:taskAct.c_user};
         //组成状态描述
         if(taskAct.c_status === cmpage.enumActType.NORMAL_MAN || taskAct.c_status === cmpage.enumActType.NORMAL_AUTO ){
-            md.c_desc = think.isEmpty(desc) ? `节点(${await this.model('act').getNameById(taskAct.c_act)})
-                    ${this.model('cmpage/utils').getEnumName(md.c_status,'TaskStatus')}` : desc;
+            md.c_desc = think.isEmpty(desc) ? `节点(${await cmpage.model('flow/act').getNameById(taskAct.c_act)})
+                    ${cmpage.model('cmpage/utils').getEnumName(md.c_status,'TaskStatus')}` : desc;
             md.id = await this.model('fw_task_st').add(md);
             await this.model('fw_task_st_his').add(md);
             return md.id;
@@ -324,7 +329,7 @@ export default class extends think.model.base {
      */
     async getFromTaskActs(taskAct){
         cmpage.debug(taskAct,'task_act.getFromTaskIds')
-        let fromArr =await this.model('act_path').getFromActIds(taskAct.c_act, taskAct.c_proc);
+        let fromArr =await cmpage.model('flow/act_path').getFromActIds(taskAct.c_act, taskAct.c_proc);
         let list = await this.model('fw_task_act').where({c_task:taskAct.c_task}).select();
         let ret =[];
         for(let md of list){
@@ -345,7 +350,7 @@ export default class extends think.model.base {
      */
     async getToTaskActs(taskAct){
         debug(taskAct,'task_act.getToTaskActs ---- taskAct');
-        let toArr =await this.model('act_path').getToActIds(taskAct.c_act, taskAct.c_proc);
+        let toArr =await cmpage.model('flow/act_path').getToActIds(taskAct.c_act, taskAct.c_proc);
         let list = await this.query(`select * from fw_task_act where c_task=${taskAct.c_task}`);
         let ret =[];
         for(let md of list){

@@ -1,0 +1,46 @@
+
+<div class="bjui-pageHeader">
+    <div class="pull-right">
+        <button type="button" class="btn btn-green " data-icon="close" onclick="doPrint('PRINT')">打印</button>
+        <button type="button" class="btn btn-orange " data-icon="close" onclick="doPrint('PREVIEW')">预览</button>
+        <button type="button" class="btn btn-close " data-icon="close">关闭</button>
+    </div>
+</div>
+
+<div class="bjui-pageContent">
+    <div class="warp" id='print<%- mod.c_modulename%>)'>
+        <h2 style="text-align:center; font-family:" 微软雅黑";font-weight:bold;"><%= mod.c_alias%></h2>
+        <%- printHtml%>
+
+    </div>
+
+</div>
+
+<!-- 插入打印控件 -->
+<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+    <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+</object>
+<script language="javascript" src="/static/js/lib/LodopFuncs.js"></script>
+
+
+<script type="text/javascript">
+    function doPrint(how) {
+        var name = '<%= mod.c_alias%>';
+        var html = '<h2 style="text-align:center; font-family:" 微软雅黑";font-weight:bold;"><%= mod.c_alias%></h2>';
+        var html2 = '<%- printHtml%>';
+        var html3 = html + html2;
+        //初始化对象
+        if (how == 'PRINT') {
+            LODOP.PRINT_INIT(name);
+            LODOP.ADD_PRINT_HTM(0, 0, "100%", "100%", html3);//首先一个初始化语句
+            LODOP.SET_PRINT_PAGESIZE(2, 0, 0, "");
+            LODOP.PRINT();                               //最后一个打印(或预览、维护、设计)语句
+        }
+        else if(how == 'PREVIEW') {
+            LODOP.PRINT_INIT(name);
+            LODOP.ADD_PRINT_HTM(0, 0, "100%", "100%", html3);//首先一个初始化语句
+            LODOP.SET_PRINT_PAGESIZE(2, 0, 0, "");
+            LODOP.PREVIEW();
+        }
+    }
+</script>

@@ -570,8 +570,20 @@ export default class extends CMPage {
         md.c_link = parmsUrl.linkID;
         md.c_link_type = parmsUrl.linkType;
         md.c_modulename = parmsUrl.linkModulename;
-
+        debug(md,&#x27;appr.pageEditInit - md&#x27;);
         return md
+    }
+
+    /**
+     * 取当前记录对象，用于新增和修改的编辑页面展示
+     * @method  getDataRecord
+     * @return {object} 当前记录对象
+     */
+    async getDataRecord(){
+        let md = await super.getDataRecord();
+        this.proc.c_link_type = md.c_link_type;
+        this.proc.linkModulename = md.c_modulename;
+        return md;
     }
 
     /**

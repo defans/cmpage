@@ -11,9 +11,13 @@
  * 提供工作流指派及权限处理的相关方法，对外提供统一归口的调用<br/>
  * @class flow.model.proc_assign
  */
-import CMPage from '../../cmpage/model/page_mob.js';
+const CMPage = require('../../cmpage/model/page_mob.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
+    constructor(name, config = {}) {
+        const moduleModel = think.model('t_module','cmpage');
+        super(name,moduleModel.config);
+    }
 
     /**
      * 新增的时候，初始化编辑页面的值，子类重写本方法可以定制新增页面的初始值
@@ -86,7 +90,7 @@ export default class extends CMPage {
             if(md.c_type === cmpage.enumProcAssignType.DEPT && md.c_link === user.c_dept ||
                 md.c_type === cmpage.enumProcAssignType.ROLE && md.c_link === user.c_role ||
                 md.c_type === cmpage.enumProcAssignType.USER && md.c_link === user.id ||
-                md.c_type === cmpage.enumProcAssignType.TEAM && await this.model('admin/teamuser').isTeamMember(md.c_link, user.id)){
+                md.c_type === cmpage.enumProcAssignType.TEAM && await cmpage.model('admin/teamuser').isTeamMember(md.c_link, user.id)){
                 return md;
             }
         }
@@ -103,9 +107,9 @@ export default class extends CMPage {
         let md = await this.getAssignById(id);
         let ret ='';
         if (md.c_type === cmpage.enumProcAssignType.DEPT || md.c_type === cmpage.enumProcAssignType.ROLE || md.c_type === cmpage.enumProcAssignType.TEAM){
-            ret = await this.model('admin/code').getNameById(md.c_link);
+            ret = await cmpage.model('admin/code').getNameById(md.c_link);
         }else if (md.c_type === cmpage.enumProcAssignType.USER ){
-            ret = await this.model('admin/user').getNameById(md.c_link);
+            ret = await cmpage.model('admin/user').getNameById(md.c_link);
         }
         return ret;
     }

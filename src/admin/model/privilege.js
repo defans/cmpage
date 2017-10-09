@@ -15,7 +15,7 @@
  * 用户权限相关的操作类
  * @class admin.model.privilege
  */
-export default class extends think.model.base {
+module.exports = class extends think.Model {
 
     /**
      * 保存某个角色的权限设置
@@ -45,6 +45,7 @@ export default class extends think.model.base {
         rootID = think.isEmpty(rootID) ? 1:rootID;
         let list =await this.model('code').getTreeList(rootID,true);
         let rps = await this.model('t_role_privilege').where({c_role:roleID, c_deny:true}).select();
+        //debug(rps);
         for(let privi of list){
             privi.isAllow =true;
             for(let rp of rps){

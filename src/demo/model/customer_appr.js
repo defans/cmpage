@@ -8,10 +8,10 @@
 // +----------------------------------------------------------------------
 
 
-import CMPage from '../../cmpage/model/page_mob.js';
+const CMPage = require('../../cmpage/model/page_mob.js');
 
 //VIP申请的审核和展示类，模块名称：CustomerAppr
-export default class extends CMPage {
+module.exports = class extends CMPage {
 
     /**
      * 生成列表每一行的内容

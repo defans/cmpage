@@ -17,9 +17,9 @@
  * @class docu.model.page
  */
 
-import CMPage from '../../cmpage/model/page.js';
+const CMPage = require('../../cmpage/model/page.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
 
     constructor(name, config = {}) {
         super(name,config);

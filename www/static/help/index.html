@@ -244,9 +244,10 @@ $(function(){
                   </div>
                         <div class="bs-docs-section">
                   <h1 id="bjui-doc-alertmsg" class="page-header">显示列设置示</h1>
-                  查找带回和选择加入类型的模块设置规则和普通模块类似(例如：UserLookup模块)，设置查询列和显示列，不设置按钮和编辑列，其中显示列的是否查看(c_isview)表示是否为返回的字段，</br>
+              >>> 查找带回和选择加入类型的模块设置规则和普通模块类似(例如：UserLookup模块)，设置查询列和显示列，不设置按钮和编辑列，其中显示列的是否查看(c_isview)表示是否为返回的字段，</br>
                   调用查找带回页面：/cmpage/page/lookup?modulename=GoodsLookup*returnFields=c_goods,goods_name </br>
-                  调用选择加入页面：/cmpage/page/lookup?modulename=GoodsLookup*callmodulename=OrderApplyRec*callfn=goodsAdd*callparms=#c_order_apply#
+                  调用选择加入页面：/cmpage/page/lookup?modulename=GoodsLookup*callmodulename=OrderApplyRec*callfn=goodsAdd*callparms=#c_order_apply# </br>
+              >>> 如果不想显示工作流相关按钮，可以将c_act字段设置成 不检索
                   <h3 id="bjui-doc-colGeneralParameter">常规参数</h3>
                   <table class="table table-bordered table-striped table-hover">
                     <thead>

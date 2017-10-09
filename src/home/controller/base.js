@@ -1,6 +1,6 @@
 'use strict';
 
-export default class extends think.controller.base {
+module.exports = class extends think.Controller {
   /**
    * some base method in here
    */

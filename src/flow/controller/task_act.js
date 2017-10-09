@@ -5,9 +5,9 @@
  * 提供工作流引擎的URL调用接口
  * @class flow.controller.task_act
  */
-import Base from './base.js';
+const Base = require('./base.js');
 
-export default class extends Base {
+module.exports = class extends Base {
 
     /**
      * 重新运行一个流程实例的某个节点, GET调用：/flow/task_act/run?taskActID=xxx
@@ -16,7 +16,7 @@ export default class extends Base {
      */
     async runAction(){
         let isPass = !think.isEmpty(this.get('isPass'));
-        await this.model('act').fwRun(this.get('taskActID'),await this.session('user'),null, isPass);
+        await cmpage.model('flow/act').fwRun(this.get('taskActID'),await this.session('user'),null, isPass);
         return this.json({statusCode:200,message:'本次操作成功!'});
     }
 
@@ -26,7 +26,7 @@ export default class extends Base {
      * @return {json}  流程实例对象
      */
     async suspendAction(){
-        await this.model('act').fwSuspend(this.get('taskActID'),await this.session('user') );
+        await cmpage.model('flow/act').fwSuspend(this.get('taskActID'),await this.session('user') );
         return this.json({statusCode:200,message:'本次操作已成功挂起!'});
     }
 
@@ -36,7 +36,7 @@ export default class extends Base {
      * @return {json}  流程实例对象
      */
     async terminateAction(){
-        await this.model('act').fwTerminate(this.get('taskActID'),await this.session('user') );
+        await cmpage.model('flow/act').fwTerminate(this.get('taskActID'),await this.session('user') );
         return this.json({statusCode:200,message:'本次操作已成功终止!'});
     }
 

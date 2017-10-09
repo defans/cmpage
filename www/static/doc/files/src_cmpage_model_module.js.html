@@ -801,29 +801,6 @@ export default class extends think.model.base {
         return {statusCode:200,message:&#x27;&#x27;};
     }
 
-//    //按模块名称和ID取模块设置，放入缓存
-//    async setModuleCache(){
-//        let isSet = await think.cache(&#x27;isSetModuleCache&#x27;);
-//        if(think.isEmpty(isSet)) {
-//            let modules = await this.query(&#x27;select * from t_module where c_status=0 order by id&#x27;);
-//            //let modules = await this.model(&#x27;t_module&#x27;).where({c_status:0}).order(&#x27;id asc&#x27;).select();
-////        cmpage.debug(modules);
-//            for (let module of modules) {
-//                let moduleCol = await    this.query(&#x60;select * from t_module_col where c_module=${module.id} order by c_order&#x60;);
-//                let moduleQuery = await  this.query(&#x60;select * from t_module_query where c_module=${module.id} order by c_order&#x60;);
-//                let moduleEdit = await   this.query(&#x60;select * from t_module_edit where c_module=${module.id} order by c_order&#x60;);
-//                let moduleBtn = await   this.query(&#x60;select * from t_module_btn where c_module=${module.id} order by c_location&#x60;);
-//
-//                await think.cache(&#x60;module${module.id}&#x60;, module);
-//                await think.cache(&#x60;modulename${module.c_modulename}&#x60;, module);
-//                await think.cache(&#x60;moduleCol${module.id}&#x60;, moduleCol);
-//                await think.cache(&#x60;moduleQuery${module.id}&#x60;, moduleQuery);
-//                await think.cache(&#x60;moduleEdit${module.id}&#x60;, moduleEdit);
-//                await think.cache(&#x60;moduleBtn${module.id}&#x60;, moduleBtn);
-//            }
-//            await think.cache(&#x27;isSetModuleCache&#x27;, &#x27;true&#x27;);
-//        }
-//    }
     //清空模块缓存
     async clearModuleCache(){
         let modules = await this.query(&#x27;select * from t_module where c_status=0 order by id&#x27;);
@@ -849,20 +826,6 @@ export default class extends think.model.base {
     }
 
     //拷贝模块信息
-    // async copyToNewModule(modulename){
-    //     let list = await this.query(&#x60;select * from t_module where c_modulename =&#x27;${modulename}_copy&#x27;&#x60;);
-    //     if(list.length &gt;0) {
-    //         return {statusCode: 300, message: &#x60;模块 ${modulename}_copy 已经存在！&#x60;};
-    //     }
-    //
-    //     if(think.config(&#x27;db.type&#x27;)===&#x27;postgresql&#x27;){
-    //         await this.query(&#x60;select p_module_copy(&#x27;${modulename}&#x27;)&#x60;);
-    //     }else{
-    //         await this.query(&#x60;call p_module_copy(&#x27;${modulename}&#x27;)&#x60;);
-    //     }
-    //
-    //     return {statusCode: 200, message: &#x60;模块复制成功！&#x60;};
-    // }
     async copyToNewModule(modulename,newName){
         newName = think.isEmpty(newName) ? modulename+&#x27;_copy&#x27;:newName;
         let list = await this.query(&#x60;select * from t_module where c_modulename=&#x27;${modulename}&#x27;&#x60;);
@@ -899,6 +862,8 @@ export default class extends think.model.base {
                 md.c_module = newID;
                 delete md.id;
                 md.c_object = md.c_object.replace(modulename, newName);
+                md.c_url = md.c_url.replace(modulename, newName);
+                md.c_options = md.c_options.replace(modulename, newName);
                 await this.model(&#x27;t_module_btn&#x27;).add(md);
             }
             //复制 edits
@@ -1035,7 +1000,7 @@ export default class extends think.model.base {
         return cols;
     }
     async getModuleBtn(moduleID,user,objname){
-        let cols = await think.cache(&#x60;moduleBtn${moduleID}&#x60;, () =&gt; {
+        let btns = await think.cache(&#x60;moduleBtn${moduleID}&#x60;, () =&gt; {
             return this.query(&#x60;select * from t_module_btn where c_module = ${moduleID} order by c_location&#x60;);
         });
         let privileges = [];
@@ -1049,17 +1014,19 @@ export default class extends think.model.base {
             }
             privileges = await cmpage.model(&#x27;admin/privilege&#x27;).userGetPrivilegeTree(user.id, user.c_role,rootID );
         }
-        for(let col of cols){
+        for(let col of btns){
             col.c_isshow = think.isBoolean(col.c_isshow) ? col.c_isshow : (col.c_isshow === 1);
-            //验证用户权限, 允许优先原则
-            for(let priv of privileges){
-                if(priv.c_object === col.c_object){
-                    col.c_isshow = priv.isAllow;
-                    break;
+            if(col.c_isshow){
+                //验证用户权限, 允许优先原则
+                for(let priv of privileges){
+                    if(priv.c_object === col.c_object){
+                        col.c_isshow = priv.isAllow;
+                        break;
+                    }
                 }
             }
         }
-        return cols;
+        return btns;
     }
     /*******************从缓存中取模块设置，如果没有，则刷新缓存********--end--****************/
 

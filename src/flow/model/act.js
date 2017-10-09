@@ -24,8 +24,15 @@
  * 根据活动节点中的实现类设置，调用具体业务相关的类来实现节点的具体功能
  * @class flow.model.act
  */
-export default class extends think.model.base {
-    taskActModel = null;    //当前任务节点的实例对象
+ const Base =require('../../cmpage/model/base.js');
+
+ module.exports = class extends Base {
+     constructor(name, config = {}) {
+        const moduleModel = think.model('t_module','cmpage');
+        super(name,moduleModel.config);
+        this.taskActModel = null;    //当前任务节点的实例对象
+        this.acts = [];
+    }
 
     /**
      * 是否可以运行一个活动(流程节点)，对外提供调用
@@ -114,7 +121,7 @@ export default class extends think.model.base {
         cmpage.debug(taskAct,'act.fwInit - taskAct');
         let act =await this.getActByIdAndProcId(taskAct.c_act, taskAct.c_proc);
         cmpage.debug(act,'act.fwInit - act');
-        this.taskActModel = this.model(think.isEmpty(act.c_class) ? 'flow/task_act': act.c_class);
+        this.taskActModel = cmpage.model(think.isEmpty(act.c_class) ? 'flow/task_act': act.c_class);
         this.taskActModel.taskAct = taskAct;
         this.taskActModel.act = act;
         this.taskActModel.user = think.isEmpty(user) ? await think.session('user') : user;
@@ -135,7 +142,7 @@ export default class extends think.model.base {
                     if(!think.isEmpty(ta.task_link_type)){
                         ta.domainData =  await this.model(ta.task_link_type).where({id:ta.task_link}).find();
                     }
-                    let user = await this.model('task').getUserFromTask(ta.id);
+                    let user = await think.model('task').getUserFromTask(ta.id);
                     if(await fnModel[form.fn](ta,user)){
                         //如果执行成功，则继续往下
                         await this.fwRun(ta.id,user,ta,true);
@@ -174,10 +181,9 @@ export default class extends think.model.base {
      * @return {Array} 流程节点的对象数组
      * @params {int} procID 流程模板ID
      */
-    acts = [];
     async getActsOrder(procID, acts){
         this.acts = think.isEmpty(acts) ? await this.getActsByProcId(procID) : acts;
-        let actPaths = await this.model('act_path').getActPathsByProcId(procID);
+        let actPaths = await cmpage.model('act_path').getActPathsByProcId(procID);
         //把节点根据路径走向排序
         let order = [];
         let actStart = {}, actEnd = {};
@@ -259,7 +265,9 @@ export default class extends think.model.base {
         let ret = [];
         depth = think.isEmpty(depth) ? 1: depth +1;
         if(depth >5 ) return [];
+        //debug(procID,'act.getToActsFromId - procID');
         let actIds = await cmpage.model('flow/act_path').getToActIds(actID, procID);
+        //debug(actIds,'act.getToActsFromId - actIds');
         for(let id of actIds){
             let act = await this.getActByIdAndProcId(id,procID);
             if(act.c_type == cmpage.enumActType.END ){

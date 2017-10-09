@@ -18,9 +18,13 @@
  * 通过工作流的任务机制进行流转(fw_task,fw_task_act)
  * @class cmpage.model.appr
  */
-import CMPage from '../../cmpage/model/page_mob.js';
+const CMPage = require('../../cmpage/model/page_mob.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
+    constructor(name, config = {}) {
+        const moduleModel = think.model('t_module','cmpage');
+        super(name,moduleModel.config);
+    }
     /**
      * 取查询项的设置，结合POST参数，得到Where字句
      */
@@ -59,8 +63,8 @@ export default class extends CMPage {
         await super.pageSave(parms);
         debug(this.rec,'appr.pageSave - this.rec');
         if(this.rec.id >0){
-            let task = await this.model('flow/task').getTask(this.rec.c_task);
-            let proc = await this.model('flow/proc').getProcById(task.c_proc);
+            let task = await cmpage.model('flow/task').getTask(this.rec.c_task);
+            let proc = await cmpage.model('flow/proc').getProcById(task.c_proc);
             debug(proc,'appr.pageSave - proc');
             let linkModel = cmpage.model(proc.c_link_model);
             if(linkModel){
@@ -99,7 +103,7 @@ export default class extends CMPage {
         md.c_group = user.groupID;
         md.id = await this.model('t_appr').add(md);
 
-        let proc = await this.model('flow/proc').getProcById(task.c_proc);
+        let proc = await cmpage.model('flow/proc').getProcById(task.c_proc);
         debug(proc,'appr.addStatus - proc');
         let linkModel = cmpage.model(proc.c_link_model);
         if(linkModel){

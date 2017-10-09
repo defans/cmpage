@@ -15,9 +15,9 @@
  * 移动端，业务模块展示及常用操作的URL接口
  * @class cmpage.controller.mob
  */
-import Base from './base.js';
+const Base = require('./base.js');
 
-export default class extends Base {
+module.exports = class extends Base {
     /**
      * 业务模块展示的主界面，分页列表，POST调用： /cmpage/mob/list
      * @method  list
@@ -30,10 +30,7 @@ export default class extends Base {
         let parms ={};
         parms.modulename =this.post('modulename');
         if(parms.modulename.length >20){
-            let error = new Error(parms.modulename + " 模块名错误！");
-            //将错误信息写到 http 对象上，用于模版里显示
-            this.http.error = error;
-            return think.statusAction(500, this.http);
+            return this.json({statusCode:'300',message:parms.modulename + " 模块名错误！"});
         }
         parms.pageIndex = this.post('pageIndex');
         parms.pageSize = this.post('pageSize');
@@ -50,16 +47,12 @@ export default class extends Base {
         parms.user = await this.session('user');
         //    console.log(page);
         if(think.isEmpty(parms.id)){
-            let error = new Error(parms.modulename + " 模块不存在！");
-            this.http.error = error;
-            return think.statusAction(500, this.http);
+            return this.json({statusCode:'300',message:parms.modulename + " 模块不存在！"});
         }
 
         let pageModel = cmpage.model(parms.c_path);
         if(think.isEmpty(pageModel)){
-            let error = new Error(parms.modulename + " 的实现类不存在！");
-            this.http.error = error;
-            return think.statusAction(500, this.http);
+            return this.json({statusCode:'300',message:parms.modulename + " 的实现类不存在！"});
         }
         debug(parms.query,'cmpage.C.mob - parms.query');
         if(!think.isEmpty(parms.query.c_country)){
@@ -102,9 +95,7 @@ export default class extends Base {
         parms.user = await this.session('user');
         let pageModel = cmpage.model(parms.c_path);
         if(think.isEmpty(pageModel)){
-            let error = new Error(parms.modulename + " 的实现类不存在！");
-            this.http.error = error;
-            return think.statusAction(500, this.http);
+            return this.json({statusCode:'300',message:parms.modulename + " 的实现类不存在！"});
         }
         //cmpage.debug(parms);
         pageModel.mod = parms;

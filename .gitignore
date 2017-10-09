@@ -30,7 +30,8 @@ node_modules/
 output/
 output.tar.gz
 
+runtime/
 app/
 
-runtime/
-/www/static/mob
+config.development.js
+adapter.development.js

@@ -1,0 +1,67 @@
+
+<div class="bjui-pageHeader">
+    <div class="bjui-searchBar">
+        <label>模块名称：</label><input name="c_modulename" type="text" size="15" readonly value="<%= md.c_modulename%>"  />&nbsp;
+        <label>数据来源：</label><input name="c_datasource" type="text" size="15" readonly value="<%= md.c_datasource%>"  />&nbsp;
+        <label>数据表:</label><input name="c_table" type="text" size="15" readonly value="<%= md.c_table%>"  />&nbsp;
+        <a type="button" class="btn btn-orange" href="/cmpage/module/btn_reset?moduleid=<%= md.id%>" data-toggle="doajax" data-confirm-msg="是否增加默认的按钮设置？">重新设置</a>
+        <a  class="btn btn-orange"  href="#" onclick="return modulePreview('<%= md.c_modulename%>');">--预览--</a>&nbsp;
+        <button type="button" class="btn-default" data-toggle="tableditadd" data-target="#moduleBtnList" data-num="1" data-icon="plus">添加按钮</button>&nbsp;
+        <div class="pull-right">
+            <button type="button" class="btn-green" data-icon="save" onclick="$('#moduleBtnForm').submit();">保存设置</button>
+            <button type="button" class="btn-close" data-icon="external-link">关 闭</button>
+        </div>
+    </div>
+</div>
+<div class="bjui-pageContent">
+    <form id="moduleBtnForm" action="/cmpage/module/btn_save" class="pageForm" data-toggle="validate" data-alertmsg="false" data-reload="false">
+        <input name="c_module" type="hidden" value="<%= md.id%>"  />
+        <table id="moduleBtnList" class="table table-bordered table-hover table-striped table-top" data-toggle="tabledit" data-initnum="0" >
+            <thead>
+            <tr data-idname="editList[#index#].id">
+                <th title="位置"><input type="text" name="editList[#index#].c_location" data-rule="required" value="20" size="2" onkeyup="javascript:testNum(this);"></th>
+                <th title="名称"><input type="text" name="editList[#index#].c_label"  value="" size="5"></th>
+                <th title="权限对象"><input type="text" name="editList[#index#].c_object" data-rule="required" value="" size="5"></th>
+                <th title="是否显示"><input type="checkbox" name="editList[#index#].c_isshow" class="j-icheck" data-toggle="icheck" value="true"></th>
+                <th title="class"><input type="text" name="editList[#index#].c_class" data-rule="required" value="" size="5"></th>
+                <th title="样式"><input type="text" name="editList[#index#].c_style"  value="" size="5"></th>
+                <th title="URL"><input type="text" name="editList[#index#].c_url"  value="" size="5"></th>
+                <th title="打开方式"><input type="text" name="editList[#index#].c_opentype" value="" size="5"></th>
+                <th title="打开参数"><input type="text" name="editList[#index#].c_options"  value="" size="5"></th>
+                <th title="打开标题"><input type="text" name="editList[#index#].c_title"  value="" size="5"></th>
+                <th title="图标"><input type="text" name="editList[#index#].c_icon"  value="" size="5"></th>
+                <th title="onclick"><input type="text" name="editList[#index#].c_onclick"  value="" size="5"></th>
+                <th title="备注"><textarea name="editList[#index#].c_memo" data-toggle="autoheight" rows="1"></textarea></th>
+                <!--<th title="MUI"><textarea name="editList[#index#].c_mui" data-toggle="autoheight" rows="1"></textarea></th>-->
+
+                <th title="" data-addtool="false" >
+
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <% vb.editList.forEach(function(item){ %>
+                <tr data-id="<%= item.id%>" data-edit-always="true">
+                    <td ><%= item.c_location%> </td>
+                    <td ><%= item.c_label%></td>
+                    <td ><%= item.c_object%></td>
+                    <td data-val="<%= (item.c_isshow || item.c_isshow == 1 ? 'true':'false')%>">Y</td>
+                    <td ><%= item.c_class%></td>
+                    <td ><%= item.c_style%></td>
+                    <td ><%= item.c_url%></td>
+                    <td ><%= item.c_opentype%></td>
+                    <td ><%= item.c_options%></td>
+                    <td ><%= item.c_title%></td>
+                    <td ><%= item.c_icon%></td>
+                    <td ><%= item.c_onclick%></td>
+                    <td ><%= item.c_memo%></td>
+                    <!--<td ><%= item.c_mui%></td>-->
+                    <td data-noedit="true">
+                        <a href="/cmpage/module/delete?id=<%= item.id%>&table=t_module_btn&flag=true" class="btn btn-red row-del" data-confirm-msg="确定要删除该行信息吗？">删</a>
+                    </td>
+                </tr>
+            <% })%>
+            </tbody>
+        </table>
+    </form>
+</div>

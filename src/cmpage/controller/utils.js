@@ -15,20 +15,23 @@
  * 工具集、其他URL接口
  * @class cmpage.controller.utils
  */
-import Base from './base.js';
+const Base = require('./base.js');
 
-export default class extends Base {
+module.exports = class extends Base {
 
     async testAction(){
 //        let model = cmpage.model('docu/base');
 //        let ret = await model.query('select top 5 goods_name,goods_ucode from vw_docu_rec');
         //let ret = await model.query("QueryPage 'vw_docu_rec','c_id,goods_ucode,goods_name',10,2,'','c_id',0,'c_id'");
 
-         let model = cmpage.model('cmpage/base');
-         let ret = await model.query('select c_name,c_time from t_customer limit 3');
+        //  let model = cmpage.model('cmpage/base');
+        //  let ret = await model.query('select c_name,c_time from t_customer limit 3');
 //        let ret = await this.model('cmpage/page').query('select c_name,c_time from t_customer limit 2');
         //debug(ret,'utils.C.test - ret');
+
+        let ret = Number(0.3).sub(0.2);
         console.log(ret);
+        console.log(0.3 - 0.2);
         return this.json({});
     }
 
@@ -37,7 +40,7 @@ export default class extends Base {
      * @method callFunction
      * @return {json}
      */
-    async callFunctionAction(){
+    async call_functionAction(){
         let fnModel = cmpage.model(this.get('model'));
         let fnName = this.get('fn');
         let ret = {statusCode:200, message:'',data:{}};
@@ -70,7 +73,7 @@ export default class extends Base {
      * @method callFunction
      * @return {json}
      */
-    async callFunctionByModulenameAction(){
+    async call_function_by_modulenameAction(){
         let page = await this.model('module').getModuleByName(this.get('modulename'));
         page.user = await this.session('user');
         //cmpage.debug(page);
@@ -107,10 +110,10 @@ export default class extends Base {
      * @method  clearCache
      * @return {json}
      */
-    async clearCacheAction(){
+    async clear_cacheAction(){
         //auto render template file index_index.html
-        await this.model('admin/code').clearCodeCache();
-        await this.model('module').clearModuleCache();
+        await cmpage.model('admin/code').clearCodeCache();
+        await cmpage.model('cmpage/module').clearModuleCache();
         await this.cache("users",null);
 
         return this.json({statusCode:200, message:'Cache is clear!'});
@@ -121,8 +124,8 @@ export default class extends Base {
      * @method  getCitys
      * @return {json}
      */
-    async getCitysAction(){
-        let citys = await this.model('area').getCitys(this.get('province'));
+    async get_citysAction(){
+        let citys = await cmpage.model('admin/area').getCitys(this.get('province'));
         let ret =[{value:'-1', label:'请选择'}];
         for(let city of citys){
             ret.push({value:city.c_ucode, label:city.c_name});
@@ -134,8 +137,8 @@ export default class extends Base {
      * @method  getCountrys
      * @return {json}
      */
-    async getCountrysAction(){
-        let countrys = await this.model('area').getCountrys(this.get('city'));
+    async get_countrysAction(){
+        let countrys = await cmpage.model('admin/area').getCountrys(this.get('city'));
         let ret =[{value:'-1', label:'请选择'}];
         for(let country of countrys){
             ret.push({value:country.c_ucode, label:country.c_name});

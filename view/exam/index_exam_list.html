@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="/static/mui/css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.mui-popover {
+				height: 100px;
+			}
+			#topPopover {
+				position: fixed;
+				top: 16px;
+				left: 6px;
+			}
+			#topPopover .mui-popover-arrow {
+				right: auto;
+				left: 6px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a href="javascript:;" onclick="return exitLogin();" class="mui-icon mui-icon-upload mui-pull-left"></a>
+			<h1 class="mui-title">我的试卷</h1>
+			<!--<a href="cmpage-edit.html" class="mui-icon mui-icon-locked mui-pull-right" ></a>-->
+		</header>
+		
+		<div class="mui-content">
+            <%- listHtml%>
+
+		</div>
+
+	</body>
+
+	<script src="/static/mui/js/mui.min.js"></script>
+	<script src="/static/js/mob/app.js"></script>
+	<!-- <script src="/static/js/cmpage.js"></script> -->
+	<!-- <script src="/static/js/cmpage/cmpage-list.js"></script> -->
+
+</html>
+<script type="text/javascript">
+
+mui.init({
+	swipeBack: false
+});
+
+//退出登录
+function exitLogin(){
+	var btnArray = ['否', '是'];
+	mui.confirm('是否退出登录？', '友情提醒', btnArray, function(e) {
+		if (e.index == 1) {
+			location.href = '/exam/index/exit_login'
+		}
+	})
+	
+	return false;
+}
+
+</script>

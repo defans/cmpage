@@ -2,6 +2,6 @@
 /**
  * config
  */
-export default {
+module.exports = {
   //key: value
 };

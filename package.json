@@ -1,30 +1,37 @@
 {
-  "name": "cmpage-application",
-  "description": "application created by defans",
+  "name": "thinkjs-application",
+  "description": "application created by thinkjs",
   "version": "1.0.0",
   "scripts": {
-    "start": "node www/development.js",
-    "compile": "babel --presets es2015-loose,stage-1 --plugins transform-runtime src/ --out-dir app/ --source-maps",
-    "watch-compile": "node -e \"console.log('<npm run watch-compile> no longer need, use <npm start> command direct.');console.log();\"",
-    "watch": "npm run watch-compile"
+    "start": "node development.js"
   },
   "dependencies": {
-    "babel-runtime": "6.x.x",
     "excel-export": "0.5.1",
-    "source-map-support": "0.4.0",
-    "thinkjs": "2.2.x",
-    "moment":"2.x.x",
-    "request":"2.x.x",
-    "sequelize":"3.x.x",
-    "tedious":"1.x.x"
+    "think-cache": "^1.0.0",
+    "think-cache-file": "^1.0.8",
+    "think-logger3": "^1.0.0",
+    "think-model": "^1.0.0",
+    "think-model-mysql": "^1.0.0",
+    "think-session": "^1.0.0",
+    "think-session-file": "^1.0.5",
+    "think-view": "^1.0.0",
+    "think-view-ejs": "0.0.11",
+    "thinkjs": "^3.0.0"
   },
   "devDependencies": {
-    "babel-cli": "6.x.x",
-    "babel-preset-es2015-loose": "6.x.x",
-    "babel-preset-stage-1": "6.x.x",
-    "babel-plugin-transform-runtime": "6.x.x",
-    "babel-core": "6.x.x"
+    "babel-cli": "^6.24.1",
+    "babel-preset-think-node": "^1.0.0",
+    "node-notifier": "^5.0.2",
+    "think-watcher": "^3.0.0",
+    "think-inspect": "0.0.2",
+    "think-babel": "^1.0.3",
+    "eslint": "^4.2.0",
+    "eslint-config-think": "^1.0.0"
   },
   "repository": "",
-  "license": "Apache"
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "readmeFilename": "README.md"
 }

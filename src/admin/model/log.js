@@ -15,9 +15,9 @@
  * 系统操作的日志模块
  * @class admin.model.log
  */
-import CMPage from '../../cmpage/model/page.js';
+const CMPage = require('../../cmpage/model/page.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
     /**
      * 重写父类的 getQueryWhere 方法，增加页面模块的条件设置，剔除已经加入该账套的用户，组合成新的Where子句
      * @method  getQueryWhere

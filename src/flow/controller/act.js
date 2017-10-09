@@ -3,7 +3,7 @@
  流程模板配置和引擎调用接口的controller模块，实现了对外的URL接口，包括PC端和移动端
 
  注意点 :
- 1. base.js继承自 think.controller.base;
+ 1. base.js继承自 think.Controller;
  2. 其他controller 继承自 base.js;
  3. 具体的业务模块可以继承并扩展 flow/model/act.js 来实现增加标准以外的逻辑
  4. 可以根据具体的业务模块选择适当基类，例如审核类:flow/model/act_appr.js
@@ -17,9 +17,9 @@
  * 提供工作流引擎的活动节点运转相关的URL调用接口
  * @class flow.controller.act
  */
-import Base from './base.js';
+const Base = require('./base.js');
 
-export default class extends Base {
+module.exports = class extends Base {
 
     /**
      * 编辑流程节点内容， GET调用： /flow/act/edit?id=xxx
@@ -27,15 +27,15 @@ export default class extends Base {
      * @return {json}   act编辑页面的HTML片段
      */
     async editAction(){
-        let module = cmpage.model('cmpage/module');
-        let parmsAct = await module.getModuleByName('FwAct');
+        let actModule = cmpage.model('cmpage/module');
+        let parmsAct = await actModule.getModuleByName('FwAct');
         parmsAct.parmsUrl= '{}';
         parmsAct.editID = this.get('id');
         parmsAct.user = await this.session('user');
-        let pageAct = cmpage.model('cmpage/page');
+        let pageAct = this.model('act_list');
         pageAct.mod = parmsAct;
         await pageAct.initPage();
-        pageAct.modEdits = await module.getModuleEdit(parmsAct.id);
+        pageAct.modEdits = await actModule.getModuleEdit(parmsAct.id);
 
         let actEditHtml = await pageAct.htmlGetEdit();
 
@@ -49,8 +49,8 @@ export default class extends Base {
      */
     async deleteAction(){
         let actID = this.get('id');
-        await this.model('fw_act_path').where(`c_from=${actID} or c_to=${actID}`).delete();
-        await this.model('fw_act').where({id:actID}).delete();
+        await cmpage.model('fw_act_path','cmpage').where(`c_from=${actID} or c_to=${actID}`).delete();
+        await this.model('fw_act','cmpage').where({id:actID}).delete();
 
         return this.json({statusCode:200, message:''});
     }
@@ -59,9 +59,9 @@ export default class extends Base {
      * @method  deletePath
      * @return {json}   删除状态
      */
-    async deletePathAction(){
+    async delete_pathAction(){
         let id = this.get('id');
-        await this.model('fw_act_path').where(`c_id=${id}`).delete();
+        await this.model('fw_act_path','cmpage').where(`c_id=${id}`).delete();
 
         return this.json({statusCode:200, message:''});
     }
@@ -73,7 +73,7 @@ export default class extends Base {
      */
     async getActPathAction(){
         let id = this.get('id');
-        let data = await this.model('fw_act_path').where({id:id}).find();
+        let data = await this.model('fw_act_path','cmpage').where({id:id}).find();
 
         return this.json({statusCode:200, data:data});
     }

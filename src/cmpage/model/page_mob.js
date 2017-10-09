@@ -18,9 +18,9 @@
  * 实现了手机APP的模块接口，可继承本类对手机APP的业务模块做定制化的HTML输出和功能操作, 方法名加了mob做前导，以示区分
  * @class cmpage.model.page_mob
  */
-import CMPage from './page.js';
+const CMPage = require('./page.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
 
     /**
      * 取模块列表中的MUI设置，组合成HTML输出，一般在子类中通过重写这个方法来达到页面定制的效果
@@ -165,15 +165,15 @@ export default class extends CMPage {
      */
     async mobHtmlGetQuery(){
         let html =[];
-        html.push(`<input type='hidden' name='modulename' value='${this.mod.c_modulename}' />`);
-        html.push(`<input type='hidden' name='parmsUrl' value='${this.mod.parmsUrl}' />`);
+        html.push(`<input type='hidden' name='modulename' id='modulename' value='${this.mod.c_modulename}' />`);
+        html.push(`<input type='hidden' name='parmsUrl' id='parmsUrl' value='${JSON.stringify(this.mod.parmsUrl)}' />`);
         html.push("<input type='hidden' name='pageCurrent' value='1' />");
         html.push(`<input type='hidden' name='pageSize' value='8' />`);
 
         let provinceValue ='';
         let cityValue='';
 
-        debug(this.mod.query, 'page_mob.mobHtmlGetQuery - this.mod.query');
+        debug(this.mod.query, 'page_mob.mobHtmlGetQuery - this.mod.query');     
         for(let md of this.modQuerys){
             if(!think.isEmpty(this.mod.query[md.c_column])){
                 md.c_default = this.mod.query[md.c_column];
@@ -192,7 +192,7 @@ export default class extends CMPage {
                     html.push("</select>");
                 }else if (md.c_type === "countrySelect"){
                     let countryValue = md.c_default;
-                    let areaModel = cmpage.model('cmpage/area');
+                    let areaModel = cmpage.model('admin/area');
                     let provinceName = await areaModel.getProvinceName(provinceValue);
                     let cityName = await areaModel.getCityName(cityValue);
                     let countryName = await areaModel.getCountryName(countryValue);
@@ -214,7 +214,7 @@ export default class extends CMPage {
                     }
                     html.push("<div class='mui-input-row'>");
                     html.push(`<label>${md.c_name}:</label>`);
-                    html.push(`<button data-options='${JSON.stringify(dateType)}' data-ref='" ${this.mod.c_modulename + md.c_column}' class='btn mui-btn mui-btn-block cmpage-picker-datetime'
+                    html.push(`<button data-options='${JSON.stringify(dateType)}' data-ref=' ${this.mod.c_modulename + md.c_column}' class='btn mui-btn mui-btn-block cmpage-picker-datetime'
                         style='width:65%; border:none; text-align:left; padding-left:0px; height:100%;'> ${dateTitle}</button>
                         <input type='hidden' id='${this.mod.c_modulename + md.c_column}' name='${md.c_column}' value='${ md.c_default}' />`);
                 }
@@ -285,7 +285,7 @@ export default class extends CMPage {
             col.c_format = col.c_format.trim();
 
             let inputHtml ='';
-            if (col.c_type === "datetime" ||col.c_type === "date") {
+            if (col.c_coltype === "datetime" ||col.c_coltype === "date") {
                 //debug(col.c_format,'page_mob.mobHtmlGetEdit - datetime.col.c_format');
                 //col.c_format = think.isEmpty(col.c_format) ? "yyyy-MM-dd" : col.c_format;
                 //colValue =cmpage.datetime(colValue,col.c_format);
@@ -380,5 +380,39 @@ export default class extends CMPage {
         }
 
         return html.join('');
+    }
+
+    /**********************************以下是H5页面不同的部分,hh开头的方法************************************************************** */
+    /**
+     * H5生成列表底部按钮组HTML输出，一般在子类中通过重写这个方法来达到定制输出按钮的效果
+     * @method  hhGetHeaderBtnsFromModule
+     * @return  {string}  HTML片段
+     */
+     async hhGetHeaderBtnsFromModule() {
+         let html =[];
+         for(let btn of this.modBtns){
+             if (btn.c_location <= 10 && btn.c_isshow){
+                 if (btn.c_object.indexOf(".Add") > 0){
+                     html.push(`<a class="mui-tab-item" href="/dtalk/cmpage/edit?modulename=${this.mod.c_modulename}
+                        &parmsUrl=${JSON.stringify(this.mod.parmsUrl)}&id=0&dd_share=false">
+                            <span class="mui-icon mui-icon-plus"></span>
+                            <span class="mui-tab-label">新增</span>
+                        </a>`);
+                 }
+             }
+         }
+         return html;
+     }
+    async hhGetHeaderBtns() {
+        let html = await this.hhGetHeaderBtnsFromModule();
+
+        return `<a id="listTabIcon" class="mui-tab-item mui-active" href="#listTab">
+				<span class="mui-icon mui-icon-list"></span>
+				<span class="mui-tab-label">列表</span>
+			</a>
+			<a class="mui-tab-item" href="#searchTab">
+				<span class="mui-icon mui-icon-search"></span>
+				<span class="mui-tab-label">查询</span>
+			</a>${html.join('')}`;
     }
 }

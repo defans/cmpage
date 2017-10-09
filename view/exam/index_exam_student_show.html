@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="/static/mui/css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			.mui-popover {
+				height: 100px;
+			}
+			#topPopover {
+				position: fixed;
+				top: 16px;
+				left: 6px;
+			}
+			#topPopover .mui-popover-arrow {
+				right: auto;
+				left: 6px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title"><%= examStudent.exam_name%></h1>
+
+		</header>
+		
+		<div class="mui-content">
+<form id="examForm" class="exam-form" action="/exam/index/exam_save" method="post">
+</br>
+<%- examStudent.listHtml%>
+
+</br>
+
+</form>
+
+		</div>
+
+	</body>
+
+	<script src="/static/mui/js/mui.min.js"></script>
+	<script src="/static/js/mob/app.js"></script>
+	<!-- <script src="/static/js/cmpage.js"></script> -->
+	<!-- <script src="/static/js/cmpage/cmpage-list.js"></script> -->
+
+</html>
+<script type="text/javascript">
+
+mui.init({
+	swipeBack: false
+});
+
+// function examSave(){
+//     mui.ajax("/exam/index/exam_save", {
+//     data: app.serializeToOjb(document.body.querySelector('.exam-form')),
+//     type: "post",
+//     dataType: 'json',
+//     timeout: 5000,
+//     error: function(request) {
+//       //console.log(JSON.stringify(request));
+//       mui.toast("服务器获取数据失败！");
+//     },
+//     success: function(data) {
+//       //app.debug(JSON.stringify(data));
+//       if (data.statusCode == 200) {
+//         location.href="/exam/index/index";
+//       } else {
+//         mui.toast("数据加载失败请稍后重试！");
+//       }
+//     }
+//   });
+//   return false;
+// }
+
+</script>

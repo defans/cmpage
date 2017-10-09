@@ -577,6 +577,7 @@ export default class extends Base {
             parms.parmsUrl = JSON.parse(this.post(&#x27;parmsUrl&#x27;));
             parms.query = this.post();
         }
+        delete parms.parmsUrl[&#x27;_&#x27;];
         parms.parmsUrl.readonly = !(think.isEmpty(parms.parmsUrl.readonly) || parms.parmsUrl.readonly !=1);
         parms.user = await this.session(&#x27;user&#x27;);
         //    console.log(page);
@@ -597,6 +598,7 @@ export default class extends Base {
         pageModel.modQuerys = await module.getModuleQuery(parms.id);
         pageModel.modCols = await module.getModuleCol(parms.id);
         pageModel.modBtns = await module.getModuleBtn(parms.id,parms.user,parms.modulename);
+        //debug(pageModel.modBtns,&#x27;page.C.list - pageModel.modBtns&#x27;);
         vb.queryHtml = await pageModel.htmlGetQuery();
         //      cmpage.debug(vb.queryHtml);
         //cmpage.debug(pageModel.mod, &#x27;controller.page.list - pageModel.mod&#x27;);
@@ -711,6 +713,8 @@ export default class extends Base {
         let module = cmpage.model(&#x27;cmpage/module&#x27;);
         let parms = await module.getModuleByName(this.get(&#x27;modulename&#x27;));
         parms.parmsUrl = this.get();
+        delete parms.parmsUrl[&#x27;_&#x27;];
+        parms.parmsUrl.readonly = false;
         parms.editID = think.isEmpty(this.get(&quot;id&quot;)) ? this.get(&quot;c_id&quot;) : this.get(&quot;id&quot;);
         parms.listIds = think.isEmpty(this.get(&#x27;listIds&#x27;)) ? &#x27;&#x27;:this.get(&#x27;listIds&#x27;);
         parms.user = await this.session(&#x27;user&#x27;);
@@ -734,14 +738,15 @@ export default class extends Base {
     }
 
     /**
-     * 业务模块的编辑页面，主从页面，一般调用： /cmpage/page/rec_edit?modulename=xxx
-     * @method  recEdit
+     * 业务模块的编辑页面，主从页面，一般调用： /cmpage/page/edit_ms?modulename=xxx
+     * @method  editMs
      * @return {promise}  HTML片段
      */
     async editMsAction() {
         let module = this.model(&#x27;module&#x27;);
         let parms = await module.getModuleByName(this.get(&#x27;modulename&#x27;));
         parms.parmsUrl = this.get();
+        delete parms.parmsUrl[&#x27;_&#x27;];
         parms.parmsUrl.readonly = false;
         parms.editID =  think.isEmpty(this.get(&quot;id&quot;)) ? this.get(&quot;c_id&quot;) : this.get(&quot;id&quot;);
         parms.user = await this.session(&#x27;user&#x27;);
@@ -834,6 +839,7 @@ export default class extends Base {
         this.assign(&#x27;btnHtml&#x27;,btnHtml);
         return this.display();
     }
+
     /**
      * 主从业务模块的查看页面，一般调用： /cmpage/page/view_ms?modulename=xxx
      * @method  viewMs
@@ -863,6 +869,30 @@ export default class extends Base {
     }
 
     /**
+     * 业务模块的编辑页面，主从页面，一般调用： /cmpage/page/print?modulename=xxx
+     * @method  print
+     * @return {promise}  HTML片段
+     */
+    async printAction() {
+        let module = this.model(&#x27;module&#x27;);
+        let parms = await module.getModuleByName(this.get(&#x27;modulename&#x27;));
+        parms.parmsUrl = this.get();
+        parms.parmsUrl.readonly = false;
+        parms.editID =  think.isEmpty(this.get(&quot;id&quot;)) ? this.get(&quot;c_id&quot;) : this.get(&quot;id&quot;);
+        parms.user = await this.session(&#x27;user&#x27;);
+        //cmpage.debug(page);
+        let pageModel = cmpage.model(parms.c_path);
+        pageModel.mod = parms;
+        await pageModel.initPage();
+        pageModel.modCols = await module.getModuleCol(parms.id);
+        let printHtml =await pageModel.htmlGetPrint();
+
+        this.assign(&#x27;printHtml&#x27;,printHtml);
+        this.assign(&#x27;mod&#x27;,pageModel.mod);
+        return this.display();
+    }
+
+    /**
      * 查找带回页面，一般调用： /cmpage/page/lookup?modulename=xxx&amp;multiselect=false
      * @method  lookup
      * @return {promise}  分页列表数据，字段是否返回的设置 c_isview (模块显示列设置)
@@ -882,6 +912,7 @@ export default class extends Base {
             parms.pageSize = parms.c_page_size;
             //cmpage.debug(http._get);
             parms.parmsUrl = this.get();
+            delete parms.parmsUrl[&#x27;_&#x27;];
             parms.query = parms.parmsUrl;
         }else{
             parms.modulename= this.post(&#x27;modulename&#x27;);
@@ -892,6 +923,7 @@ export default class extends Base {
             parms.pageIndex = this.post(&#x27;pageIndex&#x27;);
             parms.pageSize = this.post(&#x27;pageSize&#x27;);
             parms.parmsUrl = JSON.parse(this.post(&#x27;parmsUrl&#x27;));
+            delete parms.parmsUrl[&#x27;_&#x27;];
         }
         parms.user = await this.session(&#x27;user&#x27;);
         let pageModel = cmpage.model(parms.c_path);
@@ -977,6 +1009,7 @@ export default class extends Base {
             parms.pageIndex = 1;
             parms.pageSize = 50;    //parms.c_page_size;
             parms.parmsUrl = this.get();
+            delete parms.parmsUrl[&#x27;_&#x27;];
             parms.query = parms.parmsUrl;
         }
         parms.user = await this.session(&#x27;user&#x27;);

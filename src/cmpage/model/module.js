@@ -7,8 +7,12 @@
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
 
-import Base from './base.js';
-export default class extends think.model.base {
+const Base = require('./base.js');
+module.exports = class extends Base {
+    constructor(name, config = {}) {
+        const moduleModel = think.model('t_module','cmpage');
+        super(name,moduleModel.config);
+    }
 
     //数据库中字段的类型
     colTypes(){
@@ -50,7 +54,7 @@ export default class extends think.model.base {
         let config = think.config("db",undefined,thinkModule);
         let sql='';
         if( config.type === 'postgresql'){
-            sql = `SELECT    a.attnum,  a.attname AS field,  t.typname AS type,   case when a.attlen >0 then a.attlen else a.atttypmod end AS length,  a.attnotnull AS notnull,  col_description(a.attrelid,a.attnum) as comment
+            sql = `SELECT    a.attnum,  a.attname AS column,  t.typname AS type,   case when a.attlen >0 then a.attlen else a.atttypmod end AS length,  a.attnotnull AS notnull,  col_description(a.attrelid,a.attnum) as comment
                 FROM   pg_class c,   pg_attribute a,   pg_type t WHERE   c.relname = '${datasource}'  and a.attnum > 0  and a.attrelid = c.oid  and a.atttypid = t.oid `;;
         }else if(config.type === 'mssql'){
             sql = `SELECT a.colorder, a.name as [column],b.name as [type],collen=a.length
@@ -62,6 +66,7 @@ export default class extends think.model.base {
         }
         let ret =[];
         let list= await think.model('cmpage/base',config).query(sql);
+        debug(list,'module.getAllColumns - list');
         if(config.type === 'postgresql'){
             ret = list;
         }else if(config.type === 'mssql'){
@@ -95,6 +100,9 @@ export default class extends think.model.base {
             //}else {
             //    col.type = 'varchar';
             }
+            if(config.type === 'mysql'){
+                col.length = 0;
+            }
         }
         return ret;
     }
@@ -112,8 +120,8 @@ export default class extends think.model.base {
         if(moduleID <=0){
             return {statusCode:300,message:'模块不存在！'};
         }
-        let md = await this.model('t_module').where({id:moduleID}).find();
-        let model =this.model('t_module_col');
+        let md = await this.model('t_module','cmpage').where({id:moduleID}).find();
+        let model =this.model('t_module_col','cmpage');
 
         //await model.where({c_module: md.id}).delete();
         let columns = await this.getAllColumns(md.c_datasource,md.c_table,md.c_path);
@@ -154,8 +162,8 @@ export default class extends think.model.base {
         if(moduleID <=0){
             return {statusCode:300,message:'模块不存在！'};
         }
-        let md = await this.model('t_module').where({id:moduleID}).find();
-        let model =this.model('t_module_edit');
+        let md = await this.model('t_module','cmpage').where({id:moduleID}).find();
+        let model =this.model('t_module_edit','cmpage');
 
         //await model.where({c_module: md.id}).delete();
         let columns = await this.getAllColumns(md.c_datasource,md.c_table,md.c_path);
@@ -197,8 +205,8 @@ export default class extends think.model.base {
         if(moduleID <=0){
             return {statusCode:300,message:'模块不存在！'};
         }
-        let md = await this.model('t_module').where({id:moduleID}).find();
-        let model =this.model('t_module_query');
+        let md = await this.model('t_module','cmpage').where({id:moduleID}).find();
+        let model =this.model('t_module_query','cmpage');
         //await model.where({c_module: md.id}).delete();
         let columns = await this.getAllColumns(md.c_datasource,md.c_table,md.c_path);
         if(columns.length ===0){    return {statusCode:200,message:'没有列数据，请确认数据连接是否正确。'}; }
@@ -232,8 +240,8 @@ export default class extends think.model.base {
         if(moduleID <=0){
             return {statusCode:300,message:'模块不存在！'};
         }
-        let md = await this.model('t_module').where({id:moduleID}).find();
-        let model =this.model('t_module_btn');
+        let md = await this.model('t_module','cmpage').where({id:moduleID}).find();
+        let model =this.model('t_module_btn','cmpage');
         //await model.where({c_module: md.id}).delete();
         let colnames = cmpage.arrGetValuesByColumnName(await this.getModuleBtn(moduleID),'c_object');
 
@@ -274,29 +282,6 @@ export default class extends think.model.base {
         return {statusCode:200,message:''};
     }
 
-//    //按模块名称和ID取模块设置，放入缓存
-//    async setModuleCache(){
-//        let isSet = await think.cache('isSetModuleCache');
-//        if(think.isEmpty(isSet)) {
-//            let modules = await this.query('select * from t_module where c_status=0 order by id');
-//            //let modules = await this.model('t_module').where({c_status:0}).order('id asc').select();
-////        cmpage.debug(modules);
-//            for (let module of modules) {
-//                let moduleCol = await    this.query(`select * from t_module_col where c_module=${module.id} order by c_order`);
-//                let moduleQuery = await  this.query(`select * from t_module_query where c_module=${module.id} order by c_order`);
-//                let moduleEdit = await   this.query(`select * from t_module_edit where c_module=${module.id} order by c_order`);
-//                let moduleBtn = await   this.query(`select * from t_module_btn where c_module=${module.id} order by c_location`);
-//
-//                await think.cache(`module${module.id}`, module);
-//                await think.cache(`modulename${module.c_modulename}`, module);
-//                await think.cache(`moduleCol${module.id}`, moduleCol);
-//                await think.cache(`moduleQuery${module.id}`, moduleQuery);
-//                await think.cache(`moduleEdit${module.id}`, moduleEdit);
-//                await think.cache(`moduleBtn${module.id}`, moduleBtn);
-//            }
-//            await think.cache('isSetModuleCache', 'true');
-//        }
-//    }
     //清空模块缓存
     async clearModuleCache(){
         let modules = await this.query('select * from t_module where c_status=0 order by id');
@@ -322,20 +307,6 @@ export default class extends think.model.base {
     }
 
     //拷贝模块信息
-    // async copyToNewModule(modulename){
-    //     let list = await this.query(`select * from t_module where c_modulename ='${modulename}_copy'`);
-    //     if(list.length >0) {
-    //         return {statusCode: 300, message: `模块 ${modulename}_copy 已经存在！`};
-    //     }
-    //
-    //     if(think.config('db.type')==='postgresql'){
-    //         await this.query(`select p_module_copy('${modulename}')`);
-    //     }else{
-    //         await this.query(`call p_module_copy('${modulename}')`);
-    //     }
-    //
-    //     return {statusCode: 200, message: `模块复制成功！`};
-    // }
     async copyToNewModule(modulename,newName){
         newName = think.isEmpty(newName) ? modulename+'_copy':newName;
         let list = await this.query(`select * from t_module where c_modulename='${modulename}'`);
@@ -348,7 +319,7 @@ export default class extends think.model.base {
         delete rec.id;
         rec.c_modulename = newName;
 
-        let newID = await this.model('t_module').add(rec);
+        let newID = await this.model('t_module','cmpage').add(rec);
         if(newID ==0 )  return {statusCode: 300, message: `增加新模块信息失败！`};
 
         //复制 cols
@@ -356,14 +327,14 @@ export default class extends think.model.base {
         for(let md of list){
             md.c_module = newID;
             delete md.id;
-            await this.model('t_module_col').add(md);
+            await this.model('t_module_col','cmpage').add(md);
         }
         //复制 querys
         list = await this.query(`select * from t_module_query where c_module=${oldID}`);
         for(let md of list){
             md.c_module = newID;
             delete md.id;
-            await this.model('t_module_query').add(md);
+            await this.model('t_module_query','cmpage').add(md);
         }
         if(newName.indexOf('Lookup') < 0){      //查找带回的模块设置不需要按钮和编辑列的设置
             //复制 btns
@@ -372,14 +343,16 @@ export default class extends think.model.base {
                 md.c_module = newID;
                 delete md.id;
                 md.c_object = md.c_object.replace(modulename, newName);
-                await this.model('t_module_btn').add(md);
+                md.c_url = md.c_url.replace(modulename, newName);
+                md.c_options = md.c_options.replace(modulename, newName);
+                await this.model('t_module_btn','cmpage').add(md);
             }
             //复制 edits
             list = await this.query(`select * from t_module_edit where c_module=${oldID}`);
             for(let md of list){
                 md.c_module = newID;
                 delete md.id;
-                await this.model('t_module_edit').add(md);
+                await this.model('t_module_edit','cmpage').add(md);
             }
         }
         return {statusCode: 200, message: `模块复制成功！`};
@@ -447,6 +420,7 @@ export default class extends think.model.base {
         }
         return {statusCode: 200, message: `模块复制成功！`};
     }
+
     /*******************从缓存中取模块设置，如果没有，则刷新缓存********--begin--****************/
     async getModuleById(moduleID){
         let col= await think.cache(`module${moduleID}`, () => {
@@ -467,7 +441,7 @@ export default class extends think.model.base {
 
     async getModuleByName(modulename){
         return await think.cache(`modulename${modulename}`, () => {
-            return this.model('t_module').where({c_modulename:modulename,c_status:0}).find();  //query(`select * from t_module where c_modulename = '${modulename}' and c_status=0`);
+            return this.model('t_module','cmpage').where({c_modulename:modulename,c_status:0}).find();  //query(`select * from t_module where c_modulename = '${modulename}' and c_status=0`);
         });
     }
     async getAliasByName(modulename){
@@ -494,6 +468,7 @@ export default class extends think.model.base {
         });
         for(let col of cols){
             col.c_isshow = think.isBoolean(col.c_isshow) ? col.c_isshow : (col.c_isshow === 1);
+            col.c_editable = think.isBoolean(col.c_editable) ? col.c_editable : (col.c_editable === 1);
             col.c_isrequired = think.isBoolean(col.c_isrequired) ? col.c_isrequired : (col.c_isrequired === 1);
         }
         return cols;
@@ -508,7 +483,7 @@ export default class extends think.model.base {
         return cols;
     }
     async getModuleBtn(moduleID,user,objname){
-        let cols = await think.cache(`moduleBtn${moduleID}`, () => {
+        let btns = await think.cache(`moduleBtn${moduleID}`, () => {
             return this.query(`select * from t_module_btn where c_module = ${moduleID} order by c_location`);
         });
         let privileges = [];
@@ -522,17 +497,19 @@ export default class extends think.model.base {
             }
             privileges = await cmpage.model('admin/privilege').userGetPrivilegeTree(user.id, user.c_role,rootID );
         }
-        for(let col of cols){
+        for(let col of btns){
             col.c_isshow = think.isBoolean(col.c_isshow) ? col.c_isshow : (col.c_isshow === 1);
-            //验证用户权限, 允许优先原则
-            for(let priv of privileges){
-                if(priv.c_object === col.c_object){
-                    col.c_isshow = priv.isAllow;
-                    break;
+            if(col.c_isshow){
+                //验证用户权限, 允许优先原则
+                for(let priv of privileges){
+                    if(priv.c_object === col.c_object){
+                        col.c_isshow = priv.isAllow;
+                        break;
+                    }
                 }
             }
         }
-        return cols;
+        return btns;
     }
     /*******************从缓存中取模块设置，如果没有，则刷新缓存********--end--****************/
 

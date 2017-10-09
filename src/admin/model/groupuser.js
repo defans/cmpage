@@ -15,9 +15,9 @@
  * 账套与用户操作类，并配合界面操作输出相应HTML，
  * @class admin.model.groupuser
  */
-import CMPage from '../../cmpage/model/page.js';
+const CMPage = require('../../cmpage/model/page.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
 
     /**
      * 重写父类的 htmlGetOther 方法，输出额外的按钮和js函数
@@ -71,32 +71,51 @@ export default class extends CMPage {
      * @param {int} groupID  当前登录的账套ID
      */
     async getLoginGroups(groupID,userID){
-        //假设账套不超过3层
         let codeModel = cmpage.model('admin/code');
         let cnt = await this.model('t_group_user').where({c_group:groupID, c_user:userID}).count();
-        if(cnt == 0){
-            let groupMd = await codeModel.getCodeById(groupID);
+        let k = 1;
+        let groupMd = await codeModel.getCodeById(groupID);
+        if(!groupMd && userID!=1){
+            return '';
+        }
+        //假设账套不超过 4 层
+        while(k <5 && cnt ==0){
+            //debug(groupMd,'admin.groupuser - groupMd');
             if(!groupMd || groupMd.c_pid==0){
                 return '';
             }
             cnt = await this.model('t_group_user').where({c_group:groupMd.c_pid, c_user:userID}).count();
-            if(cnt == 0) {
-                let groupMd = await codeModel.getCodeById(groupMd.c_pid);
-                if (!groupMd || groupMd.c_pid == 0) {
-                    return '';
-                }
-                cnt = await this.model('t_group_user').where({c_group:groupMd.c_pid, c_user:userID}).count();
-                if(cnt ==0 ){
-                    return '';
-                }
-            }
+            groupMd = await codeModel.getCodeById(groupMd.c_pid);
+            k += 1;
         }
+        if(cnt ==0 && userID!=1) return '';
+
         let groups = await codeModel.getTreeList(groupID);
-        //cmpage.debug(groups,'groupuser.getLoginGroups - grous');
+        //debug(groups,'groupuser.getLoginGroups - groups');
         let ret = [];
         ret.push(groupID);
         for(let group of groups){ ret.push(group.id); }
 
         return ret.join(',');
     }
+
+    /**
+     * 取某个用户的默认账套ID
+     * @method  getDefaultGroupID
+     * @return {int}  默认账套ID
+     * @param {int} userID  用户ID
+     * @param {int} groupID  待验证的账套ID，如果通过则返回
+     */
+    async getDefaultGroupID(userID,groupID){
+        if(userID == 1)  return 2;   //超级管理员指定为最大账套
+        if(!think.isEmpty(groupID)){
+            let cnt = await this.model('t_group_user').where({c_group:groupID, c_user:userID}).count();
+            if(cnt >0)  return groupID;
+        }else{
+            let list = await this.model('t_group_user').where({c_user:userID}).select();
+            if(list.length >0)  return list[0].c_group;
+            return 0;
+        }
+    }
+
 }

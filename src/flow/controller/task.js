@@ -5,9 +5,9 @@
  * 提供工作流引擎的URL调用接口
  * @class flow.controller.task
  */
-import Base from './base.js';
+const Base = require('./base.js');
 
-export default class extends Base {
+module.exports = class extends Base {
     /**
      * 启动一个新的流程实例, GET调用：/flow/task/start?procID=xxx
      * @method  start
@@ -17,7 +17,7 @@ export default class extends Base {
         let procID = this.get('procID');
         let ret = {statusCode:300,message:'流程模板不存在或设置有错误!',task:{}};
 
-        let procModel = this.model('proc');
+        let procModel = cmpage.model('flow/proc');
         await procModel.fwInit(0,await this.session('user'),procID);
         await procModel.fwStart();
 
@@ -28,10 +28,10 @@ export default class extends Base {
 //            ret.message = task.message;
             return this.json(ret);
         }
-        let utilsModel = this.model('cmpage/utils');
+        let utilsModel = cmpage.model('cmpage/utils');
         ret = {statusCode:200,message:`流程已经${await utilsModel.getEnumName(task.c_status,'TaskStatus')}!`,task:task, currAct:currAct, currTaskAct:currTaskAct};
         if(task.c_status === cmpage.enumTaskStatus.RUN){
-            ret.message = `当前节点:${await this.model('act').getNameById(currAct.id)},
+            ret.message = `当前节点:${await cmpage.model('act').getNameById(currAct.id)},
                             状态${await utilsModel.getEnumName(currAct.c_status,'TaskActStatus')}`;
             if(currTaskAct.c_status === cmpage.enumTaskActStatus.WAIT && !think.isEmpty(currAct.c_form)){
                 //根据设定弹出相关界面
@@ -64,10 +64,10 @@ export default class extends Base {
     async runAction(){
         let user = await this.session('user');
         let taskID = this.get('taskID');
-        let procModel = this.model('proc');
+        let procModel = cmpage.model('flow/proc');
         await procModel.fwInit(procID,await this.session('user'));
 
-        let task = await this.model('proc').fwRun(taskID,user);
+        let task = await cmpage.model('flow/proc').fwRun(taskID,user);
 
         return this.json({statusCode:200,message:'流程重新运行成功!',task:task});
     }
@@ -81,7 +81,7 @@ export default class extends Base {
         let user = await this.session('user');
         let taskID = this.get('taskID');
 
-        let task = await this.model('proc').fwSuspend(taskID,user);
+        let task = await cmpage.model('flow/proc').fwSuspend(taskID,user);
 
         return this.json({statusCode:200,message:'流程已成功挂起!',task:task});
     }
@@ -95,7 +95,7 @@ export default class extends Base {
         let user = await this.session('user');
         let taskID = this.get('taskID');
 
-        let task = await this.model('proc').fwTerminate(taskID,user);
+        let task = await cmpage.model('flow/proc').fwTerminate(taskID,user);
 
         return this.json({statusCode:200,message:'流程已成功终止!',task:task});
     }
@@ -105,10 +105,10 @@ export default class extends Base {
      * @method  autoExec
      * @return {json}  状态消息
      */
-    async autoExecAction(){
+    async auto_execAction(){
         if(!cmpage.flow.autoExecuting){
             cmpage.flow.autoExecuting =true;
-            await this.model('act').fwAutoExec();
+            await cmpage.model('flow/act').fwAutoExec();
             cmpage.flow.autoExecuting =false;
             return this.json({statusCode:200,message:'流程的自动执行操作成功!'});
         }
@@ -121,9 +121,9 @@ export default class extends Base {
         return this.display();
     }
 
-    async flowMapAction(){
+    async flow_mapAction(){
         let taskID = this.get("taskID");
-        let flowMap = await this.model('task').getFlowMap(taskID);
+        let flowMap = await cmpage.model('flow/task').getFlowMap(taskID);
         this.assign('flowMap',flowMap);
 
         return this.display();

@@ -1,8 +1,8 @@
 'use strict';
 
-import Base from './base.js';
+const Base = require('./base.js');
 
-export default class extends Base {
+module.exports = class extends Base {
   /**
    * index action
    * @return {Promise} []

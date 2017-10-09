@@ -23,7 +23,7 @@
  * 提供 thinkjs 的校验
  * @class cmpage.logic.page
  */
-export default class extends think.logic.base {
+module.exports = class extends think.Logic {
     /**
      * 调用 cmpage/page/save 之前系统自动调用本方法验证表单数据
      * @method  save
@@ -31,20 +31,22 @@ export default class extends think.logic.base {
      */
     async saveAction(){
         let parms =this.post();
-        let module = this.model('module');
+        let moduleModel = this.model('module');
 
-        let page = await module.getModuleByName(parms.modulename);
-        let pageEdits = await module.getModuleEdit(page.id);
+        let page = await moduleModel.getModuleByName(parms.modulename);
+        let pageEdits = await moduleModel.getModuleEdit(page.id);
       let rules = {};
-      for(let edit of pageEdits){
-          if(edit.c_editable && !think.isEmpty(edit.c_validate_rules)){
-              rules[edit.c_column] = edit.c_validate_rules;
+      for(let edit of pageEdits){ 
+          if(edit.c_editable && !think.isEmpty(edit.c_validate_rules)){      
+              let rule = eval('('+edit.c_validate_rules+')');
+              rule.aliasName = edit.c_name;
+              rules[edit.c_column] = rule;
           }
       }
-      //console.log('validate rules: '+JSON.stringify(rules));
-       if(! this.validate(rules)){
-            //let errs =this.errors();
-            return this.json({statusCode:300, message:'校验未通过:  '+ Object.values(this.errors()).join(', ') });
+       debug(rules, 'page.L.cmpage - rules: '+JSON.stringify(rules));
+       if(!think.isEmpty(rules) && !this.validate(rules)){
+            debug(this.validateErrors,'page.L.cmpage - validateErrors');
+            return this.json({statusCode:300, message: Object.values(this.validateErrors)[0] });
         }
     }
 }

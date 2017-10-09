@@ -1,0 +1,41 @@
+
+
+<div class="bjui-pageContent">
+    <form id="pwdEditForm" method="post" action="/admin/index/login_pwd_edit" data-toggle="validate" data-alertmsg="false">
+        <table class="table table-condensed table-hover" width="100%">
+            <tbody>
+            <tr><td>
+                <label>目前密码：</label>
+                <input type="password" id="oldPwd" name="oldPwd"  size="25"  data-rule="required"/>
+            </td></tr>
+            <tr><td>
+                <label>新的密码：</label>
+                <input type="password" id="newPwd" name="newPwd"  size="25" data-rule="required" />
+            </td></tr>
+            <tr><td>
+                <label>确认密码：</label>
+                <input type="password" id="confirmPwd" name="confirmPwd"  size="25" data-rule="required"/>
+            </td></tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter" >
+    <ul>
+        <li><button type="button" class="btn btn-close" data-icon="close">关闭</button></li>
+        <li ><button type="button" class="btn btn-green" data-icon="save" onclick="return pwdEdit_checkForm(this);">保存</button></li>
+    </ul>
+</div>
+<script type="text/javascript" >
+
+    function pwdEdit_checkForm(obj) {
+        if ($("#confirmPwd").val() != $("#newPwd").val()) {
+            $(obj).alertmsg('error',"两次输入的新密码不一致",{});
+            $("#confirmPwd").focus();
+            return false;
+        }
+
+        $("#pwdEditForm").submit();
+        return true;
+    }
+</script>

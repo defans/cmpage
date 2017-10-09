@@ -573,7 +573,7 @@ export default class extends CMPage {
         }else{
             let value = 0;
             for(let col of this.modCols){
-                if (col.c_isview &amp;&amp; col.c_desc == this.pk) {
+                if (col.c_isview ) {    //&amp;&amp; col.c_desc == this.pk  取第一个返回字段值
                     value = rec[col.c_column];
                     break;
                 }

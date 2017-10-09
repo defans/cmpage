@@ -9,12 +9,13 @@
         <button type="button" class="btn-default" data-toggle="tableditadd" data-target="#moduleEditList" data-num="1" data-icon="plus">添加编辑列</button>&nbsp;
         <div class="pull-right">
             <button type="button" class="btn-green" data-icon="save" onclick="$('#commpageEditForm').submit();">保存设置</button>
+            <button type="button" class="btn-default" data-icon="search" onclick="$(this).navtab('refresh');">刷新</button>
             <button type="button" class="btn-close" data-icon="external-link">关 闭</button>
         </div>
     </div>
 </div>
 <div class="bjui-pageContent">
-    <form id="commpageEditForm" action="/cmpage/module/edit_save" class="pageForm" data-toggle="validate" data-alertmsg="false">
+    <form id="commpageEditForm" action="/cmpage/module/edit_save" class="pageForm" data-toggle="validate" data-alertmsg="false" data-reload="false">
         <input name="c_module" type="hidden" value="<%= md.id%>"  />
         <table id="moduleEditList" class="table table-bordered table-hover table-striped table-top" data-toggle="tabledit" data-initnum="0" >
             <thead>
@@ -73,7 +74,8 @@
                     <td ><%= item.c_memo%></td>
                     <!--<td ><%= item.c_other%></td>-->
                     <td data-noedit="true">
-                        <a href="/cmpage/module/delete?id=<%= item.id%>&table=t_module_edit&flag=true" class="btn btn-red row-del" data-confirm-msg="确定要删除该行信息吗？">删</a>
+                        <a href="/cmpage/module/delete?id=<%= item.id%>&table=t_module_edit&flag=true" class="btn btn-red row-del"
+                             data-icon="times" data-title="删除" data-confirm-msg="确定要删除该行信息吗？"></a>
                     </td>
                 </tr>
             <% })%>

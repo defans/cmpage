@@ -10,7 +10,7 @@
     用户及权限系统的controller模块，实现了对外的URL接口，包括PC端和移动端
 
  注意点 :
- 1. base.js继承自 think.controller.base;
+ 1. base.js继承自 think.Controller;
  2. 其他controller 继承自 base.js;
  3. 移动端APP的菜单是单独设置的，要单独配置各个角色和用户的权限；
  4. 移动端和PC端的版本是分开设置的;
@@ -23,7 +23,7 @@
  * 提供一些子类的公共方法
  * @class admin.controller.base
  */
-export default class extends think.controller.base {
+module.exports =  class extends think.Controller {
     /**
      本模块的所有action执行前的检查项
      @method  __before
@@ -32,19 +32,19 @@ export default class extends think.controller.base {
   async __before(){
     //部分 action 下不检查
     let blankActions = ["login","get_groups","keep_connect_db","timer_start","timer_stop"];
-    //console.log(this.http.action);
-    if(blankActions.indexOf(this.http.action) >=0){
+    //console.log(this.ctx.action);
+    if(blankActions.indexOf(this.ctx.action) >=0){
       return;
     }
-    //console.log(this.http.url);
+    //console.log(this.ctx.url);
     let user = await this.session("user");
     //判断 session 里的 userInfo
     if(think.isEmpty(user)){
-        if(this.http.controller === 'mob'){
+        if(this.ctx.url.indexOf('/mob/') >0){
             return this.json({ id :0, msg : "用户名或密码错误！" });
         }else{
             return this.redirect("/admin/index/login");
         }
     }
   }
-}
+};

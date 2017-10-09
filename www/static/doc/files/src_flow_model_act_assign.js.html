@@ -613,7 +613,7 @@ export default class extends CMPage {
             if(md.c_type == cmpage.enumActAssignType.DEPT &amp;&amp; md.c_link == user.c_dept ||
                 md.c_type == cmpage.enumActAssignType.ROLE &amp;&amp; md.c_link == user.c_role ||
                 md.c_type == cmpage.enumActAssignType.USER &amp;&amp; md.c_link == user.id ||
-                md.c_type == cmpage.enumActAssignType.TEAM &amp;&amp; await this.model(&#x27;admin/teamuser&#x27;).isTeamMember(md.c_link, user.id) ||
+                md.c_type == cmpage.enumActAssignType.TEAM &amp;&amp; await cmpage.model(&#x27;admin/teamuser&#x27;).isTeamMember(md.c_link, user.id) ||
                 md.c_type == cmpage.enumActAssignType.SELF &amp;&amp; user.id == createrID ){
                     //debug(md,&#x27;act_assign.getAssignByUser - md&#x27;);
                 return md;
@@ -633,9 +633,9 @@ export default class extends CMPage {
         //debug(id,&#x27;act_assign.getLinkNameById - id&#x27;);
         //debug(linkType,&#x27;act_assign.getLinkNameById - linkType&#x27;);
         if (linkType == cmpage.enumProcAssignType.DEPT || linkType == cmpage.enumProcAssignType.ROLE || linkType == cmpage.enumProcAssignType.TEAM){
-            ret = await this.model(&#x27;admin/code&#x27;).getNameById(id);
+            ret = await cmpage.model(&#x27;admin/code&#x27;).getNameById(id);
         }else if (linkType == cmpage.enumProcAssignType.USER ){
-            ret = await this.model(&#x27;admin/user&#x27;).getNameById(id);
+            ret = await cmpage.model(&#x27;admin/user&#x27;).getNameById(id);
         }
         return ret;
     }

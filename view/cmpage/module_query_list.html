@@ -16,7 +16,7 @@
     </div>
 </div>
 <div class="bjui-pageContent">
-    <form id="commpageQueryForm" action="/cmpage/module/query_save" class="pageForm" data-toggle="validate" data-alertmsg="false">
+    <form id="commpageQueryForm" action="/cmpage/module/query_save" class="pageForm" data-toggle="validate" data-alertmsg="false" data-reload="false">
         <input name="c_module" type="hidden" value="<%= md.id%>"  />
         <table id="moduleQueryList" class="table table-bordered table-hover table-striped table-top" data-toggle="tabledit" data-initnum="0" >
             <thead>
@@ -79,7 +79,8 @@
                     <td ><%= item.c_memo%></td>
                     <!-- <td ><%= item.c_mui%></td> -->
                     <td data-noedit="true">
-                        <a href="/cmpage/module/delete?id=<%= item.id%>&table=t_module_query&flag=true" class="btn btn-red row-del" data-confirm-msg="确定要删除该行信息吗？">删</a>
+                        <a href="/cmpage/module/delete?id=<%= item.id%>&table=t_module_query&flag=true" class="btn btn-red row-del"
+                             data-icon="times" data-title="删除" data-confirm-msg="确定要删除该行信息吗？"></a>
                     </td>
                 </tr>
             <% })%>

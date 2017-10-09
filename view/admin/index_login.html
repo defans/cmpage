@@ -7,7 +7,7 @@
     <title>CmPage 系统登录</title>
     <meta name="renderer" content="webkit">
 <script src="/static/bjui/js/jquery-1.11.3.min.js"></script>
-<!--<script src="/static/bjui/js/jquery.cookie.js"></script>-->
+<script src="/static/bjui/js/jquery.cookie.js"></script>
 <link href="/static/bjui/themes/css/bootstrap.min.css" rel="stylesheet">
 <style type="text/css">
     html, body { height: 100%; overflow: hidden; }
@@ -21,7 +21,7 @@
     .login_msg{height:30px;}
     .input-group >.input-group-addon.code{padding:0;}
     #captcha_img{cursor:pointer;}
-    .main_box .logo img{height:35px;}
+    .main_box .logo img{height:35px;margin-top: 10px;}
     @media (min-width: 768px) {
         .main_box {margin-left:-240px; padding:15px 55px; width:480px;}
         .main_box .logo img{height:40px;}
@@ -45,26 +45,26 @@
 <div class="main_box">
     <form action="/admin/index/login" id="login_form" method="post">
         <p class="text-center logo"><img src="/static/images/logo.png" height="45"></p>
-        <div class="form-group" style="margin-top:20px;">
+        <!-- <div class="form-group" style="margin-top:20px;">
             <div class="input-group">
                 <span class="input-group-addon" ><span class="glyphicon glyphicon-home"></span></span>
                 <select name="loginGroup" data-toggle="selectpicker" class="form-control x319 in">
-                <% vb.groups.forEach(function(item){  %>
-                    <option value="<%= item.id%>"><%= item.c_name%></option>
-                <% })%>
+                 vb.groups.forEach(function(item){
+                    <option value=" item.id"> item.c_name</option>
+                 })
                 </select>
             </div>
-        </div>
-        <div class="form-group">
+        </div> -->
+        <div class="form-group" style="margin-top:30px;">
             <div class="input-group">
                 <span class="input-group-addon" ><span class="glyphicon glyphicon-user"></span></span>
-                <input type="text" class="form-control" id="loginName" name="loginName" value="" placeholder="登录名" aria-describedby="sizing-addon-user">
+                <input type="text" class="form-control" id="loginName" name="loginName" value="<%= vb.loginName%>" placeholder="登录名" aria-describedby="sizing-addon-user">
             </div>
         </div>
         <div class="form-group">
             <div class="input-group">
                 <span class="input-group-addon" ><span class="glyphicon glyphicon-lock"></span></span>
-                <input type="password" class="form-control" id="loginPwd" name="loginPwd" placeholder="登录密码" aria-describedby="sizing-addon-password">
+                <input type="password" class="form-control" id="loginPwd" name="loginPwd" value="<%= vb.loginPwd%>" placeholder="登录密码" aria-describedby="sizing-addon-password">
             </div>
         </div>
         <div class="form-group">
@@ -93,6 +93,9 @@
 <script type="text/javascript">
     choose_bg();
     var code ; //在全局 定义验证码
+    var fontsize = $.cookie('bjui_font') || 'bjui-font-d';
+    $.cookie('bjui_font',fontsize);
+
     function createCode(){
         code = "";
         var codeLength = 4;//验证码的长度

@@ -12,8 +12,13 @@
  * 根据流程模板中的实现类设置，调用具体业务相关的类来实现具体功能
  * @class flow.model.proc
  */
-export default class extends think.model.base {
-    taskModel = null;   //当前流程实例的对象
+ const Base =require('../../cmpage/model/base.js');
+ module.exports = class extends Base {
+    constructor(name, config = {}) {
+        const moduleModel = think.model('t_module','cmpage');
+        super(name,moduleModel.config);
+        this.taskModel = null;   //当前流程实例的对象
+    }
 
     /**
      * 开始一个新的流程实例</br>
@@ -105,7 +110,7 @@ export default class extends think.model.base {
     async fwInit(taskID,user,procID){
         let task = taskID >0 ? await this.model('fw_task').where({id:taskID}).find() : {};
         let proc = await this.getProcById(taskID >0 ? task.c_proc : procID);
-        this.taskModel = this.model(think.isEmpty(proc.c_class) ? 'flow/task' : proc.c_class);
+        this.taskModel = cmpage.model(think.isEmpty(proc.c_class) ? 'flow/task' : proc.c_class);
         this.taskModel.proc = proc;
         this.taskModel.task = task;
         this.taskModel.user = think.isEmpty(user) ? await think.session('user') : user;

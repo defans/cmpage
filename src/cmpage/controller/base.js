@@ -11,7 +11,7 @@
  业务模块配置和展示系统的controller模块，实现了对外的URL接口，包括PC端和移动端
 
  注意点 :
- 1. base.js继承自 think.controller.base;
+ 1. base.js继承自 think.Controller;
  2. 其他controller 继承自 base.js;
  3. 具体的业务模块可以继承并扩展 cmpage/model/page.js 来实现业务逻辑
  4. 移动端、主从页、查找带回等页面都是从 cmpage/model/page.js 继承，具体的业务模块请适当选择基类
@@ -25,7 +25,7 @@
  * 提供一些子类的公共方法
  * @class cmpage.controller.base
  */
-export default class extends think.controller.base {
+module.exports = class extends think.Controller {
     /**
      * 删除记录的URL接口，调用： /cmpage/xxx/delete?id=xxx
      * @method  delete
@@ -33,7 +33,7 @@ export default class extends think.controller.base {
      */
     async deleteAction(){
     let ret={statusCode:200,message:'',data:{}};
-    let parms =this.http.query;
+    let parms =this.ctx.querystring;
     cmpage.debug(parms);
 
     let model = this.model(parms.table);
@@ -56,14 +56,14 @@ export default class extends think.controller.base {
   async __before(){
     //部分 action 下不检查,
     let blankActions = ["clear_cache"];
-    if(blankActions.indexOf(this.http.action) >=0){
+    if(blankActions.indexOf(this.ctx.action) >=0){
       return;
     }
 
     let user = await this.session("user");
     //判断 session 里的 userInfo
     if(think.isEmpty(user)){
-      if(this.http.controller === 'mob'){
+      if(this.ctx.url.indexOf('/mob/') >0){
         return this.json({ id :0, msg : "用户名或密码错误！" });
       }else{
         return this.redirect("/admin/index/login");

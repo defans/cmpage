@@ -17,12 +17,13 @@
  * @class docu.model.goods
  */
 
-import CMPage from '../../cmpage/model/page.js';
+const CMPage = require('../../cmpage/model/page.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
 
     constructor(name, config = {}) {
         super(name,config);
+        this.mod = {c_table:'t_goods'};
         this.pk ='c_id';
     }
 
@@ -41,6 +42,5 @@ export default class extends CMPage {
 
         return await super.pageDelete();
     }
-
 
 }

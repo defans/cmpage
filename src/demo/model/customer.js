@@ -8,9 +8,9 @@
 // +----------------------------------------------------------------------
 
 
-import CMPage from '../../cmpage/model/page_mob.js';
+const CMPage = require('../../cmpage/model/page_mob.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
     /**
      * 取查询项的设置，结合POST参数，得到Where字句
      */

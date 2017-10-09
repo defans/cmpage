@@ -5,9 +5,9 @@
         <input name="modulename" type="hidden" value="<%= parms.c_modulename%>" />
         <input name="parmsUrl" type="hidden" value="<%= JSON.stringify(parms.parmsUrl)%>" />
         <!-- <div id="edit<%= parms.c_modulename%>Table" class="bjui-row col-<%= parms.parmsUrl.id ==0 ? 1 : parms.c_edit_column%>"> -->
-        <div id="edit<%= parms.c_modulename%>Table" class="bjui-row col-<%= parms.c_edit_column%>">
+        <!-- <div id="edit<%= parms.c_modulename%>Table" class="bjui-row col-<%= parms.c_edit_column%>"> -->
             <%- editHtml%>
-        </div>
+        <!-- </div> -->
     </form>
         <%- tabsHtml%>
 

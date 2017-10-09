@@ -14,10 +14,9 @@
  * admin.controller的index类，提供了PC端后台管理系统的用户登录、菜单显示等URL接口
  * @class admin.controller.index
  */
-import Base from './base.js';
-import request from 'request';
+const Base = require('./base.js');
 
-export default class extends Base {
+module.exports = class extends Base {
   /**
    * 系统首页，加载符合权限的菜单、加载前端BJUI框架等
    * @method  index
@@ -26,18 +25,26 @@ export default class extends Base {
   async indexAction(){
     //auto render template file index_index.html
     let user = await this.session('user');
-     // console.log(user);
-      let codeMd =await this.model('code').getCodeById(344);    //系统版本
-    let vb={groupName:user.groupName,version:codeMd.c_desc,userName:user.c_name,title:'CmPage by defans'};
-    let menus = await this.model('privilege').userGetPrivilegeTree(user.id,user.c_role);
+    //debug(user,'admin.C.index - index.user');
+    let codeMd =await cmpage.model('admin/code').getCodeById(344);    //系统版本
+    let vb={groupName:user.groupName,version:codeMd.c_desc,title:'CmPage by defans'};
+    user.roleName = await cmpage.model('admin/code').getNameById(user.c_role);
+    vb.userName = `${user.c_name} [${user.groupName}--${user.roleName}]`;
+    let menus = await cmpage.model('admin/privilege').userGetPrivilegeTree(user.id,user.c_role);
 
       //取主菜单
       let menuHtml = [];
+      if(think.env === 'development'){
+          menuHtml.push(`<li>
+              <a data-toggle="navtab" style="cursor: pointer;"
+                      data-options="{id:'module_setting', url:'/cmpage/module/index', title:'模块配置', external:true}">模块界面配置</a>
+          </li>`);
+      }
       let firstMenu = true;
       for(let menu of menus){
           if(menu.c_type === 'N' && menu.c_pid ===1 ){
               menuHtml.push(`<li ${firstMenu ? 'class="active"':''}><a href="/admin/index/get_menu?root_id=${menu.id}" data-toggle="sidenav"
-                     data-tree-options="{onClick:MainMenuClick}" data-id-key="targetid">${menu.c_name}</a></li>`)
+                     data-tree-options="{onClick:MainMenuClick}" data-id-key="targetid" >${menu.c_name}</a></li>`)
               firstMenu = false;
           }
       }
@@ -52,21 +59,22 @@ export default class extends Base {
      * @method  loginPwdEdit
      * @return {Promise}
      */
-    async getMenuAction(){
+    async get_menuAction(){
         let user = await this.session('user');
         let rootID = this.get('root_id');
-        let menus = await this.model('privilege').userGetPrivilegeTree(user.id,user.c_role,rootID);
+        let menus = await cmpage.model('admin/privilege').userGetPrivilegeTree(user.id,user.c_role,rootID);
+        //debug(menus,'admin.index.getMenuAction - menus');
         let ret =[];
         let nav = [];
         for(let menu of menus){
-            if(menu.c_pid === rootID && menu.c_type === 'M'){
-                menu.external = (menu.c_object === 'Module');
+            if(menu.c_pid === rootID && menu.c_type === 'M' && menu.isAllow){
+                menu.external = (menu.c_object === 'Module') || (menu.c_desc.indexOf('http')==0);
                 nav.push({id:`page${menu.c_object.split('.').join('')}`, name:menu.c_name, target:'navtab',
                     url:menu.c_desc, external:menu.external});
             }
         }
         if(nav.length >0){
-            ret.push({name:await this.model('code').getNameById(rootID), children:nav});
+            ret.push({name:await cmpage.model('admin/code').getNameById(rootID), children:nav});
         }
         let navs = [];
         for(let menu of menus){
@@ -77,8 +85,8 @@ export default class extends Base {
         for(let n of navs ){
             nav = [];
             for(let menu of menus){
-                if(menu.c_pid === n.id  && menu.c_type === 'M'){
-                    menu.external = (menu.c_object === 'Module');
+                if(menu.c_pid === n.id  && menu.c_type === 'M' && menu.isAllow){
+                    menu.external = (menu.c_object === 'Module') || (menu.c_desc.indexOf('http')==0);
                     nav.push({id:`page${menu.c_object.split('.').join('')}`, name:menu.c_name, target:'navtab',
                         url:menu.c_desc, external:menu.external});
                 }
@@ -99,33 +107,48 @@ export default class extends Base {
      */
     async loginAction(){
         //let vb ={msg:'请选择您有权限登录的账套。'};
-        let vb ={msg:'演示用户：defans  密码：123456'};
-        vb.groups = await this.model('code').getGroups();
-        if(this.method() == 'get'){
-            vb.loginName='';
+        let vb ={msg:'演示账号：defans，密码：123456'};
+        //vb.groups = await cmpage.model('admin/code').getGroups();
+        if(this.isGet){
+            let user = await this.session('user');
+            if(think.isEmpty(user)){
+                vb.loginName = 'defans';
+                vb.loginPwd = '123456';
+            }else{
+                vb.loginName = user.c_login_name;
+                vb.loginPwd = '';
+            }
            // cmpage.debug(vb);
         }else{
-            let user = await this.model('user').getUserByLogin(this.post('loginName'),this.post('loginPwd'));
-            //cmpage.debug(user);
+            let user = await cmpage.model('admin/user').getUserByLogin(this.post('loginName'),this.post('loginPwd'));
+            cmpage.debug(user);
             if(!think.isEmpty(user)){
-                if(user.c_status != 0){
+                if(user.c_status != 1){
                     vb.loginName = this.post('loginName');
                     vb.msg = '请等候管理员审核，谢谢！';
                     this.assign('vb',vb);
                     return this.display();
                 }
                 //判断是否有权限登录所选择的账套
-                let groups = await this.model('groupuser').getLoginGroups(this.post('loginGroup'), user.id);
+                user.groupID = await cmpage.model('admin/groupuser').getDefaultGroupID(user.id, user.c_group);    //默认的账套ID
+                if(think.isEmpty(user.groupID)){
+                    vb.loginName = this.post('loginName');
+                    vb.msg = '请等候管理员分配账套，谢谢！';
+                    this.assign('vb',vb);
+                    return this.display();
+                }
+                debug(user,'admin.C.index - login.user');
+                let groups = await cmpage.model('admin/groupuser').getLoginGroups(user.groupID, user.id);
+                debug(groups,'admin.C.index - login.groups');
                 if(think.isEmpty(groups)){
                     vb.loginName = this.post('loginName');
                     vb.msg = '对不起，您不能登录该账套！';
                     this.assign('vb',vb);
                     return this.display();
                 }else {
-                    user.ip = this.ip();
+                    user.ip = this.ip;
                     user.urlLast = '/admin/index/index';
-                    user.groupID = parseInt(this.post('loginGroup'));
-                    user.groupName = await this.model('code').getNameById(user.groupID);
+                    user.groupName = await cmpage.model('admin/code').getNameById(user.groupID);
                     user.groups = groups;
                     let width = think.isEmpty(this.post('clientWidth')) ? 1200 : this.post('clientWidth');
                     user.listColumns = width >=1200 ? cmpage.ui.enumListColumns.MAX : (width >=970 ? cmpage.ui.enumListColumns.MIDDLE :
@@ -136,8 +159,13 @@ export default class extends Base {
                         (width >=768 ? cmpage.ui.enumQueryColumns.SMALL : cmpage.ui.enumQueryColumns.MOBILE ));
 
                     debug(user,'admin.index.C.login - user');
-                    await this.model('login').addLogin(user);
+                    await cmpage.model('admin/login').addLogin(user);
                     await this.session('user', user);
+                    let index_name = await this.session('index_name');
+                    if(!think.isEmpty(index_name)){
+                        await this.session('index_name',null);
+                        return this.redirect(`/${index_name}/index/index`);
+                    }    
                     return this.redirect('/admin/index/index');
                 }
             }else{
@@ -153,12 +181,30 @@ export default class extends Base {
     }
 
     /**
+     * 切换账套
+     * @method  groupChange
+     * @return {Promise}
+     */
+    async group_changeAction(){
+        let groupID = this.get('groupID');
+        let user = await this.session('user');
+        let groups =  await cmpage.model('admin/groupuser').getLoginGroups(groupID, user.id);
+        if(!think.isEmpty(groups)){
+            user.groupID = groupID;
+            user.groupName = await cmpage.model('admin/code').getNameById(groupID);
+            user.groups = groups;
+            await this.session('user', user);
+        }
+        return this.redirect('/admin/index/index');
+    }
+
+    /**
      * 用户登出，清除session中的用户信息并引导至用户登录页面
      * @method  exitLogin
      * @return {Promise}
      */
-    async exitLoginAction(){
-        await this.model('login').exitLogin(await this.session('user'));
+    async exit_loginAction(){
+        await cmpage.model('admin/login').exitLogin(await this.session('user'));
         await this.session('user',null);
         return this.redirect('/admin/index/login');
     }
@@ -168,7 +214,7 @@ export default class extends Base {
      * @method  loginPwdEdit
      * @return {Promise}
      */
-    async loginPwdEditAction(){
+    async login_pwd_editAction(){
         if(this.method() === 'get'){
             return this.display();
         }else{
@@ -179,7 +225,7 @@ export default class extends Base {
         }
     }
 
-    async setClientWidthAction(){
+    async set_client_widthAction(){
         let user = await this.session('user');
         let width = think.isEmpty(this.get('width')) ? 1200 : this.get('width');
         user.listColumns = width >=1200 ? cmpage.ui.enumListColumns.MAX : (width >=970 ? cmpage.ui.enumListColumns.MIDDLE :
@@ -192,40 +238,6 @@ export default class extends Base {
         return this.json({statusCode:200, message:''});
     }
 
-    //开始定时器
-    autoExecOpenAction(){
-        if(this.ip() != "127.0.0.1"){
-            return this.json({statusCode:300,message:"timer is not start, ! "+this.ip()});
-        }
-        if(!think.isObject(cmpage.autoExecTimer)){
-            cmpage.autoExecTimer = setInterval(function() {
-                request('http://127.0.0.1:8300/flow/task/auto_exec', function (error, response, body) {
-                    if (!think.isEmpty(error)) {
-                        //console.log(body);
-                        debug(body,'admin.C.autoExecOpen - error');
-                    } else {
-                        //console.log("error: " + error);
-                    }
-                    cmpage.flow.autoExecuting =false;
-                });
-            }, 3000);
-            return this.json({statusCode:200,message:"timer is start! "+this.ip()});
-        }
-        return this.json({statusCode:200,message:"timer has be started! "+this.ip()});
-    }
-
-    //停止定时器
-    autoExecCloseAction(){
-        if(this.ip() != "127.0.0.1"){
-            return this.json({statusCode:300,message:"timer is not stop! "+this.ip()});
-        }
-        if(think.isObject(cmpage.autoExecTimer)){
-            clearInterval(cmpage.autoExecTimer);
-            cmpage.autoExecTimer = null;
-            return this.json({statusCode:200,message:"timer is stop! "+this.ip()});
-        }
-        return this.json({statusCode:300,message:"timer is not exist! "+this.ip()});
-    }
 
     installAction(){
         if(this.ip() != "127.0.0.1"){

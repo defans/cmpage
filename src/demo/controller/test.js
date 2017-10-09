@@ -1,14 +1,14 @@
 'use strict';
 
-import Base from './base.js';
+const Base = require('./base.js');
 
-export default class extends Base {
+module.exports = class extends Base {
   questionAction(){
     //auto render template file index_index.html
     return this.display();
   }
 
-  async saveQuestionAction(){
+  async save_questionAction(){
       let parms = this.post();
 
       if(think.isEmpty(parms.c_name) || think.isEmpty(parms.c_answer)){
@@ -26,7 +26,7 @@ export default class extends Base {
       return this.json({statusCode:200, message:'递交成功!'});
   }
 
-  async answerListAction(){
+  async answer_listAction(){
     let list = await this.model('t_question').select();
     let listHtml = [];
     for(let rec of list){

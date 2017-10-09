@@ -7,9 +7,13 @@
 // | Author: defans <defans@sina.cn>
 // +----------------------------------------------------------------------
 
-import CMPage from '../../cmpage/model/page_mob.js';
+const CMPage = require('../../cmpage/model/page_mob.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
+    constructor(name, config = {}) {
+        const moduleModel = think.model('t_module','cmpage');
+        super(name,moduleModel.config);
+    }
 
     /**
      * 是否显示列表中某行的某个按钮，子类中重写本方法可以改变行按钮显示的逻辑

@@ -15,15 +15,15 @@
  * 由于移动端和PC端的表现方式和功能有所差别，因此部分URL接口单独实现
  * @class admin.controller.mob
  */
-import Base from './base.js';
+const Base = require('./base.js');
 
-export default class extends Base {
+module.exports = class extends Base {
      /**
      *  取APP的版本信息，用户比较APP的版本，并自动更新资源包
      * @method getVersion
      * @return {json} 版本信息，包括新版资源包的URL
      */
-    async getVersionAction(){
+    async get_versionAction(){
         let md = await this.model('code').getCodeById(345);
         return this.json({version:md.c_desc, url:md.c_object,memo :md.c_memo});
     }
@@ -33,7 +33,7 @@ export default class extends Base {
      * @method getGroups
      * @return {json}   HTML片段，用于下拉选择登陆账套等
      */
-    async getGroupsAction(){
+    async get_groupsAction(){
         let list = await this.model('code').getGroups();
         let html =[];
         html.push('<select id="group">');
@@ -52,7 +52,7 @@ export default class extends Base {
      * @method getMenus
      * @return {json}  备注中设置'btn'的为按钮，其他为菜单
      */
-    async getMenusAction(){
+    async get_menusAction(){
         let user = await this.session('user');
          //console.log(user);
         let menuList = await this.model('privilege').userGetPrivilegeTree(user.id,user.c_role, 1147);
@@ -119,7 +119,7 @@ export default class extends Base {
      * @method    exitLogin
      * @return {json}
      */
-    async exitLoginAction(){
+    async exit_loginAction(){
         await this.model('login').exitLogin(await this.session('user'));
         await this.session('user',null);
         return this.redirect('/admin/index/login');
@@ -130,7 +130,7 @@ export default class extends Base {
      * @method   loginPwdEdit
      * @return {json}
      */
-    async loginPwdEditAction(){
+    async login_pwd_editAction(){
         if(this.method() === 'get'){
             return this.display();
         }else{

@@ -10,33 +10,33 @@
 
  //  微信的URL接口, 待定
 
-import Base from './base.js';
+const Base = require('./base.js');
 
 const DEFULT_AUTO_REPLY = '功能正在开发中~';
 
-export default class extends Base {
+module.exports = class extends Base {
   /**
    * index action
    * @return {Promise} []
    */
   indexAction(){
     let echostr = this.get('echostr');
-    return this.end(echostr);
+    return this.success(echostr);
   }
   reply(message){
-    this.http.res.reply(message);
+    this.success(message);
   }
   textAction(){
     var message = this.post();
     var msg = message.Content.trim();
-    this.reply('测试成功:'+msg);
+    this.success('测试成功:'+msg);
   }
   eventAction(){
     var message = this.post();
-    this.reply(JSON.stringify(message));
+    this.success(JSON.stringify(message));
   }
   __call(){
-    this.reply(DEFULT_AUTO_REPLY);
+    this.success(DEFULT_AUTO_REPLY);
   }
   //不验证登陆
     async __before(){

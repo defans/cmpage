@@ -15,9 +15,9 @@
  * 工具类，提供一些公用的方法
  * @class cmpage.model.utils
  */
- import Base from './base.js';
+ const Base = require('./base.js');
 
-export default class extends Base {
+module.exports = class extends Base {
 
     /**
      * 从cmpage的enum设置中提取name值, 一般用于页面模块配置中的‘替换’调用: cmpage/utils:getEnumName

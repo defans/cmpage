@@ -14,18 +14,9 @@
  * 代码于参数设置的页面展示及操作类，单层的CRUD，配合 cmpage/controller/page.js 中的相关调用，继承自 cmpage/model/page.js
  * @class admin.model.code_list
  */
-import CMPage from '../../cmpage/model/page.js';
-export default class extends CMPage {
-    /**
-     * 重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句
-     * @method  getQueryWhere
-     * @return {string}  where条件子句
-     */
-    async getQueryWhere(){
-        let where =await super.getQueryWhere();
-        //cmpage.debug(where);
-        return where +' and c_status = 0 and c_pid='+this.mod.parmsUrl.c_pid;
-    }
+const CMPage = require('../../cmpage/model/page.js');
+module.exports = class extends CMPage {
+
     /**
      * 重写父类的 pageEditInit 方法，对初始化编辑页面的值进行修改
      * @method  pageEditInit

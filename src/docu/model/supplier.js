@@ -17,12 +17,13 @@
  * @class docu.model.docu
  */
 
-import CMPage from '../../cmpage/model/page.js';
+const CMPage = require('../../cmpage/model/page_mob.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
 
     constructor(name, config = {}) {
         super(name,config);
+        this.mod = {c_table:'t_supplier'};  //为直接调用的函数初始化某些值，如：getNameById
         this.pk ='c_id';
     }
 
@@ -42,5 +43,19 @@ export default class extends CMPage {
         return await super.pageDelete();
     }
 
+    // /**
+    //  * 根据参数ID取参数的名称，一般用于页面模块配置中的‘替换’调用: docu/supplier:getNameById
+    //  * 子类中重写的时候需要为 this.mod.c_table 和 this.pk 赋值，因为直接调用的时候进行模块设置的初始化
+    //  * @method  getNameById
+    //  * @return {string}  参数名称
+    //  * @param {int} id  参数ID
+    //  * @param   {string} fieldNames 字段名称,逗号分隔
+    //  * @param   {string} joinStr 连接的字符串
+    //  */
+    // async getNameById(id,fieldNames,joinStr){
+    //     this.mod.c_table = 't_supplier';
+    //     return await super.getNameById(id,fieldNames,joinStr);
+    // }
+    //
 
 }

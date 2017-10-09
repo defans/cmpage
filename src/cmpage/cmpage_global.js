@@ -5,34 +5,31 @@
  */
 
 /**
- * cmpage的全局方法和变量设置，置入（Object.assign）thinkjs 的 global 中
- * @class cmpage.cmpage_global
+ * global.cmpage的全局方法和变量设置
  */
 
-import moment from 'moment';
+/**
+ * 取对象的所有属性描述
+ * @method  getOwnPropertyDescriptors
+ * @param   {object} obj 对象
+ */
+cmpage.getOwnPropertyDescriptors = function(obj) {
+    let result = {};
+    for (let key of Reflect.ownKeys(obj)) {
+        result[key] = Object.getOwnPropertyDescriptor(obj, key);
+    }
+    return result;
+};
 
-export default class extends think.base {
-
-
-    /***************************对象处理 **************************************/
-    //取对象的所有属性描述
-    getOwnPropertyDescriptors = function(obj) {
-        let result = {};
-        for (let key of Reflect.ownKeys(obj)) {
-            result[key] = Object.getOwnPropertyDescriptor(obj, key);
-        }
-        return result;
-    };
-
-    /**
-     * 对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象<br/>
-     * 一般用于 某数据表记录的字段替换 事先设置的子字符串，子字符串的格式如：#id#
-     * @method  objPropertysReplaceToStr
-     * @return  {string}  替换后的字符串
-     * @param   {string} str 源字符串
-     * @param   {object} obj 源对象
-     */
-    objPropertysReplaceToStr = function(str, obj){
+/**
+ * 对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象<br/>
+ * 一般用于 某数据表记录的字段替换 事先设置的子字符串，子字符串的格式如：#id#
+ * @method  objPropertysReplaceToStr
+ * @return  {string}  替换后的字符串
+ * @param   {string} str 源字符串
+ * @param   {object} obj 源对象
+ */
+    cmpage.objPropertysReplaceToStr = function(str, obj){
         if(think.isEmpty(str) || think.isEmpty(obj))  return str;
 
         let ret = [];
@@ -70,7 +67,7 @@ export default class extends think.base {
      * @param   {object} fromObj 源对象
      * @param   {Array} arrProps 需要COPY的熟悉数组
      */
-    objPropertysFromOtherObj = function(toObj, fromObj, arrProps){
+    cmpage.objPropertysFromOtherObj = function(toObj, fromObj, arrProps){
         let ret = {};
         Object.assign(ret,toObj);
         let arr = think.isString(arrProps) ? arrProps.split(',') : arrProps;
@@ -86,7 +83,7 @@ export default class extends think.base {
      * @return  {string}  序列化后的字符串
      * @param   {object} obj 源对象
      */
-    objToString = function(obj){
+    cmpage.objToString = function(obj){
         let ret = [];
         if(think.isObject(obj)) {
             for (let key in obj) {
@@ -95,11 +92,11 @@ export default class extends think.base {
                 } else if (think.isString(obj[key])) {
                     ret.push(`${key}:'${obj[key]}'`);
                 } else if (think.isObject(obj[key])) {
-                    ret.push(`${key}:${ this.objToString(obj[key]) }`);
+                    ret.push(`${key}:${ cmpage.objToString(obj[key]) }`);
                 } else if (think.isArray(obj[key])) {
                     let tmp = [];
                     for (let item of obj[key]) {
-                        tmp.push(this.objToString(item));
+                        tmp.push(cmpage.objToString(item));
                     }
                     ret.push(`${key}:[${tmp.join(',')}]`);
                 } else {
@@ -110,7 +107,7 @@ export default class extends think.base {
         }else if(think.isArray(obj)){
             let tmp = [];
             for (let item of obj) {
-                tmp.push(this.objToString(item));
+                tmp.push(cmpage.objToString(item));
             }
             return `[${tmp.join(',')}]`;
         }else{
@@ -124,8 +121,8 @@ export default class extends think.base {
      * @return   {object}  目标对象
      * @param  {string}  str 序列化后的字符串
      */
-    objFromString = function(str){
-        //this.debug(str,'cmpage_global.objFromString - str');
+    cmpage.objFromString = function(str){
+        //cmpage.debug(str,'cmpage_global.objFromString - str');
         if(think.isEmpty(str) || str.indexOf('{') !== 0)    return {};
         return eval("("+ str +")");
     };
@@ -136,7 +133,7 @@ export default class extends think.base {
      * @return   {Array}  JSON对象数组
      * @param  {string}  str 序列化后的字符串
      */
-    arrFromString = function(str){
+    cmpage.arrFromString = function(str){
         let arr = [];
         let obj = think.isEmpty(str) ? {} : cmpage.objFromString(str);
         if(think.isArray(obj)){
@@ -156,7 +153,7 @@ export default class extends think.base {
      * @param   {Array}  来源数组
      * @param  {object}  where 条件对象
      */
-    subArray = function(arr,where){
+    cmpage.subArray = function(arr,where){
         if(think.isEmpty(where) || !think.isObject(where))  return arr;
         let ret = [];
         for(let a of arr){
@@ -180,7 +177,7 @@ export default class extends think.base {
      * @param   {object} fromObj 源对象
      * @param   {string} columnName 属性名称
      */
-    arrGetValuesByColumnName = function(arr,columnName){
+    cmpage.arrGetValuesByColumnName = function(arr,columnName){
         let ret = [];
         for(let obj of arr){
             ret.push(obj[columnName]);
@@ -197,7 +194,7 @@ export default class extends think.base {
      * @param   {string} propertyNames 属性名称,逗号分隔
      * @param   {string} joinStr 连接的字符串
      */
-    strGetValuesByPropertyName = function(obj,propertyNames,joinStr){
+    cmpage.strGetValuesByPropertyName = function(obj,propertyNames,joinStr){
         //debug(propertyNames);
         let ret = [];
         joinStr = joinStr || '';
@@ -213,7 +210,7 @@ export default class extends think.base {
      * @return  {Array}  新的数组
      * @param   {Array} arr 源数组
      */
-    arrGetUnique = function(arr){
+    cmpage.arrGetUnique = function(arr){
         var n = {},ret=[]; //n为hash表
         for(var i = 0; i < arr.length; i++) //遍历当前数组
         {
@@ -232,10 +229,10 @@ export default class extends think.base {
      * @return  {object}  新的对象，其属性已做SQL特性匹配
      * @param   {object} fromObj 记录对象
      */
-    checksql = (obj) =>{
+    cmpage.checksql = (obj) =>{
         for (let key of Reflect.ownKeys(obj)) {
             let val =obj[key];
-            if(think.isBoolean(val) && think.config("db.type")==='mysql'){
+            if(think.isBoolean(val) ){
                 obj[key] = val ? 1: 0;
             }
         }
@@ -243,25 +240,24 @@ export default class extends think.base {
     };
 
     /***************************其他的全局方法 **************************************/
-    debug = (msg,desc)=>{
+    cmpage.debug = (msg,desc)=>{
         if(think.env === 'development'){
             //let message = think.isObject(msg) ? JSON.stringify(msg).replace(/"/g,'').replace(/\\/g,'').replace(/,/g,',  ') : msg;
-            let message = this.objToString(msg);
-            //think.log(message,(think.isEmpty(desc) ? '[CMPAGE] ':'['+desc+'] '),false);
-            think.log(function(colors){
-                return colors.yellow(think.isEmpty(desc) ? '[CMPAGE] ':'['+desc+'] ') + message;
-            });
+            let message = cmpage.objToString(msg);
+            think.logger.debug(think.isEmpty(desc) ? '[CMPAGE] ':'['+desc+'] --> ' + message);
+            // think.logger.debug(message, think.isEmpty(desc) ? ' CMPAGE ':desc);
         }
     };
+
     /**
      * 从URL字符串中解析出参数对象
      * @method  parmsFromUrl
      * @return  {object}  url参数对象
      * @param   {string} url URL字符串
      */
-    parmsFromUrl = (url)=>{
+    cmpage.parmsFromUrl = (url)=>{
         if(think.isEmpty(url))  return {};
-        //this.debug(url,'cmpage.parmsFromUrl - url');
+        //cmpage.debug(url,'cmpage.parmsFromUrl - url');
         let parms = url.split('?')[1].split('&');
         let ret = {};
         for(let parm of parms){
@@ -270,10 +266,10 @@ export default class extends think.base {
         }
         return ret;
     };
-    error = (msg,data) =>{
+    cmpage.error = (msg,data) =>{
         //TODO: 可以考虑增加统一的错误处理逻辑
         let ret ={statusCode:300, message:msg, data:data};
-        this.debug(ret,'ERROR');
+        cmpage.debug(ret,'ERROR');
         return ret;
     };
     /**
@@ -281,21 +277,19 @@ export default class extends think.base {
      * @method  model
      * @return  {object}  thinkjs.model 对象
      * @param   {string} path 业务模块的实现类设置
+     * @param   {string} connStr 配置的数据库连接参数
      * @param   {string} defaultPath 业务模块默认的实现类
      */
-    model = (path, defaultPath) =>{
+    cmpage.model = (path,  defaultPath,connStr) =>{
         defaultPath = think.isEmpty(defaultPath) ? 'cmpage/page':defaultPath;
         path = think.isEmpty(path) ? defaultPath : path;
+        connStr = think.isEmpty(connStr) ? 'admin':connStr;
         //console.log(path);
         let ps = path.split('/');
         if(ps.length >1){
-            let config =think.config('db',undefined,ps[0]);
-            if(think.isEmpty(config)){
-                config =think.config('db',undefined,'common');
-            }
-            return think.model(ps[1],config, ps[0]);
+            return think.model(ps[1],connStr, ps[0]);
         }else{
-            return think.model(path);
+            return think.model(path,connStr);
         }
     };
 
@@ -306,14 +300,17 @@ export default class extends think.base {
      * @param   {object} date 需要格式化的日期对象
      * @param   {string} format 格式： 如： yyyy-MM-dd HH:mm:ss
      */
-    datetime = (date,format) => {
+    cmpage.datetime = (date,format) => {
         if(think.isEmpty(format)){
             format = 'YYYY-MM-DD';
         }
+        format = format.replace(/yyyy-MM-dd/,'YYYY-MM-DD').trim();
         if(think.isEmpty(date)){
-            return moment().format(format.replace(/yyyy-MM-dd/,'YYYY-MM-DD').trim());
+            //return moment().format(format);
+            return think.datetime(new Date(), format);
         }else{
-            return moment(date).format(format.replace(/yyyy-MM-dd/,'YYYY-MM-DD').trim());
+            //return moment(date).format(format);
+            return think.datetime(new Date(), format);
         }
     };
 
@@ -321,18 +318,18 @@ export default class extends think.base {
      * cmpage的全局变量初始化，如enum等
      * 值>0 ,是为了和数据库中其他的参数值设置方式保持一致
      */
-    enumStatusExecute = {
+    cmpage.enumStatusExecute = {
         SUCCESS:1, SUCCESS_name:'执行成功',
         FAIL:2, FAIL_name:'执行失败',
         ERROR:3, ERROR_name:'执行错误'
     };
 
-    enumLogType = {
+    cmpage.enumLogType = {
         ADD:1, ADD_name:'新增',
         UPDATE:2, UPDATE_name:'修改'
     };
 
-    ui = {
+    cmpage.ui = {
         enumListColumns : {     //其值表示页面列表的显示字段的数量
             MAX:100, MIDDLE:5, SMALL: 5, MOBILE: 3
         },
@@ -346,7 +343,7 @@ export default class extends think.base {
     };
 
     /************************************数字值的格式化输出 **************************************/
-    _format = function(pattern,num,z){
+    cmpage._format = function(pattern,num,z){
         let j = pattern.length >= num.length ? pattern.length : num.length ;
         let p = pattern.split("");
         let n = num.split("");
@@ -370,12 +367,12 @@ export default class extends think.base {
         }
         return nn;
     };
-    _formatNumber = function(numChar,pattern){
+    cmpage._formatNumber = function(numChar,pattern){
         let patterns = pattern.split(".");
         let numChars = numChar.split(".");
         let z = patterns[0].indexOf(",") == -1 ? -1 : patterns[0].length - patterns[0].indexOf(",") ;
-        let num1 = this._format(patterns[0].replace(","),numChars[0],0);
-        let num2 = this._format(patterns[1]?patterns[1].split('').reverse().join(''):"", numChars[1]?numChars[1].split('').reverse().join(''):"",1);
+        let num1 = cmpage._format(patterns[0].replace(","),numChars[0],0);
+        let num2 = cmpage._format(patterns[1]?patterns[1].split('').reverse().join(''):"", numChars[1]?numChars[1].split('').reverse().join(''):"",1);
         num1 = num1.split("").reverse().join('');
         let reCat = eval("/[0-9]{"+ (z-1) +","+ (z-1) +"}/gi");
         let arrdata = z > -1 ? num1.match(reCat) : undefined ;
@@ -392,9 +389,9 @@ export default class extends think.base {
      * @method  formatNumber
      * @return  {string}  格式化输出
      * @param   {float} mum 需要格式化的数值
-     * @param   {object} opt 格式化配置对象，一般中业务模块的列设置中制定格式如： #####0.00
+     * @param   {object} opt 格式化配置对象，一般中业务模块的列设置中制定格式如： {pattern:'#####0.00'}
      */
-    formatNumber = function(num,opt){
+    cmpage.formatNumber = function(num,opt){
         if(think.isEmpty(opt.pattern)){
             return num.toString();
         }
@@ -402,7 +399,7 @@ export default class extends think.base {
         let zeroExc = opt.zeroExc == undefined ? true : opt.zeroExc ;
         let pattern = opt.pattern.match(reCat)[0];
         let numChar = num.toString();
-        return !(zeroExc && numChar == 0) ? opt.pattern.replace(pattern,this._formatNumber(numChar,pattern)) : opt.pattern.replace(pattern,"0");
+        return !(zeroExc && numChar == 0) ? opt.pattern.replace(pattern,cmpage._formatNumber(numChar,pattern)) : opt.pattern.replace(pattern,"0");
     };
 
     /**
@@ -412,7 +409,7 @@ export default class extends think.base {
      * @param   {int} Min 最小整数
      * @param   {int} Max 最大整数
      */
-    getRandomNum = function(Min,Max)
+    cmpage.getRandomNum = function(Min,Max)
     {
         if(Max <= Min){
             return Min;
@@ -428,7 +425,7 @@ export default class extends think.base {
      * @return  {string}  过滤后的字符串
      * @param   {string} str 源字符串
      */
-    filterSensitiveString = function(str)
+    cmpage.filterSensitiveString = function(str)
     {
         let arr = ['select ','update ','delete ','alter ','drop ','create ','exec ','execute '];
         let ret = str;
@@ -444,7 +441,7 @@ export default class extends think.base {
      * @return  {boolean}  是否图片文件
      * @param   {string} filename 文件名称
      */
-    isImageFile = function(filename)
+    cmpage.isImageFile = function(filename)
     {
         let arr = ['jpg','png','jpeg','gif','bmp'];
         let exts = filename.split('.');
@@ -457,4 +454,4 @@ export default class extends think.base {
         return false;
     };
 
-}
+

@@ -4,7 +4,7 @@
  * @param  {} []
  * @return {}     []
  */
-export default class extends think.logic.base {
+module.exports = class extends think.Logic {
   /**
    * index action logic
    * @return {} []

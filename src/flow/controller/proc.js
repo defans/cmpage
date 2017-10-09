@@ -4,9 +4,9 @@
  * 提供工作流模板设计的URL接口
  * @class flow.controller.proc
  */
-import Base from './base.js';
+const Base = require('./base.js');
 
-export default class extends Base {
+module.exports = class extends Base {
     /**
      * 图形化设置流程模板， 调用： /flow/proc/desing?id=xxx
      * @method  design
@@ -19,7 +19,7 @@ export default class extends Base {
         parms.editID = this.get("id");
         parms.user = await this.session('user');
         //cmpage.debug(page);
-        let pageModel = this.model('proc_list');
+        let pageModel = cmpage.model('flow/proc_list');
         pageModel.mod = parms;
         await pageModel.initPage();
         pageModel.modEdits = await module.getModuleEdit(parms.id);
@@ -51,9 +51,9 @@ export default class extends Base {
      * @method  flowMap
      * @return {promise}
      */
-    async flowMapAction(){
+    async flow_mapAction(){
         let procID = this.get("proc_id");
-        let flowMap = await this.model('proc_list').getFlowMap(procID);
+        let flowMap = await cmpage.model('flow/proc_list').getFlowMap(procID);
         this.assign('flowMap',flowMap);
         this.assign('procID',procID)
 
@@ -65,17 +65,17 @@ export default class extends Base {
      * @method  saveMap
      * @return {json}
      */
-    async saveMapAction(){
+    async save_mapAction(){
         let parms =this.post();
-        await this.model('proc_list').saveFlowMap(parms);
+        await cmpage.model('flow/proc_list').saveFlowMap(parms);
 
         return this.json({statusCode:200,message:'保存图形成功!'});
     }
 
-    async clearCacheAction(){
+    async clear_cacheAction(){
         let ret={statusCode:200,message:'已成功清除了流程模板的缓存!',tabid: '',data:{}};
 
-        await this.model('proc').clearCache();
+        await cmpage.model('flow/proc').clearCache();
 
         return this.json(ret);
     }

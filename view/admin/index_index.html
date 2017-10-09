@@ -19,7 +19,7 @@
     <link href="/static/bjui/themes/blue/core.css" id="bjui-link-theme" rel="stylesheet">
     <link href="/static/bjui/themes/css/fontsize.css" id="bjui-link-theme" rel="stylesheet">
     <!-- plug - css -->
-    <link href="/static/bjui/plugins/kindeditor_4.1.10/themes/default/default.css" rel="stylesheet">
+    <!-- <link href="/static/bjui/plugins/kindeditor_4.1.10/themes/default/default.css" rel="stylesheet"> -->
     <link href="/static/bjui/plugins/colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
     <link href="/static/bjui/plugins/niceValidator/jquery.validator.css" rel="stylesheet">
     <link href="/static/bjui/plugins/bootstrapSelect/bootstrap-select.css" rel="stylesheet">
@@ -42,18 +42,18 @@
     <![endif]-->
 
     <!-- B-JUI -->
-    <script src="/static/bjui/js/bjui-all.js"></script>
-    <script src="/static/bjui/js/bjui-lookup.js"></script>
+    <script src="/static/bjui/js/bjui-all-min.js"></script>
+    <!-- <script src="/static/bjui/js/bjui-lookup.js"></script> -->
     <!-- plugins -->
     <!-- swfupload for kindeditor -->
-    <script src="/static/bjui/plugins/swfupload/swfupload.js"></script>
+    <!-- <script src="/static/bjui/plugins/swfupload/swfupload.js"></script> -->
     <!-- Webuploader -->
     <script src="/static/bjui/plugins/webuploader/webuploader.js"></script>
     <!-- kindeditor -->
-    <script src="/static/bjui/plugins/kindeditor_4.1.11/kindeditor-all-min.js"></script>
-    <script src="/static/bjui/plugins/kindeditor_4.1.11/lang/zh-CN.js"></script>
+    <!-- <script src="/static/bjui/plugins/kindeditor_4.1.11/kindeditor-all-min.js"></script>
+    <script src="/static/bjui/plugins/kindeditor_4.1.11/lang/zh-CN.js"></script> -->
     <!-- colorpicker -->
-    <script src="/static/bjui/plugins/colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <!-- <script src="/static/bjui/plugins/colorpicker/js/bootstrap-colorpicker.min.js"></script> -->
     <!-- ztree -->
     <script src="/static/bjui/plugins/ztree/jquery.ztree.all-3.5.js"></script>
     <!-- nice validate -->
@@ -66,9 +66,9 @@
     <!-- icheck -->
     <script src="/static/bjui/plugins/icheck/icheck.min.js"></script>
     <!-- HighCharts -->
-    <script src="/static/bjui/plugins/highcharts/highcharts.js"></script>
+    <!-- <script src="/static/bjui/plugins/highcharts/highcharts.js"></script>
     <script src="/static/bjui/plugins/highcharts/highcharts-3d.js"></script>
-    <script src="/static/bjui/plugins/highcharts/themes/gray.js"></script>
+    <script src="/static/bjui/plugins/highcharts/themes/gray.js"></script> -->
     <!-- other plugins -->
     <script src="/static/bjui/plugins/other/jquery.autosize.js"></script>
     <link href="/static/bjui/plugins/uploadify/css/uploadify.css" rel="stylesheet">
@@ -128,12 +128,6 @@
             $('#bjui-body-box').find('> div').attr('class', bjui_index_container)
         }
     </script>
-    <!-- highlight && ZeroClipboard -->
-    <link href="/static/assets/prettify.css" rel="stylesheet">
-    <script src="/static/assets/prettify.js"></script>
-    <link href="/static/assets/ZeroClipboard.css" rel="stylesheet">
-    <script src="/static/assets/ZeroClipboard.js"></script>
-
 
 </head>
 <body>
@@ -153,12 +147,24 @@
         </div>
         <nav class="collapse navbar-collapse" id="bjui-top-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li class="datetime"><a><span id="bjui-date">0000/00/00</span> <span id="bjui-clock">00:00:00</span></a></li>
-                <li><a href="/home/index/index">首页</a></li>
-                <li><a href="#">欢迎您，<%= vb.userName%></a></li>
-                <li><a href="/admin/index/login_pwd_edit" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true" data-width="400" data-height="300">修改密码</a></li>
-                <li><a  href="#" onclick="return loginExit();" style="font-weight:bold;">&nbsp;<i class="fa fa-power-off"></i> 注销登陆</a></li>
-                <li class="dropdown"><a href="#" class="dropdown-toggle bjui-fonts-tit" data-toggle="dropdown" title="更改字号"><i class="fa fa-font"></i> 大</a>
+                <li class="datetime"><a><span id="bjui-clock">00:00:00</span></a></li>
+                <li><a href="#"><%= vb.userName%></a></li>
+
+
+                <li class="dropdown"><a href="#" class="dropdown-toggle bjui-fonts-tit" data-toggle="dropdown" style="background-color:#e87e38;font-weight:bold;" title="我的登录">
+                        <i class="fa fa-user"></i> 我的登录</a>
+                    <ul class="dropdown-menu" role="menu" id="bjui-fonts">
+                        <li><a href="/cmpage/page/list?modulename=OtherSystem" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true"
+                            data-width="400" data-height="300" style="font-weight:bold;">&nbsp;<i class="fa fa-share"></i> 切换系统</a></li>
+                        <li><a href="/cmpage/page/list?modulename=GroupChange" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true"
+                                data-width="600" data-height="400" style="font-weight:bold;">&nbsp;<i class="fa fa-share"></i> 切换账套</a></li>
+                        <li><a href="/admin/index/login_pwd_edit" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true"
+                            data-width="400" data-height="300" style="font-weight:bold;">&nbsp;<i class="fa fa-key"></i> 修改密码</a></li>
+                        <li><a  href="#" onclick="return loginExit();" style="font-weight:bold;">&nbsp;<i class="fa fa-power-off"></i> 注销登陆</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#" class="dropdown-toggle bjui-fonts-tit" data-toggle="dropdown" style="background-color:#39175a;" title="更改字号">
+                        <i class="fa fa-font"></i> 小</a>
                     <ul class="dropdown-menu" role="menu" id="bjui-fonts">
                         <li><a href="javascript:;" class="bjui-font-a" data-toggle="fonts"><i class="fa fa-font"></i> 特大</a></li>
                         <li><a href="javascript:;" class="bjui-font-b" data-toggle="fonts"><i class="fa fa-font"></i> 大</a></li>
@@ -188,14 +194,10 @@
             <button type="button" class="navbar-toggle collapsed" id="bjui-navbar-collapsebtn" data-toggle="collapsenavbar" data-target="#bjui-navbar-collapse" aria-expanded="false">
                 <i class="fa fa-angle-double-right"></i>
             </button>
-            <a class="navbar-brand" href="#"><img src="/static/images/logo.png" height="30"></a>
+            <a class="navbar-brand" href="/home/index/index"><img src="/static/images/logo.png" height="30"></a>
         </div>
         <nav class="collapse navbar-collapse" id="bjui-navbar-collapse">
             <ul class="nav navbar-nav navbar-right" id="bjui-hnav-navbar">
-                <li>
-                    <a data-toggle="navtab" style="cursor: pointer;"
-                            data-options="{id:'module_setting', url:'/cmpage/module/index', title:'模块配置', external:true}">模块界面配置</a>
-                </li>
                 <%- vb.menuHtml%>
             </ul>
         </nav>
@@ -220,7 +222,7 @@
             <div class="tabsPageHeader">
                 <div class="tabsPageHeaderContent">
                     <ul class="navtab-tab nav nav-tabs">
-                        <li ><a href="javascript:;"><span><i class="fa fa-home"></i> #maintab#</span></a></li>
+                        <li data-url="/admin/index/home"><a href="javascript:;"><span><i class="fa fa-home"></i> #maintab#</span></a></li>
                     </ul>
                 </div>
                 <div class="tabsLeft"><i class="fa fa-angle-double-left"></i></div>
@@ -233,22 +235,7 @@
             <div class="navtab-panel tabsPageContent">
                 <div class="navtabPage unitBox">
                     <div class="bjui-pageContent" style="background:#FFF;">
-                        <div class="highlight">
-                            运行步骤简述如下（具体参照 thinkjs.org）：
-                                <pre class="prettyprint ">
-Mysql数据库备份文件（/db/cmpage_my.sql）
-在/src/common/config/db.js 中配置数据库连接参数
-运行：npm install --registry=https://registry.npm.taobao.org --verbose
-运行：npm start
-
-手机端项目的目录：/mob，独立项目，非必需，请用HBuider打开，然后用USB连上手机就可以调试了，
-    具体参见 http://www.dcloud.io/runtime.html,
-    也可以用手机扫描二维码(http://139.129.48.131:8300/static/mob/cmpage_demo.png ),安装Andriod版本的DEMO。
-
-                                　　　　　　2016-10-23 defans@sina.cn
-
-                                </pre>
-                        </div>
+ 数据加载中，请稍后 ...
                     </div>
                 </div>
             </div>
@@ -291,6 +278,6 @@ Mysql数据库备份文件（/db/cmpage_my.sql）
 
 </script>
 
-<script type="text/javascript" src="/static/js/web_utils.js" ></script>
-<script type="text/javascript" src="/static/js/web_cmpage.js" ></script>
-<script type="text/javascript" src="/static/js/web_flow.js" ></script>
+<script type="text/javascript" src="/static/js/cmpage/web_utils.js" ></script>
+<script type="text/javascript" src="/static/js/cmpage/web_cmpage.js" ></script>
+<script type="text/javascript" src="/static/js/cmpage/web_flow.js" ></script>

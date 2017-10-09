@@ -557,6 +557,13 @@
                     </li>
                 
                     <li class="index-item method">
+                        <a href="#" data-tabid="#method" data-anchor="#method_getNameById" data-tablink="getNameById">getNameById</a>
+
+                        
+                        
+                    </li>
+                
+                    <li class="index-item method">
                         <a href="#" data-tabid="#method" data-anchor="#method_getOptions" data-tablink="getOptions">getOptions</a>
 
                         
@@ -649,6 +656,13 @@
                 
                     <li class="index-item method">
                         <a href="#" data-tabid="#method" data-anchor="#method_htmlGetOther" data-tablink="htmlGetOther">htmlGetOther</a>
+
+                        
+                        
+                    </li>
+                
+                    <li class="index-item method">
+                        <a href="#" data-tabid="#method" data-anchor="#method_htmlGetPrint" data-tablink="htmlGetPrint">htmlGetPrint</a>
 
                         
                         
@@ -826,7 +840,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l478"><code>src\cmpage\model\page.js:478</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l480"><code>src\cmpage\model\page.js:480</code></a>
         
         </p>
 
@@ -901,7 +915,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l686"><code>src\cmpage\model\page.js:686</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l692"><code>src\cmpage\model\page.js:692</code></a>
         
         </p>
 
@@ -976,7 +990,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l622"><code>src\cmpage\model\page.js:622</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l628"><code>src\cmpage\model\page.js:628</code></a>
         
         </p>
 
@@ -1003,6 +1017,165 @@
                         [<span class="type">String</span>]
                     
                     <p>fields 部分， 形如：id,c_name,xxx</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_getNameById" class="method item">
+    <h3 class="name">getNameById</h3>
+    <code>
+    getNameById
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        id
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        fieldNames
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        joinStr
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+    </code>
+
+    
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_cmpage_model_page.js.html#l1521"><code>src\cmpage\model\page.js:1521</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description well well-small sign-left3">
+        <div class="stdoc-code"><p>根据参数ID取参数的名称，一般用于页面模块配置中的‘替换’调用: admin/cdoe:getNameById </br>
+子类中重写的时候需要为 this.mod.c_table 和 this.pk 赋值，因为直接调用的时候进行模块设置的初始化 </br>
+当然也可以重写 constructor 设置这两个值</p>
+</div>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <table class="table table-bordered">
+            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
+            
+                <tr class="param">
+                    
+                       <td> <code class="param-name">id</code>
+                       <td> <span class="type">Int</span>
+                       <td>
+                    
+
+                    
+                    </td>
+                    <td><div class="param-description">
+                        <p>参数ID</p>
+
+                    </div>
+
+                    
+                </tr>
+            
+                <tr class="param">
+                    
+                       <td> <code class="param-name">fieldNames</code>
+                       <td> <span class="type">String</span>
+                       <td>
+                    
+
+                    
+                    </td>
+                    <td><div class="param-description">
+                        <p>字段名称,逗号分隔</p>
+
+                    </div>
+
+                    
+                </tr>
+            
+                <tr class="param">
+                    
+                       <td> <code class="param-name">joinStr</code>
+                       <td> <span class="type">String</span>
+                       <td>
+                    
+
+                    
+                    </td>
+                    <td><div class="param-description">
+                        <p>连接的字符串</p>
+
+                    </div>
+
+                    
+                </tr>
+            
+            </table>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        [<span class="type">String</span>]
+                    
+                    <p>参数名称</p>
 
                 
             </div>
@@ -1067,7 +1240,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l125"><code>src\cmpage\model\page.js:125</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l126"><code>src\cmpage\model\page.js:126</code></a>
         
         </p>
 
@@ -1202,7 +1375,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l178"><code>src\cmpage\model\page.js:178</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l179"><code>src\cmpage\model\page.js:179</code></a>
         
         </p>
 
@@ -1321,7 +1494,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l556"><code>src\cmpage\model\page.js:556</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l561"><code>src\cmpage\model\page.js:561</code></a>
         
         </p>
 
@@ -1412,7 +1585,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l227"><code>src\cmpage\model\page.js:227</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l228"><code>src\cmpage\model\page.js:228</code></a>
         
         </p>
 
@@ -1532,7 +1705,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l960"><code>src\cmpage\model\page.js:960</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l974"><code>src\cmpage\model\page.js:974</code></a>
         
         </p>
 
@@ -1608,7 +1781,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l266"><code>src\cmpage\model\page.js:266</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l267"><code>src\cmpage\model\page.js:267</code></a>
         
         </p>
 
@@ -1693,7 +1866,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l308"><code>src\cmpage\model\page.js:308</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l309"><code>src\cmpage\model\page.js:309</code></a>
         
         </p>
 
@@ -1794,7 +1967,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l718"><code>src\cmpage\model\page.js:718</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l724"><code>src\cmpage\model\page.js:724</code></a>
         
         </p>
 
@@ -1869,7 +2042,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l864"><code>src\cmpage\model\page.js:864</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l877"><code>src\cmpage\model\page.js:877</code></a>
         
         </p>
 
@@ -1966,7 +2139,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l849"><code>src\cmpage\model\page.js:849</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l862"><code>src\cmpage\model\page.js:862</code></a>
         
         </p>
 
@@ -2101,7 +2274,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l1400"><code>src\cmpage\model\page.js:1400</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l1446"><code>src\cmpage\model\page.js:1446</code></a>
         
         </p>
 
@@ -2176,7 +2349,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l363"><code>src\cmpage\model\page.js:363</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l365"><code>src\cmpage\model\page.js:365</code></a>
         
         </p>
 
@@ -2251,7 +2424,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l1442"><code>src\cmpage\model\page.js:1442</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l1488"><code>src\cmpage\model\page.js:1488</code></a>
         
         </p>
 
@@ -2326,7 +2499,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l116"><code>src\cmpage\model\page.js:116</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l117"><code>src\cmpage\model\page.js:117</code></a>
         
         </p>
 
@@ -2353,6 +2526,81 @@
                         [<span class="type">String</span>]
                     
                     <p>html片段</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_htmlGetPrint" class="method item">
+    <h3 class="name">htmlGetPrint</h3>
+    <code>
+    htmlGetPrint
+    
+        <span class="paren">()</span>
+    
+    </code>
+
+    
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_cmpage_model_page.js.html#l1413"><code>src\cmpage\model\page.js:1413</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description well well-small sign-left3">
+        <div class="stdoc-code"><p>取查看页面的设置，组合成打印页面的HTML输出</p>
+</div>
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        [<span class="type">String</span>]
+                    
+                    <p>HTML页面片段</p>
 
                 
             </div>
@@ -2401,7 +2649,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l47"><code>src\cmpage\model\page.js:47</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l48"><code>src\cmpage\model\page.js:48</code></a>
         
         </p>
 
@@ -2476,7 +2724,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l1089"><code>src\cmpage\model\page.js:1089</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l1106"><code>src\cmpage\model\page.js:1106</code></a>
         
         </p>
 
@@ -2519,7 +2767,17 @@
     <code>
     htmlGetView
     
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        [isPrintStyle]
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
     
     </code>
 
@@ -2552,7 +2810,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l1303"><code>src\cmpage\model\page.js:1303</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l1320"><code>src\cmpage\model\page.js:1320</code></a>
         
         </p>
 
@@ -2568,6 +2826,33 @@
 </div>
     </div>
 
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <table class="table table-bordered">
+            <tr class='active'><th>name</th><th>type</th><th>flag</th><th>description</th></tr>
+            
+                <tr class="param">
+                    
+                    <td>
+                        <code class="param-name optional">[isPrintStyle]</code></td>
+                    <td><span class="type">Boolean</span></td>
+                    <td><span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+                    </td>
+                    <td><div class="param-description">
+                        <p>是否是打印的风格</p>
+
+                    </div>
+
+                    
+                </tr>
+            
+            </table>
+        </div>
     
 
     
@@ -2658,81 +2943,6 @@
 
     
         <span class="returns-inline">
-            <span class="type">String</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_cmpage_model_page.js.html#l525"><code>src\cmpage\model\page.js:525</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description well well-small sign-left3">
-        <div class="stdoc-code"><p>取合计行的HTML片段，子类中重写本方法可以定制合计行的显示</p>
-</div>
-    </div>
-
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        [<span class="type">String</span>]
-                    
-                    <p>合计行的HTML片段</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_isShowBtn" class="method item">
-    <h3 class="name">isShowBtn</h3>
-    <code>
-    isShowBtn
-    
-        <span class="paren">()</span>
-    
-    </code>
-
-    
-        <span class="returns-inline">
             <span class="type">Boolean</span>
         </span>
     
@@ -2760,7 +2970,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l458"><code>src\cmpage\model\page.js:458</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l460"><code>src\cmpage\model\page.js:460</code></a>
         
         </p>
 
@@ -2788,6 +2998,81 @@
                         [<span class="type">Boolean</span>]
                     
                     <p>是否显示</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_isShowBtn" class="method item">
+    <h3 class="name">isShowBtn</h3>
+    <code>
+    isShowBtn
+    
+        <span class="paren">()</span>
+    
+    </code>
+
+    
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_cmpage_model_page.js.html#l530"><code>src\cmpage\model\page.js:530</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description well well-small sign-left3">
+        <div class="stdoc-code"><p>取合计行的HTML片段，子类中重写本方法可以定制合计行的显示</p>
+</div>
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        [<span class="type">String</span>]
+                    
+                    <p>合计行的HTML片段</p>
 
                 
             </div>
@@ -2836,7 +3121,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l1381"><code>src\cmpage\model\page.js:1381</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l1427"><code>src\cmpage\model\page.js:1427</code></a>
         
         </p>
 
@@ -2912,7 +3197,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l644"><code>src\cmpage\model\page.js:644</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l650"><code>src\cmpage\model\page.js:650</code></a>
         
         </p>
 
@@ -2997,7 +3282,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l1189"><code>src\cmpage\model\page.js:1189</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l1206"><code>src\cmpage\model\page.js:1206</code></a>
         
         </p>
 
@@ -3115,7 +3400,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l1222"><code>src\cmpage\model\page.js:1222</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l1239"><code>src\cmpage\model\page.js:1239</code></a>
         
         </p>
 
@@ -3259,7 +3544,7 @@
             
         
         
-        <a href="../files/src_cmpage_model_page.js.html#l1421"><code>src\cmpage\model\page.js:1421</code></a>
+        <a href="../files/src_cmpage_model_page.js.html#l1467"><code>src\cmpage\model\page.js:1467</code></a>
         
         </p>
 

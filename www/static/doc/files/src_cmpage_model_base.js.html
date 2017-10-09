@@ -552,9 +552,9 @@ import Sequelize from &#x27;Sequelize&#x27;;
 export default class extends think.base {
      sequelize = null;
      _model = null; //thinkjs.model.base , 目前暂时不用
-     fields = &#x27;&#x27;;
+     _field = &#x27;&#x27;;
      _where = &#x27;&#x27;;
-     tableName = &#x27;&#x27;;
+     _tableName = &#x27;&#x27;;
      pk = &#x27;id&#x27;;
 
      /**
@@ -569,7 +569,7 @@ export default class extends think.base {
              config = name;
              name = &quot;&quot;;
          }
-         this.tableName = name;
+         this._tableName = name;
          this.config = think.parseConfig(config);
          //debug(this.config, &#x27;base.constructor - this.config&#x27;);
          //debug(this.name, &#x27;base.constructor - this.name&#x27;);
@@ -599,7 +599,7 @@ export default class extends think.base {
      }
 
      setTableName(name){
-         this.tableName = name;
+         this._tableName = name;
          return this;
      }
      model(name){
@@ -616,7 +616,7 @@ export default class extends think.base {
          return this;
      }
      field(fields){
-         this.fields = fields;
+         this._field = fields;
          if(this._model)    this._model.field(fields);
          return this;
      }
@@ -661,7 +661,7 @@ export default class extends think.base {
          if(this._model){
              return await this._model.select();
          }
-         let sql = &#x60;select ${think.isEmpty(this.fields) ? &#x27;*&#x27;: this.fields} from ${this.tableName} ${this._where} &#x60;;
+         let sql = &#x60;select ${think.isEmpty(this._field) ? &#x27;*&#x27;: this._field} from ${this._tableName} ${this._where} &#x60;;
          return await this.query(sql);
      }
      async find(){
@@ -679,7 +679,7 @@ export default class extends think.base {
          if(this._model){
              return await this._model.delete();
          }
-         let sql = &#x60;delete from ${this.tableName} ${this._where}&#x60;;
+         let sql = &#x60;delete from ${this._tableName} ${this._where}&#x60;;
          let ret = await this.query(sql);
          //debug(ret,&#x27;base.delete - ret&#x27;);
      }
@@ -687,7 +687,7 @@ export default class extends think.base {
          if(this._model){
              return await this._model.count();
          }
-         let sql = &#x60;select count(*) as cnt from ${this.tableName} ${this._where}&#x60;;
+         let sql = &#x60;select count(*) as cnt from ${this._tableName} ${this._where}&#x60;;
          let list = await this.query(sql);
          return list[0][&#x27;cnt&#x27;];
      }
@@ -697,19 +697,16 @@ export default class extends think.base {
              return await this._model.add(rec);
          }
          let values = [];
-         let fields = [];
+         let _field = [];
          for(let key in rec){
              if(/^c_\w+/.test(key) &amp;&amp; key !=this.pk) {
                  let val = rec[key];
                  val = this.parseValue(val);
                  values.push(val);
-                 fields.push(key);
+                 _field.push(key);
              }
          }
-         let sql =  &#x60;INSERT INTO ${this.tableName}( ${fields.join(&#x27;,&#x27;)} ) VALUES( ${values.join(&#x27;,&#x27;)} ); &#x60;;
-         if(this.config.type == &#x27;mssql&#x27;){
-             sql = &#x60;insert ${this.tableName}( ${fields.join(&#x27;,&#x27;)} ) values( ${values.join(&#x27;,&#x27;)})  select @@IDENTITY &#x60;
-         }
+         let sql =  &#x60;INSERT INTO ${this._tableName}( ${_field.join(&#x27;,&#x27;)} ) VALUES( ${values.join(&#x27;,&#x27;)} ); &#x60;;
          let list = await this.query(sql);
          list = await this.query(&#x27;select @@IDENTITY as id;&#x27;);
     //     debug(list);
@@ -722,16 +719,16 @@ export default class extends think.base {
          if(this._model){
              return await this._model.update(rec);
          }
-         let fields = [];
+         let _field = [];
          for (let key in rec) {
              if (/^c_\w+/.test(key) &amp;&amp; key != this.pk) {
                  let val = rec[key];
                  val = this.parseValue(val);
-                 fields.push(key + &#x27;=&#x27; + val);
+                 _field.push(key + &#x27;=&#x27; + val);
              }
          }
          if(think.isEmpty(this._where))  this._where = &#x60; where ${this.pk}=${rec[this.pk]}&#x60;;
-         let sql = &#x60;UPDATE ${this.tableName} SET ${fields.join(&#x27;,&#x27;)}  ${this._where}&#x60;;
+         let sql = &#x60;UPDATE ${this._tableName} SET ${_field.join(&#x27;,&#x27;)}  ${this._where}&#x60;;
          //debug(sql,&#x27;base.update - sql&#x27;);
          await this.query(sql);
 
@@ -753,25 +750,6 @@ export default class extends think.base {
         }
         return value;
     }
-    // if(think.isBoolean(val) &amp;&amp; think.config(&quot;db.type&quot;)===&#x27;mysql&#x27;){
-    //     obj[key] = val ? 1: 0;
-    // }
-
-
-    // /**
-    //   * 获取 Seqelize 里的 Model
-    //   * @return {[type]} [description]
-    //   */
-    //  async getModel(name) {
-    //      if (!this._model) {
-    //          if (!this.sequelize) {
-    //              this.getConnection();
-    //          }
-    //          this._model = await this.sequelize.model(name);
-    //      }
-    //      return this._model;
-    //  }
-
 
 }
 

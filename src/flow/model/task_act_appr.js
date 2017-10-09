@@ -12,9 +12,14 @@
  * 具体的业务相关的工作流活动的子类也可以继承本类，来增加定制的业务逻辑
  * @class flow.model.task_act_appr
  */
-import TaskAct from './task_act.js';
+const TaskAct =require('./task_act.js');
 
-export default class extends TaskAct {
+module.exports = class extends TaskAct {
+    constructor(name, config = {}) {
+        const moduleModel = think.model('t_module','cmpage');
+        super(name,moduleModel.config);
+    }
+
     /**
      * 运行一个流程实例的活动(流程节点)
      * @method  fwRun
@@ -28,7 +33,7 @@ export default class extends TaskAct {
     //    }
     //    //执行本节点，子类中可以加入其他业务逻辑
     //    if(think.isEmpty(this.act)){
-    //        this.act = this.model('act').getActById(this.taskAct.c_act);
+    //        this.act = cmpage.model('flow/act').getActById(this.taskAct.c_act);
     //    }
     //
     //

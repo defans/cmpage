@@ -14,9 +14,9 @@
  * 登录用户的操作类，提供一些操作t_user,vw_user的方法
  * @class admin.model.user
  */
-import CMPage from '../../cmpage/model/page.js';
+const CMPage = require('../../cmpage/model/page.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
     /**
      * 重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句, c_linktype==1表示关联的是集团用户: c_link = t_emp.id
      * @method  getQueryWhere
@@ -41,7 +41,7 @@ export default class extends CMPage {
             'c_user','c_time','c_group','c_province','c_city','c_country','c_manager']);
         //checkbox类型的值为false时，前端不传值，因此特殊处理
         md.c_sex = think.isEmpty(md.c_sex) ? false: md.c_sex;
-        let userMd = { c_role:parms.c_role, c_login_name:parms.c_login_name, c_linktype:1, c_status:0 };
+        let userMd = { c_role:parms.c_role, c_login_name:parms.c_login_name, c_linktype:1, c_status:1 };
         if(parms.id ==0 ){
             md.id = await this.model('t_emp').add(cmpage.checksql(md));
             userMd.c_link = md.id;
@@ -51,6 +51,7 @@ export default class extends CMPage {
         }else {
             console.log(md);
             await this.model('t_emp').where({id:parms.c_link}).update(cmpage.checksql(md));
+            userMd.c_status = parms.c_status;
             await this.model('t_user').where({id:parms.id}).update(cmpage.checksql(userMd));
             userMd.id = parms.id;
         }

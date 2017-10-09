@@ -12,7 +12,12 @@
  * 一般不需要继承，也没有相关联的业务类
  * @class flow.model.act_path
  */
-export default class extends think.model.base {
+ const Base =require('../../cmpage/model/base.js');
+ module.exports = class extends Base {
+    constructor(name, config = {}) {
+        const moduleModel = think.model('t_module','cmpage');
+        super(name,moduleModel.config);
+    }
 
     /**
      * 根据ID取活动路径对象，供其他方法调用
@@ -23,7 +28,7 @@ export default class extends think.model.base {
     async getActPathById(id){
         let list =await this.getActPaths();
         for(let md of list){
-            if(md.id === id){
+            if(md.id == id){
                 return md;
             }
         }
@@ -41,7 +46,7 @@ export default class extends think.model.base {
     async getActPathByIdAndProcId(id,procID){
         let list =await this.getActPathsByProcId(procID);
         for(let md of list){
-            if(md.id === id){
+            if(md.id == id){
                 return md;
             }
         }
@@ -59,7 +64,7 @@ export default class extends think.model.base {
         let list =await this.getActPathsByProcId(procID);
         let ret = [];
         for(let md of list){
-            if(md.c_to === actID){
+            if(md.c_to == actID){
                 ret.push(md.c_from);
             }
         }
@@ -75,9 +80,10 @@ export default class extends think.model.base {
      */
     async getToActIds(actID,procID){
         let list =await this.getActPathsByProcId(procID);
+        //debug(list,'act_path.getToActPaths - list');
         let ret = [];
         for(let md of list){
-            if(md.c_from === actID){
+            if(md.c_from == actID){
                 ret.push(md.c_to);
             }
         }
@@ -92,9 +98,10 @@ export default class extends think.model.base {
      */
     async getToActPaths(actID,procID){
         let list =await this.getActPathsByProcId(procID);
+        //debug(list,'act_path.getToActPaths - list');
         let ret = [];
         for(let md of list){
-            if(md.c_from === actID){
+            if(md.c_from == actID){
                 ret.push(md);
             }
         }
@@ -110,7 +117,7 @@ export default class extends think.model.base {
     async getNameById(id){
         let list =await this.getActPaths();
         for(let md of list){
-            if(md.id === id){
+            if(md.id == id){
                 return md.c_name;
             }
         }

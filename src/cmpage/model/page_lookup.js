@@ -17,9 +17,9 @@
  * 其中key是需要回传的字段名称，callmodel是回调的thinkjs模块，callfn 是回调的函数名称, callparms 是额外的参数，例如：单据主ID等 </br>
  * @class cmpage.model.page_lookup
  */
-import CMPage from './page_mob.js';
+const CMPage = require('./page_mob.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
 
     /**
      * 是否显示列表中的按钮，子类中重写本方法可以改变按钮显示的逻辑
@@ -46,7 +46,7 @@ export default class extends CMPage {
         }else{
             let value = 0;
             for(let col of this.modCols){
-                if (col.c_isview && col.c_desc == this.pk) {
+                if (col.c_isview ) {    //&& col.c_desc == this.pk  取第一个返回字段值
                     value = rec[col.c_column];
                     break;
                 }
@@ -108,6 +108,13 @@ export default class extends CMPage {
                 }
             }
             return `<a href="javascript:;" data-toggle="lookupback" data-args="{${html.join(',')}}" class="btn btn-orange" title="清除所选" data-icon="eraser">清除</a>`;
+        }else{
+            if(!think.isEmpty(this.list.ids)){
+                //全部加入的按钮
+                let parms = think.isEmpty(this.mod.parmsUrl.callparms) ? value : `0,${this.mod.parmsUrl.callparms},${this.list.ids.join(',')}`;
+                return ` <a href="javascript:;" onclick="return pageSelectAdd(this,'${this.mod.parmsUrl.callmodulename}','${this.mod.parmsUrl.callfn}','${parms}');"
+                    class="btn btn-blue" title="全部加入" data-icon="check">全部加入</a>`;            
+            }
         }
         return '';
     }

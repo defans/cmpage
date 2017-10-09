@@ -11,9 +11,13 @@
  * 提供工作流节点的指派及权限处理的相关方法，对外提供统一归口的调用<br/>
  * @class flow.model.proc_assign
  */
-import CMPage from '../../cmpage/model/page_mob.js';
+const CMPage = require('../../cmpage/model/page_mob.js');
 
-export default class extends CMPage {
+module.exports = class extends CMPage {
+    constructor(name, config = {}) {
+        const moduleModel = think.model('t_module','cmpage');
+        super(name,moduleModel.config);
+    }
 
     /**
      * 新增的时候，初始化编辑页面的值，子类重写本方法可以定制新增页面的初始值
@@ -76,8 +80,10 @@ export default class extends CMPage {
      * @return {object} 权限对象
      * @params {int} actID  流程模板的节点ID
      * @params {object} user 用户对象
+     * @params {int} createrID  发起人ID
+     * @params {int} prevUserID  上一步执行者ID
      */
-    async getAssignByUser(actID,user,createrID){
+    async getAssignByUser(actID,user,createrID,prevUserID){
         //debug(actID,'act_assign.getAssignByUser - actID');
         //debug(user,'act_assign.getAssignByUser - user');
         let list =await this.getAssignsByActId(actID);
@@ -85,11 +91,23 @@ export default class extends CMPage {
             //if(actID == 19){  debug(md,'act_assign.getAssignByUser - md');     }
             if(md.c_type == cmpage.enumActAssignType.DEPT && md.c_link == user.c_dept ||
                 md.c_type == cmpage.enumActAssignType.ROLE && md.c_link == user.c_role ||
-                md.c_type == cmpage.enumActAssignType.USER && md.c_link == user.id ||
-                md.c_type == cmpage.enumActAssignType.TEAM && await this.model('admin/teamuser').isTeamMember(md.c_link, user.id) ||
-                md.c_type == cmpage.enumActAssignType.SELF && user.id == createrID ){
+                md.c_type == cmpage.enumActAssignType.USER && md.c_link == user.id ||   //特定用户
+                md.c_type == cmpage.enumActAssignType.TEAM && await cmpage.model('admin/teamuser').isTeamMember(md.c_link, user.id) ){
                     //debug(md,'act_assign.getAssignByUser - md');
                 return md;
+            }else if (md.c_type == cmpage.enumActAssignType.SELF) {
+                if(md.c_way == cmpage.enumActAssignWay.ALL && createrID == user.id) return md;  //发起人自己
+                if(md.c_way == cmpage.enumActAssignWay.MANAGER){                                //发起人的上级主管
+                    let tmp = await cmpage.model('admin/user').getUserById(createrID);
+                    if(!think.isEmpty(tmp) && tmp.c_manager == user.id)  return md;
+                }
+            }else if (md.c_type == cmpage.enumActAssignType.PREV) {
+                if(md.c_way == cmpage.enumActAssignWay.ALL && prevUserID == user.id) return md;     //上一步执行者
+                if(md.c_way == cmpage.enumActAssignWay.MANAGER){                                    //上一步执行者的上级主管
+                    let tmp = await cmpage.model('admin/user').getUserById(prevUserID);
+                    debug(tmp,'act_assign.getAssignByUser - tmpUser');
+                    if(!think.isEmpty(tmp) && tmp.c_manager == user.id)  return md;
+                }
             }
         }
         return {};
@@ -106,9 +124,9 @@ export default class extends CMPage {
         //debug(id,'act_assign.getLinkNameById - id');
         //debug(linkType,'act_assign.getLinkNameById - linkType');
         if (linkType == cmpage.enumProcAssignType.DEPT || linkType == cmpage.enumProcAssignType.ROLE || linkType == cmpage.enumProcAssignType.TEAM){
-            ret = await this.model('admin/code').getNameById(id);
+            ret = await cmpage.model('admin/code').getNameById(id);
         }else if (linkType == cmpage.enumProcAssignType.USER ){
-            ret = await this.model('admin/user').getNameById(id);
+            ret = await cmpage.model('admin/user').getNameById(id);
         }
         return ret;
     }

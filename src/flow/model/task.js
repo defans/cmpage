@@ -12,13 +12,19 @@
  * 具体的业务相关的工作流子类可以继承本类，来增加定制的业务逻辑
  * @class flow.model.task
  */
-export default class extends think.model.base {
-    proc = {};  //当前流程模板
-    task = {};  //当前流程实例
-    user = {};  //当前用户
-    currAct = {};   //当前节点设置
-    currTaskAct = {};   //当前节点实例
+ const Base =require('../../cmpage/model/base.js');
+ module.exports = class extends Base {
 
+    constructor(name, config = {}) {
+        const moduleModel = think.model('t_module','cmpage');
+        super(name,moduleModel.config);
+        this.proc = {};  //当前流程模板
+        this.task = {};  //当前流程实例
+        this.user = {};  //当前用户
+        this.currAct = {};   //当前节点设置
+        this.currTaskAct = {};   //当前节点实例
+        }
+    
     /**
      * 创建(启动)一个新的流程实例(任务)
      * @method  fwStart
@@ -39,7 +45,7 @@ export default class extends think.model.base {
         //console.log(task);
 
 //        console.log(proc);
-        let actModel = this.model('act');
+        let actModel = cmpage.model('flow/act');
         //取该流程模板的节点
         let acts = await actModel.getActsByProcId(this.proc.id);
 //        console.log(acts);
@@ -82,8 +88,8 @@ export default class extends think.model.base {
         //debug(this.task,'task.getTaskWithCurrentAct --- this.task');
         this.currAct = {id:0};
         if(this.task.c_status === cmpage.enumTaskStatus.RUN){
-            let taskActs = await this.model('task_act').getTaskActs(this.task.id);
-            let actModel = this.model('act');
+            let taskActs = await cmpage.model('flow/task_act').getTaskActs(this.task.id);
+            let actModel = cmpage.model('flow/act');
             for(let ta of taskActs){
                 //TODO: 可能要考虑user来进行区分
                 //取当前节点
@@ -132,10 +138,10 @@ export default class extends think.model.base {
         if(this.task.c_status === cmpage.enumTaskStatus.SUSPEND){
             this.task.c_status = cmpage.enumTaskStatus.RUN;
             //让本实例被挂起的节点继续RUN
-            let taskActs = await this.model('task_act').getTaskActs(this.task.id);
+            let taskActs = await cmpage.model('flow/task_act').getTaskActs(this.task.id);
             for(let taskAct of taskActs){
                 if(taskAct.c_status === cmpage.enumTaskActStatus.SUSPEND){
-                    await this.model('act').fwRun(taskAct.id,this.user,taskAct);
+                    await cmpage.model('flow/act').fwRun(taskAct.id,this.user,taskAct);
                 }
             }
             await this.save();
@@ -153,7 +159,7 @@ export default class extends think.model.base {
             if(think.isEmpty(this.currTaskAct)){
                 await this.getTaskWithCurrentAct();
             }
-            await this.model('act').fwSuspend(this.currTaskAct.id,user,this.currTaskAct);
+            await cmpage.model('flow/act').fwSuspend(this.currTaskAct.id,user,this.currTaskAct);
             await this.save();
         }
     }
@@ -170,7 +176,7 @@ export default class extends think.model.base {
             //    await this.getTaskWithCurrentAct();
             //}
             //await this.model('act').fwTerminate(this.currTaskAct.id,user,this.currTaskAct);
-            let taskActs = await this.model('task_act').getTaskActs(this.task.id);
+            let taskActs = await cmpage.model('flow/task_act').getTaskActs(this.task.id);
             for(let ta of taskActs){
                 if(ta.c_status !== cmpage.enumTaskActStatus.TERMINATE && ta.c_status !== cmpage.enumTaskActStatus.END
                     && ta.c_status !== cmpage.enumTaskActStatus.NO_BEGIN){
@@ -212,7 +218,7 @@ export default class extends think.model.base {
         }
         let md = {c_proc:task.c_proc,c_act:0,c_task:task.id, c_task_act:0, c_time:task.c_time, c_user:this.user.id, c_status:task.c_status};
         //组成状态描述
-        md.c_desc = think.isEmpty(desc) ?  '流程'+ (await this.model('cmpage/utils').getEnumName(task.c_status,'TaskStatus')) : desc;
+        md.c_desc = think.isEmpty(desc) ?  '流程'+ (await cmpage.model('cmpage/utils').getEnumName(task.c_status,'TaskStatus')) : desc;
         md.id = await this.model('fw_task_st').add(md);
         await this.model('fw_task_st_his').add(md);
 
@@ -249,7 +255,7 @@ export default class extends think.model.base {
      */
     async getUserFromTask(taskID){
         let task = await this.model('fw_task').where({id:taskID}).find();
-        let user = await this.model('admin/user').getUserById(task.c_user);
+        let user = await cmpage.model('admin/user').getUserById(task.c_user);
         user.groupID = task.c_group;
 
         return user;

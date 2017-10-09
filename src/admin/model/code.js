@@ -21,7 +21,7 @@
  * 代码于参数设置的操作类，提供一些操作t_code表的方法
  * @class admin.model.code
  */
-export default class extends think.model.base {
+module.exports = class extends think.Model {
 
     /**
      * 用递归法从t_code缓存中返回所有子节点

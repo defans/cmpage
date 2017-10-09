@@ -1,10 +1,9 @@
 {
   "apps": [{
-    "name": "H:cmpage3_CodettH:cmpage3_Codettmanager",
-    "script": "www/production.js",
-    "cwd": "H:\cmpage\3_Code\tt\manager",
-    "exec_mode": "cluster",
-    "instances": 0,
+    "name": "D:cmpageD:cmpagecmpage32",
+    "script": "production.js",
+    "cwd": "D:\cmpage\cmpage32",
+    "exec_mode": "fork",
     "max_memory_restart": "1G",
     "autorestart": true,
     "node_args": [],
