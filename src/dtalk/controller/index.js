@@ -32,7 +32,7 @@ module.exports = class extends Base {
   async menuAction(){
         let user = await this.session('user');        
         let rootID = 1254;
-        let menus = await cmpage.model('admin/privilege').userGetPrivilegeTree(user.id,user.c_role,rootID);
+        let menus = await cmpage.service('admin/privilege').userGetPrivilegeTree(user.id,user.c_role,rootID);
         //debug(menus,'admin.index.getMenuAction - menus');
         let menuHtml =[];
         let navs = [];
@@ -61,9 +61,9 @@ module.exports = class extends Base {
   }
 
   async department_listAction(){
-      //let ret = await cmpage.model('dtalk/ddserver').postDtalkApi('department/create',{},{name:'testDept', parentid:1});
-      let ret = await cmpage.model('dtalk/ddserver').getDtalkApi('department/list');
-      //let ret = await cmpage.model('dtalk/ddserver').getDtalkApi('user/simplelist',{department_id:1});
+      //let ret = await cmpage.service('dtalk/ddserver').postDtalkApi('department/create',{},{name:'testDept', parentid:1});
+      let ret = await cmpage.service('dtalk/ddserver').getDtalkApi('department/list');
+      //let ret = await cmpage.service('dtalk/ddserver').getDtalkApi('user/simplelist',{department_id:1});
       //debug(ret, 'dserver.getDtalkApi - ret');
       return this.json(ret);
 

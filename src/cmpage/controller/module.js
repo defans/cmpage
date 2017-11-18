@@ -37,7 +37,7 @@ module.exports = class extends Base {
       vb.currentPage = vb.where['currentPage'];
     }
     cmpage.debug(vb);
-    let model = this.model("module");
+    let model = cmpage.service('cmpage/module');
 
     let where=' c_status=0 ';
     if(!think.isEmpty(vb.where.c_modulename)){
@@ -101,12 +101,12 @@ module.exports = class extends Base {
     async copyAction(){
         let modulename =this.get('modulename');
         let newName = this.get('newname');
-        return this.json(await this.model('module').copyToNewModule(modulename, newName));
+        return this.json(await cmpage.service('cmpage/module').copyToNewModule(modulename, newName));
     }
 
     async copyModuleFromMssqlAction(){
         let modulename =this.get('modulename');
-        return this.json(await this.model('module').copyModuleFromMssql(modulename));
+        return this.json(await cmpage.service('cmpage/module').copyModuleFromMssql(modulename));
     }
     /**
      * 模块主表编辑页面，调用：/cmpage/module/edit?id=xxx
@@ -124,7 +124,7 @@ module.exports = class extends Base {
             c_proc:0,proc_name:'', c_path:'admin/page',c_alias:md.c_modulename });
     }else{
       let tmp = await  this.model("t_module",'cmpage').where({id:  this.get('id')}).find();
-      tmp.proc_name = await cmpage.model('flow/proc').getNameById(tmp.c_proc);
+      tmp.proc_name = await cmpage.service('flow/proc').getNameById(tmp.c_proc);
       Object.assign(md,tmp);
     }
     cmpage.debug(JSON.stringify(md));
@@ -144,8 +144,8 @@ module.exports = class extends Base {
      */
   async reset_module_cacheAction(){
     let ret={statusCode:200,message:'缓存刷新成功!',tabid: '',data:{}};
-    await this.model('module').clearModuleCache();
-    await cmpage.model('admin/code').clearCodeCache();
+    await cmpage.service('cmpage/module').clearModuleCache();
+    await cmpage.service('admin/code').clearCodeCache();
 
     return this.json(ret);
   }
@@ -159,7 +159,7 @@ module.exports = class extends Base {
     let md =await   this.model('t_module','cmpage').where({id: this.get('moduleid')}).find();
     cmpage.debug(md);
 
-    let model = this.model('module');
+    let model = cmpage.service('cmpage/module');
     let vb={};
     vb.colTypes = model.colTypes();
     vb.showTypes = model.showTypes();
@@ -178,7 +178,7 @@ module.exports = class extends Base {
      */
   async col_resetAction(){
 
-    let model = this.model('module');
+    let model = cmpage.service('cmpage/module');
     let ret = await model.resetModuleCol( this.get('moduleid'));
 
     return this.json(ret);
@@ -240,7 +240,7 @@ module.exports = class extends Base {
   async edit_listAction(){
 
     let md =await   this.model('t_module','cmpage').where({id: this.get('moduleid')}).find();
-    let model = this.model('module');
+    let model = cmpage.service('cmpage/module');
 
     let vb={};
     vb.colTypes = model.colTypes();
@@ -258,7 +258,7 @@ module.exports = class extends Base {
      * @return {json}
      */
   async edit_resetAction(){
-    let model = this.model('module');
+    let model = cmpage.service('cmpage/module');
     let ret = await model.resetModuleEdit(this.get('moduleid'));
 
     return this.json(ret);
@@ -317,7 +317,7 @@ module.exports = class extends Base {
   async query_listAction(){
 
     let md =await   this.model('t_module','cmpage').where({id: this.get('moduleid')}).find();
-    let model = this.model('module');
+    let model = cmpage.service('cmpage/module');
 
     let vb={};
     vb.colTypes = model.colTypes();
@@ -337,7 +337,7 @@ module.exports = class extends Base {
      */
     async query_resetAction(){
 
-    let model = this.model('module');
+    let model = cmpage.service('cmpage/module');
     let ret = await model.resetModuleQuery( this.get('moduleid'));
 
     return this.json(ret);
@@ -406,7 +406,7 @@ module.exports = class extends Base {
      */
   async btn_listAction(){
     let md =await   this.model('t_module','cmpage').where({id: this.get('moduleid')}).find();
-    let model = this.model('module');
+    let model = cmpage.service('cmpage/module');
 
     let vb={};
     vb.editList = await  this.model('t_module_btn','cmpage').where({c_module: this.get('moduleid')}).order('c_location ').select();
@@ -422,7 +422,7 @@ module.exports = class extends Base {
      * @return {json}
      */
     async btn_resetAction(){
-        let model = this.model('module');
+        let model = cmpage.service('cmpage/module');
         let ret = await model.resetModuleBtn(this.get('moduleid'));
         await think.cache(`moduleBtn${ this.get('moduleid')}`,null);
 

@@ -25,12 +25,12 @@ module.exports = class extends Base {
   async indexAction(){
     //auto render template file index_index.html
     let user = await this.session('user');
-    //debug(user,'admin.C.index - index.user');
-    let codeMd =await cmpage.model('admin/code').getCodeById(344);    //系统版本
-    let vb={groupName:user.groupName,version:codeMd.c_desc,title:'CmPage by defans'};
-    user.roleName = await cmpage.model('admin/code').getNameById(user.c_role);
+    debug(user,'admin.C.index - index.user');
+    let codeMd =await cmpage.service('admin/code').getCodeById(344);    //系统版本
+    let vb={groupName:user.groupName || "",version:codeMd.c_desc,title:'CmPage by defans'};
+    user.roleName = await cmpage.service('admin/code').getNameById(user.c_role);
     vb.userName = `${user.c_name} [${user.groupName}--${user.roleName}]`;
-    let menus = await cmpage.model('admin/privilege').userGetPrivilegeTree(user.id,user.c_role);
+    let menus = await cmpage.service('admin/privilege').userGetPrivilegeTree(user.id,user.c_role);
 
       //取主菜单
       let menuHtml = [];
@@ -42,7 +42,7 @@ module.exports = class extends Base {
       }
       let firstMenu = true;
       for(let menu of menus){
-          if(menu.c_type === 'N' && menu.c_pid ===1 ){
+          if(menu.c_type === 'N' && menu.c_pid ===1 && menu.isAllow){
               menuHtml.push(`<li ${firstMenu ? 'class="active"':''}><a href="/admin/index/get_menu?root_id=${menu.id}" data-toggle="sidenav"
                      data-tree-options="{onClick:MainMenuClick}" data-id-key="targetid" >${menu.c_name}</a></li>`)
               firstMenu = false;
@@ -62,7 +62,7 @@ module.exports = class extends Base {
     async get_menuAction(){
         let user = await this.session('user');
         let rootID = this.get('root_id');
-        let menus = await cmpage.model('admin/privilege').userGetPrivilegeTree(user.id,user.c_role,rootID);
+        let menus = await cmpage.service('admin/privilege').userGetPrivilegeTree(user.id,user.c_role,rootID);
         //debug(menus,'admin.index.getMenuAction - menus');
         let ret =[];
         let nav = [];
@@ -74,7 +74,7 @@ module.exports = class extends Base {
             }
         }
         if(nav.length >0){
-            ret.push({name:await cmpage.model('admin/code').getNameById(rootID), children:nav});
+            ret.push({name:await cmpage.service('admin/code').getNameById(rootID), children:nav});
         }
         let navs = [];
         for(let menu of menus){
@@ -108,7 +108,7 @@ module.exports = class extends Base {
     async loginAction(){
         //let vb ={msg:'请选择您有权限登录的账套。'};
         let vb ={msg:'演示账号：defans，密码：123456'};
-        //vb.groups = await cmpage.model('admin/code').getGroups();
+        //vb.groups = await cmpage.service('admin/code').getGroups();
         if(this.isGet){
             let user = await this.session('user');
             if(think.isEmpty(user)){
@@ -120,7 +120,7 @@ module.exports = class extends Base {
             }
            // cmpage.debug(vb);
         }else{
-            let user = await cmpage.model('admin/user').getUserByLogin(this.post('loginName'),this.post('loginPwd'));
+            let user = await cmpage.service('admin/user').getUserByLogin(this.post('loginName'),this.post('loginPwd'));
             cmpage.debug(user);
             if(!think.isEmpty(user)){
                 if(user.c_status != 1){
@@ -130,7 +130,7 @@ module.exports = class extends Base {
                     return this.display();
                 }
                 //判断是否有权限登录所选择的账套
-                user.groupID = await cmpage.model('admin/groupuser').getDefaultGroupID(user.id, user.c_group);    //默认的账套ID
+                user.groupID = await cmpage.service('admin/groupuser').getDefaultGroupID(user.id, user.c_group);    //默认的账套ID
                 if(think.isEmpty(user.groupID)){
                     vb.loginName = this.post('loginName');
                     vb.msg = '请等候管理员分配账套，谢谢！';
@@ -138,7 +138,7 @@ module.exports = class extends Base {
                     return this.display();
                 }
                 debug(user,'admin.C.index - login.user');
-                let groups = await cmpage.model('admin/groupuser').getLoginGroups(user.groupID, user.id);
+                let groups = await cmpage.service('admin/groupuser').getLoginGroups(user.groupID, user.id);
                 debug(groups,'admin.C.index - login.groups');
                 if(think.isEmpty(groups)){
                     vb.loginName = this.post('loginName');
@@ -148,7 +148,7 @@ module.exports = class extends Base {
                 }else {
                     user.ip = this.ip;
                     user.urlLast = '/admin/index/index';
-                    user.groupName = await cmpage.model('admin/code').getNameById(user.groupID);
+                    user.groupName = await cmpage.service('admin/code').getNameById(user.groupID);
                     user.groups = groups;
                     let width = think.isEmpty(this.post('clientWidth')) ? 1200 : this.post('clientWidth');
                     user.listColumns = width >=1200 ? cmpage.ui.enumListColumns.MAX : (width >=970 ? cmpage.ui.enumListColumns.MIDDLE :
@@ -159,13 +159,14 @@ module.exports = class extends Base {
                         (width >=768 ? cmpage.ui.enumQueryColumns.SMALL : cmpage.ui.enumQueryColumns.MOBILE ));
 
                     debug(user,'admin.index.C.login - user');
-                    await cmpage.model('admin/login').addLogin(user);
+                    await cmpage.service('admin/login').addLogin(user);
                     await this.session('user', user);
                     let index_name = await this.session('index_name');
                     if(!think.isEmpty(index_name)){
                         await this.session('index_name',null);
                         return this.redirect(`/${index_name}/index/index`);
-                    }    
+                    }
+                    
                     return this.redirect('/admin/index/index');
                 }
             }else{
@@ -188,10 +189,10 @@ module.exports = class extends Base {
     async group_changeAction(){
         let groupID = this.get('groupID');
         let user = await this.session('user');
-        let groups =  await cmpage.model('admin/groupuser').getLoginGroups(groupID, user.id);
+        let groups =  await cmpage.service('admin/groupuser').getLoginGroups(groupID, user.id);
         if(!think.isEmpty(groups)){
             user.groupID = groupID;
-            user.groupName = await cmpage.model('admin/code').getNameById(groupID);
+            user.groupName = await cmpage.service('admin/code').getNameById(groupID);
             user.groups = groups;
             await this.session('user', user);
         }
@@ -204,7 +205,7 @@ module.exports = class extends Base {
      * @return {Promise}
      */
     async exit_loginAction(){
-        await cmpage.model('admin/login').exitLogin(await this.session('user'));
+        await cmpage.service('admin/login').exitLogin(await this.session('user'));
         await this.session('user',null);
         return this.redirect('/admin/index/login');
     }

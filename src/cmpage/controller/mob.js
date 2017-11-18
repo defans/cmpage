@@ -25,7 +25,7 @@ module.exports = class extends Base {
      */
     async listAction(){
         let vb={};
-        let module = this.model("cmpage/module");
+        let moduleApp = cmpage.service("cmpage/module");
 
         let parms ={};
         parms.modulename =this.post('modulename');
@@ -38,7 +38,7 @@ module.exports = class extends Base {
         Object.assign(vb,parms);
         //debug(parms,'cmpage.ctrl.mob - parms');
 
-        let md = await module.getModuleByName(parms.modulename);
+        let md = await moduleApp.getModuleByName(parms.modulename);
         Object.assign(parms,md);
 
         parms.query = this.post();
@@ -50,7 +50,7 @@ module.exports = class extends Base {
             return this.json({statusCode:'300',message:parms.modulename + " 模块不存在！"});
         }
 
-        let pageModel = cmpage.model(parms.c_path);
+        let pageModel = cmpage.service(parms.c_path);
         if(think.isEmpty(pageModel)){
             return this.json({statusCode:'300',message:parms.modulename + " 的实现类不存在！"});
         }
@@ -63,9 +63,9 @@ module.exports = class extends Base {
         }
         //cmpage.debug(parms);
         pageModel.mod = parms;
-        pageModel.modQuerys = await module.getModuleQuery(parms.id);
-        pageModel.modCols = await module.getModuleCol(parms.id);
-        pageModel.modBtns = await module.getModuleBtn(parms.id);
+        pageModel.modQuerys = await moduleApp.getModuleQuery(parms.id);
+        pageModel.modCols = await moduleApp.getModuleCol(parms.id);
+        pageModel.modBtns = await moduleApp.getModuleBtn(parms.id);
 
         vb.queryHtml = await pageModel.mobHtmlGetQuery();
         let btnsHtml = await pageModel.mobHtmlGetHeaderBtns();
@@ -87,13 +87,13 @@ module.exports = class extends Base {
      * @return {json}  包含HTML片段
      */
     async editAction() {
-        let module = this.model('cmpage/module');
+        let module = cmpage.service('cmpage/module');
         let parms = await module.getModuleByName(this.post('modulename'));
         parms.parmsUrl = JSON.stringify(this.post('parmsUrl'));
         parms.editID = this.post("editID");
         //console.log(page);
         parms.user = await this.session('user');
-        let pageModel = cmpage.model(parms.c_path);
+        let pageModel = cmpage.service(parms.c_path);
         if(think.isEmpty(pageModel)){
             return this.json({statusCode:'300',message:parms.modulename + " 的实现类不存在！"});
         }
@@ -127,9 +127,9 @@ module.exports = class extends Base {
         }
         let ret={statusCode:200,message:'保存成功!',tabid: `page${parms.modulename}`,data:{}};
 
-        let module = this.model('module');
+        let module = cmpage.service('cmpage/module');
         let md = await module.getModuleByName(parms.modulename);
-        let pageModel = cmpage.model(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
+        let pageModel = cmpage.service(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
         pageModel.mod = md;
         pageModel.mod.user = user;
         pageModel.modEdits = await module.getModuleEdit(md.id);
@@ -145,9 +145,9 @@ module.exports = class extends Base {
      * @return {promise}  HTML片段
      */
     async viewAction() {
-        let module = this.model('module');
+        let module = cmpage.service('cmpage/module');
         let md = await module.getModuleByName(this.post('modulename'));
-        let pageModel = cmpage.model(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
+        let pageModel = cmpage.service(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
         pageModel.mod = md;
         pageModel.mod.editID =parseInt( this.post('curID'));
         pageModel.mod.user =  await this.session('user');

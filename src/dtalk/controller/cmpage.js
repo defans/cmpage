@@ -9,7 +9,7 @@ module.exports = class extends Base {
    */
   async showAction(){
       let vb={};
-      let module = cmpage.model("cmpage/module");
+      let module = cmpage.service("cmpage/module");
 
       let parms ={};
       parms.modulename =this.get('modulename');
@@ -28,7 +28,7 @@ module.exports = class extends Base {
         return this.json({statusCode:'300',message:parms.modulename + " 模块不存在！"});
       }
 
-      let pageModel = cmpage.model(parms.c_path);
+      let pageModel = cmpage.service(parms.c_path);
       if(think.isEmpty(pageModel)){
         return this.json({statusCode:'300',message:parms.modulename + " 的实现类不存在！"});
       }
@@ -53,7 +53,7 @@ module.exports = class extends Base {
      */
     async listAction(){
         let vb={};
-        let module = cmpage.model("cmpage/module");
+        let module = cmpage.service("cmpage/module");
 
         let parms ={};
         parms.modulename =this.post('modulename');
@@ -78,7 +78,7 @@ module.exports = class extends Base {
             return this.json({statusCode:'300',message:parms.modulename + " 模块不存在！"});
         }
 
-        let pageModel = cmpage.model(parms.c_path);
+        let pageModel = cmpage.service(parms.c_path);
         if(think.isEmpty(pageModel)){
             return this.json({statusCode:'300',message:parms.modulename + " 的实现类不存在！"});
         }

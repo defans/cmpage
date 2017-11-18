@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- @module cmpage.model
+ @module cmpage.service
  */
 
 /**
@@ -14,12 +14,40 @@
      * cmpage的全局变量初始化，如enum等
      * 值>0 ,是为了和数据库中其他的参数值设置方式保持一致
      */
+
      //用户状态
      cmpage.enumUserStatus = {
         NORMAL:1,   NORMAL_name:'正常',
         NOAUDIT:2,  NOAUDIT_name:'待审核',
         FREEZE:8,   FREEZE_name:'冻结',
         DELETED:-1,  DELETED_name:'删除'
+    };
+
+     //定时任务循环类型
+     cmpage.enumCrontabCycleType = {
+        MONTH:1,   MONTH_name:'每月',
+        DAY:2,  DAY_name:'每日',
+        WEEK:8,   WEEK_name:'每周'
+    };
+
+     //定时任务执行类型
+     cmpage.enumCrontabExeType = {
+        ONECE:1,   ONECE_name:'单次',
+        CYCLE:2,  CYCLE_name:'循环'
+    };
+
+     //定时任务的执行状态
+     cmpage.enumCrontabStatus = {
+        NORMAL:1,   NORMAL_name:'正常',
+        SUSPEND:2,  SUSPEND_name:'挂起',
+        TERMINATE:3,  TERMINATE_name:'终止'
+    };
+
+     //定时任务错误通知类型
+     cmpage.enumCrontabNoteType = {
+        DD:1,   DD_name:'钉钉',
+        SMS:2,  SMS_name:'短信',
+        ALL:3,  ALL_name:'全部'
     };
 
 

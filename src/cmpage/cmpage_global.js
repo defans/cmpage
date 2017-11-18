@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- @module cmpage.model
+ @module cmpage.service
  */
 
 /**
@@ -244,7 +244,7 @@ cmpage.getOwnPropertyDescriptors = function(obj) {
         if(think.env === 'development'){
             //let message = think.isObject(msg) ? JSON.stringify(msg).replace(/"/g,'').replace(/\\/g,'').replace(/,/g,',  ') : msg;
             let message = cmpage.objToString(msg);
-            think.logger.debug(think.isEmpty(desc) ? '[CMPAGE] ':'['+desc+'] --> ' + message);
+            think.logger.debug((!think.isEmpty(desc) ? '['+desc+'] --> ':'[CMPAGE] ') + message);
             // think.logger.debug(message, think.isEmpty(desc) ? ' CMPAGE ':desc);
         }
     };
@@ -273,23 +273,22 @@ cmpage.getOwnPropertyDescriptors = function(obj) {
         return ret;
     };
     /**
-     * 通过形如：demo/customer 参数返回model，数据库配置采用model所在模块的配置
+     * 通过形如：demo/customer 参数，返回模块demo下面的业务实现类customer的实例
      * @method  model
-     * @return  {object}  thinkjs.model 对象
+     * @return  {object}  thinkjs.service 实例
      * @param   {string} path 业务模块的实现类设置
      * @param   {string} connStr 配置的数据库连接参数
      * @param   {string} defaultPath 业务模块默认的实现类
      */
-    cmpage.model = (path,  defaultPath,connStr) =>{
+    cmpage.service = (path,  defaultPath) =>{
         defaultPath = think.isEmpty(defaultPath) ? 'cmpage/page':defaultPath;
         path = think.isEmpty(path) ? defaultPath : path;
-        connStr = think.isEmpty(connStr) ? 'admin':connStr;
         //console.log(path);
         let ps = path.split('/');
         if(ps.length >1){
-            return think.model(ps[1],connStr, ps[0]);
+            return think.service(ps[1], ps[0]);
         }else{
-            return think.model(path,connStr);
+            return think.service(path);
         }
     };
 
@@ -310,7 +309,7 @@ cmpage.getOwnPropertyDescriptors = function(obj) {
             return think.datetime(new Date(), format);
         }else{
             //return moment(date).format(format);
-            return think.datetime(new Date(), format);
+            return think.datetime(date, format);
         }
     };
 
@@ -454,4 +453,8 @@ cmpage.getOwnPropertyDescriptors = function(obj) {
         return false;
     };
 
-
+    cmpage.sleep = function(milliSecond) {          
+        var startTime = new Date().getTime();                  
+        while(new Date().getTime() <= milliSecond + startTime) {              
+        }  
+     };

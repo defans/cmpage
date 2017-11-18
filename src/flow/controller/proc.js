@@ -13,13 +13,13 @@ module.exports = class extends Base {
      * @return {promise}
      */
     async designAction(){
-        let module = cmpage.model('cmpage/module')
+        let module = cmpage.service('cmpage/module')
         let parms = await module.getModuleByName('FwProcList');
         parms.parmsUrl = JSON.stringify(this.get());
         parms.editID = this.get("id");
         parms.user = await this.session('user');
         //cmpage.debug(page);
-        let pageModel = cmpage.model('flow/proc_list');
+        let pageModel = cmpage.service('flow/proc_list');
         pageModel.mod = parms;
         await pageModel.initPage();
         pageModel.modEdits = await module.getModuleEdit(parms.id);
@@ -32,7 +32,7 @@ module.exports = class extends Base {
         parmsAct.parmsUrl= '{}';
         parmsAct.editID =0;
         parmsAct.user = parms.user;
-        let pageAct = cmpage.model('cmpage/page');
+        let pageAct = cmpage.service('cmpage/page');
         pageAct.mod = parmsAct;
         await pageAct.initPage();
         pageAct.modEdits = await module.getModuleEdit(parmsAct.id);
@@ -53,7 +53,7 @@ module.exports = class extends Base {
      */
     async flow_mapAction(){
         let procID = this.get("proc_id");
-        let flowMap = await cmpage.model('flow/proc_list').getFlowMap(procID);
+        let flowMap = await cmpage.service('flow/proc_list').getFlowMap(procID);
         this.assign('flowMap',flowMap);
         this.assign('procID',procID)
 
@@ -67,7 +67,7 @@ module.exports = class extends Base {
      */
     async save_mapAction(){
         let parms =this.post();
-        await cmpage.model('flow/proc_list').saveFlowMap(parms);
+        await cmpage.service('flow/proc_list').saveFlowMap(parms);
 
         return this.json({statusCode:200,message:'保存图形成功!'});
     }
@@ -75,7 +75,7 @@ module.exports = class extends Base {
     async clear_cacheAction(){
         let ret={statusCode:200,message:'已成功清除了流程模板的缓存!',tabid: '',data:{}};
 
-        await cmpage.model('flow/proc').clearCache();
+        await cmpage.service('flow/proc').clearCache();
 
         return this.json(ret);
     }

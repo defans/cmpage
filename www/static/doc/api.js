@@ -5,17 +5,17 @@ YUI.add("yuidoc-meta", function(Y) {
         "admin.controller.code",
         "admin.controller.index",
         "admin.controller.mob",
-        "admin.model.code",
-        "admin.model.code_list",
-        "admin.model.code_lookup",
-        "admin.model.groupuser",
-        "admin.model.groupuser_add",
-        "admin.model.log",
-        "admin.model.login",
-        "admin.model.privilege",
-        "admin.model.teamuser",
-        "admin.model.teamuser_add",
-        "admin.model.user",
+        "admin.service.code",
+        "admin.service.code_list",
+        "admin.service.code_lookup",
+        "admin.service.groupuser",
+        "admin.service.groupuser_add",
+        "admin.service.log",
+        "admin.service.login",
+        "admin.service.privilege",
+        "admin.service.teamuser",
+        "admin.service.teamuser_add",
+        "admin.service.user",
         "cmpage.cmpage_global",
         "cmpage.cmpage_global_flow",
         "cmpage.controller.base",
@@ -24,15 +24,15 @@ YUI.add("yuidoc-meta", function(Y) {
         "cmpage.controller.page",
         "cmpage.controller.utils",
         "cmpage.logic.page",
-        "cmpage.model.appr",
-        "cmpage.model.area",
-        "cmpage.model.base",
-        "cmpage.model.file_list",
-        "cmpage.model.page",
-        "cmpage.model.page_excel",
-        "cmpage.model.page_lookup",
-        "cmpage.model.page_mob",
-        "cmpage.model.utils",
+        "cmpage.service.appr",
+        "cmpage.service.area",
+        "cmpage.service.base",
+        "cmpage.service.file_list",
+        "cmpage.service.page",
+        "cmpage.service.page_excel",
+        "cmpage.service.page_lookup",
+        "cmpage.service.page_mob",
+        "cmpage.service.utils",
         "flow.controller.act",
         "flow.controller.base",
         "flow.controller.proc",
@@ -48,10 +48,10 @@ YUI.add("yuidoc-meta", function(Y) {
     ],
     "modules": [
         "admin.controller",
-        "admin.model",
+        "admin.service",
         "cmpage.controller",
         "cmpage.logic",
-        "cmpage.model",
+        "cmpage.service",
         "demo.model",
         "flow.controller",
         "flow.model"
@@ -77,42 +77,42 @@ YUI.add("yuidoc-meta", function(Y) {
             ]
         },
         {
-            "displayName": "admin.model",
-            "name": "admin.model",
+            "displayName": "admin.service",
+            "name": "admin.service",
             "description": "用户及权限系统模块的model部分，实现了实现了相关的数据操作和逻辑处理\n\n注意点 :\n1. 用户界面显示的类继承自cmpage/page;\n2. 树形结构的参数设置统一存放于t_code表中；\n3. 账套用户和团队用户的设置相仿，逻辑相似；",
             "classes": [
                 {
-                    "name": "admin.model.code"
+                    "name": "admin.service.code"
                 },
                 {
-                    "name": "admin.model.code_list"
+                    "name": "admin.service.code_list"
                 },
                 {
-                    "name": "admin.model.code_lookup"
+                    "name": "admin.service.code_lookup"
                 },
                 {
-                    "name": "admin.model.groupuser"
+                    "name": "admin.service.groupuser"
                 },
                 {
-                    "name": "admin.model.groupuser_add"
+                    "name": "admin.service.groupuser_add"
                 },
                 {
-                    "name": "admin.model.log"
+                    "name": "admin.service.log"
                 },
                 {
-                    "name": "admin.model.login"
+                    "name": "admin.service.login"
                 },
                 {
-                    "name": "admin.model.privilege"
+                    "name": "admin.service.privilege"
                 },
                 {
-                    "name": "admin.model.teamuser"
+                    "name": "admin.service.teamuser"
                 },
                 {
-                    "name": "admin.model.teamuser_add"
+                    "name": "admin.service.teamuser_add"
                 },
                 {
-                    "name": "admin.model.user"
+                    "name": "admin.service.user"
                 }
             ]
         },
@@ -149,32 +149,32 @@ YUI.add("yuidoc-meta", function(Y) {
             ]
         },
         {
-            "displayName": "cmpage.model",
-            "name": "cmpage.model",
+            "displayName": "cmpage.service",
+            "name": "cmpage.service",
             "classes": [
                 {
-                    "name": "cmpage.model.area"
+                    "name": "cmpage.service.area"
                 },
                 {
-                    "name": "cmpage.model.base"
+                    "name": "cmpage.service.base"
                 },
                 {
-                    "name": "cmpage.model.file_list"
+                    "name": "cmpage.service.file_list"
                 },
                 {
-                    "name": "cmpage.model.page"
+                    "name": "cmpage.service.page"
                 },
                 {
-                    "name": "cmpage.model.page_excel"
+                    "name": "cmpage.service.page_excel"
                 },
                 {
-                    "name": "cmpage.model.page_lookup"
+                    "name": "cmpage.service.page_lookup"
                 },
                 {
-                    "name": "cmpage.model.page_mob"
+                    "name": "cmpage.service.page_mob"
                 },
                 {
-                    "name": "cmpage.model.utils"
+                    "name": "cmpage.service.utils"
                 },
                 {
                     "name": "cmpage.cmpage_global"
@@ -193,7 +193,7 @@ YUI.add("yuidoc-meta", function(Y) {
                     "name": "flow.model.proc_assign"
                 },
                 {
-                    "name": "cmpage.model.appr"
+                    "name": "cmpage.service.appr"
                 },
                 {
                     "name": "flow.model.proc"

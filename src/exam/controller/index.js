@@ -30,14 +30,14 @@ module.exports = class extends Base {
     //列出我的试卷
     async exam_listAction(){
         let user = await this.session('user');
-        let listHtml = await cmpage.model('exam/exam_myexam').hhGetList(user);
+        let listHtml = await cmpage.service('exam/exam_myexam').hhGetList(user);
         this.assign('listHtml',listHtml);
         return this.display();
     }
 
     //展示试卷详细信息，根据试卷状态
     async exam_student_showAction(){      
-        let ret = await cmpage.model('exam/exam_student').hhGetExamQuestionList(this.get('id'));
+        let ret = await cmpage.service('exam/exam_student').hhGetExamQuestionList(this.get('id'));
         this.assign('examStudent',ret.data);
         return this.display();
     }
@@ -45,7 +45,7 @@ module.exports = class extends Base {
     async exam_saveAction(){
         let parms = this.post();
         debug(parms,'examSaveAction - post');
-        let ret = await cmpage.model('exam/exam_student').hhExamSave(parms);
+        let ret = await cmpage.service('exam/exam_student').hhExamSave(parms);
         if(ret.statusCode == 200)   this.redirect('/exam/index/exam_list');
         return this.json(ret);
     }

@@ -11,4 +11,9 @@ module.exports = class extends Base {
     //auto render template file index_index.html
     return this.display();
   }
+  
+  async refresh_crontabAction(){
+    await this.cache('crontabs',null);
+    return this.success();
+  }
 }

@@ -10,25 +10,25 @@ const isDev = think.env === 'development';
  * cache adapter config
  * @type {Object}
  */
+
 exports.cache = {
   type: 'file',
   common: {
-    timeout: 24 * 60 * 60 * 1000 // millisecond
+    timeout: 24 * 60 * 60 * 1000 // 单位：毫秒
   },
   file: {
     handle: fileCache,
-    cachePath: path.join(think.ROOT_PATH, 'runtime/cache'), // absoulte path is necessarily required
+    cachePath: path.join(think.ROOT_PATH, 'runtime/cache'), // 缓存文件存放的路径
     pathDepth: 1,
-    gcInterval: 24 * 60 * 60 * 1000 // gc interval
+    gcInterval: 24 * 60 * 60 * 1000 // 清理过期缓存定时时间
   }
-};
-
+}
 /**
  * model adapter config
  * @type {Object}
  */
 exports.model = {
-  type: 'admin', // 默认使用的类型，调用时可以指定参数切换
+  type: 'admin', // 默认使用的类型，调用时可以指定参数切换  
   common: { // 通用配置
     logConnect: true, // 是否打印数据库连接信息
     logSql: true, // 是否打印 SQL 语句
@@ -36,6 +36,7 @@ exports.model = {
   },
   admin: {          // 业务数据库设置
     handle: mysql,
+    type: "mysql",
     database: 'admin',
     prefix: '',
     encoding: 'utf8',
@@ -47,6 +48,7 @@ exports.model = {
   },
   cmpage: {         // 业务模块配置的数据库设置
     handle: mysql,
+    type: "mysql",
     database: 'cmpage',
     prefix: '',
     encoding: 'utf8',

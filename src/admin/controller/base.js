@@ -31,7 +31,7 @@ module.exports =  class extends think.Controller {
      */
   async __before(){
     //部分 action 下不检查
-    let blankActions = ["login","get_groups","keep_connect_db","timer_start","timer_stop"];
+    let blankActions = ["login","get_groups"];
     //console.log(this.ctx.action);
     if(blankActions.indexOf(this.ctx.action) >=0){
       return;

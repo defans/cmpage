@@ -4,11 +4,11 @@
 	 **/
 	owner.isDebug = function() {
 		//调试模式
-		return true;
-		//return false;
+		//return true;
+		return false;
 	}
 	owner.debug = function(msg) {
-		if(owner.isDebug){			
+		if(owner.isDebug()){			
 			console.log( typeof(msg)==='object' ? JSON.stringify(msg) : msg);
 		}
 	}
@@ -24,7 +24,7 @@
 	 * 获取domain
 	 **/
 	owner.getDomain = function() {
-		return owner.isDebug() ? "http://192.168.2.132:8300": "http://139.129.48.131:8300";
+		return owner.isDebug() ? "http://10.9.39.64:8300": "http://118.190.105.50:8300";
 	}
 
 	/**

@@ -24,7 +24,7 @@ module.exports = class extends Base {
      * @return {json} 版本信息，包括新版资源包的URL
      */
     async get_versionAction(){
-        let md = await this.model('code').getCodeById(345);
+        let md = await cmpage.service('admin/code').getCodeById(345);
         return this.json({version:md.c_desc, url:md.c_object,memo :md.c_memo});
     }
 
@@ -34,7 +34,7 @@ module.exports = class extends Base {
      * @return {json}   HTML片段，用于下拉选择登陆账套等
      */
     async get_groupsAction(){
-        let list = await this.model('code').getGroups();
+        let list = await cmpage.service('admin/code').getGroups();
         let html =[];
         html.push('<select id="group">');
         for(let md of list){
@@ -87,12 +87,13 @@ module.exports = class extends Base {
     async loginAction(){
         //let vb ={msg:'请选择您有权限登录的账套。'};
         let vb ={msg:'演示用户：defans  密码：123456'};
-        vb.groups = await this.model('code').getGroups();
+        vb.groups = await cmpage.service('admin/code').getGroups();
+        let posts = this.post();
 
-        let user = await this.model('user').getUserByLogin(this.post('loginName'),this.post('loginPwd'),true);
+        let user = await this.model('user').getUserByLogin(posts['loginName'],posts['loginPwd'],true);
         //cmpage.debug(user);
         if(!think.isEmpty(user)){
-            if(user.c_status != 0){
+            if(user.c_status != 1){
                 return this.json({ id :0, msg : "请等候管理员审核，谢谢！" });
             }
             //判断是否有权限登录所选择的账套
@@ -100,10 +101,10 @@ module.exports = class extends Base {
             if(think.isEmpty(groups)){
                 return this.json({ id :0, msg : "对不起，您不能登录该账套！" });
             }else {
-                user.ip = this.ip();
+                user.ip = this.ip;
                 user.urlLast = '/admin/mob/index';
                 user.groupID = parseInt(this.post('loginGroup'));
-                user.groupName = await this.model('code').getNameById(user.groupID);
+                user.groupName = await cmpage.service('admin/code').getNameById(user.groupID);
                 user.groups = groups;
                 await this.model('login').addLogin(user);
                 await this.session('user', user);

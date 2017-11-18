@@ -42,6 +42,9 @@ function getLogingroup() {
 				passwordBox.value = settings.password;
 				groupS.value = settings.user.groupID;
 				login(accountBox.value, passwordBox.value, groupS.value);
+			}else {
+				accountBox.value = 'defans';
+				passwordBox.value = '123456';
 			}
 
 			loginButton.onclick = function() {

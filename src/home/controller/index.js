@@ -15,7 +15,7 @@ module.exports = class extends Base {
    * index action
    * @return {Promise} []
    */
-  async indexAction(){
+  indexAction(){
       let vb={action:'index'};
       this.assign('vb',vb);
     return this.display();

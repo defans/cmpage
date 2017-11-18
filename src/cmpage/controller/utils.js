@@ -20,11 +20,11 @@ const Base = require('./base.js');
 module.exports = class extends Base {
 
     async testAction(){
-//        let model = cmpage.model('docu/base');
+//        let model = cmpage.service('docu/base');
 //        let ret = await model.query('select top 5 goods_name,goods_ucode from vw_docu_rec');
         //let ret = await model.query("QueryPage 'vw_docu_rec','c_id,goods_ucode,goods_name',10,2,'','c_id',0,'c_id'");
 
-        //  let model = cmpage.model('cmpage/base');
+        //  let model = cmpage.service('cmpage/base');
         //  let ret = await model.query('select c_name,c_time from t_customer limit 3');
 //        let ret = await this.model('cmpage/page').query('select c_name,c_time from t_customer limit 2');
         //debug(ret,'utils.C.test - ret');
@@ -41,7 +41,7 @@ module.exports = class extends Base {
      * @return {json}
      */
     async call_functionAction(){
-        let fnModel = cmpage.model(this.get('model'));
+        let fnModel = cmpage.service(this.get('model'));
         let fnName = this.get('fn');
         let ret = {statusCode:200, message:'',data:{}};
         if(think.isFunction(fnModel[ fnName ])){
@@ -74,10 +74,10 @@ module.exports = class extends Base {
      * @return {json}
      */
     async call_function_by_modulenameAction(){
-        let page = await this.model('module').getModuleByName(this.get('modulename'));
+        let page = await cmpage.service('cmpage/module').getModuleByName(this.get('modulename'));
         page.user = await this.session('user');
         //cmpage.debug(page);
-        let pageModel = cmpage.model(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
+        let pageModel = cmpage.service(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
         pageModel.mod = page;
         await pageModel.initPage();
 
@@ -112,8 +112,8 @@ module.exports = class extends Base {
      */
     async clear_cacheAction(){
         //auto render template file index_index.html
-        await cmpage.model('admin/code').clearCodeCache();
-        await cmpage.model('cmpage/module').clearModuleCache();
+        await cmpage.service('admin/code').clearCodeCache();
+        await cmpage.service('cmpage/module').clearModuleCache();
         await this.cache("users",null);
 
         return this.json({statusCode:200, message:'Cache is clear!'});
@@ -125,7 +125,7 @@ module.exports = class extends Base {
      * @return {json}
      */
     async get_citysAction(){
-        let citys = await cmpage.model('admin/area').getCitys(this.get('province'));
+        let citys = await cmpage.service('admin/area').getCitys(this.get('province'));
         let ret =[{value:'-1', label:'请选择'}];
         for(let city of citys){
             ret.push({value:city.c_ucode, label:city.c_name});
@@ -138,7 +138,7 @@ module.exports = class extends Base {
      * @return {json}
      */
     async get_countrysAction(){
-        let countrys = await cmpage.model('admin/area').getCountrys(this.get('city'));
+        let countrys = await cmpage.service('admin/area').getCountrys(this.get('city'));
         let ret =[{value:'-1', label:'请选择'}];
         for(let country of countrys){
             ret.push({value:country.c_ucode, label:country.c_name});

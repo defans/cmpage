@@ -31,7 +31,7 @@ module.exports = class extends think.Logic {
      */
     async saveAction(){
         let parms =this.post();
-        let moduleModel = this.model('module');
+        let moduleModel = cmpage.service('cmpage/module');
 
         let page = await moduleModel.getModuleByName(parms.modulename);
         let pageEdits = await moduleModel.getModuleEdit(page.id);

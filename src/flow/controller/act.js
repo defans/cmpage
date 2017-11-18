@@ -27,7 +27,7 @@ module.exports = class extends Base {
      * @return {json}   act编辑页面的HTML片段
      */
     async editAction(){
-        let actModule = cmpage.model('cmpage/module');
+        let actModule = cmpage.service('cmpage/module');
         let parmsAct = await actModule.getModuleByName('FwAct');
         parmsAct.parmsUrl= '{}';
         parmsAct.editID = this.get('id');
@@ -49,7 +49,7 @@ module.exports = class extends Base {
      */
     async deleteAction(){
         let actID = this.get('id');
-        await cmpage.model('fw_act_path','cmpage').where(`c_from=${actID} or c_to=${actID}`).delete();
+        await cmpage.service('fw_act_path','cmpage').where(`c_from=${actID} or c_to=${actID}`).delete();
         await this.model('fw_act','cmpage').where({id:actID}).delete();
 
         return this.json({statusCode:200, message:''});

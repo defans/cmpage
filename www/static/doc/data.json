@@ -65,10 +65,10 @@
         "src\\admin\\model\\code.js": {
             "name": "src\\admin\\model\\code.js",
             "modules": {
-                "admin.model": 1
+                "admin.service": 1
             },
             "classes": {
-                "admin.model.code": 1
+                "admin.service.code": 1
             },
             "fors": {},
             "namespaces": {}
@@ -77,7 +77,7 @@
             "name": "src\\admin\\model\\code_list.js",
             "modules": {},
             "classes": {
-                "admin.model.code_list": 1
+                "admin.service.code_list": 1
             },
             "fors": {},
             "namespaces": {}
@@ -86,7 +86,7 @@
             "name": "src\\admin\\model\\code_lookup.js",
             "modules": {},
             "classes": {
-                "admin.model.code_lookup": 1
+                "admin.service.code_lookup": 1
             },
             "fors": {},
             "namespaces": {}
@@ -95,7 +95,7 @@
             "name": "src\\admin\\model\\groupuser.js",
             "modules": {},
             "classes": {
-                "admin.model.groupuser": 1
+                "admin.service.groupuser": 1
             },
             "fors": {},
             "namespaces": {}
@@ -104,7 +104,7 @@
             "name": "src\\admin\\model\\groupuser_add.js",
             "modules": {},
             "classes": {
-                "admin.model.groupuser_add": 1
+                "admin.service.groupuser_add": 1
             },
             "fors": {},
             "namespaces": {}
@@ -113,7 +113,7 @@
             "name": "src\\admin\\model\\log.js",
             "modules": {},
             "classes": {
-                "admin.model.log": 1
+                "admin.service.log": 1
             },
             "fors": {},
             "namespaces": {}
@@ -122,7 +122,7 @@
             "name": "src\\admin\\model\\login.js",
             "modules": {},
             "classes": {
-                "admin.model.login": 1
+                "admin.service.login": 1
             },
             "fors": {},
             "namespaces": {}
@@ -131,7 +131,7 @@
             "name": "src\\admin\\model\\privilege.js",
             "modules": {},
             "classes": {
-                "admin.model.privilege": 1
+                "admin.service.privilege": 1
             },
             "fors": {},
             "namespaces": {}
@@ -140,7 +140,7 @@
             "name": "src\\admin\\model\\teamuser.js",
             "modules": {},
             "classes": {
-                "admin.model.teamuser": 1
+                "admin.service.teamuser": 1
             },
             "fors": {},
             "namespaces": {}
@@ -149,7 +149,7 @@
             "name": "src\\admin\\model\\teamuser_add.js",
             "modules": {},
             "classes": {
-                "admin.model.teamuser_add": 1
+                "admin.service.teamuser_add": 1
             },
             "fors": {},
             "namespaces": {}
@@ -158,7 +158,7 @@
             "name": "src\\admin\\model\\user.js",
             "modules": {},
             "classes": {
-                "admin.model.user": 1
+                "admin.service.user": 1
             },
             "fors": {},
             "namespaces": {}
@@ -239,7 +239,7 @@
             "name": "src\\cmpage\\model\\area.js",
             "modules": {},
             "classes": {
-                "cmpage.model.area": 1
+                "cmpage.service.area": 1
             },
             "fors": {},
             "namespaces": {}
@@ -248,7 +248,7 @@
             "name": "src\\cmpage\\model\\base.js",
             "modules": {},
             "classes": {
-                "cmpage.model.base": 1
+                "cmpage.service.base": 1
             },
             "fors": {},
             "namespaces": {}
@@ -257,7 +257,7 @@
             "name": "src\\cmpage\\model\\file_list.js",
             "modules": {},
             "classes": {
-                "cmpage.model.file_list": 1
+                "cmpage.service.file_list": 1
             },
             "fors": {},
             "namespaces": {}
@@ -273,7 +273,7 @@
             "name": "src\\cmpage\\model\\page.js",
             "modules": {},
             "classes": {
-                "cmpage.model.page": 1
+                "cmpage.service.page": 1
             },
             "fors": {},
             "namespaces": {}
@@ -282,7 +282,7 @@
             "name": "src\\cmpage\\model\\page_excel.js",
             "modules": {},
             "classes": {
-                "cmpage.model.page_excel": 1
+                "cmpage.service.page_excel": 1
             },
             "fors": {},
             "namespaces": {}
@@ -291,7 +291,7 @@
             "name": "src\\cmpage\\model\\page_lookup.js",
             "modules": {},
             "classes": {
-                "cmpage.model.page_lookup": 1
+                "cmpage.service.page_lookup": 1
             },
             "fors": {},
             "namespaces": {}
@@ -300,7 +300,7 @@
             "name": "src\\cmpage\\model\\page_mob.js",
             "modules": {},
             "classes": {
-                "cmpage.model.page_mob": 1
+                "cmpage.service.page_mob": 1
             },
             "fors": {},
             "namespaces": {}
@@ -316,7 +316,7 @@
             "name": "src\\cmpage\\model\\utils.js",
             "modules": {},
             "classes": {
-                "cmpage.model.utils": 1
+                "cmpage.service.utils": 1
             },
             "fors": {},
             "namespaces": {}
@@ -431,7 +431,7 @@
             "name": "src\\flow\\model\\appr_task.js",
             "modules": {},
             "classes": {
-                "cmpage.model.appr": 1
+                "cmpage.service.appr": 1
             },
             "fors": {},
             "namespaces": {}
@@ -498,7 +498,7 @@
         "src\\flow\\cmpage_global_flow.js": {
             "name": "src\\flow\\cmpage_global_flow.js",
             "modules": {
-                "cmpage.model": 1
+                "cmpage.service": 1
             },
             "classes": {
                 "cmpage.cmpage_global_flow": 1
@@ -524,21 +524,21 @@
             "line": 13,
             "description": "用户及权限系统的controller模块，实现了对外的URL接口，包括PC端和移动端\n\n 注意点 :\n 1. base.js继承自 think.controller.base;\n 2. 其他controller 继承自 base.js;\n 3. 移动端APP的菜单是单独设置的，要单独配置各个角色和用户的权限；\n 4. 移动端和PC端的版本是分开设置的;"
         },
-        "admin.model": {
-            "name": "admin.model",
+        "admin.service": {
+            "name": "admin.service",
             "submodules": {},
             "classes": {
-                "admin.model.code": 1,
-                "admin.model.code_list": 1,
-                "admin.model.code_lookup": 1,
-                "admin.model.groupuser": 1,
-                "admin.model.groupuser_add": 1,
-                "admin.model.log": 1,
-                "admin.model.login": 1,
-                "admin.model.privilege": 1,
-                "admin.model.teamuser": 1,
-                "admin.model.teamuser_add": 1,
-                "admin.model.user": 1
+                "admin.service.code": 1,
+                "admin.service.code_list": 1,
+                "admin.service.code_lookup": 1,
+                "admin.service.groupuser": 1,
+                "admin.service.groupuser_add": 1,
+                "admin.service.log": 1,
+                "admin.service.login": 1,
+                "admin.service.privilege": 1,
+                "admin.service.teamuser": 1,
+                "admin.service.teamuser_add": 1,
+                "admin.service.user": 1
             },
             "fors": {},
             "namespaces": {},
@@ -577,18 +577,18 @@
             "line": 21,
             "description": "业务模块配置和展示系统的logic，实现了对前端传入的参数校验\n\n注意点 :\n1. 校验的错误提示已改为中文，配置在 common/config/zh-cn.js\n2. 一般不实现业务逻辑\n3. 由于cmpage的模块都是统一的URL接口，因此都可以按配置实现校验"
         },
-        "cmpage.model": {
-            "name": "cmpage.model",
+        "cmpage.service": {
+            "name": "cmpage.service",
             "submodules": {},
             "classes": {
-                "cmpage.model.area": 1,
-                "cmpage.model.base": 1,
-                "cmpage.model.file_list": 1,
-                "cmpage.model.page": 1,
-                "cmpage.model.page_excel": 1,
-                "cmpage.model.page_lookup": 1,
-                "cmpage.model.page_mob": 1,
-                "cmpage.model.utils": 1,
+                "cmpage.service.area": 1,
+                "cmpage.service.base": 1,
+                "cmpage.service.file_list": 1,
+                "cmpage.service.page": 1,
+                "cmpage.service.page_excel": 1,
+                "cmpage.service.page_lookup": 1,
+                "cmpage.service.page_mob": 1,
+                "cmpage.service.utils": 1,
                 "cmpage.cmpage_global": 1,
                 "cmpage.cmpage_global_flow": 1
             },
@@ -634,7 +634,7 @@
             "submodules": {},
             "classes": {
                 "flow.model.proc_assign": 1,
-                "cmpage.model.appr": 1,
+                "cmpage.service.appr": 1,
                 "flow.model.proc": 1,
                 "flow.model.task": 1,
                 "flow.model.task_act": 1,
@@ -705,155 +705,155 @@
             "line": 13,
             "description": "移动端APP的admin模块的RUL接口，包括用户登录、取菜单、版本信息等\n由于移动端和PC端的表现方式和功能有所差别，因此部分URL接口单独实现"
         },
-        "admin.model.code": {
-            "name": "admin.model.code",
-            "shortname": "admin.model.code",
+        "admin.service.code": {
+            "name": "admin.service.code",
+            "shortname": "admin.service.code",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "admin.model",
+            "module": "admin.service",
             "namespace": "",
             "file": "src\\admin\\model\\code.js",
             "line": 20,
             "description": "代码于参数设置的操作类，提供一些操作t_code表的方法"
         },
-        "admin.model.code_list": {
-            "name": "admin.model.code_list",
-            "shortname": "admin.model.code_list",
+        "admin.service.code_list": {
+            "name": "admin.service.code_list",
+            "shortname": "admin.service.code_list",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "admin.model",
+            "module": "admin.service",
             "namespace": "",
             "file": "src\\admin\\model\\code_list.js",
             "line": 13,
             "description": "代码于参数设置的页面展示及操作类，单层的CRUD，配合 cmpage/controller/page.js 中的相关调用，继承自 cmpage/model/page.js"
         },
-        "admin.model.code_lookup": {
-            "name": "admin.model.code_lookup",
-            "shortname": "admin.model.code_lookup",
+        "admin.service.code_lookup": {
+            "name": "admin.service.code_lookup",
+            "shortname": "admin.service.code_lookup",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "admin.model",
+            "module": "admin.service",
             "namespace": "",
             "file": "src\\admin\\model\\code_lookup.js",
             "line": 13,
             "description": "参数选择，继承自 cmpage/model/page_lookup.js"
         },
-        "admin.model.groupuser": {
-            "name": "admin.model.groupuser",
-            "shortname": "admin.model.groupuser",
+        "admin.service.groupuser": {
+            "name": "admin.service.groupuser",
+            "shortname": "admin.service.groupuser",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "admin.model",
+            "module": "admin.service",
             "namespace": "",
             "file": "src\\admin\\model\\groupuser.js",
             "line": 14,
             "description": "账套与用户操作类，并配合界面操作输出相应HTML，"
         },
-        "admin.model.groupuser_add": {
-            "name": "admin.model.groupuser_add",
-            "shortname": "admin.model.groupuser_add",
+        "admin.service.groupuser_add": {
+            "name": "admin.service.groupuser_add",
+            "shortname": "admin.service.groupuser_add",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "admin.model",
+            "module": "admin.service",
             "namespace": "",
             "file": "src\\admin\\model\\groupuser_add.js",
             "line": 14,
             "description": "加入账套的待选择列表"
         },
-        "admin.model.log": {
-            "name": "admin.model.log",
-            "shortname": "admin.model.log",
+        "admin.service.log": {
+            "name": "admin.service.log",
+            "shortname": "admin.service.log",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "admin.model",
+            "module": "admin.service",
             "namespace": "",
             "file": "src\\admin\\model\\log.js",
             "line": 14,
             "description": "系统操作的日志模块"
         },
-        "admin.model.login": {
-            "name": "admin.model.login",
-            "shortname": "admin.model.login",
+        "admin.service.login": {
+            "name": "admin.service.login",
+            "shortname": "admin.service.login",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "admin.model",
+            "module": "admin.service",
             "namespace": "",
             "file": "src\\admin\\model\\login.js",
             "line": 14,
             "description": "登录用户的操作类，提供一些操作t_user,vw_user的方法"
         },
-        "admin.model.privilege": {
-            "name": "admin.model.privilege",
-            "shortname": "admin.model.privilege",
+        "admin.service.privilege": {
+            "name": "admin.service.privilege",
+            "shortname": "admin.service.privilege",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "admin.model",
+            "module": "admin.service",
             "namespace": "",
             "file": "src\\admin\\model\\privilege.js",
             "line": 14,
             "description": "用户权限相关的操作类"
         },
-        "admin.model.teamuser": {
-            "name": "admin.model.teamuser",
-            "shortname": "admin.model.teamuser",
+        "admin.service.teamuser": {
+            "name": "admin.service.teamuser",
+            "shortname": "admin.service.teamuser",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "admin.model",
+            "module": "admin.service",
             "namespace": "",
             "file": "src\\admin\\model\\teamuser.js",
             "line": 13,
             "description": "账套与用户操作类，并配合界面操作输出相应HTML，"
         },
-        "admin.model.teamuser_add": {
-            "name": "admin.model.teamuser_add",
-            "shortname": "admin.model.teamuser_add",
+        "admin.service.teamuser_add": {
+            "name": "admin.service.teamuser_add",
+            "shortname": "admin.service.teamuser_add",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "admin.model",
+            "module": "admin.service",
             "namespace": "",
             "file": "src\\admin\\model\\teamuser_add.js",
             "line": 14,
             "description": "加入账套的待选择列表"
         },
-        "admin.model.user": {
-            "name": "admin.model.user",
-            "shortname": "admin.model.user",
+        "admin.service.user": {
+            "name": "admin.service.user",
+            "shortname": "admin.service.user",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "admin.model",
+            "module": "admin.service",
             "namespace": "",
             "file": "src\\admin\\model\\user.js",
             "line": 13,
@@ -943,113 +943,113 @@
             "line": 21,
             "description": "调用 cmpage/controller/page.js 的一些URL接口之前\n提供 thinkjs 的校验"
         },
-        "cmpage.model.area": {
-            "name": "cmpage.model.area",
-            "shortname": "cmpage.model.area",
+        "cmpage.service.area": {
+            "name": "cmpage.service.area",
+            "shortname": "cmpage.service.area",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cmpage.model",
+            "module": "cmpage.service",
             "namespace": "",
             "file": "src\\cmpage\\model\\area.js",
             "line": 23,
             "description": "全国行政区划的操作类，如果内容作调整后，手机端APP部分也应该做调整，因为数据是预存在APP端的"
         },
-        "cmpage.model.base": {
-            "name": "cmpage.model.base",
-            "shortname": "cmpage.model.base",
+        "cmpage.service.base": {
+            "name": "cmpage.service.base",
+            "shortname": "cmpage.service.base",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cmpage.model",
+            "module": "cmpage.service",
             "namespace": "",
             "file": "src\\cmpage\\model\\base.js",
             "line": 14,
-            "description": "业务模块的基类，通过ORM框架 Sequelize 连接各个业务数据库</br>\n连接参数配置于各个module的配置文件中，xxxx/config/db.config </br>\n为了和thinkjs.model的常用方法名保持一致，以下实现了相关方法，通过转换成sql语句用 sequelize.query(sql) 执行 </br>\n如果想使用 sequelize 的ORM方法，可以在子类中通过 this.sequelize.xxxx 来调用</br>\n子类中用think.model,或者cmpage.model来实例化其他类其他模块，本类中的 model 用于设置表名以便生成SQL语句，也为了兼容 thinkjs.model(表名).xxx 的调用方式 </br>\n如果以后版本的 ThinkJS能支持mssql，以上兼容可以使得将 page.js 改回从 think.model.base 继承的时候不需要做太大改动 </br>"
+            "description": "业务模块的基类，通过ORM框架 Sequelize 连接各个业务数据库</br>\n连接参数配置于各个module的配置文件中，xxxx/config/db.config </br>\n为了和thinkjs.model的常用方法名保持一致，以下实现了相关方法，通过转换成sql语句用 sequelize.query(sql) 执行 </br>\n如果想使用 sequelize 的ORM方法，可以在子类中通过 this.sequelize.xxxx 来调用</br>\n子类中用think.model,或者cmpage.service来实例化其他类其他模块，本类中的 model 用于设置表名以便生成SQL语句，也为了兼容 thinkjs.model(表名).xxx 的调用方式 </br>\n如果以后版本的 ThinkJS能支持mssql，以上兼容可以使得将 page.js 改回从 think.model.base 继承的时候不需要做太大改动 </br>"
         },
-        "cmpage.model.file_list": {
-            "name": "cmpage.model.file_list",
-            "shortname": "cmpage.model.file_list",
+        "cmpage.service.file_list": {
+            "name": "cmpage.service.file_list",
+            "shortname": "cmpage.service.file_list",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cmpage.model",
+            "module": "cmpage.service",
             "namespace": "",
             "file": "src\\cmpage\\model\\file_list.js",
             "line": 14,
             "description": "实现了文件列表页面的功能，定制了移动端的页面"
         },
-        "cmpage.model.page": {
-            "name": "cmpage.model.page",
-            "shortname": "cmpage.model.page",
+        "cmpage.service.page": {
+            "name": "cmpage.service.page",
+            "shortname": "cmpage.service.page",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cmpage.model",
+            "module": "cmpage.service",
             "namespace": "",
             "file": "src\\cmpage\\model\\page.js",
             "line": 15,
             "description": "普通页面的数据处理类，实现了具体的操作方法"
         },
-        "cmpage.model.page_excel": {
-            "name": "cmpage.model.page_excel",
-            "shortname": "cmpage.model.page_excel",
+        "cmpage.service.page_excel": {
+            "name": "cmpage.service.page_excel",
+            "shortname": "cmpage.service.page_excel",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cmpage.model",
+            "module": "cmpage.service",
             "namespace": "",
             "file": "src\\cmpage\\model\\page_excel.js",
             "line": 14,
             "description": "实现了excel导出等处理，可继承本类做定制化的excel文件导出"
         },
-        "cmpage.model.page_lookup": {
-            "name": "cmpage.model.page_lookup",
-            "shortname": "cmpage.model.page_lookup",
+        "cmpage.service.page_lookup": {
+            "name": "cmpage.service.page_lookup",
+            "shortname": "cmpage.service.page_lookup",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cmpage.model",
+            "module": "cmpage.service",
             "namespace": "",
             "file": "src\\cmpage\\model\\page_lookup.js",
             "line": 14,
             "description": "实现了查找带回的功能，可继承本类做定制化的查找带回页面，调用： /cmpage/page/lookup?modulename=xxx*multiselect=0 </br>\n实现了选择加入的功能，可继承本类做定制化的选择加入页面，调用： /cmpage/page/lookup?modulename=xxx*selectadd=1*key=c_id*callmodel=docu/docu_rec*callfn=goodsAdd*callparms=xxx,\n其中key是需要回传的字段名称，callmodel是回调的thinkjs模块，callfn 是回调的函数名称, callparms 是额外的参数，例如：单据主ID等 </br>"
         },
-        "cmpage.model.page_mob": {
-            "name": "cmpage.model.page_mob",
-            "shortname": "cmpage.model.page_mob",
+        "cmpage.service.page_mob": {
+            "name": "cmpage.service.page_mob",
+            "shortname": "cmpage.service.page_mob",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cmpage.model",
+            "module": "cmpage.service",
             "namespace": "",
             "file": "src\\cmpage\\model\\page_mob.js",
             "line": 17,
             "description": "实现了手机APP的模块接口，可继承本类对手机APP的业务模块做定制化的HTML输出和功能操作, 方法名加了mob做前导，以示区分"
         },
-        "cmpage.model.utils": {
-            "name": "cmpage.model.utils",
-            "shortname": "cmpage.model.utils",
+        "cmpage.service.utils": {
+            "name": "cmpage.service.utils",
+            "shortname": "cmpage.service.utils",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cmpage.model",
+            "module": "cmpage.service",
             "namespace": "",
             "file": "src\\cmpage\\model\\utils.js",
             "line": 14,
@@ -1063,7 +1063,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cmpage.model",
+            "module": "cmpage.service",
             "namespace": "",
             "file": "src\\cmpage\\cmpage_global.js",
             "line": 7,
@@ -1181,9 +1181,9 @@
             "line": 10,
             "description": "提供工作流的活动路径的相关方法，注意供act、task_act及其继承类的调用 <br/>\n一般不需要继承，也没有相关联的业务类"
         },
-        "cmpage.model.appr": {
-            "name": "cmpage.model.appr",
-            "shortname": "cmpage.model.appr",
+        "cmpage.service.appr": {
+            "name": "cmpage.service.appr",
+            "shortname": "cmpage.service.appr",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -1259,7 +1259,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "cmpage.model",
+            "module": "cmpage.service",
             "namespace": "",
             "file": "src\\flow\\cmpage_global_flow.js",
             "line": 7,
@@ -1635,8 +1635,8 @@
                     "optional": true
                 }
             ],
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1665,8 +1665,8 @@
                     "type": "String"
                 }
             ],
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1685,8 +1685,8 @@
                     "type": "Int"
                 }
             ],
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1705,8 +1705,8 @@
                     "type": "Int"
                 }
             ],
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1725,8 +1725,8 @@
                     "type": "Int"
                 }
             ],
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1746,8 +1746,8 @@
                     "optional": true
                 }
             ],
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1759,8 +1759,8 @@
                 "description": "参数列表",
                 "type": "Array"
             },
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1779,8 +1779,8 @@
                     "type": "Int"
                 }
             ],
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1799,8 +1799,8 @@
                     "type": "String"
                 }
             ],
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1819,8 +1819,8 @@
                     "type": "Int"
                 }
             ],
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1839,8 +1839,8 @@
                     "type": "String"
                 }
             ],
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1848,8 +1848,8 @@
             "description": "清空t_code表的相关缓存",
             "itemtype": "method",
             "name": "clearCodeCache",
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1861,8 +1861,8 @@
                 "description": "账套列表",
                 "type": "Array"
             },
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1874,8 +1874,8 @@
                 "description": "角色列表",
                 "type": "Array"
             },
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1887,8 +1887,8 @@
                 "description": "仓库列表",
                 "type": "Array"
             },
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1900,8 +1900,8 @@
                 "description": "部门列表",
                 "type": "Array"
             },
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code.js",
@@ -1913,8 +1913,8 @@
                 "description": "t_code记录列表",
                 "type": "Array"
             },
-            "class": "admin.model.code",
-            "module": "admin.model"
+            "class": "admin.service.code",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code_list.js",
@@ -1926,8 +1926,8 @@
                 "description": "where条件子句",
                 "type": "String"
             },
-            "class": "admin.model.code_list",
-            "module": "admin.model"
+            "class": "admin.service.code_list",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code_list.js",
@@ -1939,8 +1939,8 @@
                 "description": "where条件子句",
                 "type": "String"
             },
-            "class": "admin.model.code_list",
-            "module": "admin.model"
+            "class": "admin.service.code_list",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code_list.js",
@@ -1959,8 +1959,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.code_list",
-            "module": "admin.model"
+            "class": "admin.service.code_list",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code_list.js",
@@ -1972,8 +1972,8 @@
                 "description": "记录对象",
                 "type": "Object"
             },
-            "class": "admin.model.code_list",
-            "module": "admin.model"
+            "class": "admin.service.code_list",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\code_lookup.js",
@@ -1992,8 +1992,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.code_lookup",
-            "module": "admin.model"
+            "class": "admin.service.code_lookup",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\groupuser.js",
@@ -2005,8 +2005,8 @@
                 "description": "html片段",
                 "type": "String"
             },
-            "class": "admin.model.groupuser",
-            "module": "admin.model"
+            "class": "admin.service.groupuser",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\groupuser.js",
@@ -2030,8 +2030,8 @@
                     "type": "Int"
                 }
             ],
-            "class": "admin.model.groupuser",
-            "module": "admin.model"
+            "class": "admin.service.groupuser",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\groupuser_add.js",
@@ -2050,8 +2050,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.groupuser_add",
-            "module": "admin.model"
+            "class": "admin.service.groupuser_add",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\groupuser_add.js",
@@ -2070,8 +2070,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.groupuser_add",
-            "module": "admin.model"
+            "class": "admin.service.groupuser_add",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\log.js",
@@ -2090,8 +2090,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.log",
-            "module": "admin.model"
+            "class": "admin.service.log",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\log.js",
@@ -2138,8 +2138,8 @@
                     "optional": true
                 }
             ],
-            "class": "admin.model.log",
-            "module": "admin.model"
+            "class": "admin.service.log",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\login.js",
@@ -2158,8 +2158,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.login",
-            "module": "admin.model"
+            "class": "admin.service.login",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\login.js",
@@ -2178,8 +2178,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.login",
-            "module": "admin.model"
+            "class": "admin.service.login",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\login.js",
@@ -2194,8 +2194,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.login",
-            "module": "admin.model"
+            "class": "admin.service.login",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\privilege.js",
@@ -2214,8 +2214,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.privilege",
-            "module": "admin.model"
+            "class": "admin.service.privilege",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\privilege.js",
@@ -2239,8 +2239,8 @@
                     "type": "RootID"
                 }
             ],
-            "class": "admin.model.privilege",
-            "module": "admin.model"
+            "class": "admin.service.privilege",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\privilege.js",
@@ -2269,8 +2269,8 @@
                     "type": "RootID"
                 }
             ],
-            "class": "admin.model.privilege",
-            "module": "admin.model"
+            "class": "admin.service.privilege",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\privilege.js",
@@ -2289,8 +2289,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.privilege",
-            "module": "admin.model"
+            "class": "admin.service.privilege",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\teamuser.js",
@@ -2309,8 +2309,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.teamuser",
-            "module": "admin.model"
+            "class": "admin.service.teamuser",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\teamuser.js",
@@ -2329,8 +2329,8 @@
                     "type": "Int"
                 }
             ],
-            "class": "admin.model.teamuser",
-            "module": "admin.model"
+            "class": "admin.service.teamuser",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\teamuser.js",
@@ -2360,8 +2360,8 @@
                     "optional": true
                 }
             ],
-            "class": "admin.model.teamuser",
-            "module": "admin.model"
+            "class": "admin.service.teamuser",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\teamuser_add.js",
@@ -2380,8 +2380,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.teamuser_add",
-            "module": "admin.model"
+            "class": "admin.service.teamuser_add",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\teamuser_add.js",
@@ -2400,8 +2400,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.teamuser_add",
-            "module": "admin.model"
+            "class": "admin.service.teamuser_add",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\user.js",
@@ -2420,8 +2420,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.user",
-            "module": "admin.model"
+            "class": "admin.service.user",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\user.js",
@@ -2445,8 +2445,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "admin.model.user",
-            "module": "admin.model"
+            "class": "admin.service.user",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\user.js",
@@ -2465,8 +2465,8 @@
                     "type": "Int"
                 }
             ],
-            "class": "admin.model.user",
-            "module": "admin.model"
+            "class": "admin.service.user",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\user.js",
@@ -2485,8 +2485,8 @@
                     "type": "Int"
                 }
             ],
-            "class": "admin.model.user",
-            "module": "admin.model"
+            "class": "admin.service.user",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\user.js",
@@ -2515,8 +2515,8 @@
                     "type": "Bool"
                 }
             ],
-            "class": "admin.model.user",
-            "module": "admin.model"
+            "class": "admin.service.user",
+            "module": "admin.service"
         },
         {
             "file": "src\\admin\\model\\user.js",
@@ -2528,15 +2528,15 @@
                 "description": "vw_user记录列表",
                 "type": "Array"
             },
-            "class": "admin.model.user",
-            "module": "admin.model"
+            "class": "admin.service.user",
+            "module": "admin.service"
         },
         {
             "file": "src\\cmpage\\config\\config.js",
             "line": 2,
             "description": "config",
             "class": "cmpage.controller.base",
-            "module": "admin.model"
+            "module": "admin.service"
         },
         {
             "file": "src\\cmpage\\controller\\base.js",
@@ -3118,8 +3118,8 @@
                 "description": "省份记录列表",
                 "type": "Array"
             },
-            "class": "cmpage.model.area",
-            "module": "cmpage.model"
+            "class": "cmpage.service.area",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\area.js",
@@ -3138,8 +3138,8 @@
                     "type": "String"
                 }
             ],
-            "class": "cmpage.model.area",
-            "module": "cmpage.model"
+            "class": "cmpage.service.area",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\area.js",
@@ -3158,8 +3158,8 @@
                     "type": "String"
                 }
             ],
-            "class": "cmpage.model.area",
-            "module": "cmpage.model"
+            "class": "cmpage.service.area",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\area.js",
@@ -3178,8 +3178,8 @@
                     "type": "String"
                 }
             ],
-            "class": "cmpage.model.area",
-            "module": "cmpage.model"
+            "class": "cmpage.service.area",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\area.js",
@@ -3198,8 +3198,8 @@
                     "type": "String"
                 }
             ],
-            "class": "cmpage.model.area",
-            "module": "cmpage.model"
+            "class": "cmpage.service.area",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\area.js",
@@ -3218,8 +3218,8 @@
                     "type": "String"
                 }
             ],
-            "class": "cmpage.model.area",
-            "module": "cmpage.model"
+            "class": "cmpage.service.area",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\area.js",
@@ -3243,8 +3243,8 @@
                     "type": "Bool"
                 }
             ],
-            "class": "cmpage.model.area",
-            "module": "cmpage.model"
+            "class": "cmpage.service.area",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\area.js",
@@ -3273,8 +3273,8 @@
                     "type": "String"
                 }
             ],
-            "class": "cmpage.model.area",
-            "module": "cmpage.model"
+            "class": "cmpage.service.area",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\area.js",
@@ -3303,8 +3303,8 @@
                     "type": "String"
                 }
             ],
-            "class": "cmpage.model.area",
-            "module": "cmpage.model"
+            "class": "cmpage.service.area",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\base.js",
@@ -3326,8 +3326,8 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "cmpage.model.base",
-            "module": "cmpage.model"
+            "class": "cmpage.service.base",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\base.js",
@@ -3337,8 +3337,8 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "cmpage.model.base",
-            "module": "cmpage.model"
+            "class": "cmpage.service.base",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\base.js",
@@ -3360,8 +3360,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.base",
-            "module": "cmpage.model"
+            "class": "cmpage.service.base",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\file_list.js",
@@ -3373,20 +3373,20 @@
                 "description": "HTML片段",
                 "type": "String"
             },
-            "class": "cmpage.model.file_list",
-            "module": "cmpage.model"
+            "class": "cmpage.service.file_list",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\module.js",
             "line": 415,
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\module.js",
             "line": 504,
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3394,8 +3394,8 @@
             "description": "初始化设置页面参数",
             "itemtype": "method",
             "name": "initPage",
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3407,8 +3407,8 @@
                 "description": "查询的HTML片段，包括 bjui-moreSearch 部分",
                 "type": "Array"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3420,8 +3420,8 @@
                 "description": "html片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3447,8 +3447,8 @@
                     "optdefault": "false"
                 }
             ],
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3474,8 +3474,8 @@
                     "optdefault": "false"
                 }
             ],
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3499,8 +3499,8 @@
                     "type": "String"
                 }
             ],
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3512,8 +3512,8 @@
                 "description": "HTML片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3532,8 +3532,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3545,8 +3545,8 @@
                 "description": "HTML片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3558,8 +3558,8 @@
                 "description": "是否显示",
                 "type": "Boolean"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3571,8 +3571,8 @@
                 "description": "结果集数据包 {count:xxx, list:[{record}]}",
                 "type": "Object"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3584,8 +3584,8 @@
                 "description": "合计行的HTML片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3597,8 +3597,8 @@
                 "description": "where 子句， 形如： where xxx and xxx",
                 "type": "String"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3610,8 +3610,8 @@
                 "description": "fields 部分， 形如：id,c_name,xxx",
                 "type": "String"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3623,8 +3623,8 @@
                 "description": "新增的记录对象",
                 "type": "Object"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3636,8 +3636,8 @@
                 "description": "当前记录对象",
                 "type": "Object"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3649,8 +3649,8 @@
                 "description": "HTML页面片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3679,8 +3679,8 @@
                     "type": "String"
                 }
             ],
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3692,8 +3692,8 @@
                 "description": "HTML页面片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3705,8 +3705,8 @@
                 "description": "按钮数组",
                 "type": "Array"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3718,8 +3718,8 @@
                 "description": "按钮数组",
                 "type": "Array"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3738,8 +3738,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3763,8 +3763,8 @@
                     "type": "String"
                 }
             ],
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3784,8 +3784,8 @@
                     "optional": true
                 }
             ],
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3797,8 +3797,8 @@
                 "description": "HTML页面片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3810,8 +3810,8 @@
                 "description": "记录对象",
                 "type": "Object"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3823,8 +3823,8 @@
                 "description": "HTML片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3858,8 +3858,8 @@
                     "type": "Boolean"
                 }
             ],
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3871,8 +3871,8 @@
                 "description": "HTML片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page.js",
@@ -3901,8 +3901,8 @@
                     "type": "String"
                 }
             ],
-            "class": "cmpage.model.page",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_excel.js",
@@ -3926,8 +3926,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.page_excel",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_excel",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_excel.js",
@@ -3946,8 +3946,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.page_excel",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_excel",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_excel.js",
@@ -3971,8 +3971,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.page_excel",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_excel",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_lookup.js",
@@ -3991,8 +3991,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.page_lookup",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_lookup",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_lookup.js",
@@ -4011,8 +4011,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.page_lookup",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_lookup",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_lookup.js",
@@ -4031,8 +4031,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.page_lookup",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_lookup",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_lookup.js",
@@ -4051,8 +4051,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.page_lookup",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_lookup",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_lookup.js",
@@ -4064,15 +4064,15 @@
                 "description": "HTML片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page_lookup",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_lookup",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
             "line": 10,
             "description": "page_mob model 实现手机APP的模块接口",
-            "class": "cmpage.model.page_mob",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_mob",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
@@ -4084,8 +4084,8 @@
                 "description": "HTML片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page_mob",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_mob",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
@@ -4104,8 +4104,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.page_mob",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_mob",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
@@ -4117,8 +4117,8 @@
                 "description": "HTML片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page_mob",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_mob",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
@@ -4126,8 +4126,8 @@
             "description": "取模块的MUI设置，一般在子类中通过重写这个方法来增加MUI的配置信息，需要手机端做相应的逻辑实现",
             "itemtype": "method",
             "name": "mobGetPageMuiSetting",
-            "class": "cmpage.model.page_mob",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_mob",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
@@ -4146,8 +4146,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.page_mob",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_mob",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
@@ -4159,8 +4159,8 @@
                 "description": "HTML片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page_mob",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_mob",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
@@ -4172,8 +4172,8 @@
                 "description": "HTML片段",
                 "type": "String"
             },
-            "class": "cmpage.model.page_mob",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_mob",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_mob.js",
@@ -4202,15 +4202,15 @@
                     "type": "String"
                 }
             ],
-            "class": "cmpage.model.page_mob",
-            "module": "cmpage.model"
+            "class": "cmpage.service.page_mob",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_ms.js",
             "line": 10,
             "description": "page_rec model 实现主从表页面的编辑和查看",
-            "class": "cmpage.model.utils",
-            "module": "cmpage.model"
+            "class": "cmpage.service.utils",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_ms.js",
@@ -4222,8 +4222,8 @@
                 "description": "结果集数据包 {count:xxx, list:[{record}]}",
                 "type": "Object"
             },
-            "class": "cmpage.model.utils",
-            "module": "cmpage.model"
+            "class": "cmpage.service.utils",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\page_ms.js",
@@ -4235,8 +4235,8 @@
                 "description": "HTML页面片段",
                 "type": "String"
             },
-            "class": "cmpage.model.utils",
-            "module": "cmpage.model"
+            "class": "cmpage.service.utils",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\utils.js",
@@ -4260,8 +4260,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.utils",
-            "module": "cmpage.model"
+            "class": "cmpage.service.utils",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\model\\utils.js",
@@ -4280,14 +4280,14 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.utils",
-            "module": "cmpage.model"
+            "class": "cmpage.service.utils",
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
             "line": 17,
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4312,7 +4312,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4342,7 +4342,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4362,7 +4362,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4382,7 +4382,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4402,7 +4402,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4427,7 +4427,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4457,7 +4457,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4492,7 +4492,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4512,7 +4512,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4532,13 +4532,13 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
             "line": 245,
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4558,7 +4558,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4583,7 +4583,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4608,20 +4608,20 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
             "line": 320,
             "description": "cmpage的全局变量初始化，如enum等\n值>0 ,是为了和数据库中其他的参数值设置方式保持一致",
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
             "line": 348,
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4646,7 +4646,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4671,7 +4671,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4691,7 +4691,7 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\cmpage\\cmpage_global.js",
@@ -4711,14 +4711,14 @@
                 }
             ],
             "class": "cmpage.cmpage_global",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\flow\\config\\config.js",
             "line": 2,
             "description": "config",
             "class": "flow.controller.act",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         },
         {
             "file": "src\\flow\\controller\\act.js",
@@ -5590,7 +5590,7 @@
             "file": "src\\flow\\model\\appr.js",
             "line": 24,
             "description": "取查询项的设置，结合POST参数，得到Where字句",
-            "class": "cmpage.model.appr",
+            "class": "cmpage.service.appr",
             "module": "demo.model"
         },
         {
@@ -5603,7 +5603,7 @@
                 "description": "新增的记录对象",
                 "type": "Object"
             },
-            "class": "cmpage.model.appr",
+            "class": "cmpage.service.appr",
             "module": "demo.model"
         },
         {
@@ -5616,7 +5616,7 @@
                 "description": "当前记录对象",
                 "type": "Object"
             },
-            "class": "cmpage.model.appr",
+            "class": "cmpage.service.appr",
             "module": "demo.model"
         },
         {
@@ -5632,14 +5632,14 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.appr",
+            "class": "cmpage.service.appr",
             "module": "demo.model"
         },
         {
             "file": "src\\flow\\model\\appr_task.js",
             "line": 24,
             "description": "取查询项的设置，结合POST参数，得到Where字句",
-            "class": "cmpage.model.appr",
+            "class": "cmpage.service.appr",
             "module": "demo.model"
         },
         {
@@ -5652,7 +5652,7 @@
                 "description": "新增的记录对象",
                 "type": "Object"
             },
-            "class": "cmpage.model.appr",
+            "class": "cmpage.service.appr",
             "module": "demo.model"
         },
         {
@@ -5668,7 +5668,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.appr",
+            "class": "cmpage.service.appr",
             "module": "demo.model"
         },
         {
@@ -5694,7 +5694,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "cmpage.model.appr",
+            "class": "cmpage.service.appr",
             "module": "demo.model"
         },
         {
@@ -6582,7 +6582,7 @@
             "line": 15,
             "description": "cmpage的全局变量初始化，如enum等\n值>0 ,是为了和数据库中其他的参数值设置方式保持一致",
             "class": "cmpage.cmpage_global_flow",
-            "module": "cmpage.model"
+            "module": "cmpage.service"
         }
     ],
     "warnings": [

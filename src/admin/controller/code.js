@@ -28,7 +28,7 @@ module.exports = class extends Base {
     let vb={};
     vb.rootID=this.get('rootid');
     vb.treeID=`codeTree${vb.rootID}`;
-    let model = this.model('code');
+    let model = cmpage.service('admin/code');
     vb.list =await model.getTreeList(vb.rootID,true);
 //    cmpage.debug(JSON.stringify(vb));
     this.assign('vb',vb);
@@ -46,7 +46,7 @@ module.exports = class extends Base {
         let vb={};
         vb.rootID=this.get('rootid');
         vb.treeID=`codeTree${vb.rootID}`;
-        let model = this.model('code');
+        let model = cmpage.service('admin/code');
         vb.list =await model.getTreeList(vb.rootID,true);
 //    cmpage.debug(JSON.stringify(vb));
         this.assign('vb',vb);
@@ -59,7 +59,7 @@ module.exports = class extends Base {
      * @return {json}
      */
   async group_user_mainAction(){
-    let model = this.model('code');
+    let model = cmpage.service('admin/code');
     let treeList =await model.getTreeList(2,true);
     this.assign('treeList',treeList);
     return this.display();
@@ -94,7 +94,7 @@ module.exports = class extends Base {
      * @return {json}
      */
     async team_user_mainAction(){
-        let model = this.model('code');
+        let model = cmpage.service('admin/code');
         let treeList =await model.getTreeList(7,true);
         this.assign('treeList',treeList);
         return this.display();
@@ -129,7 +129,7 @@ module.exports = class extends Base {
      * @return {json}
      */
   async role_privilegeAction(){
-    let model = this.model('code');
+    let model = cmpage.service('admin/code');
     let treeList =await model.getTreeList(3,true);
 //    cmpage.debug(JSON.stringify(vb));
     this.assign('treeList',treeList);
@@ -216,7 +216,7 @@ module.exports = class extends Base {
         let vb={};
         vb.rootID=this.get('rootid');
         vb.treeID=`code${vb.rootID}`;
-        let model = this.model('code');
+        let model = cmpage.service('admin/code');
         vb.list =await model.getTreeList(vb.rootID,true);
         // cmpage.debug(JSON.stringify(vb));
         this.assign('vb',vb);
@@ -241,7 +241,7 @@ module.exports = class extends Base {
             await model.where({id: ret.data.id}).update(parms);
         }
 
-        await this.model('code').clearCodeCache();
+        await cmpage.service('admin/code').clearCodeCache();
         return this.json(ret);
     }
 

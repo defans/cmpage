@@ -50,7 +50,7 @@ module.exports = class extends Base {
         if(parms.modulename.length >20){
             return this.json({statusCode:'300',message:parms.modulename + " 模块名错误！"});
         }
-        let moduleModel = this.model("module");
+        let moduleModel = cmpage.service('cmpage/module');
         let md = await moduleModel.getModuleByName(parms.modulename);
         Object.assign(parms,md);
 
@@ -72,7 +72,7 @@ module.exports = class extends Base {
         if(think.isEmpty(parms.id)){
             return this.json({statusCode:'300',message:parms.modulename + " 模块不存在！"});
         }
-        let pageModel = cmpage.model(parms.c_path);
+        let pageModel = cmpage.service(parms.c_path);
         if(think.isEmpty(pageModel['htmlGetQuery'])){
             return this.json({statusCode:'300',message: `${parms.modulename} 的实现类(${parms.c_path})不存在！`});
         }
@@ -106,7 +106,7 @@ module.exports = class extends Base {
      * @return {file}  excel文件
      */
     async excel_exportAction(){
-        let module = this.model("module");
+        let module = cmpage.service('cmpage/module');
         let parms ={};
         parms.query ={};
         parms.modulename= this.get('modulename');
@@ -124,7 +124,7 @@ module.exports = class extends Base {
             return this.json({statusCode:'300',message:parms.modulename + " 模块不存在！"});
         }
 
-        let pageModel = cmpage.model(parms.c_path);
+        let pageModel = cmpage.service(parms.c_path);
         if(think.isEmpty(pageModel['htmlGetQuery'])){
             return this.json({statusCode:'300',message:parms.modulename + " 的实现类不存在！"});
         }
@@ -137,10 +137,10 @@ module.exports = class extends Base {
         //cmpage.debug(pageModel.list,'page.C.excelExport - pageModel.list');
         let excel = await this.model('page_excel').excelExport(pageModel.list,pageModel.modCols);
         //cmpage.debug(vb.listHtml);
-        this.header('Content-Type', 'application/vnd.openxmlformats');
+        this.ctx.set('Content-Type', 'application/vnd.openxmlformats');
         //let filename=[{filename:(think.isEmpty(page.c_alias) ? page.modulename : page.c_alias)}];
-        this.header("Content-Disposition", "attachment; filename=" +parms.modulename +".xlsx");
-        this.end(excel, 'binary');
+        this.ctx.set("Content-Disposition", "attachment; filename=" +parms.modulename +".xlsx");
+        this.body = new Buffer(excel,'binary'); 
     }
 
     /**
@@ -150,11 +150,11 @@ module.exports = class extends Base {
      * @return {json}  删除成功状态
      */
     async deleteAction(){
-        let page = await this.model('module').getModuleByName(this.get('modulename'));
+        let page = await cmpage.service('cmpage/module').getModuleByName(this.get('modulename'));
         //page.id = this.get("id");
         page.user = await this.session('user');
         //cmpage.debug(page);
-        let pageModel = cmpage.model(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
+        let pageModel = cmpage.service(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
         pageModel.mod = page;
         await pageModel.initPage();
         pageModel.mod.recID = this.get("id");
@@ -170,9 +170,9 @@ module.exports = class extends Base {
      * @return {json}  执行修改后的返回信息
      */
     async update_statusAction(){
-        let page = await this.model('module').getModuleByName(this.get('modulename'));
+        let page = await cmpage.service('cmpage/module').getModuleByName(this.get('modulename'));
         page.user = await this.session('user');
-        let pageModel = cmpage.model(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
+        let pageModel = cmpage.service(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
         pageModel.mod = page;
         await pageModel.initPage();
         let recID = this.get("id");
@@ -189,7 +189,7 @@ module.exports = class extends Base {
      * @return {promise}  HTML片段
      */
     async editAction() {
-        let module = cmpage.model('cmpage/module');
+        let module = cmpage.service('cmpage/module');
         let parms = await module.getModuleByName(this.get('modulename'));
         parms.parmsUrl = this.get();
         delete parms.parmsUrl['_'];
@@ -198,11 +198,11 @@ module.exports = class extends Base {
         parms.listIds = think.isEmpty(this.get('listIds')) ? '':this.get('listIds');
         parms.user = await this.session('user');
         //debug(parms,'page.C.edit - parms');
-        let pageModel = cmpage.model(think.isEmpty(parms.c_path) ? 'cmpage/page':parms.c_path);
+        let pageModel = cmpage.service(think.isEmpty(parms.c_path) ? 'cmpage/page':parms.c_path);
         pageModel.mod = parms;
         await pageModel.initPage();
         if(think.isEmpty(pageModel.proc) && parms.parmsUrl.procID >0){
-            pageModel.proc = await cmpage.model('flow/proc').getProcById(parms.parmsUrl.procID);
+            pageModel.proc = await cmpage.service('flow/proc').getProcById(parms.parmsUrl.procID);
         }
 
         pageModel.modEdits = await module.getModuleEdit(parms.id);
@@ -222,7 +222,7 @@ module.exports = class extends Base {
      * @return {promise}  HTML片段
      */
     async edit_msAction() {
-        let module = this.model('module');
+        let module = cmpage.service('cmpage/module');
         let parms = await module.getModuleByName(this.get('modulename'));
         parms.parmsUrl = this.get();
         delete parms.parmsUrl['_'];
@@ -230,7 +230,7 @@ module.exports = class extends Base {
         parms.editID =  think.isEmpty(this.get("id")) ? this.get("c_id") : this.get("id");
         parms.user = await this.session('user');
         //cmpage.debug(page);
-        let pageModel = cmpage.model(parms.c_path);
+        let pageModel = cmpage.service(parms.c_path);
         pageModel.mod = parms;
         await pageModel.initPage();
         pageModel.modEdits = await module.getModuleEdit(parms.id);
@@ -257,9 +257,9 @@ module.exports = class extends Base {
         let parms =this.post();
         let user = await this.session('user');
         //cmpage.debug(user);
-        parms.c_user =user.id;
+        parms.c_user =parms.c_user || user.id;
         parms.c_group = (think.isEmpty(parms.c_group) || parms.c_group == 0) ? user.groupID : parms.c_group;
-        parms.c_time = think.datetime();
+        parms.c_time = parms.c_time || think.datetime();
         parms.c_status= (think.isEmpty(parms.c_status) ? 0 : parms.c_status);
         let ret={statusCode:200,message:'保存成功!',tabid: `page${parms.modulename}`,data:{}};
         let parmsUrl = think.isEmpty(parms.parmsUrl) ? {}: JSON.parse(parms.parmsUrl);
@@ -275,14 +275,14 @@ module.exports = class extends Base {
             }
         }
 
-        let md = await this.model('module').getModuleByName(parms.modulename);
-        let pageModel = cmpage.model(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
+        let md = await cmpage.service('cmpage/module').getModuleByName(parms.modulename);
+        let pageModel = cmpage.service(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
         pageModel.mod = md;
         await pageModel.initPage();
         pageModel.mod.user = user;
         //debug(pageModel.pk,'page.C.save - pageModel.pk');
         pageModel.mod.editID = parms["id"] || parms["c_id"] || 0;
-        pageModel.modEdits = await cmpage.model('cmpage/module').getModuleEdit(md.id);
+        pageModel.modEdits = await cmpage.service('cmpage/module').getModuleEdit(md.id);
         parms.parmsUrl =parmsUrl;
         let saveRet = await pageModel.pageSave(parms);
         ret.data = pageModel.rec;
@@ -301,9 +301,9 @@ module.exports = class extends Base {
      * @return {promise}  HTML片段
      */
     async viewAction() {
-        let module = this.model('module');
+        let module = cmpage.service('cmpage/module');
         let md = await module.getModuleByName(this.get('modulename'));
-        let pageModel = cmpage.model(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
+        let pageModel = cmpage.service(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
         pageModel.mod = md;
         await pageModel.initPage();
         pageModel.mod.listIds = think.isEmpty(this.get('listIds')) ? '':this.get('listIds');
@@ -326,9 +326,9 @@ module.exports = class extends Base {
      * @return {promise}  HTML片段
      */
     async view_msAction() {
-        let module = this.model('module');
+        let module = cmpage.service('cmpage/module');
         let md = await module.getModuleByName(this.get('modulename'));
-        let pageModel = cmpage.model(think.isEmpty(md.c_path) ? 'cmpage/page_ms':md.c_path);
+        let pageModel = cmpage.service(think.isEmpty(md.c_path) ? 'cmpage/page_ms':md.c_path);
         pageModel.mod = md;
         pageModel.mod.parmsUrl = this.get();
         pageModel.mod.parmsUrl.readonly = true;
@@ -354,14 +354,14 @@ module.exports = class extends Base {
      * @return {promise}  HTML片段
      */
     async printAction() {
-        let module = this.model('module');
+        let module = cmpage.service('cmpage/module');
         let parms = await module.getModuleByName(this.get('modulename'));
         parms.parmsUrl = this.get();
         parms.parmsUrl.readonly = false;
         parms.editID =  think.isEmpty(this.get("id")) ? this.get("c_id") : this.get("id");
         parms.user = await this.session('user');
         //cmpage.debug(page);
-        let pageModel = cmpage.model(parms.c_path);
+        let pageModel = cmpage.service(parms.c_path);
         pageModel.mod = parms;
         await pageModel.initPage();
         pageModel.modCols = await module.getModuleCol(parms.id);
@@ -379,7 +379,7 @@ module.exports = class extends Base {
      */
     async lookupAction(){
         let vb={};
-        let module = this.model("module");
+        let module = cmpage.service('cmpage/module');
 
         let parms ={};
         parms.query ={};
@@ -408,7 +408,7 @@ module.exports = class extends Base {
             return this.json({statusCode:'300',message:parms.modulename + " 模块不存在！"});
         }
         parms.user = await this.session('user');
-        let pageModel = cmpage.model(parms.c_path);
+        let pageModel = cmpage.service(parms.c_path);
         if(think.isEmpty(pageModel['htmlGetQuery'])){
             return this.json({statusCode:'300',message:parms.modulename + " 的实现类不存在！"});
         }
@@ -476,7 +476,7 @@ module.exports = class extends Base {
      */
     async timelineAction(){
         let vb={};
-        let module = cmpage.model("module");
+        let module = cmpage.service("module");
 
         let parms ={};
         parms.query ={};
@@ -491,7 +491,7 @@ module.exports = class extends Base {
             parms.query = parms.parmsUrl;
         }
         parms.user = await this.session('user');
-        let pageModel = cmpage.model(parms.c_path);
+        let pageModel = cmpage.service(parms.c_path);
         if(think.isEmpty(pageModel['htmlGetQuery'])){
             return this.json({statusCode:'300',message:parms.modulename + " 的实现类不存在！"});
         }

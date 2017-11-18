@@ -137,7 +137,6 @@ var cmpage={
 		//执行某个动作的按钮
 		mui('body').on('tap', '.cmpage-btn-action', cmpage.btnToAction);
 
-		//地区3级联动
 		mui('body').on('tap', '.cmpage-picker-country', function() {
 			var elem = this;
 			var picker = new mui.PopPicker({

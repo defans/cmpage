@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- @module cmpage.model
+ @module cmpage.service
  */
 
 /**
