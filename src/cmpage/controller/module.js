@@ -121,7 +121,7 @@ module.exports = class extends Base {
       md.c_modulename= this.get('modulename');
       md.c_datasource = md.c_table =  this.get('datasource');
       Object.assign(md, {id:0,c_multiselect:false, c_pager:true, c_page_size:20, c_sort_by:'id desc',c_edit_column:1,
-            c_proc:0,proc_name:'', c_path:'admin/page',c_alias:md.c_modulename });
+            c_proc:0,proc_name:'', c_path:'cmpage/page',c_alias:md.c_modulename });
     }else{
       let tmp = await  this.model("t_module",'cmpage').where({id:  this.get('id')}).find();
       tmp.proc_name = await cmpage.service('flow/proc').getNameById(tmp.c_proc);
@@ -133,8 +133,14 @@ module.exports = class extends Base {
     return this.display();
   }
   async deleteAction(){
-        await this.model('t_module','cmpage').query(`update t_module set c_modulename=concat(c_modulename,'_del'), c_status=-1 where id=${ this.get('id')} `);
-        return this.json({statusCode:200,message:'删除成功！'});
+    let table = this.get('table');
+    let id = this.get('id');
+    if(table === 't_module'){
+      await this.model('t_module','cmpage').query(`update t_module set c_modulename=concat(c_modulename,'_del'), c_status=-1 where id=${id} `);      
+    }else{
+      await this.model(table,'cmpage').query(`delete from ${table} where id=${id} `);      
+    }      
+    return this.json({statusCode:200,message:'删除成功！'});
   }
 
     /**

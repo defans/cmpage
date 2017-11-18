@@ -172,6 +172,24 @@ function pageSelectAdd(obj,modulename,fn,parms){
     return true;
 }
 
+/* 简单调用ajax，不刷新界面等 */
+function pageDoajax(url){
+    BJUI.ajax('doajax', {
+        url: url,
+        loadingmask: true,
+        okCallback: function (json, options) {
+            if(json.statusCode == 200){
+                if(json.messag){
+                    BJUI.alertmsg("info", json.messag);                    
+                }
+            }else{
+                BJUI.alertmsg("warn", json.messag);
+            }
+        }
+    });
+    return false;
+}
+
 //ztreeSelect 选择事件
 function selectNodeCheck(e, treeId, treeNode) {
     var zTree = $.fn.zTree.getZTreeObj(treeId),

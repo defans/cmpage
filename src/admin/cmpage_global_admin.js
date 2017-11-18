@@ -23,18 +23,18 @@
         DELETED:-1,  DELETED_name:'删除'
     };
 
-     //定时任务循环类型
-     cmpage.enumCrontabCycleType = {
-        MONTH:1,   MONTH_name:'每月',
-        DAY:2,  DAY_name:'每日',
-        WEEK:8,   WEEK_name:'每周'
-    };
+    //  //定时任务循环类型
+    //  cmpage.enumCrontabCycleType = {
+    //     MONTH:1,   MONTH_name:'每月',
+    //     DAY:2,  DAY_name:'每日',
+    //     WEEK:8,   WEEK_name:'每周'
+    // };
 
-     //定时任务执行类型
-     cmpage.enumCrontabExeType = {
-        ONECE:1,   ONECE_name:'单次',
-        CYCLE:2,  CYCLE_name:'循环'
-    };
+    //  //定时任务执行类型
+    //  cmpage.enumCrontabExeType = {
+    //     ONECE:1,   ONECE_name:'单次',
+    //     CYCLE:2,  CYCLE_name:'循环'
+    // };
 
      //定时任务的执行状态
      cmpage.enumCrontabStatus = {

@@ -49,15 +49,39 @@ module.exports = class extends CMPage {
     }
 
     
-    /**
-     * 取t_crontab记录，缓存
-     * @method  getCodes
-     * @return {Array}  t_code记录列表
-     */
-    async getCrontabList(){
-        return await think.cache("crontabs", () => {
-            return this.query('select * from t_crontab where c_status=1  ');
-        });
+    // /**
+    //  * 取t_crontab记录，缓存
+    //  * @method  getCodes
+    //  * @return {Array}  t_code记录列表
+    //  */
+    // async getCrontabList(){
+    //     return await think.cache("crontabs", () => {
+    //         return this.query(`select * from t_crontab where c_status=1 and c_time_start <'${cmpage.datetime()}' and c_time_end >'${cmpage.datetime()}' `);
+    //     });
+    // }
+
+     /** 重新配置任务列表
+     * @method  setConfig
+     */    
+    async setConfig(){
+        let crontabList = await this.query(`select * from t_crontab where c_status=1 and c_time_start <'${cmpage.datetime()} 23:59:59' and c_time_end >'${cmpage.datetime()}' `);
+        let cronConfig = [];  
+        for(let md of crontabList){
+            if(think.isEmpty(md.c_cycle_role) || think.isEmpty(md.c_exe_role)){
+                continue;
+            }
+            let task={
+                cron: md.c_cycle_role,
+                immediate: true,
+                handle: () => {
+                    cmpage.service('demo/crontab_exe').run(md.c_exe_role);
+                }
+              };
+              cronConfig.push(task);
+        }
+        debug(cronConfig);
+        debug(await think.config('crontab'),'old crontab');
+        await think.config('crontab',cronConfig);
     }
 
 }
