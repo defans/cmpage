@@ -26,6 +26,12 @@
  * @class cmpage.controller.base
  */
 module.exports = class extends think.Controller {
+  constructor(ctx){
+    super(ctx); // 调用父级的 constructor 方法，并把 ctx 传递进去
+    // 其他额外的操作
+    this.cmpage = require('../cmpage.js');
+  }
+
     /**
      * 删除记录的URL接口，调用： /cmpage/xxx/delete?id=xxx
      * @method  delete

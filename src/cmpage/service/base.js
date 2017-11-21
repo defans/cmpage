@@ -21,8 +21,9 @@ module.exports = class extends think.Service {
     constructor(){
         super();
         this.connStr = 'admin'; //默认连接参数
+        this.cmpage = require('../cmpage.js');
     }
-
+    
     /**
      * 执行原生SQL语句，取结果集返回
      * @return {array} 查询结果集

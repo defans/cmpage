@@ -3,7 +3,6 @@
  * you can define global functions used in controllers, models, templates
  * 定义了全局对象 cmpage， 把框架用到的参数设置和公共方法放入其中，统一用 cmpage.xxx 来调用
  */
-global.cmpage = {};
 
 
 // 以下是浮点数运算，一般用于解决数值比较的时候或者大的循环中由于精度所产生的问题
