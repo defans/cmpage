@@ -1,5 +1,6 @@
 ## 本项目已经升级到ThinkJS3,之前的版本已挪到分支 cmpage-thinkjs2 中 
-升级的过程记录参见： http://blog.csdn.net/defans_sawasoft/article/details/78180617
+* 升级的过程记录参见： http://blog.csdn.net/defans_sawasoft/article/details/78180617
+* 由原先的多模块结构改为更紧凑的单模块结构，多模块版本已挪到分支 cmpage-modules 中
 ## 项目简介
 用Node.js实现的企业信息化开发框架，并增加了工作流的设计和实现，其中采用的开源框架主要有：UI端采用BJUI，后端采用ThinkJS(已升级到3.x版本)，数据库采用MySql，手机端采用MUI。
 
