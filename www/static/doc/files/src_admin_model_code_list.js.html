@@ -541,7 +541,7 @@
  * 代码于参数设置的页面展示及操作类，单层的CRUD，配合 cmpage/controller/page.js 中的相关调用，继承自 cmpage/model/page.js
  * @class admin.service.code_list
  */
-import CMPage from &#x27;../../cmpage/service/page.js&#x27;;
+import CMPage from &#x27;../cmpage/page.js&#x27;;
 export default class extends CMPage {
     /**
      * 重写父类的 getQueryWhere 方法，增加页面模块的条件设置，组合成新的Where子句

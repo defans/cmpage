@@ -3,7 +3,8 @@
   "description": "application created by thinkjs",
   "version": "1.0.0",
   "scripts": {
-    "start": "node development.js"
+    "start": "node development.js",
+    "test":"echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "excel-export": "0.5.1",
