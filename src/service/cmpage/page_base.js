@@ -156,10 +156,15 @@ module.exports = class extends Base {
         //debug(parmsUrl,'page.getQueryWhere - parmsUrl');
         for(let md of this.modQuerys){
             if (md.c_type === "fixed"){         //如果是‘固定’，则直接增加c_memo中的设置值
-                let wh = ` (${md.c_memo.replace(/#userID#/,this.mod.user.id).replace(/#groupID#/,this.mod.user.groupID).split(/##/).join('\'')})`;
+                let wh = ` (${md.c_memo.replace(/#userID#/,this.mod.user.id)
+                    .replace(/#groupID#/,this.mod.user.groupID)
+                    .replace(/#groups#/,this.mod.user.groups)
+                    .split(/##/).join('\'')})`;
+                //this.cmpage.objPropertysReplaceToStr(wh,parmsUrl);
                 if(wh.indexOf('#value#') > -1 ){
                     wh =think.isEmpty(parmsUrl[md.c_column]) ? '' : wh.replace(/#value#/,parmsUrl[md.c_column]);
                 }
+
                 //debug(parmsUrl,'page.getQueryWhere - parmsUrl');
                 //debug(md.c_memo,'page.getQueryWhere - md.c_memo');
                 if(!think.isEmpty(wh)){
@@ -168,8 +173,8 @@ module.exports = class extends Base {
                 continue;
             }
             if (md.c_isshow && md.c_op!=='NO') {
-                if(!think.isEmpty(this.mod.query[md.c_column])){
-                    if((md.c_coltype === 'int' && parseInt(this.mod.query[md.c_column])===0) || (md.c_type.indexOf('select') === 0 && this.mod.query[md.c_column] == 0)){
+                if(!think.isEmpty(this.mod.query[md.c_column])){                    
+                    if( md.c_type.indexOf('elect') === 0 && (this.mod.query[md.c_column]==='-1') {
                         continue;
                     }
                     //debug(md,'page.getQueryWhere - md');

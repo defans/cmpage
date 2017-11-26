@@ -157,6 +157,40 @@ module.exports = class extends CMPage {
         }
         return html.join(' ');
     }
+    /**
+     * 根据c_memo设置值，取得地区联动的HTML片段   //TODO: 需要前段MUI配合调整
+     * @method  mobHtmlGetListRow
+     * @return  {string}  地区联动的HTML片段
+     * @param   {string} sets c_memo的设置，例如：三级：c_province,c_city 二级：c_city, 其中字段名称可以任意
+     * @param   {string} colName    当前列名
+     * @param   {object} query    当前记录或查询对象，一般为 this.rec 和 this.mod.query
+     */
+    async mobGetAreaSelect(sets, colName, query) {
+        let ret='';
+        if(sets.indexOf(',') >0){        //三级联动
+            let cols = sets.split(',');
+            let provinceValue = query[cols[0]] || '-1';
+            let cityValue = query[cols[1]] || '-1';
+            let countryValue = query[colName] || '-1';
+            let areaModel = cmpage.service('admin/area');
+            let provinceName = await areaModel.getProvinceName(provinceValue);
+            let cityName = await areaModel.getCityName(cityValue);
+            let countryName = await areaModel.getCountryName(countryValue);
+            ret = `<button class='mui-btn mui-btn-block cmpage-picker-country' style='width:65%; border:none; text-align:left; padding-left:0px; height:100%;'
+                        data-ref='${this.mod.c_modulename + colName}' type='button'>${provinceName} ${cityName} ${countryName} </button>
+                    <input type='hidden' id='${this.mod.c_modulename + colName}' name='${colName}' value='${provinceValue},${cityValue},${countryValue}' />`;
+        }else{       //二级联动
+            let provinceValue = query[sets] || '-1';
+            let cityValue = query[colName] || '-1';
+            let areaModel = cmpage.service('admin/area');
+            let provinceName = await areaModel.getProvinceName(provinceValue);
+            let cityName = await areaModel.getCityName(cityValue);
+            ret = `<button class='mui-btn mui-btn-block cmpage-picker-country' style='width:65%; border:none; text-align:left; padding-left:0px; height:100%;'
+                        data-ref='${this.mod.c_modulename + colName}' type='button'>${provinceName} ${cityName} </button>
+                    <input type='hidden' id='${this.mod.c_modulename + colName}' name='${colName}' value='${provinceValue},${cityValue}' />`;
+        }
+        return ret;
+    }
 
     /**
      * 取业务模块中的查询列设置，组合成APP端HTML输出，为保持和PC端的一致性，一般不需要重写
@@ -170,37 +204,29 @@ module.exports = class extends CMPage {
         html.push("<input type='hidden' name='pageCurrent' value='1' />");
         html.push(`<input type='hidden' name='pageSize' value='8' />`);
 
-        let provinceValue ='';
-        let cityValue='';
-
         debug(this.mod.query, 'page_mob.mobHtmlGetQuery - this.mod.query');     
         for(let md of this.modQuerys){
             if(!think.isEmpty(this.mod.query[md.c_column])){
                 md.c_default = this.mod.query[md.c_column];
             }
-            if (md.c_isshow)
+            if(md.c_type==='areaSelect' && think.isEmpty(md.c_memo)){    //未设置值的地区选择，忽略
+                continue;
+            }
+            if (md.c_isshow && md.c_type !== 'fixed')       //非 '固定' 类型且可显示的列
             {
                 if (md.c_coltype === "bool"){
                     html.push("<div class='mui-input-row mui-checkbox'>");
                     html.push(`<label>${md.c_name}:</label>`);
                     html.push(`<input type='checkbox' name='${md.c_column}'${ md.c_default === 'true' ? " checked" : ""} />`);
-                }else if (md.c_type === "select" || md.c_type === "selectBlank" ){
+                }else if (md.c_type === "select" || md.c_type === "selectMultiple" ){
                     html.push("<div class='mui-input-row mui-select'>");
                     html.push(`<label>${md.c_name}:</label>`);
                     html.push(`<select name='${md.c_column}' >`);
                     html.push( await this.getOptions(md,true) );
                     html.push("</select>");
-                }else if (md.c_type === "countrySelect"){
-                    let countryValue = md.c_default;
-                    let areaModel = cmpage.service('admin/area');
-                    let provinceName = await areaModel.getProvinceName(provinceValue);
-                    let cityName = await areaModel.getCityName(cityValue);
-                    let countryName = await areaModel.getCountryName(countryValue);
+                }else if (md.c_type === "areaSelect"){
                     html.push("<div class='mui-input-row'>");
-                    html.push("<label>地区选择:</label>");
-                    html.push(`<button class='mui-btn mui-btn-block cmpage-picker-country' style='width:65%; border:none; text-align:left; padding-left:0px; height:100%;'
-                        data-ref='${this.mod.c_modulename}_c_country' type='button'>${provinceName} ${cityName} ${countryName} </button>
-                        <input type='hidden' id='${this.mod.c_modulename}_c_country' name='c_country' value='${provinceValue},${cityValue},${countryValue}' />`);
+                    html.push(`<label>地区选择:</label>${await this.mobGetAreaSelect(md.c_memo, md.c_column, this.query)}`);
                 }else if (md.c_coltype == "datetime"){
                     let dateTitle = md.c_default;    // DateTime.Parse(dr[edit.c_column].ToString()).ToString(md.c_format);
                     let dateType = {type:'date'};
@@ -217,11 +243,6 @@ module.exports = class extends CMPage {
                     html.push(`<button data-options='${JSON.stringify(dateType)}' data-ref=' ${this.mod.c_modulename + md.c_column}' class='btn mui-btn mui-btn-block cmpage-picker-datetime'
                         style='width:65%; border:none; text-align:left; padding-left:0px; height:100%;'> ${dateTitle}</button>
                         <input type='hidden' id='${this.mod.c_modulename + md.c_column}' name='${md.c_column}' value='${ md.c_default}' />`);
-                }
-                else if (md.c_type == "provinceSelect") {
-                    provinceValue = md.c_default;
-                }else if (md.c_type == "citySelect") {
-                    cityValue = md.c_default;
                 }else if (md.c_type == "lookup") {
                     let parmsUrl = cmpage.objFromString(md.c_memo);    //形如：{modulename:'xxx', ...}
                     parmsUrl = think.isEmpty(parmsUrl) ? cmpage.parmsFromUrl(this.getReplaceToSpecialChar(md.c_memo)) : parmsUrl; //形如： /cmpage/page/lookup? ...
@@ -239,7 +260,7 @@ module.exports = class extends CMPage {
                     }
                     html.push(`<input name='${md.c_column}' type='${md.c_type}' value='${md.c_default}' class='mui-input-clear'  />`);
                 }
-                if (md.c_type !== "provinceSelect" && md.c_type !== "citySelect" && md.c_type != 'hidden') {
+                if (md.c_type != 'hidden') {
                     html.push("</div>");
                 }
             }
@@ -278,10 +299,13 @@ module.exports = class extends CMPage {
             }
 
             if(col.c_coltype === 'timestamp'){  colValue = think.datetime(colValue); }
-            if (col.c_type === "hidden" && col.c_column!=="c_city" && col.c_column!=="c_province") {
+            if (col.c_type === "hidden" ) {
                 html.push(`<input id="${col.c_column}" name="${col.c_column}" type="hidden" value="${colValue}" />`);
                 continue;
+            }else if(col.c_type==='areaSelect' && think.isEmpty(col.c_memo)){    //未设置值的地区选择，忽略
+                continue;
             }
+
             col.c_format = col.c_format.trim();
 
             let inputHtml ='';
@@ -305,20 +329,15 @@ module.exports = class extends CMPage {
                         style='width:65%; border:none; text-align:left; padding-left:0px; height:100%;'> ${think.isEmpty(dateTitle) ? colValue : dateTitle}</button>
                         <input type='hidden' id='${col.c_column}' name='${col.c_column}' value='${colValue}' />`;
                 //debug(inputHtml,'page_mob.mobHtmlGetEdit - datetime.inputHtml');
-            } else if (col.c_type === "select" || col.c_type === "selectBlank" || col.c_type === "readonlyReplace") {
+            } else if (col.c_type === "select" || col.c_type === "selectMultiple" ) {
                 col.c_default = colValue;
-                let isBlank = (col.c_type === "selectBlank" || col.c_type === "readonlyReplace");
-                inputHtml = `<select id='${col.c_column}' name='${col.c_column}' > ${await this.getOptions(col,isBlank )} </select>`;
+                inputHtml = `<select id='${col.c_column}' name='${col.c_column}' > ${await this.getOptions(col, !col.c_isrequired )} </select>`;
             } else if (col.c_type === "textarea") {
                 inputHtml = `<textarea  id='${col.c_column}' name='${col.c_column}'  rows="4" >${colValue}</textarea>`;
             } else if (col.c_type === "checkbox") {
                 inputHtml = `<input type='checkbox' id='${col.c_column}' name='${col.c_column}'  ${colValue ? " checked" : ""} />`;
             }else if (col.c_type == "areaSelect"){
-                let areaModel = cmpage.service('admin/area');
-                let areaName = `${await areaModel.getProvinceName(md['c_province'])}${await areaModel.getCityName(md['c_city'])} ${await areaModel.getCountryName(md['c_country'])}`;
-                inputHtml = `<button class='mui-btn mui-btn-block cmpage-picker-country' style='width:65%; border:none; text-align:left; padding-left:0px;'
-                    data-ref='c_country' type='button'>${think.isEmpty(areaName) ? '请选择':areaName}</button>
-                    <input type='hidden' id='c_country' name='c_country' value='${md['c_province']},${md['c_city']},${md['c_country']}' />`;
+                inputHtml = await this.mobGetAreaSelect(col.c_memo, col.c_column, this.rec);
             }else if (col.c_type === "readonly") {
                 inputHtml = `<input id='${col.c_column}' name='${col.c_column}'  class='mui-input-clear mui-input' type="text" value="${colValue}"  readonly="readonly"  />`;
             }else if (col.c_type === "lookup") {
@@ -328,8 +347,6 @@ module.exports = class extends CMPage {
                     data-parmsUrl='${ JSON.stringify(parmsUrl)}' data-modulename='${parmsUrl.modulename}'
                     style='width:65%; border:none; text-align:left; padding-left:0px; height:100%;'> ${colValue}</button>`;
                 debug(inputHtml,'page_mob.mobHtmlGetEdit - lookup');
-            }else if(col.c_column !=='c_province' && col.c_column !=='c_city'){
-                inputHtml = `<input type='text' name='${col.c_column}' class='mui-input-clear mui-input' placeholder='请输入${col.c_name}' value='${colValue}' />`;
             }
 
             if(inputHtml.length >0){

@@ -23,7 +23,7 @@ exports.getOwnPropertyDescriptors = function(obj) {
 };
 
 /**
- * 对象转换成字符串，其中的属性不带双引号，字符串和时间类型带单引号，其余默认转换，可以用 eval 转成对象<br/>
+ * 用对象的属性值，替换字符串中的相应设置 <br/>
  * 一般用于 某数据表记录的字段替换 事先设置的子字符串，子字符串的格式如：#id#
  * @method  objPropertysReplaceToStr
  * @return  {string}  替换后的字符串
@@ -83,8 +83,9 @@ exports.getOwnPropertyDescriptors = function(obj) {
      * @method  objToString
      * @return  {string}  序列化后的字符串
      * @param   {object} obj 源对象
+     * @param   {string} defaultString 当返回值为空时，返回此默认值
      */
-    var objToString = function(obj){
+    var objToString = function(obj, defaultString){
         let ret = [];
         if(think.isObject(obj)) {
             for (let key in obj) {
@@ -104,15 +105,23 @@ exports.getOwnPropertyDescriptors = function(obj) {
                     ret.push(`${key}:${obj[key]}`);
                 }
             }
-            return "{" + ret.join(', ') + "}";
+            if(ret.length ===0){
+                return defaultString || '{}';
+            }else {
+                return "{" + ret.join(', ') + "}";                
+            }
         }else if(think.isArray(obj)){
             let tmp = [];
             for (let item of obj) {
                 tmp.push(objToString(item));
             }
-            return `[${tmp.join(',')}]`;
+            if(tmp.length ===0){
+                return defaultString || '[]';
+            }else {
+                return `[${tmp.join(',')}]`;
+            }
         }else{
-            return String(obj);
+            return String(obj) || defaultString || '';
         }
     };
     exports.objToString = objToString;
