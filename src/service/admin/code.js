@@ -126,6 +126,28 @@ const Base =require('../cmpage/base.js');
         return ret;
     }
     /**
+     * 根据父节点ID取下拉列表
+     * @method  getCodeItemsByPid
+     * @return {Array}  参数列表
+     * @param {int} pid  父节点ID
+     */
+    async getCodeItemsByPid(pid, curValue, isBlank=true){
+        let ret = [];
+        if (isBlank){
+            ret.push(`<option value="-1" ${defaultValue == 0 || defaultValue == -1 ? "selected" : ""}>请选择</option>`);
+        }
+        if(pid >0){
+            let codes =await this.getCodes();
+            for(let md of codes){
+                if(md.c_pid == pid){
+                    ret.push(`<option value="${md.id}" ${md.id == defaultValue ? "selected" : ""} >${md.c_name}</option>`);
+                }
+            }                
+        }
+        return ret.join();
+    }
+
+    /**
      * 根据根节点ID取参数列表，树状
      * @method  getCodesByRoot
      * @return {Array}  参数列表

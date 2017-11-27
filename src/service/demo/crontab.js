@@ -81,28 +81,27 @@ module.exports = class extends CMPage {
         });
     }
 
-    //  /** 重新配置任务列表
-    //  * @method  setConfig
-    //  */    
-    // async setConfig(){
-    //     let crontabList = await this.query(`select * from t_crontab where c_status=1 and c_time_start <'${cmpage.datetime()} 23:59:59' and c_time_end >'${cmpage.datetime()}' `);
-    //     let cronConfig = [];  
-    //     for(let md of crontabList){
-    //         if(think.isEmpty(md.c_cycle_role) || think.isEmpty(md.c_exe_role)){
-    //             continue;
-    //         }
-    //         let task={
-    //             cron: md.c_cycle_role,
-    //             immediate: true,
-    //             handle: () => {
-    //                 cmpage.service('demo/crontab_exe').run(md.c_exe_role);
-    //             }
-    //           };
-    //           cronConfig.push(task);
-    //     }
-    //     debug(cronConfig);
-    //     debug(await think.config(''),'old crontab');
-    //     await think.config('crontab',cronConfig);
-    // }
+
+     /** 重新配置任务列表
+     * @method  setConfig
+     */    
+    async setConfig(){
+        let crontabList = await this.query(`select * from t_crontab where c_status=1 and c_time_start <'${cmpage.datetime()} 23:59:59' and c_time_end >'${cmpage.datetime()}' `);
+        let tasks = [];  
+        for(let md of crontabList){
+            if(think.isEmpty(md.c_cycle_role) || think.isEmpty(md.c_exe_role)){
+                continue;
+            }
+            let task=`{cron:"${md.c_cycle_role}",handle:()=>{
+                const cronApp = think.service('crontab_exe','demo');
+                cronApp.${md.c_exe_role}(${md.id});              
+              }}`;
+              tasks.push(task);
+        }
+        let crontabConfig = `module.exports =[${tasks.join(',')}]`;
+        //重写配置文件
+        const fs = require('fs');
+        fs.writeFileSync(`${think.ROOT_PATH}/src/demo/config/crontab.js`,`module.exports =${crontabConfig}`);
+    }
 
 }

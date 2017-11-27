@@ -174,7 +174,7 @@ module.exports = class extends Base {
             }
             if (md.c_isshow && md.c_op!=='NO') {
                 if(!think.isEmpty(this.mod.query[md.c_column])){                    
-                    if( md.c_type.indexOf('elect') === 0 && (this.mod.query[md.c_column]==='-1') {
+                    if( md.c_type.indexOf('elect') === 0 && this.mod.query[md.c_column]==='-1') {
                         continue;
                     }
                     //debug(md,'page.getQueryWhere - md');

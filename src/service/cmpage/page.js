@@ -70,9 +70,13 @@ module.exports = class extends PageBase {
                     html.push(`<input id="query${this.mod.c_modulename}_${col.c_column}" name="${col.c_column}" type="lookup" size="10" value="${col.c_default}"  data-width="800" data-height="600"
                         data-toggle="lookup" data-title="${col.c_name} 选择" data-url="${this.getReplaceToSpecialChar(col.c_memo)}" readonly="readonly" />`);
                 }else if (col.c_type === "areaSelect"){
-                    html.push(`<select name="c_province" data-toggle="selectpicker"  data-nextselect="#city${this.mod.c_modulename}Query"
-                        data-refurl="/cmpage/utils/get_citys?province={value}">  ${await cmpage.service('admin/area').getProvinceItems(col.c_default,true)} </select>`);
-                    provinceValue = col.c_default;
+                    if (!think.isEmpty(col.c_memo)){
+                        html.push(await this.htmlGetAreaSelect(col.c_memo, col.c_column, this.mod.query, "Query"));                        
+                    }
+                }else if (col.c_type === "codeSelect"){
+                    if (!think.isEmpty(col.c_memo)){
+                        html.push(await this.htmlGetCodeSelect(col.c_memo, col.c_column, this.mod.query, "Query"));                        
+                    }
                 }else if( col.c_type !== "fixed"){
                     html.push(`<input id="query${this.mod.c_modulename}_${col.c_column}" name="${col.c_column}" type="${col.c_type}" size="${col.c_width}" value="${col.c_default}" data-rule="${col.c_memo}" class="form-control"  />`);
                 }
@@ -109,55 +113,62 @@ module.exports = class extends PageBase {
         if(sets.indexOf(',') >0){        //三级联动
             let cols = sets.split(',');
             let areaModel = cmpage.service('admin/area');
-            ret = `<select name='${cols[0]}' data-toggle='selectpicker' data-rule='required' data-nextselect='#${_mod.c_modulename + cols[1]+ suffix}' 
-                data-refurl='/Utils/GetCitys?province={value}'> ${await areaModel.getProvinceItems(query[cols[0]],true)} </select> 
+            ret = `<select name='${cols[0]}' data-toggle='selectpicker' data-rule='required' data-nextselect='#${this.mod.c_modulename + cols[1]+ suffix}' 
+                data-refurl='/cmpage/utils/get_citys?province={value}'> ${await areaModel.getProvinceItems(query[cols[0]],true)} </select> 
                 <select name='${cols[1]}' id='${this.mod.c_modulename + cols[1] + suffix}' data-toggle='selectpicker' data-rule='required' 
-                data-nextselect='#${this.mod.c_modulename + colName+ suffix}' data-refurl='/Utils/GetCountrys?city={value}'>
+                data-nextselect='#${this.mod.c_modulename + colName+ suffix}' data-refurl='/cmpage/utils/get_countrys?city={value}'>
                 ${await areaModel.getCityItems(query[cols[1]],true)} </select> 
                 <select name='${colName}' id='${this.mod.c_modulename + colName + suffix}' data-toggle='selectpicker' data-rule='required'> 
                 ${await areaModel.getCountryItems(query[colName],true)} </select>`;
-
-
-            ret = `<button class='mui-btn mui-btn-block cmpage-picker-country' style='width:65%; border:none; text-align:left; padding-left:0px; height:100%;'
-                        data-ref='${this.mod.c_modulename + colName}' type='button'>${provinceName} ${cityName} ${countryName} </button>
-                    <input type='hidden' id='${this.mod.c_modulename + colName}' name='${colName}' value='${provinceValue},${cityValue},${countryValue}' />`;
         }else{       //二级联动
-            let provinceValue = query[sets] || '-1';
-            let cityValue = query[colName] || '-1';
             let areaModel = cmpage.service('admin/area');
-            let provinceName = await areaModel.getProvinceName(provinceValue);
-            let cityName = await areaModel.getCityName(cityValue);
-            ret = `<button class='mui-btn mui-btn-block cmpage-picker-country' style='width:65%; border:none; text-align:left; padding-left:0px; height:100%;'
-                        data-ref='${this.mod.c_modulename + colName}' type='button'>${provinceName} ${cityName} </button>
-                    <input type='hidden' id='${this.mod.c_modulename + colName}' name='${colName}' value='${provinceValue},${cityValue}' />`;
+            let provinceColumn = sets;
+            ret = `<select name='${provinceColumn}' data-toggle='selectpicker' data-rule='required' data-nextselect='#${this.mod.c_modulename + colName+ suffix}' 
+                data-refurl='/cmpage/utils/get_citys?province={value}'> ${await areaModel.getProvinceItems(query[provinceColumn],true)} </select>
+                <select name='${colName}' id='${this.mod.c_modulename + colName + suffix}' data-toggle='selectpicker' data-rule='required' >
+                ${await areaModel.getCityItems(query[provinceColumn],true)} </select> `;
         }
-        return ret;
+        return ret; 
     }
-    
-    public string HtmlGetAreaSelect(string sets,string colName,NameValue nv,string suffix="")
-    {
-        string ret = "";
-        if (sets.IndexOf(',') > 0)       //三级联动
-        {
-            string[] cols = sets.Split(',');
-            Area areaApp = new Area();
-            ret = "<select name='" + cols[0] + "' data-toggle='selectpicker' data-rule='required' data-nextselect='#" + _mod.c_modulename + cols[1]+ suffix
-            + "' data-refurl='/Utils/GetCitys?province={value}'> " + areaApp.GetProvinceOptions(nv[cols[0]], true) + " </select>"
-            + "<select name='" + cols[1] + "' id='" + _mod.c_modulename + cols[1] + suffix + "' data-toggle='selectpicker' data-rule='required' data-nextselect='#" + _mod.c_modulename + colName+ suffix
-            + "' data-refurl='/Utils/GetCountrys?city={value}'>" + areaApp.GetCityOptions(nv[cols[1]], true) + " </select>"
-            + "<select name='" + colName + "' id='" + _mod.c_modulename + colName + suffix + "' data-toggle='selectpicker' data-rule='required'> "
-            + areaApp.GetCountryOptions(nv[colName], true) + " </select>";
+
+    /**
+     * 根据c_memo设置值，取得代码联动的HTML片段
+     * @method  mobHtmlGetListRow
+     * @return  {string}  地区联动的HTML片段
+     * @param   {string} sets c_memo的设置，例如：三级：c_col1:45,c_col2  二级：c_col:45, 其中字段名称可以任意, 45表示代码设置的根节点ID
+     * @param   {string} colName    当前列名
+     * @param   {object} query    当前记录或查询对象，一般为 this.rec 和 this.mod.query
+     * @param   {string} suffix    加个后缀，以区分不同页面的输出
+     */
+    async htmlGetCodeSelect(sets, colName, query, suffix) {
+        let ret='';
+        if(sets.indexOf(',') >0){        //三级联动
+            let cols = sets.split(',');
+            if(cols[0].indexOf(':') === -1){
+                return '';      //第一个字段必须制定父节点ID
+            }
+            let its = cols[0].split(':');
+            let codeApp = cmpage.service('admin/code');            
+            ret = `<select name='${its[0]}' data-toggle='selectpicker' data-nextselect='#${this.mod.c_modulename + cols[1]+ suffix}' 
+                data-refurl='/Utils/GetChildsByParentID?pid={value}'> ${await codeApp.getCodeItemsByPid(its[1], query[cols[0]], true)} </select>
+                <select name='${cols[1]}' id='${this.mod.c_modulename + cols[1]+ suffix}' data-toggle='selectpicker'  
+                data-nextselect='#${this.mod.c_modulename + colName+ suffix}' data-refurl='/Utils/GetChildsByParentID?pid={value}'>
+                ${await codeApp.getCodeItemsByPid(query[cols[0]], query[cols[1]], true)} </select>
+                <select name='${colName}' id='${this.mod.c_modulename + colName + suffix}' data-toggle='selectpicker' > 
+                ${await codeApp.getCodeItemsByPid(query[cols[1]], query[colName], true)} </select>`;
+        }else{       //二级联动
+            let parentColumn = sets;
+            if(parentColumn.indexOf(':') === -1){
+                return '';      //第一个字段必须制定父节点ID
+            }
+            let its = parentColumn.split(':');
+            let codeApp = cmpage.service('admin/code');
+            ret =`<select name='${parentColumn}' data-toggle='selectpicker' data-rule='required' data-nextselect='#${this.mod.c_modulename + colName+ suffix}' 
+                data-refurl='/Utils/GetChildsByParentID?pid={value}'> ${await codeApp.getCodeItemsByPid(its[1], query[parentColumn], true)} </select>
+                <select name='${colName}' id='${this.mod.c_modulename + colName+ suffix}' data-toggle='selectpicker' >
+                ${await codeApp.getCodeItemsByPid(query[parentColumn], query[colName], true)} </select>`;
         }
-        else    //省市二级联动
-        {
-            Area areaApp = new Area();
-            string provinceColumn = sets;
-            ret = "<select name='" + provinceColumn + "' data-toggle='selectpicker' data-rule='required' data-nextselect='#" + _mod.c_modulename + colName+ suffix
-            + "' data-refurl='/Utils/GetCitys?province={value}'> " + areaApp.GetProvinceOptions(nv[provinceColumn], true) + " </select>"
-            + "<select name='" + colName + "' id='" + _mod.c_modulename + colName + suffix + "' data-toggle='selectpicker' data-rule='required' "
-            + " >" + areaApp.GetCityOptions(nv[provinceColumn], true) + " </select>";
-        }
-        return ret;
+        return ret; 
     }
 
     /**
@@ -470,8 +481,8 @@ module.exports = class extends PageBase {
         if(!think.isEmpty(btn.c_memo)) {
             let sets = cmpage.objFromString(cmpage.objPropertysReplaceToStr(btn.c_memo, rec));
             if (!think.isEmpty(sets.isShow) ) {
-                cmpage.debug(sets, 'page.isShowBtn - sets');
-                cmpage.debug(rec, 'page.isShowBtn - rec');
+                //cmpage.debug(sets, 'page.isShowBtn - sets');
+                //cmpage.debug(rec, 'page.isShowBtn - rec');
                 return eval("(" + sets.isShow + ")");
             }
         }
@@ -556,15 +567,16 @@ module.exports = class extends PageBase {
             }
 
             if(col.c_coltype === 'timestamp'){  colValue = think.datetime(colValue); }
-            if (col.c_type === "hidden" && col.c_column!=="c_city" && col.c_column!=="c_province") {
+            if (col.c_type === "hidden" ) {
                 html.push(`<input id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" type="hidden" value="${colValue}" />`);
                 continue;
+            }else if ( (col.c_type == 'areaSelect' || col.c_type == 'codeSelect' ) && think.isEmpty(col.c_memo)){
+                continue;
             }
+
             col.c_format = col.c_format.trim();
             col.c_width = this.mod.user.listColumns === cmpage.ui.enumListColumns.MOBILE ? 20 : col.c_width;
-            if(col.c_type !== "hidden"){
-                html.push(` <label  class="row-label" >${col.c_name}: </label>`);
-            }
+            html.push(` <label  class="row-label" >${col.c_name}: </label>`);
             let input ='';
             if (col.c_type === "datetime" ||col.c_type === "date") {                
                 input += `<input type="text" id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" value="${ cmpage.datetime(colValue,think.isEmpty(col.c_format) ? 'yyyy-MM-dd':col.c_format)}"
@@ -609,19 +621,13 @@ module.exports = class extends PageBase {
                                 };
               input += `<input type="file" name="${col.c_column}" data-name="${col.c_column}" data-toggle="webuploader" data-options="${cmpage.objToString(options)}" >`;
             }else if (col.c_type == "areaSelect"){
-                input += `<select name="c_province" data-toggle="selectpicker"  data-nextselect="#city${this.mod.c_modulename}" data-refurl="/cmpage/utils/get_citys?province={value}" >`;
-                input += await cmpage.service('admin/area').getProvinceItems(md['c_province'],true);
-                if(col.c_column ==='c_country'){
-                    input += `</select> <select name="c_city" id="city${this.mod.c_modulename}" data-toggle="selectpicker" data-nextselect="#country${this.mod.c_modulename}"
-                        data-refurl="/cmpage/utils/get_countrys?city={value}" >`;
-                    input += await cmpage.service('admin/area').getCityItems(md['c_city'],true);
-                    input += `</select> <select name="c_country" id="country${this.mod.c_modulename}" data-toggle="selectpicker" data-rule="required" >`;
-                    input += await cmpage.service('admin/area').getCountryItems(md['c_country'],true);
-                }else if(col.c_column === 'c_city'){
-                    input += `</select> <select name="c_city" id="city${this.mod.c_modulename}" data-toggle="selectpicker" data-nextselect="#country${this.mod.c_modulename}" >`;
-                    input += await cmpage.service('admin/area').getCityItems(md['c_city'],true);
+                if(!think.isEmpty(col.c_memo)){
+                    input += await this.htmlGetAreaSelect(col.c_memo, col.c_column, this.rec);
                 }
-                input += '</select>';
+            }else if (col.c_type == "codeSelect"){
+                if(!think.isEmpty(col.c_memo)){
+                    input += await this.htmlGetCodeSelect(col.c_memo, col.c_column, this.rec);
+                }
             } else if(col.c_type === "kindeditor"){
                 input += `<div style="display: inline-block; vertical-align: middle;"> <textarea name="${col.c_column}" style="width: 960px;height:640px;"
                         data-toggle="kindeditor" data-minheight="460"> ${colValue}  </textarea> </div>`;
