@@ -58,6 +58,17 @@ exports.model = {
     password: 'defans',
     dateStrings: true
   },
+  docu: {         // 单据模块配置的数据库设置
+    type: "mssql",
+    database: 'ERP',
+    prefix: '',
+    encoding: 'utf8',
+    host: '10.9.39.27',
+    port: '',
+    user: 'sa',
+    password: 'wanbang_123',
+    dateStrings: true
+  },
   sqlite: {  // sqlite 配置
 
   },

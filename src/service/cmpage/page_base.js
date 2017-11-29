@@ -1,3 +1,4 @@
+
 'use strict';
 // +----------------------------------------------------------------------
 // | CmPage [ 通用页面框架 ]
@@ -22,9 +23,7 @@ module.exports = class extends Base {
 
     constructor(){ 
         super();
-        const configModel = think.config("model");
-        this.config = configModel.admin;     
-        this.pk = 'id';     //主键字段名
+        //this.pk = 'id';     //主键字段名
         this.mod = {};   //模块主设置信息，及传入的参数等,
         this.modQuerys = {}; //模块查询列设置信息
         this.modCols = {};    //模块显示列设置信息
@@ -33,11 +32,6 @@ module.exports = class extends Base {
         this.list = {};     //结果列表集
         this.rec = {};      //当前记录
         this.proc = {};      //相关工作流模板对象
-    }
-    async query(sql,connStr){        
-        const queryModel = connStr===null ? this.model('t_code') : this.model('t_code',connStr);
-        let ret = await queryModel.query(sql);        
-        return ret;
     }
 
     /**
@@ -113,13 +107,15 @@ module.exports = class extends Base {
         this.list.count = cnt[0].count;
         this.list.data = [];
         this.list.ids = [];        
+        const config = think.config('model')[this.connStr];
+        cmpage.debug(config);
         if(this.list.count >0 ) {
             //cmpage.debug(this.mod);
             let data = [];
             if (this.mod.c_pager) {
                 let sql = `select ${this.getListFields(this.modCols)} from ${this.mod.c_datasource} ${where} order by ${this.mod.c_sort_by}
                     limit ${this.mod.c_page_size} offset ${this.mod.c_page_size * (this.mod.pageIndex - 1)}`;
-                if(this.config.type == 'mssql'){
+                if(config.type == 'mssql'){
                     let sortType = this.mod.c_sort_by.toLowerCase().indexOf(' desc') == -1 ? 0 : 1;
                     let sortCol = this.mod.c_sort_by.toLowerCase().replace(/asc/g,'').replace(/desc/g,'');
                     sql = `QueryPage '${this.mod.c_datasource}','${this.getListFields(this.modCols)}',${this.mod.pageSize},${this.mod.pageIndex},
@@ -130,14 +126,14 @@ module.exports = class extends Base {
             } else {
                 let limit = think.isEmpty(this.mod.c_data_limit) ? 2000 : this.mod.c_data_limit;
                 let sql = `select ${this.getListFields()} from ${this.mod.c_datasource} ${where} order by ${this.mod.c_sort_by} limit ${limit}`;
-                if(this.config.type == 'mssql'){
+                if(config.type == 'mssql'){
                     sql = `select top ${limit} ${this.getListFields()} from ${this.mod.c_datasource} ${where} order by ${this.mod.c_sort_by} `;
                 }
                 data = await this.query(sql);
             }
 
             for (let rec of data) {
-                if(data.indexOf(rec) == data.length -1 && this.config.type=='mssql' && this.mod.c_pager)    break;
+                if(data.indexOf(rec) == data.length -1 && config.type=='mssql' && this.mod.c_pager)    break;
                 this.list.ids.push(rec[this.pk]);
                 this.list.data.push(rec);
             }
