@@ -54,7 +54,7 @@ module.exports = class extends think.Service {
       getConnection(connStr) {
         const connName = connStr ? connStr : this.connStr;
         const config = think.config('model')[connName];
-        debug(config,'cmpage.base - dbConfig');
+        //debug(config,'cmpage.base - dbConfig');
         this._sequelize = new Sequelize( config.database, config.user,  config.password, {
             host:config.host || "127.0.0.1",
             port:config.port || 3306,
@@ -70,21 +70,30 @@ module.exports = class extends think.Service {
         return this._sequelize;
     }
     log(msg){
-        debug(msg,'SQL');
+        if(think.env === 'development'){
+            think.logger.debug(msg);
+        }
     }
 
     setTableName(name){
         this._tableName = name;
         return this;
     }
-    // model(name){
-    //     this.setTableName(name);
+    
+     /**
+      * 设置表名并返回实例
+      * @return {[type]} [description]
+      * @param {string} connStr 数据库连接参数配置，可以临时指定，这样业务类可以操作不同的数据库
+      */    
+    model(name){
+        this.setTableName(name);
 
-    //    //  if(this.config.type != 'mssql' && (name.indexOf('t_') ===0 || name.indexOf('vw_') ===0 || name.indexOf('fw_') ===0) ){
-    //    //      this._model = new think.model.base(name,this.config);
-    //    //  }
-    //     return this;
-    // }
+       //  if(this.config.type != 'mssql' && (name.indexOf('t_') ===0 || name.indexOf('vw_') ===0 || name.indexOf('fw_') ===0) ){
+       //      this._model = new think.model.base(name,this.config);
+       //  }
+        return this;
+    }
+
     setPk(pk){
         this.pk = pk;
         if(this._model)    this._model.pk = pk;
@@ -246,6 +255,7 @@ module.exports = class extends think.Service {
     }
 
    parseValue(value){
+        const config = think.config('model')[this.connStr];
        if (think.isString(value)) {
            value = `'${value.replace(/\'/g,'\\\'')}'`;
        }else if(think.isArray(value)){
@@ -254,7 +264,7 @@ module.exports = class extends think.Service {
            }else{
                value = value.map(item => this.parseValue(item));
            }
-       }else if(think.isBoolean(value) && this.config.type=='mysql'){
+       }else if(think.isBoolean(value) && config.type=='mysql'){
            value = value ? 'TRUE' : 'FALSE';
        }else if(think.isDate(value)){
            value =`'${think.datetime(value)}'` ;

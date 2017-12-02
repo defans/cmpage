@@ -252,6 +252,7 @@ const Base =require('../cmpage/base.js');
         await think.cache('codeDepts',null);
         await think.cache('codeCodes',null);
         await think.cache('codeParms',null);
+        await think.cache('groupUsers',null);
         cmpage.debug('code cache is clear!')
     }
 

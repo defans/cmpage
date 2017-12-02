@@ -476,7 +476,7 @@ module.exports = class extends Base {
      */
     async timelineAction(){
         let vb={};
-        let module = cmpage.service("module");
+        let module = cmpage.service("cmpage/module");
 
         let parms ={};
         parms.query ={};

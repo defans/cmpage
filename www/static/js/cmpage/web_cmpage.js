@@ -95,8 +95,34 @@ function pageExportData(){
         okCall:function(){
             $.fileDownload('/cmpage/page/excel_export?'+$.CurrentNavtab.find('#pagerForm').serialize(), {
                 failCallback: function(responseHtml, url) {
-                    BJUI.alertmsg("warn", "下载文件失败！");
+                    BJUI.alertmsg("warn", "导出文件失败！");
                 }
+            });
+        }
+    });
+    return false;
+}
+
+/* cmpage/page/list See Data */
+function pageGoSeeSee(id, obj) {
+    var page = pageGetCurrent(obj);
+    var modulename = page.find('#modulename').val();
+    BJUI.alertmsg("confirm", "是否确定要查看？", { 
+        okCall: function () {
+            BJUI.ajax('ajaxform', {
+                url: "/cmpage/page/go_see_see?modulename=" + modulename + "&id=" + id,
+                form: $.CurrentNavtab.find('#pagerForm'),
+                loadingmask: true,
+                okCallback: function (json, options) {
+                    if (json.statusCode === 200) {
+                        BJUI.navtab({
+                            id: 'PageGoSeeSee',
+                            url: json.url,
+                            title: '去看看'
+                        });
+          
+                    }
+                } 
             });
         }
     });
@@ -172,20 +198,66 @@ function pageSelectAdd(obj,modulename,fn,parms){
     return true;
 }
 
+// /* cmpage/utils/call_function 根据URL参数直接调用相关model的相关方法,  本方法的参数必填 */
+// function pageCallFunctionWithSelected(obj, modulename, fn, parms, parentModulename) {
+//     var page = pageGetCurrent(obj);
+//     var ids = [];
+//     page.find('.checked > [name="ids"]').each(function () {
+//         ids.push($(this).val());
+//     });
+//     if (ids.length === 0) {
+//         $(this).alertmsg("warn", "请选择要加入的记录。");
+//         return false;
+//     }
+//     if (parms.length > 0)
+//         ids += "," + parms;
+
+//     $.ajax({
+//         type:'POST',
+//         url: '/Utils/CallFunctionByModulename?modulename=' + modulename + '&fn=' + fn + '&parms=' + ids,
+//         dataType: 'text',
+//         success: function (ret) {
+           
+//             //alert(ret);
+//             if (ret.indexOf('成功') > 0) {
+//                 if (parentModulename) {
+//                     BJUI.dialog('closeCurrent');
+//                     //刷新父窗口
+//                     $('#btnSearch' + parentModulename).click();
+//                 } else {
+//                     //刷新当前窗口
+//                     alert(modulename);
+//                     $('#btnSearch' + modulename).click();
+//                 }
+//             }else{
+//                 BJUI.alertmsg("warn", ret);
+//             }
+//         }
+//     });
+
+//     return true;
+// }
+
+
+
 /* 简单调用ajax，不刷新界面等 */
 function pageDoajax(url){
-    BJUI.ajax('doajax', {
-        url: url,
-        loadingmask: true,
-        okCallback: function (json, options) {
-            if(json.statusCode == 200){
-                if(json.messag){
-                    BJUI.alertmsg("info", json.messag);                    
+    BJUI.alertmsg("confirm", "是否确定要执行该操作？", { 
+        okCall: function () {
+            BJUI.ajax('doajax', {
+                url: url,
+                loadingmask: true,
+                okCallback: function (json, options) {
+                    if(json.statusCode == 200){
+                        if(json.messag){
+                            BJUI.alertmsg("info", json.messag);                    
+                        }
+                    }else{
+                        BJUI.alertmsg("warn", json.messag);
+                    }
                 }
-            }else{
-                BJUI.alertmsg("warn", json.messag);
-            }
-        }
+            });    
+        }            
     });
     return false;
 }

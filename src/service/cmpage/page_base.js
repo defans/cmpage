@@ -107,8 +107,7 @@ module.exports = class extends Base {
         this.list.count = cnt[0].count;
         this.list.data = [];
         this.list.ids = [];        
-        const config = think.config('model')[this.connStr];
-        cmpage.debug(config);
+        const config = think.config('model')[this.connStr];        
         if(this.list.count >0 ) {
             //cmpage.debug(this.mod);
             let data = [];
@@ -170,21 +169,23 @@ module.exports = class extends Base {
             }
             if (md.c_isshow && md.c_op!=='NO') {
                 if(!think.isEmpty(this.mod.query[md.c_column])){                    
-                    if( md.c_type.indexOf('elect') === 0 && this.mod.query[md.c_column]==='-1') {
-                        continue;
-                    }
                     //debug(md,'page.getQueryWhere - md');
                     //debug(this.mod.query,'page.getQueryWhere - this.mod.query');
                     md.c_default = this.mod.query[md.c_column];
                     let value = this.mod.query[md.c_column].split('\'').join(' ').split('\"').join(' ').trim();
-                    value = cmpage.filterSensitiveString(value);
-                    if(md.c_coltype =="bool")   value = think.isEmpty(value) ? 0:1;
-                    if((md.c_column ==='c_province' || md.c_column ==='c_city' || md.c_column ==='c_country')
-                        && (value ==='-1' || value === '')){    continue;   }
+                    value = this.cmpage.filterSensitiveString(value);
+                    if(md.c_coltype =="bool"){
+                        value = think.isEmpty(value) ? 0:1;
+                    }   
+                    if(md.c_type.indexOf('elect') > 0 && (value ==='-1' || value === '')){  
+                        //debug(md,'page.getQueryWhere.select - md');
+                        continue;   
+                    }
                     ret.push(md.c_desc + ' '+this.getOpValue(md.c_op, value, md.c_coltype));
                 }
             }
         }
+        //debug(ret.join(' and '),'page.getQueryWhere - return');
         return ret.join(' and ');
     }
 

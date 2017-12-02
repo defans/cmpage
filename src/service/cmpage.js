@@ -259,6 +259,10 @@ exports.getOwnPropertyDescriptors = function(obj) {
             // think.logger.debug(message, think.isEmpty(desc) ? ' CMPAGE ':desc);
         }
     };
+    exports.error = (msg,desc)=>{
+        let message = objToString(msg);
+        think.logger.error((!think.isEmpty(desc) ? '['+desc+'] --> ':'[CMPAGE] ') + message);
+    };
 
     /**
      * 从URL字符串中解析出参数对象

@@ -76,6 +76,7 @@ module.exports = class extends Base {
         for(let userID of userIds){
             await this.model('t_group_user').add({c_group:groupID, c_user:userID});
         }
+        await think.cache('groupUsers',null);
         return this.json({statusCode:200,message:'用户加入成功!'});
     }
     /**
@@ -85,6 +86,7 @@ module.exports = class extends Base {
      */
     async group_user_delAction(){
         await this.model('t_group_user').where(` id in(${this.get('ids')})`).delete();
+        await think.cache('groupUsers',null);
         return this.json({statusCode:200,message:'用户删除成功!'});
     }
 
@@ -111,6 +113,7 @@ module.exports = class extends Base {
         for(let userID of userIds){
             await this.model('t_team_user').add({c_team:teamID, c_user:userID});
         }
+        //await think.cache('teamUsers',null);
         return this.json({statusCode:200,message:'用户加入成功!'});
     }
     /**
@@ -120,6 +123,7 @@ module.exports = class extends Base {
      */
     async team_user_delAction(){
         await this.model('t_team_user').where(` id in(${this.get('ids')})`).delete();
+        //await think.cache('teamUsers',null);
         return this.json({statusCode:200,message:'用户删除成功!'});
     }
 
@@ -143,7 +147,7 @@ module.exports = class extends Base {
      */
   async role_get_privilege_treeAction(){
     let roleID = this.post('roleID');
-    let treeList =await this.model('privilege').roleGetPrivilegeTree(roleID);
+    let treeList =await cmpage.service('admin/privilege').roleGetPrivilegeTree(roleID);
 //    cmpage.debug(JSON.stringify(vb));
     return this.json(treeList);
   }
@@ -156,7 +160,7 @@ module.exports = class extends Base {
   async role_save_privilegeAction(){
     let parms =this.post();
     //cmpage.debug(rec);
-    await this.model('privilege').roleSavePrivilege(parms);
+    await cmpage.service('admin/privilege').roleSavePrivilege(parms);
     return this.json({statusCode:200,message:'保存成功!',data:{}});
   }
 
@@ -169,10 +173,10 @@ module.exports = class extends Base {
         let user = await this.session('user');
         let parms = this.get();
         if(!think.isEmpty(parms.userID)){
-            user = await this.model('user').getUserById(parms.userID);
+            user = await cmpage.service('admin/user').getUserById(parms.userID);
         }
         let isMine = !think.isEmpty(parms.isMine);
-        let treeList =await this.model('privilege').userGetPrivilegeTree(user.id, user.c_role, 1);
+        let treeList =await cmpage.service('admin/privilege').userGetPrivilegeTree(user.id, user.c_role, 1);
 //    cmpage.debug(JSON.stringify(vb));
         this.assign('treeList',treeList);
         this.assign('vb',{userID:user.id, isMine:isMine});
@@ -187,7 +191,7 @@ module.exports = class extends Base {
     async user_save_privilegeAction(){
         let parms =this.post();
         //cmpage.debug(rec);
-        await this.model('privilege').userSavePrivilege(parms);
+        await cmpage.service('admin/privilege').userSavePrivilege(parms);
         return this.json({statusCode:200,message:'保存成功!',data:{}});
     }
 

@@ -72,7 +72,7 @@ module.exports = class extends CMPage {
      */
     async getLoginGroups(groupID,userID){
         let codeModel = cmpage.service('admin/code');
-        let cnt = await this.model('t_group_user').where({c_group:groupID, c_user:userID}).count();
+        let cnt = await this.getGroupUserCnt(userID,groupID)
         let k = 1;
         let groupMd = await codeModel.getCodeById(groupID);
         if(!groupMd && userID!=1){
@@ -84,7 +84,7 @@ module.exports = class extends CMPage {
             if(!groupMd || groupMd.c_pid==0){
                 return '';
             }
-            cnt = await this.model('t_group_user').where({c_group:groupMd.c_pid, c_user:userID}).count();
+            cnt = await this.getGroupUserCnt(userID,groupMd.c_pid);
             groupMd = await codeModel.getCodeById(groupMd.c_pid);
             k += 1;
         }
@@ -108,14 +108,41 @@ module.exports = class extends CMPage {
      */
     async getDefaultGroupID(userID,groupID){
         if(userID == 1)  return 2;   //超级管理员指定为最大账套
+        let list = await this.getGroupUsers();
         if(!think.isEmpty(groupID)){
-            let cnt = await this.model('t_group_user').where({c_group:groupID, c_user:userID}).count();
-            if(cnt >0)  return groupID;
+            if(await this.getGroupUserCnt(userID,groupID) > 0){
+                return groupID;
+            }
         }else{
-            let list = await this.model('t_group_user').where({c_user:userID}).select();
-            if(list.length >0)  return list[0].c_group;
-            return 0;
+            for (const md of list) {
+                if(md.c_user === userID ){
+                    return md.c_group;
+                }
+            }
         }
+        return 0;
+    }
+
+    async getGroupUserCnt(userID,groupID){
+        let ret =0;
+        let list = await this.getGroupUsers();
+        for (const md of list) {
+            if(md.c_user === userID && md.c_group===groupID){
+                ret += 1;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 取t_group_user 全表记录，缓存
+     * @method  getGroupUsers
+     * @return {Array}  t_code记录列表
+     */
+    async getGroupUsers(){
+        return await think.cache("groupUsers", () => {
+            return this.model('t_group_user').select();
+        });
     }
 
 }

@@ -33,6 +33,7 @@ const Base =require('../cmpage/base.js');
 			      ${parms.roleID},id,FALSE,TRUE from t_code where id in(${parms.ids})`;
             await this.execute(sql);
         }
+        await think.cache('rolePrivileges',null);
     }
 
     /**
@@ -46,7 +47,8 @@ const Base =require('../cmpage/base.js');
     async roleGetPrivilegeTree(roleID, rootID){
         rootID = think.isEmpty(rootID) ? 1:rootID;
         let list =await cmpage.service('admin/code').getTreeList(rootID,true);
-        let rps = await this.model('t_role_privilege').where({c_role:roleID, c_deny:true}).select();
+        //let rps = await this.model('t_role_privilege').where({c_role:roleID, c_deny:true}).select();
+        const rps = await this.getRolePrivilegesByID(roleID);
         //debug(rps);
         for(let privi of list){
             privi.isAllow =true;
@@ -71,7 +73,8 @@ const Base =require('../cmpage/base.js');
      */
     async userGetPrivilegeTree(userID,roleID, rootID){
         rootID = think.isEmpty(rootID) ? 1:rootID;
-        let rps = await this.model('t_user_privilege').where({c_user:userID, c_deny:true}).select();
+        //let rps = await this.model('t_user_privilege').where({c_user:userID, c_deny:true}).select();
+        const rps = await this.getUserPrivilegesByID(userID);
         if(rps.length >0 ) {
             let list =await cmpage.service('admin/code').getTreeList(rootID,true);
             for (let privi of list) {
@@ -101,7 +104,66 @@ const Base =require('../cmpage/base.js');
         if(!think.isEmpty(parms.ids)){
             let sql = `insert into t_user_privilege(c_user,c_privilege,c_allow,c_deny) select
 			      ${parms.userID},id,FALSE,TRUE from t_code where id in(${parms.ids})`;
-            await this.execute(sql);
+            await this.query(sql);
         }
+        await think.cache('userPrivileges',null);
     }
+
+    /**
+     * 取某个角色的权限集
+     * @method  getRolePrivilegesByID
+     * @return {Array}  t_role_privilege记录列表
+     * @param {int} roleID  角色ID
+     */
+    async getRolePrivilegesByID(roleID){
+        const list = await this.getRolePrivileges();
+        let ret = [];
+        for (const md of list) {
+            if(md.c_role == roleID){
+                ret.push(md);
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 取某个角色的权限集
+     * @method  getUserPrivilegesByID
+     * @return {Array}  t_user_privilege记录列表
+     * @param {int} userID  用户ID
+     */
+    async getUserPrivilegesByID(userID){
+        const list = await this.getUserPrivileges();
+        let ret = [];
+        for (const md of list) {
+            if(md.c_user == userID){
+                ret.push(md);
+            }
+        }
+        return ret;
+    }
+        
+    /**
+     * 取t_role_privilege全表记录，缓存
+     * @method  getRolePrivileges
+     * @return {Array}  t_role_privilege记录列表
+     */
+    async getRolePrivileges(){
+        return await think.cache("rolePrivileges", () => {
+            return this.model('t_role_privilege').where({c_deny:true}).select();
+        });
+    }
+
+    /**
+     * 取t_user_privilege全表记录，缓存
+     * @method  getUserPrivileges
+     * @return {Array}  t_user_privilege记录列表
+     */
+    async getUserPrivileges(){
+        return await think.cache("userPrivileges", () => {
+            return this.model('t_user_privilege').where({c_deny:true}).select();
+        });
+    }
+    
+
 }

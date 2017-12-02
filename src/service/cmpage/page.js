@@ -183,7 +183,7 @@ module.exports = class extends PageBase {
         if (md.c_type == "select") {          //下拉框设置
             //cmpage.debug(md.c_memo);
             if(isBlank){
-                items.push('<option value="0"> </option>');
+                items.push('<option value="-1"> </option>');
             }
             if (/^select*/.test(md.c_memo)) {    //以select开头
                 //let sql = md.c_memo.replace(/#group#/,think.session('groupID')).replace(/##/,"'");
@@ -358,12 +358,13 @@ module.exports = class extends PageBase {
                 if(rec.c_act > 0 ){
                     actBtns = await this.htmlGetActBtns(rec);
                 }
-            }else{
-                //取当前任务节点的模板设置的按钮
-                if(rec.c_task > 0 ){
-                    actBtns = await this.htmlGetTaskActBtns(rec);
-                }
             }
+            // else{
+            //     //取当前任务节点的模板设置的按钮
+            //     if(rec.c_task > 0 ){
+            //         actBtns = await this.htmlGetTaskActBtns(rec);
+            //     }
+            // }
             for(let btn of actBtns){
                 k +=1;
                 if(k === this.mod.user.listBtns +1)  html.push(btnMore);
@@ -709,29 +710,31 @@ module.exports = class extends PageBase {
                 ${this.mod.editID},'${this.pk}');"  data-icon="save">保存</button></li>`;
         }
         //debug(defaultSaveBtn,'page.htmlGetEditBtns - defaultSaveBtn');
-        if(think.isEmpty(this.mod.c_other.editHideSaveBtn) && !this.mod.parmsUrl.readonly && !this.rec.hasOwnProperty('c_task') ) {
-            html.push(defaultSaveBtn);
+        //if(think.isEmpty(this.mod.c_other.editHideSaveBtn) && !this.mod.parmsUrl.readonly && !this.rec.hasOwnProperty('c_task') ) {
+        if(think.isEmpty(this.mod.c_other.editHideSaveBtn) && !this.mod.parmsUrl.readonly ) {
+                html.push(defaultSaveBtn);
         }
         debug(this.rec,'page.htmlGetEditBtns - this.rec');
-        if(!think.isEmpty(this.rec['c_task']) && this.rec.c_task >0){
-            let task =  await cmpage.service('flow/task').getTask(this.rec.c_task > 0 ? this.rec.c_task: parmsUrl.taskID);
-            //debug(task,'page.htmlGetEditBtns - task');
-            if(task.c_link_type === this.mod.c_table){
-                if(think.isEmpty(parmsUrl.taskActID)){
-                    html.push(defaultSaveBtn);
-                }else{
-                    let reloadUrl = `/cmpage/page/edit?modulename=${this.mod.c_modulename}&taskActID=${parmsUrl.taskActID}&status=${parmsUrl.status}&listIds=`;
-                    html.push(`<button type="button" class="btn-green"  data-icon="save"
-                            onclick="return pageSaveByTask('${this.mod.c_modulename}','${reloadUrl}',
-                            '${think.isEmpty(this.mod.c_other.editSaveAfter) ? '' : this.mod.c_other.editSaveAfter}');">
-                            ${think.isEmpty(this.mod.c_other.editSaveLabel) ? '保存' : this.mod.c_other.editSaveLabel}</button>`);
-                    // html.push(`<button type="button" class="btn-green"  data-icon="save"
-                    //         onclick="return pageSaveByTask('${this.mod.c_modulename}',${parmsUrl.taskActID},${parmsUrl.status},
-                    //         '${think.isEmpty(this.mod.c_other.editSaveAfter) ? '' : this.mod.c_other.editSaveAfter}');">
-                    //         ${think.isEmpty(this.mod.c_other.editSaveLabel) ? '保存' : this.mod.c_other.editSaveLabel}</button>`);
-                }
-            }
-        }
+
+        // if(!think.isEmpty(this.rec['c_task']) && this.rec.c_task >0){
+        //     let task =  await cmpage.service('flow/task').getTask(this.rec.c_task > 0 ? this.rec.c_task: parmsUrl.taskID);
+        //     //debug(task,'page.htmlGetEditBtns - task');
+        //     if(task.c_link_type === this.mod.c_table){
+        //         if(think.isEmpty(parmsUrl.taskActID)){
+        //             html.push(defaultSaveBtn);
+        //         }else{
+        //             let reloadUrl = `/cmpage/page/edit?modulename=${this.mod.c_modulename}&taskActID=${parmsUrl.taskActID}&status=${parmsUrl.status}&listIds=`;
+        //             html.push(`<button type="button" class="btn-green"  data-icon="save"
+        //                     onclick="return pageSaveByTask('${this.mod.c_modulename}','${reloadUrl}',
+        //                     '${think.isEmpty(this.mod.c_other.editSaveAfter) ? '' : this.mod.c_other.editSaveAfter}');">
+        //                     ${think.isEmpty(this.mod.c_other.editSaveLabel) ? '保存' : this.mod.c_other.editSaveLabel}</button>`);
+        //             // html.push(`<button type="button" class="btn-green"  data-icon="save"
+        //             //         onclick="return pageSaveByTask('${this.mod.c_modulename}',${parmsUrl.taskActID},${parmsUrl.status},
+        //             //         '${think.isEmpty(this.mod.c_other.editSaveAfter) ? '' : this.mod.c_other.editSaveAfter}');">
+        //             //         ${think.isEmpty(this.mod.c_other.editSaveLabel) ? '保存' : this.mod.c_other.editSaveLabel}</button>`);
+        //         }
+        //     }
+        // }
 
         if(this.mod.editID >0 && think.isEmpty(this.mod.c_module_slave.modulename)) {
             let listIds = parmsUrl.listIds.split(',');
@@ -765,12 +768,13 @@ module.exports = class extends PageBase {
                 if(this.rec.c_act > 0 ){
                     actBtns = await this.htmlGetActBtns(this.rec);
                 }
-            }else{
-                //取当前任务节点的模板设置的按钮
-                if(this.rec.c_task > 0 ){
-                    actBtns = await this.htmlGetTaskActBtns(this.rec);
-                }
             }
+            // else{
+            //     //取当前任务节点的模板设置的按钮
+            //     if(this.rec.c_task > 0 ){
+            //         actBtns = await this.htmlGetTaskActBtns(this.rec);
+            //     }
+            // }
             for(let btn of actBtns){
                 btn = `<li class="left" >${btn}</li>`;
             }
@@ -815,9 +819,8 @@ module.exports = class extends PageBase {
         }
         linkRec.id = think.isEmpty(this.mod.parmsUrl.linkID) ? rec[this.pk] : this.mod.parmsUrl.linkID;
         debug(linkRec,'page.htmlGetActBtns - linkRec');
-        debug(act,'page.htmlGetTaskActBtns - act');
+        debug(act,'page.htmlGetActBtns - act');
 
-        //debug(task,'page.htmlGetTaskActBtns - task');
         if(act.id >0){
             //debug(form,'page.htmlGetActBtns - form');
             //if(form.hasOwnProperty('modulename') && form['modulename'] == this.mod.c_modulename ){
@@ -910,105 +913,6 @@ module.exports = class extends PageBase {
                     }
                 }
             }
-        }
-
-        return html;
-    }
-
-    /**
-     * 取流程节点相关的按钮设置，组合按钮的HTML输出</br>
-     * 考虑到按钮输出和业务关联度大，定义在此处
-     * @method  htmlGetTaskActBtns
-     * @return {Array} 按钮数组
-     */
-    async htmlGetTaskActBtns(rec) {
-        let html = [];
-        //debug(rec,'page.htmlGetTaskActBtns - rec');
-        let task = await cmpage.service('flow/task').getTask(rec.c_task);
-        if(think.isEmpty(task)){    return []; }
-
-        let parmsUrl = this.mod.parmsUrl;
-        //取流程的当前节点，然后取按钮设置
-        let act ={},taskAct={};
-        if(think.isEmpty(parmsUrl['taskActID'])){
-            let taskModel = cmpage.service('flow/task');
-            act =await taskModel.getTaskWithCurrentAct(task);
-            taskAct = taskModel.currTaskAct;
-        }else{
-            taskAct = await cmpage.service('flow/task_act').getTaskAct(parmsUrl['taskActID']);
-            act = await cmpage.service('flow/act').getActById(taskAct.c_act);
-        }
-        //debug(task,'page.htmlGetTaskActBtns - task');
-        //debug(act,'page.htmlGetTaskActBtns - act');
-        if(act.id >0){
-            //验证当前用户是否有该节点的权限
-            let actAssign = await cmpage.service('flow/act_assign').getAssignByUser(act.id,this.mod.user, task.c_creater);
-            debug(actAssign,'page.htmlGetTaskActBtns - actAssign');
-            if(think.isEmpty(actAssign))   return [];
-
-            let form = think.isEmpty(act.c_form) ? {} : cmpage.objFromString(act.c_form);
-            debug(form,'page.htmlGetTaskActBtns - form');
-            if(form.hasOwnProperty('modulename') && form['modulename'] === this.mod.c_modulename ){
-                //本表单是流程节点需要打开的表单
-                let btns = cmpage.arrFromString(act.c_form_btn);
-                for(let btn of btns){
-                    btn.label = think.isEmpty(btn['label']) ? act.c_name : btn.label;
-                    btn.class = think.isEmpty(btn['class']) ? 'btn-green' : btn.class;
-                    btn.icon = think.isEmpty(btn['icon']) ? 'cogs' : btn.icon;
-                    if(!think.isEmpty(btn['onclick'])){
-                        btn.onclick = btn.onclick.replace(/#taskID#/g,task.id).replace(/#taskActID#/g,taskAct.id);;
-                        html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}" onclick="${btn.onclick}">${btn.label}</button>`)
-                    }
-                    else if(!think.isEmpty(btn['url'])){
-                        btn.title = think.isEmpty(btn['title']) ? btn.label : btn.title;
-                        btn.opentype = think.isEmpty(btn['opentype']) ? 'dialog' : btn.opentype;
-                        btn.url = btn.url.replace(/#taskID#/g,task.id).replace(/#taskActID#/g,taskAct.id);
-                        html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}" data-toggle="${btn.opentype}"
-                        data-options="{id:'flowDialog', url:'${btn.url}', title:'${btn.title}'}">${btn.label}</button>`)
-                    }else {
-                        html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}"
-                            onclick="return fwRunAct(${taskAct.id},true,'${this.mod.c_modulename}');">${btn.label}</button>`)
-                    }
-                }
-                if (task.c_link_type !== this.mod.c_table) {
-                    debug(taskAct,'page.htmlGetActBtns - taskAct');
-                    if(taskAct.c_status === cmpage.enumTaskActStatus.WAIT) {
-                        //默认的保存或者审核通过按钮
-                        let reloadUrl = `/cmpage/page/edit?modulename=${this.mod.c_modulename}&taskActID=${parmsUrl.taskActID}&status=${parmsUrl.status}&listIds=`;
-                        html.push(`<button type="button" class="btn-green"  data-icon="save"
-                                onclick="return pageSaveByTask('${this.mod.c_modulename}','${reloadUrl}',
-                                '${think.isEmpty(this.mod.c_other.editSaveAfter) ? '' : this.mod.c_other.editSaveAfter}');">
-                                ${think.isEmpty(this.mod.c_other.editSaveLabel) ? '保存' : this.mod.c_other.editSaveLabel}</button>`);
-                    }else{
-                        html.push('<label style="color: red;">本操作已经执行完毕！</label>')
-                    }
-                }
-            }else if(task.c_link_type === this.mod.c_table){
-                //本表单是流程的关联主表单，则显示本流程节点的调用按钮
-                let btn = think.isEmpty(act.c_call_btn) ? {}:eval(`(${act.c_call_btn})`);
-                btn.label = think.isEmpty(btn['label']) ? act.c_name : btn.label;
-                btn.class = think.isEmpty(btn['class']) ? 'btn-green' : btn.class;
-                btn.icon = think.isEmpty(btn['icon']) ? 'cogs' : btn.icon;
-                let form =eval("("+ act.c_form +")");
-                form.title = think.isEmpty(btn['title']) ? btn.label : btn.title;
-                form.opentype = think.isEmpty(btn['opentype']) ? 'dialog' : btn.opentype;
-                if(!think.isEmpty(form['modulename'])){
-                    form.url = `/cmpage/page/edit?modulename=${form['modulename']}&id=0&taskID=${task.id}&taskActID=${taskAct.id}&status=${act.c_domain_st}`;
-                }
-                form.url = form.url.replace(/#taskID#/g,task.id).replace(/#taskActID#/g,taskAct.id);
-                html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}" data-toggle="${form.opentype}"
-                        data-options="{id:'flowDialog', url:'${form.url}', title:'${form.title}', mask:true}">${btn.label}</button>`)
-            }
-            //增加可终止或者可挂起按钮
-            if(taskAct.c_status == cmpage.enumTaskActStatus.WAIT){
-                if(act.c_can_terminate){
-                    html.push(`<button type="button" class="btn-red" data-icon="stop" onclick="return fwTerminate(${taskAct.c_task},'${this.mod.c_modulename}');">终止</button>`)
-                }
-                if(act.c_can_suspend){
-                    html.push(`<button type="button" class="btn-orange" data-icon="pause" onclick="return fwSuspend(${taskAct.id},'${this.mod.c_modulename}');">挂起</button>`)
-                }
-            }
-
         }
 
         return html;
@@ -1175,6 +1079,109 @@ module.exports = class extends PageBase {
         return html.join(' ');
     }
 
+
+
+    /******************************* 以下方法暂时不用 ************************************************* */
+
+
+     /**
+     * 取流程节点相关的按钮设置，组合按钮的HTML输出</br>
+     * 考虑到按钮输出和业务关联度大，定义在此处
+     * @method  htmlGetTaskActBtns
+     * @return {Array} 按钮数组
+     */
+    async htmlGetTaskActBtns(rec) {
+        let html = [];
+        //debug(rec,'page.htmlGetTaskActBtns - rec');
+        let task = await cmpage.service('flow/task').getTask(rec.c_task);
+        if(think.isEmpty(task)){    return []; }
+
+        let parmsUrl = this.mod.parmsUrl;
+        //取流程的当前节点，然后取按钮设置
+        let act ={},taskAct={};
+        if(think.isEmpty(parmsUrl['taskActID'])){
+            let taskModel = cmpage.service('flow/task');
+            act =await taskModel.getTaskWithCurrentAct(task);
+            taskAct = taskModel.currTaskAct;
+        }else{
+            taskAct = await cmpage.service('flow/task_act').getTaskAct(parmsUrl['taskActID']);
+            act = await cmpage.service('flow/act').getActById(taskAct.c_act);
+        }
+        //debug(task,'page.htmlGetTaskActBtns - task');
+        //debug(act,'page.htmlGetTaskActBtns - act');
+        if(act.id >0){
+            //验证当前用户是否有该节点的权限
+            let actAssign = await cmpage.service('flow/act_assign').getAssignByUser(act.id,this.mod.user, task.c_creater);
+            debug(actAssign,'page.htmlGetTaskActBtns - actAssign');
+            if(think.isEmpty(actAssign))   return [];
+
+            let form = think.isEmpty(act.c_form) ? {} : cmpage.objFromString(act.c_form);
+            debug(form,'page.htmlGetTaskActBtns - form');
+            if(form.hasOwnProperty('modulename') && form['modulename'] === this.mod.c_modulename ){
+                //本表单是流程节点需要打开的表单
+                let btns = cmpage.arrFromString(act.c_form_btn);
+                for(let btn of btns){
+                    btn.label = think.isEmpty(btn['label']) ? act.c_name : btn.label;
+                    btn.class = think.isEmpty(btn['class']) ? 'btn-green' : btn.class;
+                    btn.icon = think.isEmpty(btn['icon']) ? 'cogs' : btn.icon;
+                    if(!think.isEmpty(btn['onclick'])){
+                        btn.onclick = btn.onclick.replace(/#taskID#/g,task.id).replace(/#taskActID#/g,taskAct.id);;
+                        html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}" onclick="${btn.onclick}">${btn.label}</button>`)
+                    }
+                    else if(!think.isEmpty(btn['url'])){
+                        btn.title = think.isEmpty(btn['title']) ? btn.label : btn.title;
+                        btn.opentype = think.isEmpty(btn['opentype']) ? 'dialog' : btn.opentype;
+                        btn.url = btn.url.replace(/#taskID#/g,task.id).replace(/#taskActID#/g,taskAct.id);
+                        html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}" data-toggle="${btn.opentype}"
+                        data-options="{id:'flowDialog', url:'${btn.url}', title:'${btn.title}'}">${btn.label}</button>`)
+                    }else {
+                        html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}"
+                            onclick="return fwRunAct(${taskAct.id},true,'${this.mod.c_modulename}');">${btn.label}</button>`)
+                    }
+                }
+                if (task.c_link_type !== this.mod.c_table) {
+                    debug(taskAct,'page.htmlGetActBtns - taskAct');
+                    if(taskAct.c_status === cmpage.enumTaskActStatus.WAIT) {
+                        //默认的保存或者审核通过按钮
+                        let reloadUrl = `/cmpage/page/edit?modulename=${this.mod.c_modulename}&taskActID=${parmsUrl.taskActID}&status=${parmsUrl.status}&listIds=`;
+                        html.push(`<button type="button" class="btn-green"  data-icon="save"
+                                onclick="return pageSaveByTask('${this.mod.c_modulename}','${reloadUrl}',
+                                '${think.isEmpty(this.mod.c_other.editSaveAfter) ? '' : this.mod.c_other.editSaveAfter}');">
+                                ${think.isEmpty(this.mod.c_other.editSaveLabel) ? '保存' : this.mod.c_other.editSaveLabel}</button>`);
+                    }else{
+                        html.push('<label style="color: red;">本操作已经执行完毕！</label>')
+                    }
+                }
+            }else if(task.c_link_type === this.mod.c_table){
+                //本表单是流程的关联主表单，则显示本流程节点的调用按钮
+                let btn = think.isEmpty(act.c_call_btn) ? {}:eval(`(${act.c_call_btn})`);
+                btn.label = think.isEmpty(btn['label']) ? act.c_name : btn.label;
+                btn.class = think.isEmpty(btn['class']) ? 'btn-green' : btn.class;
+                btn.icon = think.isEmpty(btn['icon']) ? 'cogs' : btn.icon;
+                let form =eval("("+ act.c_form +")");
+                form.title = think.isEmpty(btn['title']) ? btn.label : btn.title;
+                form.opentype = think.isEmpty(btn['opentype']) ? 'dialog' : btn.opentype;
+                if(!think.isEmpty(form['modulename'])){
+                    form.url = `/cmpage/page/edit?modulename=${form['modulename']}&id=0&taskID=${task.id}&taskActID=${taskAct.id}&status=${act.c_domain_st}`;
+                }
+                form.url = form.url.replace(/#taskID#/g,task.id).replace(/#taskActID#/g,taskAct.id);
+                html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}" data-toggle="${form.opentype}"
+                        data-options="{id:'flowDialog', url:'${form.url}', title:'${form.title}', mask:true}">${btn.label}</button>`)
+            }
+            //增加可终止或者可挂起按钮
+            if(taskAct.c_status == cmpage.enumTaskActStatus.WAIT){
+                if(act.c_can_terminate){
+                    html.push(`<button type="button" class="btn-red" data-icon="stop" onclick="return fwTerminate(${taskAct.c_task},'${this.mod.c_modulename}');">终止</button>`)
+                }
+                if(act.c_can_suspend){
+                    html.push(`<button type="button" class="btn-orange" data-icon="pause" onclick="return fwSuspend(${taskAct.id},'${this.mod.c_modulename}');">挂起</button>`)
+                }
+            }
+
+        }
+
+        return html;
+    }
 
 
 }
