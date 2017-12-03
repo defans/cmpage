@@ -13,13 +13,17 @@ module.exports = class extends Base {
         super();
         this.connStr='cmpage';
     }
+    //数据库连接配置的名称
+    connNames(){
+        return ["admin", "cmpage","docu" ];
+    }
     //数据库中字段的类型
     colTypes(){
         return ["varchar", "int","date","timestamp","bool","float" ];
     }
     //分页列表中各项的显示类型
     showTypes(){
-        return [{value:"text",text:"文本"},{value:"checkbox",text:"是否选中"},{value:"replace",text:"替换"},{value:"html",text:"HTML"}];    //,
+        return [{value:"text",text:"文本"},{value:"checkbox",text:"是否选中"},{value:"replace",text:"替换"},{value:"pic",text:"图片"},{value:"html",text:"HTML"}];    //,
         //{value:"navtab",text:"Tab页面"},{value:"dialog",text:"对话框"},{value:"kindeditor",text:"富文本"}];
     }
     //分页列表中最后一行是合计的设置类型

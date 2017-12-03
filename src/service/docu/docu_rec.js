@@ -23,8 +23,8 @@ const CMPage = require('../cmpage/page.js');
 module.exports = class extends CMPage {
     //单据类型, 参见：cmpage.enumDocuType （cmpage_global_docu.js）
     //OrderApply:1,  Order:2,  DocuArrive:3,DocuCheck:4,DocuSale:5, DocuPick:6, DocuStock:7, DocuTransfer:8, DocuBill:20
-    constructor(name, config = {}) {
-        super(name,config);
+    constructor() {
+        super();
         this.pk = 'c_id';
         this.docuType = {id:0, name:'',header:'',key:'c_docu',modulename:''};
     }

@@ -53,7 +53,9 @@
             <tr>
                 <td>
                     <label  class="control-label x85">编辑页列数：</label>
-                    <input type="text" name="c_edit_column"  value="<%= md.c_edit_column%>" data-rule="required" size="20">
+                    <input type="text" name="c_edit_column"  value="<%= md.c_edit_column%>" data-rule="required" size="5">
+                    <label  class="control-label x85">主键：</label>
+                    <input type="text" name="c_pk"  value="<%= md.c_pk%>" data-rule="required" size="10">
                 </td>
                 <td >
                     <label  class="control-label x85">子模块：</label>
@@ -78,6 +80,17 @@
                     <textarea name="c_memo"  data-toggle="autoheight" cols="60" rows="1"><%= md.c_memo%></textarea>
                 </td>
             </tr>
+            <tr>
+                <td colspan="4">
+                    <label for="" class="control-label x85">连接配置</label>
+                    <select name="c_conn_name" data-toggle="selectpicker" data-rule="required">
+                        <% connNames.forEach(function(item){ %>
+                        <option value="<%= item%>" <%= (md.c_conn_name == item ? "selected":"")%> ><%= item%> </option>
+                        <% })%>
+                    </select>       
+                </td>
+            </tr>
+
             </tbody>
         </table>
     </form>

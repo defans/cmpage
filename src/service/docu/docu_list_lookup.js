@@ -22,8 +22,8 @@ const CMPage = require('../cmpage/page_lookup.js');
 
 module.exports = class extends CMPage {
 
-    constructor(name, config = {}) {
-        super(name,config);
+    constructor() {
+        super();
         this.pk = 'c_id';
         this.docuType = {id:0, name:'',header:'',key:'c_docu'};   //单据类型, 参见：cmpage.enumDocuType （cmpage_global_docu.js）
     }

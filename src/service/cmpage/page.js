@@ -441,10 +441,12 @@ module.exports = class extends PageBase {
                             //debug(item,'page.htmlGetList - replace.item');
                             let templete = cmpage.objPropertysReplaceToStr(col.c_memo, item);
                             html.push(await this.getReplaceText(item[col.c_column],templete));
-                        } else if (col.c_type === "html") {
-                            let input = think.isEmpty(col.c_memo) ? item[col.c_column] : col.c_memo.replace(/#value#/ig,item[col.c_column]);
-                            //debug(input,page.htmlGetList - input.html);
+                        }else if(col.c_type === "html"){
+                            let input = think.isEmpty(col.c_memo) ? md[col.c_column] : this.cmpage.objPropertysReplaceToStr(col.c_memo, item); 
+                            //debug(input,'page.htmlGetView - input.html');
                             html.push(input);
+                        }else if(col.c_type === "pic"){
+                            html.push(`<img width=100 height=100 src='${item[col.c_column]}' alt='${item[col.c_column]}' />`);
                         } else {
                             if (!think.isEmpty(col.c_column)) {
                                 html.push(item[col.c_column]);
@@ -620,7 +622,10 @@ module.exports = class extends PageBase {
                                           mimeTypes: this.mod.parmsUrl.c_type==0 ? '.*': '.jpg,.png,.jpeg,.gif,.bmp'
                                       }
                                 };
-              input += `<input type="file" name="${col.c_column}" data-name="${col.c_column}" data-toggle="webuploader" data-options="${cmpage.objToString(options)}" >`;
+                if(this.cmpage.isImageFile(colValue)){
+                    input += `<img width=100 height=100 src='${colValue}' alt='${colValue}' />`
+                }
+                input += `<input type="file" name="${col.c_column}" data-name="${col.c_column}" data-toggle="webuploader" data-options="${cmpage.objToString(options)}" >`;
             }else if (col.c_type == "areaSelect"){
                 if(!think.isEmpty(col.c_memo)){
                     input += await this.htmlGetAreaSelect(col.c_memo, col.c_column, this.rec);
@@ -955,9 +960,12 @@ module.exports = class extends PageBase {
         }else if (col.c_type === "kindeditor") {
             html.push(`<div style="display: inline-block; vertical-align: middle;">${md[col.c_column]} </div>`);
         }else if(col.c_type === "html"){
-            let input = think.isEmpty(col.c_memo) ? md[col.c_column] : col.c_memo.replace(/#value#/ig,md[col.c_column]);
+            //let input = think.isEmpty(col.c_memo) ? md[col.c_column] : col.c_memo.replace(/#value#/ig,md[col.c_column]);
+            let input = think.isEmpty(col.c_memo) ? md[col.c_column] : this.cmpage.objPropertysReplaceToStr(col.c_memo, md); 
             //debug(input,'page.htmlGetView - input.html');
             html.push(input);
+        }else if(col.c_type === "pic"){
+            html.push(`<img src='${md[col.c_column]}' alt='${md[col.c_column]}' />`);
         }else if (col.c_coltype === "float") {
             html.push(cmpage.formatNumber(Number(md[col.c_column]), {pattern: col.c_format}));
         } else if(col.c_coltype === "timestamp") {

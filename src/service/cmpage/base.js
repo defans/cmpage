@@ -24,7 +24,8 @@ module.exports = class extends think.Service {
         super();
         this.connStr = 'admin'; //默认连接参数
         this.cmpage = require('../cmpage.js');
-
+        this.config = think.config('model')['admin'];
+        
         this._sequelize = null;
         this._model = null; //thinkjs.model.base , 目前暂时不用
         this._field = '';
@@ -53,12 +54,12 @@ module.exports = class extends think.Service {
       */
       getConnection(connStr) {
         const connName = connStr ? connStr : this.connStr;
-        const config = think.config('model')[connName];
+        this.config = think.config('model')[connName];
         //debug(config,'cmpage.base - dbConfig');
-        this._sequelize = new Sequelize( config.database, config.user,  config.password, {
-            host:config.host || "127.0.0.1",
-            port:config.port || 3306,
-            dialect: config.type || 'mysql',
+        this._sequelize = new Sequelize( this.config.database, this.config.user,  this.config.password, {
+            host:this.config.host || "127.0.0.1",
+            port:this.config.port || 3306,
+            dialect: this.config.type || 'mysql',
             benchmark:true,
             logging:this.log,
             pool: {
@@ -255,7 +256,6 @@ module.exports = class extends think.Service {
     }
 
    parseValue(value){
-        const config = think.config('model')[this.connStr];
        if (think.isString(value)) {
            value = `'${value.replace(/\'/g,'\\\'')}'`;
        }else if(think.isArray(value)){
@@ -264,7 +264,7 @@ module.exports = class extends think.Service {
            }else{
                value = value.map(item => this.parseValue(item));
            }
-       }else if(think.isBoolean(value) && config.type=='mysql'){
+       }else if(think.isBoolean(value) && this.config.type=='mysql'){
            value = value ? 'TRUE' : 'FALSE';
        }else if(think.isDate(value)){
            value =`'${think.datetime(value)}'` ;

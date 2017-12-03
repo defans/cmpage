@@ -24,7 +24,6 @@ module.exports = class extends CMPage {
 
     constructor() {
         super();
-        this.connStr = 'docu';      
         
         this.pk = 'c_id';
         this.docuType = {id:0, name:'',header:'',key:'c_docu'};   //单据类型, 参见：cmpage.enumDocuType （cmpage_global_docu.js）

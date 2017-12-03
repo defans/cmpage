@@ -21,8 +21,8 @@ const CMPage = require('../cmpage/page.js');
 
 module.exports = class extends CMPage {
 
-    constructor(name, config = {}) {
-        super(name,config);
+    constructor() {
+        super();
         this.mod = {c_table:'t_goods'};
         this.pk ='c_id';
     }
@@ -42,5 +42,6 @@ module.exports = class extends CMPage {
 
         return await super.pageDelete();
     }
+    
 
 }

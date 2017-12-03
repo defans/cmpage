@@ -39,6 +39,10 @@ module.exports = class extends Base {
      * @method  initPage
      */
     async initPage(){
+        this.connStr = this.mod.c_conn_name;
+        this.config = think.config('model')[this.connStr];
+        this.pk = this.mod.c_pk;
+
         if(this.mod.c_proc >0){     //流程模板的主业务类
             this.proc = await cmpage.service('flow/proc').getProcById(this.mod.c_proc);
             this.proc.c_link_model = this.mod.c_path;   //设置流程模板的关联类和表

@@ -21,8 +21,8 @@ const CMPage = require('../cmpage/page_mob.js');
 
 module.exports = class extends CMPage {
 
-    constructor(name, config = {}) {
-        super(name,config);
+    constructor() {
+        super();
         this.mod = {c_table:'t_supplier'};  //为直接调用的函数初始化某些值，如：getNameById
     }
 

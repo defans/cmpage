@@ -66,7 +66,7 @@ module.exports = class extends Base {
     let ret={statusCode:200,message:'保存成功!',tabid: 'pageModule',data:{}};
     let parms =this.post();
     let md = cmpage.objPropertysFromOtherObj({},parms,['c_modulename','c_datasource','c_table','c_page_size','c_sort_by','c_type','c_other',
-      'c_module_slave','c_edit_column','c_mui','c_memo','c_path','c_alias','c_proc']);
+      'c_module_slave','c_edit_column','c_mui','c_memo','c_path','c_alias','c_proc','c_conn_name','c_pk']);
     md.c_multiselect = !think.isEmpty(parms.c_multiselect);
     md.c_pager = !think.isEmpty(parms.c_pager);
     md.c_time = think.datetime();
@@ -121,7 +121,7 @@ module.exports = class extends Base {
       md.c_modulename= this.get('modulename');
       md.c_datasource = md.c_table =  this.get('datasource');
       Object.assign(md, {id:0,c_multiselect:false, c_pager:true, c_page_size:20, c_sort_by:'id desc',c_edit_column:1,
-            c_proc:0,proc_name:'', c_path:'cmpage/page',c_alias:md.c_modulename });
+            c_proc:0,proc_name:'', c_path:'cmpage/page',c_alias:md.c_modulename, c_conn_name:'admin', c_pk:'id' });
     }else{
       let tmp = await  this.model("t_module",'cmpage').where({id:  this.get('id')}).find();
       tmp.proc_name = await cmpage.service('flow/proc').getNameById(tmp.c_proc);
@@ -129,6 +129,7 @@ module.exports = class extends Base {
     }
     cmpage.debug(JSON.stringify(md));
 
+    this.assign("connNames",cmpage.service('cmpage/module').connNames());
     this.assign("md",md);
     return this.display();
   }
