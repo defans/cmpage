@@ -141,6 +141,7 @@ module.exports = class extends think.Service {
             this.getConnection(connName);
         }
         let list = await this._sequelize.query(sql,options);
+        //cmpage.warn(list,'base.query - queryList');
         if(list.length >0) return list[0];
         return [];
     }
@@ -200,6 +201,9 @@ module.exports = class extends think.Service {
                 _field.push(key);
             }
         }
+        if (!this._sequelize ) {
+            this.getConnection(this.connStr);
+        }
         let sql =  `INSERT INTO ${this._tableName}( ${_field.join(',')} ) VALUES( ${values.join(',')} ) `;
         if(this.config.type == "postgresql"){
             sql += ` returning ${this.pk};`;
@@ -207,10 +211,11 @@ module.exports = class extends think.Service {
             return list[this.pk];
         }else{
             await this.query(sql);
-            let list = await this.query(`select @@IDENTITY as ${this.pk};`);
-            //cmpage.debug(list,'base.add - list');
-            if(list.length >0){
-               return list[0][this.pk];
+            //let list = await this.query(`select @@IDENTITY as ${this.pk};`);
+            let ret = await this._sequelize.query(`select @@IDENTITY as ${this.pk};`,{plain:true});
+            cmpage.warn(ret,'base.add - ret');
+            if(ret){
+               return ret[this.pk];
             }
             return 0;
         }
@@ -266,7 +271,9 @@ module.exports = class extends think.Service {
            }
        }else if(think.isBoolean(value) && this.config.type=='mysql'){
            value = value ? 'TRUE' : 'FALSE';
-       }else if(think.isDate(value)){
+        }else if(think.isBoolean(value) && this.config.type=='mssql'){
+            value = value ? 1 : 0;
+        }else if(think.isDate(value)){
            value =`'${think.datetime(value)}'` ;
        }else if(value === null) {
            value = 'null';

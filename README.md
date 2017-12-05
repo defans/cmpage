@@ -10,15 +10,16 @@
 运行步骤简述如下（具体参照 thinkjs.org）：
 1. 在Mysql中导入备份文件（/db/cmpage_my.sql），生成配置数据库cmpage；
 1. 在Mysql中导入备份文件（/db/admin_my.sql），生成业务数据库admin；
-1. 在/src/common/config/adapter.js 中配置数据库连接参数；
+1. 在Mssql中导入备份文件 (/db/docu.zip, 先解压), 生成单据数据库docu;
+1. 在/src/config/adapter.js 中配置数据库连接参数；
 1. 运行：npm install  或者 npm install --registry=https://registry.npm.taobao.org 
 1. 运行：npm start
 1. 访问：http://localhost:8300
 1. 手机端项目的目录：/mob，独立项目，请用HBuider打开，然后用USB连上手机就可以调试了，具体参见 http://www.dcloud.io/runtime.html, 也可以用手机扫描下面的二维码体验一下 <br />
-<img src="http://118.190.105.50:8300/static/mob/cmpage_demo.png" width=160 height=160 /> <br />
+<img src="http://47.104.13.12:8300/static/mob/cmpage_demo.png" width=160 height=160 /> <br />
 
-#### 演示地址： [--> gogogo](http://118.190.105.50:8300/admin)
-#### 更新日志： [--> gogogo](http://118.190.105.50:8300/home/index/log)
+#### 演示地址： [--> gogogo](http://47.104.13.12:8300/admin)
+#### 更新日志： [--> gogogo](http://47.104.13.12:8300/home/index/log)
 
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/1031/091546_c59755a4_389947.png "流程图")
 -------------------------------------------------------------------------------------------------

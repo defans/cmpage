@@ -9,8 +9,8 @@
   "dependencies": {
     "excel-export": "0.5.1",
     "mysql2": "^1.5.1",
-    "sequelize": "^4.23.2",
     "tedious": "^2.1.5",
+    "sequelize": "^4.23.2",
     "think-cache": "^1.0.0",
     "think-cache-file": "^1.0.8",
     "think-fetch": "^1.1.0",

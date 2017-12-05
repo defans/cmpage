@@ -259,9 +259,9 @@ exports.getOwnPropertyDescriptors = function(obj) {
             // think.logger.debug(message, think.isEmpty(desc) ? ' CMPAGE ':desc);
         }
     };
-    exports.error = (msg,desc)=>{
+    exports.warn = (msg,desc)=>{
         let message = objToString(msg);
-        think.logger.error((!think.isEmpty(desc) ? '['+desc+'] --> ':'[CMPAGE] ') + message);
+        think.logger.warn((!think.isEmpty(desc) ? '['+desc+'] --> ':'[CMPAGE] ') + message);
     };
 
     /**
@@ -370,7 +370,6 @@ exports.getOwnPropertyDescriptors = function(obj) {
                 if(bool){
                     if( ( x && y && (x !="0"|| y =="0")) || ( x && x !="0"&& !y ) || ( y && y =="0"&& !x ) ){
                         nn += x ? x :"0";
-                        bool = false;
                     }
                 } else {
                     nn += x ? x :"0";
@@ -386,8 +385,8 @@ exports.getOwnPropertyDescriptors = function(obj) {
         let patterns = pattern.split(".");
         let numChars = numChar.split(".");
         let z = patterns[0].indexOf(",") == -1 ? -1 : patterns[0].length - patterns[0].indexOf(",") ;
-        let num1 = _format(patterns[0].replace(","),numChars[0],0);
-        let num2 = _format(patterns[1]?patterns[1].split('').reverse().join(''):"", numChars[1]?numChars[1].split('').reverse().join(''):"",1);
+        let num1 = cmpage._format(patterns[0].replace(","),numChars[0],0);
+        let num2 = cmpage._format(patterns[1]?patterns[1].split('').reverse().join(''):"", numChars[1]?numChars[1].split('').reverse().join(''):"",1);
         num1 = num1.split("").reverse().join('');
         let reCat = eval("/[0-9]{"+ (z-1) +","+ (z-1) +"}/gi");
         let arrdata = z > -1 ? num1.match(reCat) : undefined ;
@@ -414,7 +413,7 @@ exports.getOwnPropertyDescriptors = function(obj) {
         let zeroExc = opt.zeroExc == undefined ? true : opt.zeroExc ;
         let pattern = opt.pattern.match(reCat)[0];
         let numChar = num.toString();
-        return !(zeroExc && numChar == 0) ? opt.pattern.replace(pattern,_formatNumber(numChar,pattern)) : opt.pattern.replace(pattern,"0");
+        return !(zeroExc && numChar == 0) ? opt.pattern.replace(pattern,cmpage._formatNumber(numChar,pattern)) : opt.pattern.replace(pattern,"0");
     };
 
     /**

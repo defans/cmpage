@@ -348,29 +348,31 @@ module.exports = class extends PageBase {
                 }
             }
         }
+        //暂时列表页面不显示流程按钮
         //如果和流程相关，则显示流程节点的按钮
-        if(!think.isEmpty(this.proc)){
-            //debug(this.proc,'page.htmlGetBtnList - this.proc');
-            let actBtns = [];
-            if(this.proc.c_type === cmpage.enumProcType.STATUSCHANGE){
-                //直接取模板设置的按钮
-                //debug(rec,'page.htmlGetBtnList - rec');
-                if(rec.c_act > 0 ){
-                    actBtns = await this.htmlGetActBtns(rec);
-                }
-            }
-            // else{
-            //     //取当前任务节点的模板设置的按钮
-            //     if(rec.c_task > 0 ){
-            //         actBtns = await this.htmlGetTaskActBtns(rec);
-            //     }
-            // }
-            for(let btn of actBtns){
-                k +=1;
-                if(k === this.mod.user.listBtns +1)  html.push(btnMore);
-                html.push(btn);
-            }
-        }
+        // if(!think.isEmpty(this.proc)){
+        //     //debug(this.proc,'page.htmlGetBtnList - this.proc');
+        //     let actBtns = [];
+        //     if(this.proc.c_type === cmpage.enumProcType.STATUSCHANGE){
+        //         //直接取模板设置的按钮
+        //         //debug(rec,'page.htmlGetBtnList - rec');
+        //         if(rec.c_act > 0 ){
+        //             actBtns = await this.htmlGetActBtns(rec);
+        //         }
+        //     }
+        //     // else{
+        //     //     //取当前任务节点的模板设置的按钮
+        //     //     if(rec.c_task > 0 ){
+        //     //         actBtns = await this.htmlGetTaskActBtns(rec);
+        //     //     }
+        //     // }
+        //     for(let btn of actBtns){
+        //         k +=1;
+        //         if(k === this.mod.user.listBtns +1)  html.push(btnMore);
+        //         html.push(btn);
+        //     }
+        // }
+
         if(k >this.mod.user.listBtns){
             html.push('</ul></div>');
         }
@@ -704,6 +706,7 @@ module.exports = class extends PageBase {
         //debug(task,'page.htmlGetEditBtns - task');
         let defaultSaveBtn = '<li ><button type="submit" class="btn-green"  data-icon="save">保存</button></li>';
         if(!think.isEmpty(this.mod.c_module_slave.modulename)){
+            //主从页面的按钮处理
             let reloadUrl = `/cmpage/page/edit_ms?modulename=${this.mod.c_modulename}&listIds=`;
             for(let p in this.mod.parmsUrl){
                 //加入URL参数
@@ -714,10 +717,13 @@ module.exports = class extends PageBase {
             defaultSaveBtn = `<li ><button type="button" class="btn-green" onclick="return pageSaveMs('${this.mod.c_modulename}','${reloadUrl}',
                 ${this.mod.editID},'${this.pk}');"  data-icon="save">保存</button></li>`;
         }
+       
         //debug(defaultSaveBtn,'page.htmlGetEditBtns - defaultSaveBtn');
         //if(think.isEmpty(this.mod.c_other.editHideSaveBtn) && !this.mod.parmsUrl.readonly && !this.rec.hasOwnProperty('c_task') ) {
-        if(think.isEmpty(this.mod.c_other.editHideSaveBtn) && !this.mod.parmsUrl.readonly ) {
-                html.push(defaultSaveBtn);
+        if(think.isEmpty(this.mod.c_other.editHideSaveBtn) && !this.mod.parmsUrl.readonly 
+            && this.rec.c_act !==null && (this.rec.c_act == 0 || this.rec.c_act === this.proc.c_act_start )) {
+            //不隐藏保存按钮，不是只读页面，没有关联的工作流ID
+            html.push(defaultSaveBtn);
         }
         debug(this.rec,'page.htmlGetEditBtns - this.rec');
 

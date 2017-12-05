@@ -69,8 +69,9 @@ module.exports = class extends CMPage {
         let page = await cmpage.service('cmpage/module').getModuleByName(parms.c_modulename);     //打开界面的参数中来 parmsUrl.linkModulename
         page.user = this.mod.user;
         let linkModel = cmpage.service(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
-        linkModel.mod = page;
+        linkModel.mod = page;        
         if(linkModel){
+            await linkModel.initPage();
             //更新关联对象的状态
             let ret = await linkModel.updateStatus(parms.c_link, parms.c_act, parms.c_status, false);
             debug(ret,'appr.pageSave - linkModel.updateStatus.ret');

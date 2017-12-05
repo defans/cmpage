@@ -72,7 +72,7 @@ module.exports = class extends CMPage {
 
         this.mod.c_edit_column =1;  //新增时，由于没有从表，故而改成一列编辑
         //debug(this.mod.user,'docu_list.pageEditInit - this.mod.user');
-        debug(md,'docu_list.pageEditInit - md');
+        //debug(md,'docu_list.pageEditInit - md');
         return md;
     }
     /**
@@ -87,7 +87,8 @@ module.exports = class extends CMPage {
             //重新生成新的单据号，避免并发保存的时候重复
             parms.c_no = await this.getDocuNo();
         }
-        return super.pageSave(parms);
+        this.cmpage.error(parms);
+        return await super.pageSave(parms);
     }
     /**
      * 根据单据类型取单号
@@ -99,9 +100,9 @@ module.exports = class extends CMPage {
          //debug(no,'docu.getDocuNo - no');
          //let maxNo = await this.model(this.mod.c_table).where({c_no:['like',no+'%']}).max('c_no');
          let list = await this.query(`select max(c_no) as maxno from ${this.mod.c_table} where c_no like '${no}%'`);
-         debug(list,'docu.getDocuNo - list');
+         //debug(list,'docu.getDocuNo - list');
          let maxno = list[0]['maxno'];
-         debug(maxno,'docu.getDocuNo - maxno');
+         //debug(maxno,'docu.getDocuNo - maxno');
          let cnt = '0001';
          if(!think.isEmpty(maxno)){
             cnt = parseInt(maxno.substring(10)) +1;
