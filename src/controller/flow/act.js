@@ -32,7 +32,7 @@ module.exports = class extends Base {
         parmsAct.parmsUrl= '{}';
         parmsAct.editID = this.get('id');
         parmsAct.user = await this.session('user');
-        let pageAct = this.model('act_list');
+        let pageAct = cmpage.service('flow/act_list');
         pageAct.mod = parmsAct;
         await pageAct.initPage();
         pageAct.modEdits = await actModule.getModuleEdit(parmsAct.id);

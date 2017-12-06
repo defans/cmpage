@@ -131,9 +131,13 @@
     }
 
     async getActPathsByProcId(procID){
-        return await think.cache("procActPaths"+procID, () => {
-            return this.query(`select * from fw_act_path where c_proc=${procID} order by id `);
-        });
+        if(procID === 0){
+            return await this.getActPaths();
+        }else{
+            return await think.cache("procActPaths"+procID, () => {
+                return this.query(`select * from fw_act_path where c_proc=${procID} order by id `);
+            });    
+        }
     }
 
 

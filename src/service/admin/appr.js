@@ -72,8 +72,11 @@ module.exports = class extends CMPage {
         linkModel.mod = page;        
         if(linkModel){
             await linkModel.initPage();
+            //取下一个流程节点ID
+            let actID = await cmpage.service('flow/act').getNextActIDFromId(0, parms.c_act);
+
             //更新关联对象的状态
-            let ret = await linkModel.updateStatus(parms.c_link, parms.c_act, parms.c_status, false);
+            let ret = await linkModel.updateStatus(parms.c_link, actID, parms.c_status, false);
             debug(ret,'appr.pageSave - linkModel.updateStatus.ret');
             if(ret.statusCode === 200){
                 await super.pageSave(parms);

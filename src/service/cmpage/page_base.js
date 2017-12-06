@@ -296,7 +296,7 @@ module.exports = class extends Base {
         if(this.mod.editID >0) {
             let fields = [];
             for (let edit of this.modEdits) {
-                if(edit.c_desc.indexOf('fn:')!==0){
+                if(edit.c_desc.indexOf('fn:')!==0 && edit.c_isretrieve){
                     fields.push(edit.c_desc == edit.c_column ? edit.c_desc : `${edit.c_desc} as ${edit.c_column}`);
                 }
             }
@@ -327,14 +327,21 @@ module.exports = class extends Base {
      * @param  {object} parms 前端传入的FORM参数
      */
     async pageSave(parms){
-        debug(parms,'page.pageSave - parms - 递交的内容');
+        //debug(parms,'page.pageSave - parms - 递交的内容');
         //debug(this.mod,'page.pageSave - this.mod');
         //debug(this.pk,'page.pageSave - this.pk');
         //cmpage.debug(this.modEdits,'this.mod.pageSave - this.modEdits')
         this.rec = {};
         for(let edit of this.modEdits){
             if(edit.c_editable && edit.c_column.indexOf('c_')===0 ) {      //&& this.isExistColumn(edit.c_column,colList)
-                this.rec[edit.c_column] = parms[edit.c_column];
+                //"varchar", "int","date","timestamp","bool","float"
+                if(edit.c_coltype === 'int'){
+                    this.rec[edit.c_column] = parseInt(parms[edit.c_column]) || 0;
+                }else if(edit.c_coltype === 'float'){
+                    this.rec[edit.c_column] = parseFloat(parms[edit.c_column]) || 0.0;
+                }else{
+                    this.rec[edit.c_column] = parms[edit.c_column];                    
+                }
             }
         }
         //cmpage.debug(this.rec,'page.pageSave - 保存内容');

@@ -35,6 +35,50 @@
     }
 
     /**
+     * 取某个节点的有效去向节点，过滤掉自动完成和哑活动的节点，一般是人为通过某个节点的时候调用
+     * @method  getNextActIDFromId
+     * @return {int} 去向节点ID
+     * @params {int} [procID] 当前流程模板ID
+     * @params {int} actID 当前节点
+     * @params {int} dept 递归深度，防止无限递归
+     */
+    async getNextActIDFromId(procID, actID, depth){
+        depth = think.isEmpty(depth) ? 1: depth +1;
+        if(depth >5 ) return actID;
+        //debug(procID,'act.getNextActIDFromId - procID');
+        let actIds = await cmpage.service('flow/act_path').getToActIds(actID, procID);
+        if(actIds ===null || actIds.length ===0 || actIds.length >1){
+            //如果往下分叉，或者其他异常情况，则返回当前节点（老子不走了 ^-^）
+            return actID;
+        }
+        let  act = await this.getActByIdAndProcId(actIds[0],procID);
+        if(act.c_type === this.cmpage.enumActType.DUMMY ){
+            return await this.getNextActIDFromId(procID,act.id, depth);
+        }else if(act.c_type === this.cmpage.enumActType.NORMAL_AUTO ){
+            //自动节点， 先执行设置的方法
+            let fnApp = cmpage.service(act.c_class);
+            let fnObj = this.cmpage.objFromString(act.c_call_btn);
+            if(fnApp && fnObj){
+                let fnName =fnObj['fn'];
+                if(think.isFunction(fnApp[ fnName ])){
+                    if(think.isEmpty(fnObj('parms'))){
+                        await fnApp[ fnName ]();
+                    }else{
+                        let fnParms = fnObj('parms').split(',');
+                        await fnApp[ fnName ]( ...fnParms );        
+                    }                            
+                }
+            }
+            return await this.getNextActIDFromId(procID,act.id, depth);
+        }
+
+        //其余需人为处理的情况
+        return act.id;
+    }
+
+/*************************以下是 task 方式，暂时不用 **************************************************************** */
+
+    /**
      * 是否可以运行一个活动(流程节点)，对外提供调用
      * @method  canRun
      * @return {bool}  判断值
@@ -354,7 +398,12 @@
      * @param {int} procID  流程模板ID
      */
     async getActsByProcId(procID){
-        let acts = await this.getActsByProcIdCache(procID);
+        let acts = [];
+        if(procID ===0){
+            acts = await this.getActsCache();
+        }else{
+            acts = await this.getActsByProcIdCache(procID);
+        }
         for(let act of acts){
             act.domain = think.isEmpty(act.c_domain) ? {}: eval(`(${act.c_domain})`);
         }
