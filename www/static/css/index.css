@@ -100,13 +100,13 @@ ul.timeline li .content
 }
 ul.timeline li .content pre
 {
-    background-color: #3594cb;
+    background-color: #dceaf3;
     padding: 20px;
-    color: #fff;
+    color: rgb(8, 8, 8);
     font-size: 14px;
     line-height: 22px;
 }
 ul.timeline li.alt .content pre
 {
-    background-color: #43B1F1;
+    background-color: #e2eff7;
 }
