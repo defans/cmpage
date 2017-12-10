@@ -63,7 +63,7 @@ exports.model = {
     database: 'docu',
     prefix: '',
     encoding: 'utf8',
-    host: '10.9.39.27',
+    host: '127.0.0.1',
     port: '1433',
     user: 'sa',
     password: 'wanbang_123',
