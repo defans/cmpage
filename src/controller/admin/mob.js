@@ -55,7 +55,7 @@ module.exports = class extends Base {
     async get_menusAction(){
         let user = await this.session('user');
          //console.log(user);
-        let menuList = await this.model('privilege').userGetPrivilegeTree(user.id,user.c_role, 1147);
+        let menuList = await cmpage.service('admin/privilege').userGetPrivilegeTree(user.id,user.c_role, 1147);
         let btns = [];
         let navs = [];
         let k =0;

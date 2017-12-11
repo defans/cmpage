@@ -65,7 +65,7 @@ function pullupRefresh() {
 function getListHtml() {
     //console.log(JSON.stringify(formdata));
     if (formdata.pageIndex * formdata.pageSize < formdata.pageTotal) {
-        mui.ajax("/Commpage/MobList", {
+        mui.ajax("/cmpage/mob/list", {
             data: formdata,
             type: "post",
             dataType: 'json',
@@ -116,3 +116,11 @@ function resetSearch() {
     cmpage.addEventListener();
     mui.toast("条件已重置");
 }
+
+//新增按钮的处理
+mui('body').on('tap', '.cmpage-btn-add', function(e) {
+    var elem = this;
+    window.open(this.getAttribute('href'));
+     
+});
+

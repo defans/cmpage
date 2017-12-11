@@ -166,8 +166,11 @@ module.exports = class extends Base {
                         await this.session('index_name',null);
                         return this.redirect(`/${index_name}/index/index`);
                     }
-                    
-                    return this.redirect('/admin/index/index');
+                    if(width <768){
+                        return this.redirect('/cmpage/hh/index');
+                    }else{
+                        return this.redirect('/admin/index/index');                        
+                    }
                 }
             }else{
                 vb.loginName = this.post('loginName');

@@ -42,21 +42,24 @@ module.exports = class extends CMPage {
                     row[col.c_column] = cmpage.datetime(row[col.c_column], col.c_format);
                 }
             }
-            html.push('<li class="mui-table-view-cell mui-media">');
 
-            //加入按钮组
-            html.push(await this.mobHtmlGetListBtns(row));
-            if(this.list.data.indexOf(row) ==1){
-                debug(await this.mobHtmlGetListBtns(row), 'page_mob.rowBtns');
-            }
-
+            html.push('<li class="mui-table-view-cell mui-media mui-collapse">');
             //组合生成列表每项的内容
-            html.push("<a class=\"mui-slider-handle list-item\" >");
+            html.push(`<a id="pageRow${row["c_id"]} class="mui-navigate-right" href="" >`);
             html.push(await this.mobHtmlGetListRow(row));
+            html.push('</a>');
             // if(this.list.data.indexOf(row) ==1){
             //     debug(await this.mobHtmlGetListRow(row), 'page_mob.rowHtml');
             // }
-            html.push('</a> </li>');
+
+            //加入按钮组
+            html.push(`<ul class="mui-table-view mui-table-view-chevron"><li class="mui-table-view-cell" style="margin-left:-20px;margin-right:-50px;"><div>`);
+            html.push(await this.mobHtmlGetListBtns(row));
+            // if(this.list.data.indexOf(row) ==1){
+            //     debug(await this.mobHtmlGetListBtns(row), 'page_mob.rowBtns');
+            // }
+
+            html.push('</div></li></ul>   </li>');
         }
 
         return html.join(' ');
@@ -76,17 +79,18 @@ module.exports = class extends CMPage {
             if (btn.c_location > 10 && btn.c_isshow){
                 btn.c_url = cmpage.objPropertysReplaceToStr(btn.c_url, row);
                 if (btn.c_object.indexOf(".View") > 0){
-                    html.push(`<a class='mui-btn mui-btn-blue list-btn cmpage-btn-view' href='#'
-                            data-type='view'  data-id='${row['id']}' >查看</a>`);
+                    html.push(`<a class='mui-btn mui-icon mui-icon-info cmpage-btn-view' style='margin-left:5px;margin-bottom:5px;' href='#' data-type='view' data-id='${row['id']}' >查看</a>`);
                 }else if (btn.c_object.indexOf(".Edit") > 0){
-                    html.push(`<a class='mui-btn mui-btn-green list-btn cmpage-btn-view' href='#'
+                    html.push(`<a class='mui-btn  mui-icon mui-icon-compose mui-btn-green list-btn cmpage-btn-view' href='#'
                             data-type='edit' data-parmsUrl='${JSON.stringify(this.mod.parmsUrl)}'  data-id='${row['id']}' >编辑</a>`);
                 }else if (btn.c_object.indexOf(".FileList") > 0){
-                    html.push(`<a class='mui-btn mui-btn-yellow list-btn cmpage-btn-view' href='#'
+                    html.push(`<a class='mui-btn mui-icon mui-icon-image mui-btn-yellow list-btn cmpage-btn-view' href='#'
                             data-type='list_file' data-modulename='FileList'  data-parmsUrl='${JSON.stringify(cmpage.parmsFromUrl(this.getReplaceToSpecialChar(btn.c_url)))}' >附件</a>`);
                 }else if (btn.c_object.indexOf(".Del") > 0){
-                    html.push(`<a class='mui-btn mui-btn-red list-btn cmpage-btn-action' href='/cmpage/page/delete?modulename=${this.mod.c_modulename}&table=${this.mod.c_table}&id=${row['id']}&flag=false'
-                             >删除</a>`);
+                    html.push(`<a class='mui-btn mui-icon mui-icon-trash mui-btn-red list-btn cmpage-btn-action' 
+                        href='/cmpage/page/delete?modulename=${this.mod.c_modulename}&table=${this.mod.c_table}&id=${row['id']}&flag=false' >删除</a>`);
+                }else if(btn.c_type === 'doajax'){
+                    html.push(`<a class='mui-btn mui-btn-blue cmpage-btn-action' style='margin-left:5px;margin-bottom:5px;' href='${bvtn.c_url}' alt='${btn.c_label.trim()}'>${btn.c_label}</a>`);
                 }
             }
         }
@@ -277,7 +281,7 @@ module.exports = class extends CMPage {
         let html =[];
         let md = await this.getDataRecord();
 
-//        cmpage.debug(md);
+        // cmpage.debug(md);
         html.push(`<input type='hidden' name='modulename' value='${this.mod.c_modulename}' />`);
         html.push(`<input name='old_record' type='hidden' value='${JSON.stringify(md)}' />`);
         for(let col of this.modEdits){
@@ -405,21 +409,21 @@ module.exports = class extends CMPage {
      * @method  hhGetHeaderBtnsFromModule
      * @return  {string}  HTML片段
      */
-     async hhGetHeaderBtnsFromModule() {
-         let html =[];
-         for(let btn of this.modBtns){
-             if (btn.c_location <= 10 && btn.c_isshow){
-                 if (btn.c_object.indexOf(".Add") > 0){
-                     html.push(`<a class="mui-tab-item" href="/dtalk/cmpage/edit?modulename=${this.mod.c_modulename}
-                        &parmsUrl=${JSON.stringify(this.mod.parmsUrl)}&id=0&dd_share=false">
-                            <span class="mui-icon mui-icon-plus"></span>
-                            <span class="mui-tab-label">新增</span>
-                        </a>`);
-                 }
-             }
-         }
-         return html;
-     }
+    async hhGetHeaderBtnsFromModule() {
+        let html =[];
+        for(let btn of this.modBtns){
+            if (btn.c_location <= 10 && btn.c_isshow){
+                if (btn.c_object.indexOf(".Add") > 0){
+                    html.push(`<a class='mui-tab-item cmpage-btn-add' href='/cmpage/hh/edit?modulename=${this.mod.c_modulename}&id=0'
+                        data-type='edit' data-parmsUrl='${JSON.stringify(this.mod.parmsUrl)}'  data-id='0' >            
+                        <span class='mui-icon mui-icon-plus'></span>
+                        <span class='mui-tab-label'>新增</span>
+                    </a>`);
+                }
+            }
+        }
+        return html;
+    }
     async hhGetHeaderBtns() {
         let html = await this.hhGetHeaderBtnsFromModule();
 

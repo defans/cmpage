@@ -55,17 +55,28 @@ module.exports = class extends Base {
             return this.json({statusCode:'300',message:parms.modulename + " 的实现类不存在！"});
         }
         debug(parms.query,'cmpage.C.mob - parms.query');
-        if(!think.isEmpty(parms.query.c_country)){
-            let area = parms.query.c_country.split(',');
-            parms.query.c_province = '';
-            parms.query.c_city = '';
-            parms.query.c_country = area[2];
-        }
-        //cmpage.debug(parms);
         pageModel.mod = parms;
         pageModel.modQuerys = await moduleApp.getModuleQuery(parms.id);
         pageModel.modCols = await moduleApp.getModuleCol(parms.id);
         pageModel.modBtns = await moduleApp.getModuleBtn(parms.id);
+
+        //拆分联动的下拉选择
+        for (const modQ of pageModel.modQuerys) {
+            if(pageModel.mod.query[modQ.c_column] && (modQ.c_type === 'areaSelect' || modQ.c_type === 'codeSelect' ) && !think.isEmpty(modQ.c_memo)){
+                //cmpage.warn(modQ,'cmpage.C.mob.list - modQ');
+                let values = parms.query[modQ.c_column].split(',');
+                if(values.length === 2){
+                    pageModel.mod.query[modQ.c_memo] = values[0];
+                    pageModel.mod.query[modQ.c_column] = values[1];
+                }else if(values.length === 3){
+                    let keys = modQ.c_memo.split(',');
+                    pageModel.mod.query[keys[0]] = values[0];
+                    pageModel.mod.query[keys[1]] = values[1];
+                    pageModel.mod.query[modQ.c_column] = values[2];
+                }
+            }
+        }    
+        //cmpage.warn(pageModel.mod.query,'cmpage.C.mob.list - parms');
 
         vb.queryHtml = await pageModel.mobHtmlGetQuery();
         let btnsHtml = await pageModel.mobHtmlGetHeaderBtns();
