@@ -50,80 +50,16 @@ module.exports = class extends CMPage {
         //debug(this.docuType,'docu_rec.initDocuType - this.docuType');
     }
 
-     /**
-      * 增加物料明细，根据模块名称判断数据来源，实现相应的逻辑
-      * @method  goodsAdd
-      * @return {object} 返回前端的状态对象
-      */
-      async goodsAdd(fromID, docuID){
-          if(think.isEmpty(docuID))  return  {statusCode:300, message:`单据ID错误!`};
-          let recID = 0;
-          if(this.mod.c_modulename == 'OrderApplyRec'){
-              let goods = await this.model('t_goods').where('c_id='+fromID).find();
-              if(think.isEmpty(goods)){
-                  return  {statusCode:300, message:`物料ID不存在!`};
-              }
-              let rec = {c_order_apply:docuID,c_goods:fromID,c_qty:1,c_supplier:0,c_time_arrive:think.datetime(),
-                  c_close:false,c_qty_to:0,c_use:'',c_memo:''};
-              recID = await this.model('t_order_apply_rec').add(rec);
-          }else if(this.mod.c_modulename == 'OrderRec'){
-              let md = await this.model('vw_order_apply_list').where('rec_id='+fromID).find();
-              if(think.isEmpty(md)){
-                  return  {statusCode:300, message:`申购记录ID不存在!`};
-              }
-              let rec = {c_order:docuID,c_goods:md.c_goods,c_unit :md.c_unit, c_qty:md.c_qty - md.c_qty_to, c_price:0, c_price_tax:0, c_tax:17,
-                  c_date_delivery:think.datetime(),c_qty_from:md.c_qty - md.c_qty_to,c_qty_to:0,c_rec_from:fromID, c_no_from:md.c_no,
-                  c_qty_kp:0,c_close:false,c_qty_stock:0,c_is_pay:false,c_amt:0,c_amt_tax:0,c_memo:''};
-              recID = await this.model('t_order_rec').add(rec);
-              if(recID>0){
-                  await this.query(`update t_order_apply_rec set c_qty_to=c_qty,c_close ='1' where c_id=${fromID}`);
-              }
-          }else if(this.mod.c_modulename == 'DocuArriveRec'){
-              let md = await this.model('vw_order_list').where('rec_id='+fromID).find();
-              if(think.isEmpty(md)){
-                  return  {statusCode:300, message:`采购记录ID不存在!`};
-              }
-              let sql =`insert into t_docu_rec(c_docu,c_goods,c_unit,c_qty,c_price,c_price_tax,c_tax,c_amt,c_amt_tax,  c_qty_from,c_qty_to,c_rec_from,
-                  c_no_from,c_no_order,c_qty_kp,c_close,c_supplier,c_memo)
-                  select ${docuID},c_goods,c_unit,c_qty - c_qty_to, c_price,c_price_tax,c_tax,(c_qty -c_qty_to)*c_price,(c_qty -c_qty_to)*c_price_tax,
-                    c_qty -c_qty_to, 0,c_id,c_no,c_no, 0,'false',c_supplier,c_memo
-			             from vw_order_list where rec_id =${fromID}  returning c_id;`;
-              let ret = await this.query(sql);
-              recID = ret.c_id;
-              if(recID>0){
-                  await this.query(`update t_order_rec set c_qty_to=c_qty,c_close ='true' where c_id=${fromID}`);
-              }
-          }
-          return  {statusCode:recID>0 ? 200:300, message: recID>0 ? "":"操作失败！"};
-          //return  {statusCode:300, message:`模块名称 ${this.mod.c_modulename} 错误！`};
-      }
+    /**
+     * 增加物料明细，根据模块名称判断数据来源，实现相应的逻辑
+    * @method  goodsAdd
+    * @return {object} 返回前端的状态对象
+    */
+    async goodsAdd(fromID, docuID){
+        if(think.isEmpty(docuID))  return  {statusCode:300, message:`单据ID错误!`};
+        return  {statusCode:300, message:"请在子类中继承本方法！"};
+    }
 
-      /**
-       * 删除记录,<br/>
-       * 子类中可以重写本方法，实现其他的删除逻辑，如判断是否可以删除，删除相关联的其他记录等等
-       * @method  pageDelete
-       * @return {object} 记录对象
-       */
-      async pageDelete(){
-         //删除后需要变动库存数量等
-         if(this.docuType.id === cmpage.enumDocuType.OrderApply){
-             await this.model('t_order_apply_rec').where(` c_id=${this.mod.recID}`).delete();
-         }else if(this.docuType.id === cmpage.enumDocuType.Order){
-             await this.query(`select fn_order_rec_qty_from_calc(${this.mod.recID},'true');`);
-         }else if(['DocuCheck','DocuSale','DocuPick','DocuStock','DocuTransfer'].includes(this.docuType.modulename)){
-             await this.query(`select fn_docu_rec_qty_from_calc('${this.docuType.modulename}',${this.mod.recID},'true');`);
-         }
-         //重新计算库存
-         if(['DocuCheck','DocuSale','DocuPick','DocuStock','DocuTransfer'].includes(this.docuType.modulename)){
-             let rec = this.model('vw_docu_list').where(`c_id=${this.mod.recID}`).find();
-             await this.query(`select fn_stock_goods_qty_calc(${rec.c_goods},${rec.c_stock});`);
-             if(this.docuType.id == cmpage.enumDocuType.DocuTransfer){
-                 await this.query(`perform fn_stock_goods_qty_calc(${rec.c_goods},${rec.c_stock_to});`);
-             }
-         }
-
-         return {statusCode:200,message:'删除成功！',data:{}};
-      }
 
     /**
      * 预处理保存的参数,<br/>
@@ -148,63 +84,17 @@ module.exports = class extends CMPage {
         return parms;        
     }
 
-      /**
-       * 编辑页面保存,<br/>
-       * 根据各种单据类型，增加对保存项的逻辑验证
-       * @method  pageSave
-       * @return {object} 如果有验证错误，则返回格式： {statusCode:300, message:'xxxxxx'}
-       * @param  {object} parms 前端传入的FORM参数
-       */
-      async pageSave(parms){
-          parms = pageSavePretreat(parms);
+    /**
+     * 编辑页面保存,<br/>
+     * 根据各种单据类型，增加对保存项的逻辑验证
+     * @method  pageSave
+     * @return {object} 如果有验证错误，则返回格式： {statusCode:300, message:'xxxxxx'}
+     * @param  {object} parms 前端传入的FORM参数
+     */
+    async pageSave(parms){
+        parms = pageSavePretreat(parms);
 
-          if(this.docuType.id == cmpage.enumDocuType.DocuArrive || this.docuType.id == cmpage.enumDocuType.DocuCheck
-            || this.docuType.id == cmpage.enumDocuType.DocuPick || this.docuType.id == cmpage.enumDocuType.DocuTransfer
-            || this.docuType.id == cmpage.enumDocuType.DocuSale ){
-              if(parms.c_qty > parms.c_qty_from){
-                  return {statusCode:300, message:`数量不能大于来源数量: ${parms.c_qty_from}`};
-              }
-              parms.c_amt = parms.c_qty * parms.c_price;
-              parms.c_amt_tax = parms.c_qty * parms.c_price_tax;
-          }else if (this.docuType.id == cmpage.enumDocuType.DocuStock) {
-              //实盘数量 c_qty_from
-              parms.c_qty = parms.c_qty_from - parms.c_qty_stock;
-              parms.c_amt = parms.c_qty * parms.c_price;
-              parms.c_amt_tax = parms.c_qty * parms.c_price_tax;
-          }else if (this.docuType.id == cmpage.enumDocuType.DocuBill) {
-              if(parms.c_qty > parms.c_qty_from){
-                  return {statusCode:300, message:`开票数量不能大于物料数量: ${parms.c_qty_from}`};
-              }
-              parms.c_amt_tax = parseFloat(parms.c_amt_tax);
-              if(parms.c_amt_tax <=0 ){
-                  return {statusCode:300, message:'含税金额应大于 0 '};
-              }
-              parms.c_price = (parms.c_amt_tax / parms.c_qty) / (1 + parms.c_tax/100);
-              parms.c_price_tax = parms.c_amt_tax / parms.c_qty;
-              parms.c_amt = parms.c_qty * parms.c_price;
-          }
-          if(this.docuType.id == cmpage.enumDocuType.DocuSale){
-              if(parms.c_price_out_tax <=0 ){
-                  return {statusCode:300, message:'含税价格应大于 0 '};
-              }
-              parms.c_price_out = parms.c_price_out_tax *(1 - parms.c_tax / 100);
-              parms.c_amt_out = parms.c_qty * parms.c_price_out;
-              parms.c_amt_out_tax = parms.c_qty * parms.c_price_out_tax;
-          }
-
-          let ret = await super.pageSave(parms);
-
-          //重新计算来源数量，设置是否关闭的标记
-          if(this.docuType.id == cmpage.enumDocuType.DocuArrive || this.docuType.id == cmpage.enumDocuType.DocuCheck || this.docuType.id == cmpage.enumDocuType.DocuBill){
-              if(parms.c_rec_from >0){
-                  await this.query(`select fn_docu_rec_qty_from_calc(${this.docuType.modulename}',${parms.c_rec_from},'false');`);
-              }
-          }
-          if(this.docuType.id == cmpage.enumDocuType.DocuCheck){
-              let rec = this.model('t_docu').where(`c_id=${parms.c_docu}`).find();
-              await this.query(`select fn_stock_goods_price_add(${rec.c_goods},${rec.c_stock},${parms.c_price});`);
-          }
-
-      }
+        return await super.pageSave(parms);
+    }
 
 }
