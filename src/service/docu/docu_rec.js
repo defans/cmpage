@@ -125,6 +125,29 @@ module.exports = class extends CMPage {
          return {statusCode:200,message:'删除成功！',data:{}};
       }
 
+    /**
+     * 预处理保存的参数,<br/>
+     * 根据各种单据类型，增加对保存项的逻辑验证
+     * @method  pageSavePretreat
+     * @return {object} 处理后的参数
+     * @param  {object} parms 前端传入的FORM参数
+     */
+    pageSavePretreat(parms){
+        parms.c_qty = parseFloat(parms.c_qty) || 0;
+        if(this.docuType.id != cmpage.enumDocuType.DocuStock && parms.c_qty <0){
+            return {statusCode:300, message:'数量应大于 0'};
+        }
+        //类型检查
+        parms.c_qty_from = parseFloat(parms.c_qty_from) || 0;
+        parms.c_price = parseFloat(parms.c_price) || 0;
+        parms.c_price_tax = parseFloat(parms.c_price_tax) || 0;
+        parms.c_price_out_tax = parseFloat(parms.c_price_out_tax) || 0;
+        parms.c_qty_stock = parseFloat(parms.c_qty_stock) || 0;
+        parms.c_tax = parseFloat(parms.c_tax) || 17;
+
+        return parms;        
+    }
+
       /**
        * 编辑页面保存,<br/>
        * 根据各种单据类型，增加对保存项的逻辑验证
@@ -133,17 +156,7 @@ module.exports = class extends CMPage {
        * @param  {object} parms 前端传入的FORM参数
        */
       async pageSave(parms){
-          parms.c_qty = parseFloat(parms.c_qty) || 0;
-          if(this.docuType.id != cmpage.enumDocuType.DocuStock && parms.c_qty <0){
-              return {statusCode:300, message:'数量应大于 0'};
-          }
-          //类型检查
-          parms.c_qty_from = parseFloat(parms.c_qty_from) || 0;
-          parms.c_price = parseFloat(parms.c_price) || 0;
-          parms.c_price_tax = parseFloat(parms.c_price_tax) || 0;
-          parms.c_price_out_tax = parseFloat(parms.c_price_out_tax) || 0;
-          parms.c_qty_stock = parseFloat(parms.c_qty_stock) || 0;
-          parms.c_tax = parseFloat(parms.c_tax) || 17;
+          parms = pageSavePretreat(parms);
 
           if(this.docuType.id == cmpage.enumDocuType.DocuArrive || this.docuType.id == cmpage.enumDocuType.DocuCheck
             || this.docuType.id == cmpage.enumDocuType.DocuPick || this.docuType.id == cmpage.enumDocuType.DocuTransfer

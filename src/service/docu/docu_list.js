@@ -87,7 +87,7 @@ module.exports = class extends CMPage {
             //重新生成新的单据号，避免并发保存的时候重复
             parms.c_no = await this.getDocuNo();
         }
-        this.cmpage.error(parms);
+        this.cmpage.warn(parms);
         return await super.pageSave(parms);
     }
     /**
