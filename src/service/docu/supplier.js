@@ -23,6 +23,8 @@ module.exports = class extends CMPage {
 
     constructor() {
         super();
+        this.pk = 'c_id';
+        this.connStr = 'docu';
         this.mod = {
             c_table: 't_supplier'
         }; //为直接调用的函数初始化某些值，如：getNameById

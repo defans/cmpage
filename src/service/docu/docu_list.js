@@ -162,7 +162,7 @@ module.exports = class extends CMPage {
                 rec.isShowListBtn = true;
             }
         }
-        debug(this.list.data, 'docu_list.getDataList - this.list.data');
+        //debug(this.list.data, 'docu_list.getDataList - this.list.data');
     }
 
     // /**

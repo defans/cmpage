@@ -495,7 +495,7 @@ module.exports = class extends PageBase {
      */
     isShowBtn(rec, btn) {
         if (!think.isEmpty(btn.c_memo)) {
-            let sets = cmpage.objFromString(cmpage.objPropertysReplaceToStr(btn.c_memo, rec));
+            let sets = cmpage.objFromString(this.cmpage.objPropertysReplaceToStr(btn.c_memo, rec));
             if (!think.isEmpty(sets.isShow)) {
                 //cmpage.debug(sets, 'page.isShowBtn - sets');
                 //cmpage.debug(rec, 'page.isShowBtn - rec');

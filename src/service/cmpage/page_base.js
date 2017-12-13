@@ -540,7 +540,7 @@ module.exports = class extends Base {
     async getNameById(id, fieldNames, joinStr) {
         if (id == 0) return '';
         let rec = await this.model(this.mod.c_table).where(`${this.pk}=${id}`).find();
-        //debug(rec,'page.getNameById - rec');
+        //cmpage.warn(rec,'page.getNameById - rec');
         if (think.isEmpty(rec)) return '';
         if (think.isEmpty(fieldNames)) {
             return rec.c_name; //默认返回 c_name 字段值

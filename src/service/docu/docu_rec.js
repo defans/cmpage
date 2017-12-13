@@ -68,7 +68,7 @@ module.exports = class extends CMPage {
         };
         return {
             statusCode: 300,
-            message: "请在子类中继承本方法！"
+            message: "请在子类中重写本方法！"
         };
     }
 

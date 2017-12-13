@@ -43,33 +43,39 @@ module.exports = class extends docuRec {
         let fromRec = await this.model('vw_order_list').where({
             rec_id: fromID
         }).find();
+        cmpage.warn(fromRec, 'docu_rec_check.goodsAdd - fromRec');
         let toRec = {
             c_docu: docuID,
             c_goods: fromRec.c_goods,
             c_unit: fromRec.c_unit,
             c_qty: fromRec.c_qty,
-            c_price: fromRec.c_price,
-            c_price_tax: fromRec.c_price_tax,
-            c_tax: fromRec.c_tax,
-            c_amt: (fromRec.c_qty - fromRec.c_qty_to) * fromRec.c_price,
-            c_amt_tax: (fromRec.c_qty - fromRec.c_qty_to) * fromRec.c_price_tax,
-            c_qty_from: fromRec.c_qty - fromRec.c_qty_to,
+            c_price: fromRec.c_price || 0,
+            c_price_tax: fromRec.c_price_tax || 0,
+            c_tax: fromRec.c_tax || 17,
+            c_amt: (fromRec.c_qty - fromRec.c_qty_to) * fromRec.c_price  || 0,
+            c_amt_tax: (fromRec.c_qty - fromRec.c_qty_to) * fromRec.c_price_tax || 0,
+            c_qty_from: fromRec.c_qty - fromRec.c_qty_to || 0,
             c_qty_to: 0,
-            c_rec_from: fromRec.c_id,
-            c_no_from: fromRec.c_no,
+            c_rec_from: fromRec.rec_id,
+            c_no_from: fromRec.c_no ,
             c_no_order: fromRec.c_no,
             c_qty_kp: 0,
+            c_qty_stock: 0,
             c_close: 0,
             c_supplier: fromRec.c_supplier,
-            c_memo: ''
+            c_memo: '',
+            c_price_out:0,
+            c_price_out_tax:0,
+            c_amt_out:0,
+            c_amt_out_tax:0
         };
         let recID = await this.model('t_docu_rec').add(toRec);
         if (recID > 0) {
             await this.query(`update t_order_rec set c_qty_to=c_qty,c_close =1 where c_id=${fromID}`);
         }
         return {
-            statusCode: ret.c_id > 0 ? 200 : 300,
-            message: ret.c_id > 0 ? "" : "操作失败！"
+            statusCode: recID > 0 ? 200 : 300,
+            message: recID > 0 ? "" : "操作失败！"
         };
     }
 
