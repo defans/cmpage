@@ -34,16 +34,16 @@ module.exports = class extends CMPage {
      * @method  pageEditInit
      * @return {object} 新增的记录对象
      */
-    async pageEditInit(){
-        let md =await super.pageEditInit();
-        let parmsUrl =this.mod.parmsUrl;
+    async pageEditInit() {
+        let md = await super.pageEditInit();
+        let parmsUrl = this.mod.parmsUrl;
 
         md.c_status = parmsUrl.status;
         md.c_act = parmsUrl.actID;
         md.c_link = parmsUrl.linkID;
         md.c_link_type = parmsUrl.linkType;
         md.c_modulename = parmsUrl.linkModulename;
-        debug(md,'appr.pageEditInit - md');
+        debug(md, 'appr.pageEditInit - md');
         return md
     }
 
@@ -52,7 +52,7 @@ module.exports = class extends CMPage {
      * @method  getDataRecord
      * @return {object} 当前记录对象
      */
-    async getDataRecord(){
+    async getDataRecord() {
         let md = await super.getDataRecord();
         this.proc.c_link_type = md.c_link_type;
         this.proc.linkModulename = md.c_modulename;
@@ -65,25 +65,28 @@ module.exports = class extends CMPage {
      * @method  pageSave
      * @param  {object} parms 前端传入的FORM参数
      */
-    async pageSave(parms){
-        let page = await cmpage.service('cmpage/module').getModuleByName(parms.c_modulename);     //打开界面的参数中来 parmsUrl.linkModulename
+    async pageSave(parms) {
+        let page = await cmpage.service('cmpage/module').getModuleByName(parms.c_modulename); //打开界面的参数中来 parmsUrl.linkModulename
         page.user = this.mod.user;
-        let linkModel = cmpage.service(think.isEmpty(page.c_path) ? 'cmpage/page':page.c_path);
-        linkModel.mod = page;        
-        if(linkModel){
+        let linkModel = cmpage.service(think.isEmpty(page.c_path) ? 'cmpage/page' : page.c_path);
+        linkModel.mod = page;
+        if (linkModel) {
             await linkModel.initPage();
             //取下一个流程节点ID
             let actID = await cmpage.service('flow/act').getNextActIDFromId(0, parms.c_act);
 
             //更新关联对象的状态
             let ret = await linkModel.updateStatus(parms.c_link, actID, parms.c_status, false);
-            debug(ret,'appr.pageSave - linkModel.updateStatus.ret');
-            if(ret.statusCode === 200){
+            debug(ret, 'appr.pageSave - linkModel.updateStatus.ret');
+            if (ret.statusCode === 200) {
                 await super.pageSave(parms);
             }
             return ret;
         }
-        return {statusCode:300, message:'操作失败!'};
+        return {
+            statusCode: 300,
+            message: '操作失败!'
+        };
     }
 
 }

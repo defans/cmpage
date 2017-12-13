@@ -15,7 +15,7 @@
  * 工具类，提供一些公用的方法
  * @class cmpage.service.utils
  */
- const Base = require('./base.js');
+const Base = require('./base.js');
 
 module.exports = class extends Base {
 
@@ -26,13 +26,13 @@ module.exports = class extends Base {
      * @param   {int} id enum值
      * @param   {object} enumObj enum对象，在 cmpage/cmpage_cmpage.js中配置
      */
-    async getEnumName(id,enumObj){
-        enumObj = (enumObj.indexOf('enum') !== 0 ? 'enum'+enumObj: enumObj);
+    async getEnumName(id, enumObj) {
+        enumObj = (enumObj.indexOf('enum') !== 0 ? 'enum' + enumObj : enumObj);
         let obj = cmpage[enumObj];
-        if(think.isObject(obj)){
-            for(let p in obj){
-                if(obj[p]== id){
-                    return obj[p+'_name'];
+        if (think.isObject(obj)) {
+            for (let p in obj) {
+                if (obj[p] == id) {
+                    return obj[p + '_name'];
                 }
             }
         }
@@ -45,14 +45,17 @@ module.exports = class extends Base {
      * @return  {Array}  enum值组成的数组
      * @param   {object} enumObj enum对象，在 cmpage/cmpage_cmpage.js中配置
      */
-    async getEnum(enumObj){
-        enumObj = (enumObj.indexOf('enum') !== 0 ? 'enum'+enumObj: enumObj);
+    async getEnum(enumObj) {
+        enumObj = (enumObj.indexOf('enum') !== 0 ? 'enum' + enumObj : enumObj);
         let obj = cmpage[enumObj];
         let ret = [];
-        if(think.isObject(obj)){
-            for(let p in obj){
-                if(think.isNumber(obj[p])){
-                    ret.push( {id:obj[p],c_name:obj[p+'_name']});
+        if (think.isObject(obj)) {
+            for (let p in obj) {
+                if (think.isNumber(obj[p])) {
+                    ret.push({
+                        id: obj[p],
+                        c_name: obj[p + '_name']
+                    });
                 }
             }
         }

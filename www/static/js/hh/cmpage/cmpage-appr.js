@@ -5,7 +5,7 @@ var btns;
 mui.init();
 
 //B页面onload从服务器获取列表数据；
-mui.plusReady(function() {
+mui.plusReady(function () {
 	//仅支持竖屏显示
 	plus.screen.lockOrientation("portrait-primary");
 
@@ -14,21 +14,21 @@ mui.plusReady(function() {
 	submit_url = mui.currentWebview.submit_url;
 	btns = mui.currentWebview.btns;
 	//console.log(get_parm);
-	if(btns == 1) {
+	if (btns == 1) {
 		var btn = document.createElement("button");
 		btn.setAttribute("class", "mui-btn mui-btn-primary mui-btn-block");
 		btn.setAttribute("onclick", "postData()");
 		btn.innerHTML = "提交";
 		document.getElementById("content").appendChild(btn);
-	} else if(btns == 2) {
+	} else if (btns == 2) {
 		var btn1 = document.createElement("button");
 		btn1.setAttribute("class", "mui-btn mui-btn-primary mui-btn-block");
 		btn1.setAttribute("onclick", "postData('1')");
-		btn1.innerHTML = get_parm.indexOf("\"TaskAFinish\"") >0 ? "完成":"通过";
+		btn1.innerHTML = get_parm.indexOf("\"TaskAFinish\"") > 0 ? "完成" : "通过";
 		var btn2 = document.createElement("button");
 		btn2.setAttribute("class", "mui-btn mui-btn-primary mui-btn-block");
 		btn2.setAttribute("onclick", "postData('0')");
-		btn2.innerHTML = get_parm.indexOf("\"TaskAFinish\"") >0 ? "整改":"不通过";
+		btn2.innerHTML = get_parm.indexOf("\"TaskAFinish\"") > 0 ? "整改" : "不通过";
 		document.getElementById("content").appendChild(btn1);
 		document.getElementById("content").appendChild(btn2);
 	}
@@ -46,10 +46,10 @@ function getAppr() {
 		type: "post",
 		dataType: 'json',
 		timeout: 5000,
-		error: function(request) {
+		error: function (request) {
 			app.toast("服务器获取数据失败！");
 		},
-		success: function(data) {
+		success: function (data) {
 			if (data.statusCode == 200) {
 				var content = document.body.querySelector('.erp-cmpage-appr');
 				content.innerHTML += data.editPage;
@@ -68,9 +68,9 @@ function getAppr() {
  * 提交表单  parma=vala&parmb=valb
  */
 function postData(pass) {
-		plus.nativeUI.confirm("确定要执行吗?", function(e) {
+	plus.nativeUI.confirm("确定要执行吗?", function (e) {
 		if (e.index == 0) {
-			if(pass) {
+			if (pass) {
 				document.getElementsByName("pass")[0].value = pass;
 			}
 			var value = $(".erp-cmpage-appr").serialize();
@@ -79,10 +79,10 @@ function postData(pass) {
 				type: "post",
 				dataType: 'json',
 				timeout: 5000,
-				error: function(request) {
+				error: function (request) {
 					app.toast("服务器获取数据失败！");
 				},
-				success: function(data) {
+				success: function (data) {
 					if (data.statusCode == 200) {
 						app.toast(data.message);
 						mui.back();

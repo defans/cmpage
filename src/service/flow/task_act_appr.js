@@ -12,12 +12,12 @@
  * 具体的业务相关的工作流活动的子类也可以继承本类，来增加定制的业务逻辑
  * @class flow.model.task_act_appr
  */
-const TaskAct =require('./task_act.js');
+const TaskAct = require('./task_act.js');
 
 module.exports = class extends TaskAct {
     constructor() {
         super();
-        this.connStr='cmpage';
+        this.connStr = 'cmpage';
     }
 
     /**

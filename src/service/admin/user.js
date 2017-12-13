@@ -23,10 +23,10 @@ module.exports = class extends CMPage {
      * @return {string}  where条件子句
      * @param {Object} page  页面设置主信息
      */
-    async getQueryWhere(){
-        let where =await super.getQueryWhere();
+    async getQueryWhere() {
+        let where = await super.getQueryWhere();
         //cmpage.debug(where);
-        return where +' and c_status<>-1 and c_linktype=1';
+        return where + ' and c_status<>-1 and c_linktype=1';
     }
     /**
      * 重写父类的 pageSave 方法，保存参数后清除user的缓存
@@ -35,28 +35,38 @@ module.exports = class extends CMPage {
      * @param {Object} page  页面设置主信息
      * @param {Object} parms  编辑页面传回的FORM参数
      */
-    async pageSave(parms){
+    async pageSave(parms) {
         //先保存t_emp
-        let md =cmpage.objPropertysFromOtherObj({},parms,['c_name','c_sex','c_phone','c_email','c_qq','c_address','c_memo','c_birthday','c_dept',
-            'c_user','c_time','c_group','c_province','c_city','c_country','c_manager']);
+        let md = cmpage.objPropertysFromOtherObj({}, parms, ['c_name', 'c_sex', 'c_phone', 'c_email', 'c_qq', 'c_address', 'c_memo', 'c_birthday', 'c_dept',
+            'c_user', 'c_time', 'c_group', 'c_province', 'c_city', 'c_country', 'c_manager'
+        ]);
         //checkbox类型的值为false时，前端不传值，因此特殊处理
-        md.c_sex = think.isEmpty(md.c_sex) ? false: md.c_sex;
-        let userMd = { c_role:parms.c_role, c_login_name:parms.c_login_name, c_linktype:1, c_status:1 };
-        if(parms.id ==0 ){
+        md.c_sex = think.isEmpty(md.c_sex) ? false : md.c_sex;
+        let userMd = {
+            c_role: parms.c_role,
+            c_login_name: parms.c_login_name,
+            c_linktype: 1,
+            c_status: 1
+        };
+        if (parms.id == 0) {
             md.id = await this.model('t_emp').add(cmpage.checksql(md));
             userMd.c_link = md.id;
             userMd.c_login_pwd = think.md5('123456');
-            userMd.c_guid =think.uuid(32);
+            userMd.c_guid = think.uuid(32);
             userMd.id = await this.model('t_user').add(cmpage.checksql(userMd));
-        }else {
+        } else {
             console.log(md);
-            await this.model('t_emp').where({id:parms.c_link}).update(cmpage.checksql(md));
+            await this.model('t_emp').where({
+                id: parms.c_link
+            }).update(cmpage.checksql(md));
             userMd.c_status = parms.c_status;
-            await this.model('t_user').where({id:parms.id}).update(cmpage.checksql(userMd));
+            await this.model('t_user').where({
+                id: parms.id
+            }).update(cmpage.checksql(userMd));
             userMd.id = parms.id;
         }
 
-        await think.cache("users",null);  //清除users缓存
+        await think.cache("users", null); //清除users缓存
         return userMd;
     }
 
@@ -66,10 +76,10 @@ module.exports = class extends CMPage {
      * @return {string}  用户名称
      * @param {int} id  用户ID
      */
-    async getNameById(id){
-        let users =await this.getUsers();
-        for(let user of users){
-            if(user.id == id){
+    async getNameById(id) {
+        let users = await this.getUsers();
+        for (let user of users) {
+            if (user.id == id) {
                 return user.c_name;
             }
         }
@@ -81,10 +91,10 @@ module.exports = class extends CMPage {
      * @return {object}  用户对象
      * @param {int} id  用户ID
      */
-    async getUserById(id){
-        let users =await this.getUsers();
-        for(let user of users){
-            if(user.id == id){
+    async getUserById(id) {
+        let users = await this.getUsers();
+        for (let user of users) {
+            if (user.id == id) {
                 return user;
             }
         }
@@ -98,12 +108,12 @@ module.exports = class extends CMPage {
      * @param {string} loginPwd  登录密码
      * @param {bool} isMd5  是否是MD5加密过的
      */
-    async getUserByLogin(loginName,loginPwd, isMd5){
-        let users =await this.getUsers();
+    async getUserByLogin(loginName, loginPwd, isMd5) {
+        let users = await this.getUsers();
         let pwd = isMd5 ? loginPwd.toLowerCase() : think.md5(loginPwd).toLowerCase()
-        cmpage.debug(users,'cache - users');
-        for(let user of users){            
-            if(user.c_login_name == loginName && user.c_login_pwd == pwd){
+        cmpage.debug(users, 'cache - users');
+        for (let user of users) {
+            if (user.c_login_name == loginName && user.c_login_pwd == pwd) {
                 return user;
             }
         }
@@ -115,7 +125,7 @@ module.exports = class extends CMPage {
      * @method  getUsers
      * @return {Array}  vw_user记录列表
      */
-    async getUsers(){
+    async getUsers() {
         return await think.cache("users", () => {
             //return this.model('vw_user').order('c_name').select();
             return this.query('select * from vw_user order by  c_name asc');

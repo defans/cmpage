@@ -24,9 +24,9 @@ module.exports = class extends CMPage {
      * @return {string}  where条件子句
      * @param {Object} page  页面设置主信息
      */
-    async getQueryWhere(){
-      let where =await super.getQueryWhere();
-      return where +` and id not in(select c_user from t_group_user where c_group=${this.mod.parmsUrl.c_group}) `;
+    async getQueryWhere() {
+        let where = await super.getQueryWhere();
+        return where + ` and id not in(select c_user from t_group_user where c_group=${this.mod.parmsUrl.c_group}) `;
     }
     /**
      * 重写父类的 htmlGetOther 方法，输出额外的按钮和js函数，

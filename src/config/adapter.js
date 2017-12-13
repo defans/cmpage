@@ -2,7 +2,11 @@ const fileCache = require('think-cache-file');
 const ejs = require('think-view-ejs');
 const fileSession = require('think-session-file');
 const mysql = require('think-model-mysql');
-const {Console, File, DateFile} = require('think-logger3');
+const {
+  Console,
+  File,
+  DateFile
+} = require('think-logger3');
 const path = require('path');
 const isDev = think.env === 'development';
 
@@ -34,7 +38,7 @@ exports.model = {
     logSql: true, // 是否打印 SQL 语句
     logger: msg => think.logger.info(msg) // 打印信息的 logger
   },
-  admin: {          // 业务数据库设置
+  admin: { // 业务数据库设置
     handle: mysql,
     type: "mysql",
     database: 'admin',
@@ -46,7 +50,7 @@ exports.model = {
     password: 'defans',
     dateStrings: true
   },
-  cmpage: {         // 业务模块配置的数据库设置
+  cmpage: { // 业务模块配置的数据库设置
     handle: mysql,
     type: "mysql",
     database: 'cmpage',
@@ -58,7 +62,7 @@ exports.model = {
     password: 'defans',
     dateStrings: true
   },
-  docu: {         // 单据模块配置的数据库设置
+  docu: { // 单据模块配置的数据库设置
     type: "mssql",
     database: 'docu',
     prefix: '',
@@ -69,7 +73,7 @@ exports.model = {
     password: 'wanbang_123',
     dateStrings: true
   },
-  sqlite: {  // sqlite 配置
+  sqlite: { // sqlite 配置
 
   },
   postgresql: { // postgresql 配置
@@ -109,7 +113,7 @@ exports.view = {
   // nunjucks: {
   //   handle: nunjucks
   // },
-  ejs:{
+  ejs: {
     handle: ejs
   }
 };

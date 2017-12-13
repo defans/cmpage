@@ -1,8 +1,7 @@
 const path = require('path');
 const isDev = think.env === 'development';
 
-module.exports = [
-  {
+module.exports = [{
     handle: 'meta',
     options: {
       logRequest: isDev,

@@ -12,27 +12,27 @@ const CMPage = require('../cmpage/page_ms.js');
 
 module.exports = class extends CMPage {
     constructor(name, config = {}) {
-        super(name,config);
+        super(name, config);
         //题型
         this._way = 0;
-}
+    }
 
-    getWay(){
-        if(this._way == 0){
-            this._way = this.mod.c_modulename == 'QuestionSingle' ? cmpage.enumQuestionWay.SINGLE 
-                : (this.mod.c_modulename == 'QuestionMultiple' ? cmpage.enumQuestionWay.MULTIPLE 
-                : (this.mod.c_modulename == 'QuestionJudge' ? cmpage.enumQuestionWay.JUDGE  : cmpage.enumQuestionWay.ANSWER  ));
+    getWay() {
+        if (this._way == 0) {
+            this._way = this.mod.c_modulename == 'QuestionSingle' ? cmpage.enumQuestionWay.SINGLE :
+                (this.mod.c_modulename == 'QuestionMultiple' ? cmpage.enumQuestionWay.MULTIPLE :
+                    (this.mod.c_modulename == 'QuestionJudge' ? cmpage.enumQuestionWay.JUDGE : cmpage.enumQuestionWay.ANSWER));
         }
         return this._way;
     }
     /**
      * 取查询项的设置，结合POST参数，得到Where字句
      */
-    async getQueryWhere(){
+    async getQueryWhere() {
         //通过父类的方法取查询列设置解析后的where子句
-        let where =await super.getQueryWhere();
+        let where = await super.getQueryWhere();
         //此处增加额外的条件
-        where +=  ` and  c_way=${this.getWay()} and c_status<>-1`;      //也可以在查询列设置一条 ‘固定’类型的查询列，备注中填： c_status<>-1
+        where += ` and  c_way=${this.getWay()} and c_status<>-1`; //也可以在查询列设置一条 ‘固定’类型的查询列，备注中填： c_status<>-1
         return where;
     }
 
@@ -41,7 +41,7 @@ module.exports = class extends CMPage {
      * @method  pageEditInit
      * @return {object} 新增的记录对象
      */
-    async pageEditInit(){
+    async pageEditInit() {
         let md = await super.pageEditInit();
         md.c_way = this.getWay();
         return md;
@@ -58,10 +58,10 @@ module.exports = class extends CMPage {
      * @param   {string} fieldNames 字段名称,逗号分隔
      * @param   {string} joinStr 连接的字符串
      */
-    async getNameById(id,fieldNames,joinStr){
+    async getNameById(id, fieldNames, joinStr) {
         this.mod.c_table = 't_question';
-        this.pk ='id';
-        return await super.getNameById(id,fieldNames,joinStr);
+        this.pk = 'id';
+        return await super.getNameById(id, fieldNames, joinStr);
     }
     /**
      * 根据用户ID取用户对象
@@ -69,8 +69,10 @@ module.exports = class extends CMPage {
      * @return {object}  客户对象
      * @param {int} id  客户ID
      */
-    async getQuestionById(id){
-        return await this.model('t_question').where({id:id}).find();
+    async getQuestionById(id) {
+        return await this.model('t_question').where({
+            id: id
+        }).find();
     }
 
 }

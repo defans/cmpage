@@ -17,9 +17,9 @@ module.exports = class extends CMPage {
      * @method  pageEditInit
      * @return {object} 新增的记录对象
      */
-    async pageEditInit(){
-        let md =await super.pageEditInit();
-        md.c_customer =  this.mod.parmsUrl.c_customer;
+    async pageEditInit() {
+        let md = await super.pageEditInit();
+        md.c_customer = this.mod.parmsUrl.c_customer;
 
         return md
     }

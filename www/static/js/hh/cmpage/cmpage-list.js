@@ -1,7 +1,7 @@
 var formdata = {
 	pageIndex: 1,
 	pageSize: 10,
-	pageTotal:11
+	pageTotal: 11
 };
 var searchHtml;
 var searchInitHtml = null;
@@ -20,7 +20,7 @@ mui.init({
 	}
 });
 
-mui.plusReady(function() {
+mui.plusReady(function () {
 	//仅支持竖屏显示
 	plus.screen.lockOrientation("portrait-primary");
 	//框架参数初始化设置
@@ -39,7 +39,7 @@ mui.plusReady(function() {
  * 下拉刷新具体业务实现
  */
 function pulldownRefresh() {
-	setTimeout(function() {
+	setTimeout(function () {
 		var table = document.body.querySelector('.cmpage-list');
 		table.innerHTML = "";
 		formdata.pageTotal = 11;
@@ -53,7 +53,7 @@ function pulldownRefresh() {
  * 上拉加载具体业务实现
  */
 function pullupRefresh() {
-	setTimeout(function() {
+	setTimeout(function () {
 		//mui('#pullrefresh').pullRefresh().endPullupToRefresh(((formdata.pageIndex+1) * formdata.pageSize >= formdata.pageTotal)); //参数为true代表没有更多数据了。
 		mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
 		getListHtml();
@@ -73,28 +73,30 @@ function getListHtml() {
 			type: "post",
 			dataType: 'json',
 			timeout: 5000,
-			error: function(request) {
+			error: function (request) {
 				//console.log(JSON.stringify(request));
 				app.toast("服务器获取数据失败！");
 				plus.nativeUI.closeWaiting();
 			},
-			success: function(data) {
+			success: function (data) {
 				//app.debug(JSON.stringify(data));
 				if (data.statusCode == 200) {
 					var table = document.body.querySelector('.cmpage-list');
 					table.innerHTML += data.listHtml;
 					formdata.pageTotal = data.count;
 					searchHtml = data.queryHtml;
-					if(searchInitHtml == null) {
+					if (searchInitHtml == null) {
 						searchInitHtml = data.queryHtml;
 					}
 					document.body.querySelector('.cmpage-menu').innerHTML = data.popBtnsHtml;
-					mui.fire(cmpage.parentView, "header_show", {headerHtml:data.headerBtnsHtml} );
+					mui.fire(cmpage.parentView, "header_show", {
+						headerHtml: data.headerBtnsHtml
+					});
 					//cmpage.addEventListener();
 				} else {
 					app.toast("数据加载失败请稍后重试！");
 				}
-				formdata.pageIndex ++;
+				formdata.pageIndex++;
 				plus.nativeUI.closeWaiting();
 			}
 		});
@@ -102,11 +104,11 @@ function getListHtml() {
 }
 
 //显示搜索页面
-window.addEventListener('search_show', function(event) {
-	if(searchHtml){
-		setTimeout(function() {
+window.addEventListener('search_show', function (event) {
+	if (searchHtml) {
+		setTimeout(function () {
 			mui.openWindow({
-				id: cmpage.html.SEARCH +app.getRandomNum(1,50),
+				id: cmpage.html.SEARCH + app.getRandomNum(1, 50),
 				url: cmpage.html.SEARCH,
 				extras: {
 					modulename: formdata.modulename,
@@ -117,12 +119,12 @@ window.addEventListener('search_show', function(event) {
 					autoShow: false
 				}
 			});
-		}, 100);		
+		}, 100);
 	}
 });
 
 //搜索页面返回后的刷新
-window.addEventListener('search_callback', function(event) {
+window.addEventListener('search_callback', function (event) {
 	var table = document.body.querySelector('.cmpage-list');
 	table.innerHTML = "";
 	var d = event.detail;

@@ -24,9 +24,9 @@ module.exports = class extends CMPage {
      * @method  htmlGetOther
      * @return {string}  html片段
      */
-    async htmlGetOther(){
+    async htmlGetOther() {
         //cmpage.debug(this.mod,'groupuser.htmlGetOther - this.mod');
-      return `<a class="btn btn-green" href="/cmpage/page/list?modulename=GroupUserAdd&c_group=${this.mod.parmsUrl.c_group}"
+        return `<a class="btn btn-green" href="/cmpage/page/list?modulename=GroupUserAdd&c_group=${this.mod.parmsUrl.c_group}"
                         data-toggle="dialog" data-options="{id:'pageGroupUserAdd', mask:true, width:800, height:600 }"
                         data-on-close="pageGroupUserEdit_onClose" data-icon="plus">加入用户</a>
                 <a class="btn btn-red" href="#" onclick="return GroupUserDelIds();"  data-icon="times">剔除</a>
@@ -70,31 +70,33 @@ module.exports = class extends CMPage {
      * @param {int} userID  用户ID
      * @param {int} groupID  当前登录的账套ID
      */
-    async getLoginGroups(groupID,userID){
+    async getLoginGroups(groupID, userID) {
         let codeModel = cmpage.service('admin/code');
-        let cnt = await this.getGroupUserCnt(userID,groupID)
+        let cnt = await this.getGroupUserCnt(userID, groupID)
         let k = 1;
         let groupMd = await codeModel.getCodeById(groupID);
-        if(!groupMd && userID!=1){
+        if (!groupMd && userID != 1) {
             return '';
         }
         //假设账套不超过 4 层
-        while(k <5 && cnt ==0){
+        while (k < 5 && cnt == 0) {
             //debug(groupMd,'admin.groupuser - groupMd');
-            if(!groupMd || groupMd.c_pid==0){
+            if (!groupMd || groupMd.c_pid == 0) {
                 return '';
             }
-            cnt = await this.getGroupUserCnt(userID,groupMd.c_pid);
+            cnt = await this.getGroupUserCnt(userID, groupMd.c_pid);
             groupMd = await codeModel.getCodeById(groupMd.c_pid);
             k += 1;
         }
-        if(cnt ==0 && userID!=1) return '';
+        if (cnt == 0 && userID != 1) return '';
 
         let groups = await codeModel.getTreeList(groupID);
         //debug(groups,'groupuser.getLoginGroups - groups');
         let ret = [];
         ret.push(groupID);
-        for(let group of groups){ ret.push(group.id); }
+        for (let group of groups) {
+            ret.push(group.id);
+        }
 
         return ret.join(',');
     }
@@ -106,16 +108,16 @@ module.exports = class extends CMPage {
      * @param {int} userID  用户ID
      * @param {int} groupID  待验证的账套ID，如果通过则返回
      */
-    async getDefaultGroupID(userID,groupID){
-        if(userID == 1)  return 2;   //超级管理员指定为最大账套
+    async getDefaultGroupID(userID, groupID) {
+        if (userID == 1) return 2; //超级管理员指定为最大账套
         let list = await this.getGroupUsers();
-        if(!think.isEmpty(groupID)){
-            if(await this.getGroupUserCnt(userID,groupID) > 0){
+        if (!think.isEmpty(groupID)) {
+            if (await this.getGroupUserCnt(userID, groupID) > 0) {
                 return groupID;
             }
-        }else{
+        } else {
             for (const md of list) {
-                if(md.c_user === userID ){
+                if (md.c_user === userID) {
                     return md.c_group;
                 }
             }
@@ -123,11 +125,11 @@ module.exports = class extends CMPage {
         return 0;
     }
 
-    async getGroupUserCnt(userID,groupID){
-        let ret =0;
+    async getGroupUserCnt(userID, groupID) {
+        let ret = 0;
         let list = await this.getGroupUsers();
         for (const md of list) {
-            if(md.c_user === userID && md.c_group===groupID){
+            if (md.c_user === userID && md.c_group === groupID) {
                 ret += 1;
             }
         }
@@ -139,7 +141,7 @@ module.exports = class extends CMPage {
      * @method  getGroupUsers
      * @return {Array}  t_code记录列表
      */
-    async getGroupUsers(){
+    async getGroupUsers() {
         return await think.cache("groupUsers", () => {
             return this.model('t_group_user').select();
         });

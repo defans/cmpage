@@ -24,16 +24,16 @@ module.exports = class extends Base {
      * @method codeTree
      * @return {promise}   代码树页面
      */
-  async code_treeAction(){
-    let vb={};
-    vb.rootID=this.get('rootid');
-    vb.treeID=`codeTree${vb.rootID}`;
-    let model = cmpage.service('admin/code');
-    vb.list =await model.getTreeList(vb.rootID,true);
-//    cmpage.debug(JSON.stringify(vb));
-    this.assign('vb',vb);
-    return this.display();
-  }
+    async code_treeAction() {
+        let vb = {};
+        vb.rootID = this.get('rootid');
+        vb.treeID = `codeTree${vb.rootID}`;
+        let model = cmpage.service('admin/code');
+        vb.list = await model.getTreeList(vb.rootID, true);
+        //    cmpage.debug(JSON.stringify(vb));
+        this.assign('vb', vb);
+        return this.display();
+    }
 
     /**
      * 参数选择，查找带回页面，输入根节点ID为参数 <br/>
@@ -42,14 +42,14 @@ module.exports = class extends Base {
      * @method codeLookup
      * @return {promise}   参数选择页面
      */
-    async code_lookupAction(){
-        let vb={};
-        vb.rootID=this.get('rootid');
-        vb.treeID=`codeTree${vb.rootID}`;
+    async code_lookupAction() {
+        let vb = {};
+        vb.rootID = this.get('rootid');
+        vb.treeID = `codeTree${vb.rootID}`;
         let model = cmpage.service('admin/code');
-        vb.list =await model.getTreeList(vb.rootID,true);
-//    cmpage.debug(JSON.stringify(vb));
-        this.assign('vb',vb);
+        vb.list = await model.getTreeList(vb.rootID, true);
+        //    cmpage.debug(JSON.stringify(vb));
+        this.assign('vb', vb);
         return this.display();
     }
 
@@ -58,36 +58,45 @@ module.exports = class extends Base {
      * @method groupUserMain
      * @return {json}
      */
-  async group_user_mainAction(){
-    let model = cmpage.service('admin/code');
-    let treeList =await model.getTreeList(2,true);
-    this.assign('treeList',treeList);
-    return this.display();
-  }
+    async group_user_mainAction() {
+        let model = cmpage.service('admin/code');
+        let treeList = await model.getTreeList(2, true);
+        this.assign('treeList', treeList);
+        return this.display();
+    }
 
     /**
      * 增加某帐套的用户
      * @method groupUserAdd
      * @return {json}
      */
-    async group_user_addAction(){
+    async group_user_addAction() {
         let groupID = this.get('groupID');
         let userIds = this.get('userIds').split(',');
-        for(let userID of userIds){
-            await this.model('t_group_user').add({c_group:groupID, c_user:userID});
+        for (let userID of userIds) {
+            await this.model('t_group_user').add({
+                c_group: groupID,
+                c_user: userID
+            });
         }
-        await think.cache('groupUsers',null);
-        return this.json({statusCode:200,message:'用户加入成功!'});
+        await think.cache('groupUsers', null);
+        return this.json({
+            statusCode: 200,
+            message: '用户加入成功!'
+        });
     }
     /**
      * 删除某帐套的用户
      * @method groupUserDel
      * @return {json}
      */
-    async group_user_delAction(){
+    async group_user_delAction() {
         await this.model('t_group_user').where(` id in(${this.get('ids')})`).delete();
-        await think.cache('groupUsers',null);
-        return this.json({statusCode:200,message:'用户删除成功!'});
+        await think.cache('groupUsers', null);
+        return this.json({
+            statusCode: 200,
+            message: '用户删除成功!'
+        });
     }
 
     /**
@@ -95,10 +104,10 @@ module.exports = class extends Base {
      * @method teamUserMain
      * @return {json}
      */
-    async team_user_mainAction(){
+    async team_user_mainAction() {
         let model = cmpage.service('admin/code');
-        let treeList =await model.getTreeList(7,true);
-        this.assign('treeList',treeList);
+        let treeList = await model.getTreeList(7, true);
+        this.assign('treeList', treeList);
         return this.display();
     }
 
@@ -107,24 +116,33 @@ module.exports = class extends Base {
      * @method teamUserAdd
      * @return {json}
      */
-    async team_user_addAction(){
+    async team_user_addAction() {
         let teamID = this.get('teamID');
         let userIds = this.get('userIds').split(',');
-        for(let userID of userIds){
-            await this.model('t_team_user').add({c_team:teamID, c_user:userID});
+        for (let userID of userIds) {
+            await this.model('t_team_user').add({
+                c_team: teamID,
+                c_user: userID
+            });
         }
         //await think.cache('teamUsers',null);
-        return this.json({statusCode:200,message:'用户加入成功!'});
+        return this.json({
+            statusCode: 200,
+            message: '用户加入成功!'
+        });
     }
     /**
      * 删除某团队的用户
      * @method teamUserDel
      * @return {json}
      */
-    async team_user_delAction(){
+    async team_user_delAction() {
         await this.model('t_team_user').where(` id in(${this.get('ids')})`).delete();
         //await think.cache('teamUsers',null);
-        return this.json({statusCode:200,message:'用户删除成功!'});
+        return this.json({
+            statusCode: 200,
+            message: '用户删除成功!'
+        });
     }
 
     /**
@@ -132,54 +150,61 @@ module.exports = class extends Base {
      * @method rolePrivilege
      * @return {json}
      */
-  async role_privilegeAction(){
-    let model = cmpage.service('admin/code');
-    let treeList =await model.getTreeList(3,true);
-//    cmpage.debug(JSON.stringify(vb));
-    this.assign('treeList',treeList);
-    return this.display();
-  }
+    async role_privilegeAction() {
+        let model = cmpage.service('admin/code');
+        let treeList = await model.getTreeList(3, true);
+        //    cmpage.debug(JSON.stringify(vb));
+        this.assign('treeList', treeList);
+        return this.display();
+    }
 
     /**
      * 某个角色的权限集合展示，树状结构
      * @method roleGetPrivilegeTree
      * @return {json}
      */
-  async role_get_privilege_treeAction(){
-    let roleID = this.post('roleID');
-    let treeList =await cmpage.service('admin/privilege').roleGetPrivilegeTree(roleID);
-//    cmpage.debug(JSON.stringify(vb));
-    return this.json(treeList);
-  }
+    async role_get_privilege_treeAction() {
+        let roleID = this.post('roleID');
+        let treeList = await cmpage.service('admin/privilege').roleGetPrivilegeTree(roleID);
+        //    cmpage.debug(JSON.stringify(vb));
+        return this.json(treeList);
+    }
 
     /**
      * 保存某个角色的权限设置
      * @method roleSavePrivilege
      * @return {json}
      */
-  async role_save_privilegeAction(){
-    let parms =this.post();
-    //cmpage.debug(rec);
-    await cmpage.service('admin/privilege').roleSavePrivilege(parms);
-    return this.json({statusCode:200,message:'保存成功!',data:{}});
-  }
+    async role_save_privilegeAction() {
+        let parms = this.post();
+        //cmpage.debug(rec);
+        await cmpage.service('admin/privilege').roleSavePrivilege(parms);
+        return this.json({
+            statusCode: 200,
+            message: '保存成功!',
+            data: {}
+        });
+    }
 
     /**
      * 某个用户的权限集合展示，树状结构
      * @method userGetPrivilegeTree
      * @return {json}
      */
-    async user_get_privilege_treeAction(){
+    async user_get_privilege_treeAction() {
         let user = await this.session('user');
         let parms = this.get();
-        if(!think.isEmpty(parms.userID)){
+        if (!think.isEmpty(parms.userID)) {
             user = await cmpage.service('admin/user').getUserById(parms.userID);
         }
         let isMine = !think.isEmpty(parms.isMine);
-        let treeList =await cmpage.service('admin/privilege').userGetPrivilegeTree(user.id, user.c_role, 1);
-//    cmpage.debug(JSON.stringify(vb));
-        this.assign('treeList',treeList);
-        this.assign('vb',{userID:user.id, isMine:isMine});
+        let treeList = await cmpage.service('admin/privilege').userGetPrivilegeTree(user.id, user.c_role, 1);
+        //    cmpage.debug(JSON.stringify(vb));
+        this.assign('treeList', treeList);
+        this.assign('vb', {
+            userID: user.id,
+            isMine: isMine
+        });
         return this.display();
     }
 
@@ -188,11 +213,15 @@ module.exports = class extends Base {
      * @method userSavePrivilege
      * @return {json}
      */
-    async user_save_privilegeAction(){
-        let parms =this.post();
+    async user_save_privilegeAction() {
+        let parms = this.post();
         //cmpage.debug(rec);
         await cmpage.service('admin/privilege').userSavePrivilege(parms);
-        return this.json({statusCode:200,message:'保存成功!',data:{}});
+        return this.json({
+            statusCode: 200,
+            message: '保存成功!',
+            data: {}
+        });
     }
 
     /**
@@ -200,70 +229,94 @@ module.exports = class extends Base {
      * @method userSavePrivilege
      * @return {json}
      */
-    async user_set_pwd_initAction(){
-        let userID =this.get('userID');
-        if(think.isEmpty(userID)){
-            return this.json({statusCode:300, message:'用户ID无效！'});
+    async user_set_pwd_initAction() {
+        let userID = this.get('userID');
+        if (think.isEmpty(userID)) {
+            return this.json({
+                statusCode: 300,
+                message: '用户ID无效！'
+            });
         }
-        await this.model('t_user').where({id:userID}).update({c_login_pwd:think.md5('123456')});
-        await this.cache("users",null);  //清除users缓存
-        return this.json({statusCode:200, message:'密码已修改修改为初始密码（123456）！'});
+        await this.model('t_user').where({
+            id: userID
+        }).update({
+            c_login_pwd: think.md5('123456')
+        });
+        await this.cache("users", null); //清除users缓存
+        return this.json({
+            statusCode: 200,
+            message: '密码已修改修改为初始密码（123456）！'
+        });
     }
 
 
 
-    
+
     /**
      * 代码树，输入根节点ID为参数 ------- 以下3个操作已废弃，改用 codeTreeAction -----------
      * 直接通过树增删改节点
      * /admin/code?rootid=1
      */
-    async codeAction(){
-        let vb={};
-        vb.rootID=this.get('rootid');
-        vb.treeID=`code${vb.rootID}`;
+    async codeAction() {
+        let vb = {};
+        vb.rootID = this.get('rootid');
+        vb.treeID = `code${vb.rootID}`;
         let model = cmpage.service('admin/code');
-        vb.list =await model.getTreeList(vb.rootID,true);
+        vb.list = await model.getTreeList(vb.rootID, true);
         // cmpage.debug(JSON.stringify(vb));
-        this.assign('vb',vb);
+        this.assign('vb', vb);
         return this.display();
     }
 
-    async codeSaveAction(){
-        let ret={statusCode:200,message:'',data:{}};
-        let parms =this.post();
+    async codeSaveAction() {
+        let ret = {
+            statusCode: 200,
+            message: '',
+            data: {}
+        };
+        let parms = this.post();
         //cmpage.debug(rec);
 
         let model = this.model('t_code');
-        if(parms.id ==0){
-            let rec={};
-            Object.keys(parms).map(key=>{if(key !='id'){
-                rec[key] =parms[key];
-            }});
-            ret.data.id =await model.add(rec);
+        if (parms.id == 0) {
+            let rec = {};
+            Object.keys(parms).map(key => {
+                if (key != 'id') {
+                    rec[key] = parms[key];
+                }
+            });
+            ret.data.id = await model.add(rec);
             cmpage.debug(JSON.stringify(ret));
-        }else if(parms.id >0){
-            ret.data.id =parseInt(parms.id);
-            await model.where({id: ret.data.id}).update(parms);
+        } else if (parms.id > 0) {
+            ret.data.id = parseInt(parms.id);
+            await model.where({
+                id: ret.data.id
+            }).update(parms);
         }
 
         await cmpage.service('admin/code').clearCodeCache();
         return this.json(ret);
     }
 
-    async codeDelAction(){
-        let ret={statusCode:200,message:'',data:{}};
-        let parms =this.post();
+    async codeDelAction() {
+        let ret = {
+            statusCode: 200,
+            message: '',
+            data: {}
+        };
+        let parms = this.post();
         //cmpage.debug(rec);
 
         let model = this.model('t_code');
-        if(parms.id >0){
-            await model.where({id: parms.id}).delete();
+        if (parms.id > 0) {
+            await model.where({
+                id: parms.id
+            }).delete();
         }
         return this.json(ret);
     }
 
-    ztreeAction(){
+    ztreeAction() {
         return this.display();
     }
 }

@@ -16,7 +16,7 @@
  * 普通页面的数据处理类，实现了具体的操作方法
  * @class cmpage.service.page
  */
- const PageBase = require('./page_base.js');
+const PageBase = require('./page_base.js');
 
 module.exports = class extends PageBase {
 
@@ -26,64 +26,68 @@ module.exports = class extends PageBase {
      * @method  htmlGetQuery
      * @return {Array}  查询的HTML片段，包括 bjui-moreSearch 部分
      */
-    async htmlGetQuery(){
-        let html =[];
+    async htmlGetQuery() {
+        let html = [];
         let html0 = [];
-        let provinceValue ='';
-        let cityValue='';
-        let k =0;
-        for(let col of this.modQuerys){
+        let provinceValue = '';
+        let cityValue = '';
+        let k = 0;
+        for (let col of this.modQuerys) {
             if (col.c_isshow) {
-                if(k >=this.mod.user.queryColumns && k !== -1){
-                    for(let h of html){    html0.push(h);       }
+                if (k >= this.mod.user.queryColumns && k !== -1) {
+                    for (let h of html) {
+                        html0.push(h);
+                    }
                     html0.push('<button type="button" class="showMoreSearch" data-toggle="moresearch" data-name="custom"><i class="fa fa-angle-double-down"></i></button>');
-                    html =[];
+                    html = [];
                     k = -1;
                 }
-                if(!think.isEmpty(this.mod.query[col.c_column])){
+                if (!think.isEmpty(this.mod.query[col.c_column])) {
                     col.c_default = this.mod.query[col.c_column];
                 }
-                if( (col.c_type !== "hidden" && col.c_type !== "fixed" && col.c_type !== "areaSelect")
-                    || (col.c_type === "areaSelect" && !think.isEmpty(col.c_memo) ) ){
+                if ((col.c_type !== "hidden" && col.c_type !== "fixed" && col.c_type !== "areaSelect") ||
+                    (col.c_type === "areaSelect" && !think.isEmpty(col.c_memo))) {
                     html.push(`<label  >${col.c_name}</label>`);
-                    if(k !== -1){ k += 1; }
+                    if (k !== -1) {
+                        k += 1;
+                    }
                 }
-                if (col.c_type === "hidden"){
+                if (col.c_type === "hidden") {
                     html.push(`<input id="query${this.mod.c_modulename}_${col.c_column}" name="${col.c_column}" type="hidden" value="${col.c_default}"   />`);
-                }else  if (col.c_coltype === "datetime" || col.c_coltype === "date" || col.c_coltype === "timestamp"){
+                } else if (col.c_coltype === "datetime" || col.c_coltype === "date" || col.c_coltype === "timestamp") {
                     html.push(`<input type="text" id="query${this.mod.c_modulename}_${col.c_column}" name="${col.c_column}" value="${col.c_default}" data-toggle="datepicker" data-rule="date" size="12" class="form-control" />`);
-                }else if (col.c_coltype === "bool"){
+                } else if (col.c_coltype === "bool") {
                     html.push(`<input type="checkbox" id="query${this.mod.c_modulename}_${col.c_column}" name="${col.c_column}" data-toggle="icheck" value="true" data-label="是"
                         ${col.c_default ? "checked=checked" : ""} class="form-control" />`);
-                }else if (col.c_type === "select" || col.c_type === "selectMultiple"){
-                    let options = await this.getOptions(col,true);
+                } else if (col.c_type === "select" || col.c_type === "selectMultiple") {
+                    let options = await this.getOptions(col, true);
                     html.push(`<select id="query${this.mod.c_modulename}_${col.c_column}" name="${col.c_column}" data-toggle="selectpicker" 
                     ${col.c_type === "selectMultiple" ? " multiple":""} > ${options} </select>`);
                 } else if (col.c_type === "selectTree" || col.c_type === "selectTreeMultiple") {
-                    let treeOptions = await this.getOptionsTree(col,true);
+                    let treeOptions = await this.getOptionsTree(col, true);
                     html.push(`<input id="query${this.mod.c_modulename + col.c_column}" name="${col.c_column}"  type="hidden" value="${col.c_default}" />
                         <input name="${col.c_column}Show" type="text" size="25" value="${treeOptions.selectName}" data-toggle="selectztree" data-tree="#selectTreeQuery${this.mod.c_modulename + col.c_column}"   readonly />
                         <ul id="selectTreeQuery${this.mod.c_modulename + col.c_column}" class="ztree hide" data-toggle="ztree" data-expand-all="false" data-check-enable="true"
                         data-value-input="query${this.mod.c_modulename + col.c_column}" ${(col.c_type === "selectTree" ? ' data-chk-style="radio" data-radio-type="all" ':' ')}
                         data-on-check="selectNodeCheck" data-on-click="selectNodeClick" > ${treeOptions.options} </ul>`);
-                }else if (col.c_type === "lookup"){
+                } else if (col.c_type === "lookup") {
                     html.push(`<input id="query${this.mod.c_modulename}_${col.c_column}" name="${col.c_column}" type="lookup" size="10" value="${col.c_default}"  data-width="800" data-height="600"
                         data-toggle="lookup" data-title="${col.c_name} 选择" data-url="${this.getReplaceToSpecialChar(col.c_memo)}" readonly="readonly" />`);
-                }else if (col.c_type === "areaSelect"){
-                    if (!think.isEmpty(col.c_memo)){
-                        html.push(await this.htmlGetAreaSelect(col.c_memo, col.c_column, this.mod.query, "Query"));                        
+                } else if (col.c_type === "areaSelect") {
+                    if (!think.isEmpty(col.c_memo)) {
+                        html.push(await this.htmlGetAreaSelect(col.c_memo, col.c_column, this.mod.query, "Query"));
                     }
-                }else if (col.c_type === "codeSelect"){
-                    if (!think.isEmpty(col.c_memo)){
-                        html.push(await this.htmlGetCodeSelect(col.c_memo, col.c_column, this.mod.query, "Query"));                        
+                } else if (col.c_type === "codeSelect") {
+                    if (!think.isEmpty(col.c_memo)) {
+                        html.push(await this.htmlGetCodeSelect(col.c_memo, col.c_column, this.mod.query, "Query"));
                     }
-                }else if( col.c_type !== "fixed"){
+                } else if (col.c_type !== "fixed") {
                     html.push(`<input id="query${this.mod.c_modulename}_${col.c_column}" name="${col.c_column}" type="${col.c_type}" size="${col.c_width}" value="${col.c_default}" data-rule="${col.c_memo}" class="form-control"  />`);
                 }
             }
         }
 
-        if(html0.length === 0){     //如果不超过 3 项查询的时候
+        if (html0.length === 0) { //如果不超过 3 项查询的时候
             html0 = html;
             html = [];
         }
@@ -95,7 +99,7 @@ module.exports = class extends PageBase {
      * @method  htmlGetOther
      * @return {string}  html片段
      */
-    async htmlGetOther(){
+    async htmlGetOther() {
         return ``;
     }
 
@@ -109,8 +113,8 @@ module.exports = class extends PageBase {
      * @param   {string} suffix    加个后缀，以区分不同页面的输出
      */
     async htmlGetAreaSelect(sets, colName, query, suffix) {
-        let ret='';
-        if(sets.indexOf(',') >0){        //三级联动
+        let ret = '';
+        if (sets.indexOf(',') > 0) { //三级联动
             let cols = sets.split(',');
             let areaModel = cmpage.service('admin/area');
             ret = `<select name='${cols[0]}' data-toggle='selectpicker' data-rule='required' data-nextselect='#${this.mod.c_modulename + cols[1]+ suffix}' 
@@ -120,7 +124,7 @@ module.exports = class extends PageBase {
                 ${await areaModel.getCityItems(query[cols[1]],true)} </select> 
                 <select name='${colName}' id='${this.mod.c_modulename + colName + suffix}' data-toggle='selectpicker' data-rule='required'> 
                 ${await areaModel.getCountryItems(query[colName],true)} </select>`;
-        }else{       //二级联动
+        } else { //二级联动
             let areaModel = cmpage.service('admin/area');
             let provinceColumn = sets;
             ret = `<select name='${provinceColumn}' data-toggle='selectpicker' data-rule='required' data-nextselect='#${this.mod.c_modulename + colName+ suffix}' 
@@ -128,7 +132,7 @@ module.exports = class extends PageBase {
                 <select name='${colName}' id='${this.mod.c_modulename + colName + suffix}' data-toggle='selectpicker' data-rule='required' >
                 ${await areaModel.getCityItems(query[provinceColumn],true)} </select> `;
         }
-        return ret; 
+        return ret;
     }
 
     /**
@@ -141,14 +145,14 @@ module.exports = class extends PageBase {
      * @param   {string} suffix    加个后缀，以区分不同页面的输出
      */
     async htmlGetCodeSelect(sets, colName, query, suffix) {
-        let ret='';
-        if(sets.indexOf(',') >0){        //三级联动
+        let ret = '';
+        if (sets.indexOf(',') > 0) { //三级联动
             let cols = sets.split(',');
-            if(cols[0].indexOf(':') === -1){
-                return '';      //第一个字段必须制定父节点ID
+            if (cols[0].indexOf(':') === -1) {
+                return ''; //第一个字段必须制定父节点ID
             }
             let its = cols[0].split(':');
-            let codeApp = cmpage.service('admin/code');            
+            let codeApp = cmpage.service('admin/code');
             ret = `<select name='${its[0]}' data-toggle='selectpicker' data-nextselect='#${this.mod.c_modulename + cols[1]+ suffix}' 
                 data-refurl='/Utils/GetChildsByParentID?pid={value}'> ${await codeApp.getCodeItemsByPid(its[1], query[cols[0]], true)} </select>
                 <select name='${cols[1]}' id='${this.mod.c_modulename + cols[1]+ suffix}' data-toggle='selectpicker'  
@@ -156,19 +160,19 @@ module.exports = class extends PageBase {
                 ${await codeApp.getCodeItemsByPid(query[cols[0]], query[cols[1]], true)} </select>
                 <select name='${colName}' id='${this.mod.c_modulename + colName + suffix}' data-toggle='selectpicker' > 
                 ${await codeApp.getCodeItemsByPid(query[cols[1]], query[colName], true)} </select>`;
-        }else{       //二级联动
+        } else { //二级联动
             let parentColumn = sets;
-            if(parentColumn.indexOf(':') === -1){
-                return '';      //第一个字段必须制定父节点ID
+            if (parentColumn.indexOf(':') === -1) {
+                return ''; //第一个字段必须制定父节点ID
             }
             let its = parentColumn.split(':');
             let codeApp = cmpage.service('admin/code');
-            ret =`<select name='${parentColumn}' data-toggle='selectpicker' data-rule='required' data-nextselect='#${this.mod.c_modulename + colName+ suffix}' 
+            ret = `<select name='${parentColumn}' data-toggle='selectpicker' data-rule='required' data-nextselect='#${this.mod.c_modulename + colName+ suffix}' 
                 data-refurl='/Utils/GetChildsByParentID?pid={value}'> ${await codeApp.getCodeItemsByPid(its[1], query[parentColumn], true)} </select>
                 <select name='${colName}' id='${this.mod.c_modulename + colName+ suffix}' data-toggle='selectpicker' >
                 ${await codeApp.getCodeItemsByPid(query[parentColumn], query[colName], true)} </select>`;
         }
-        return ret; 
+        return ret;
     }
 
     /**
@@ -178,49 +182,49 @@ module.exports = class extends PageBase {
      * @param   {object} md 下拉项的设置，其中md.c_default为默认值，可以在调用本方法前修改
      * @param   {bool} [isBlank=false]   下拉项中是否增加空项，一般查询项是需要的
      */
-    async getOptions(md, isBlank){
+    async getOptions(md, isBlank) {
         let items = [];
-        if (md.c_type == "select") {          //下拉框设置
+        if (md.c_type == "select") { //下拉框设置
             //cmpage.debug(md.c_memo);
-            if(isBlank){
+            if (isBlank) {
                 items.push('<option value="-1"> </option>');
             }
-            if (/^select*/.test(md.c_memo)) {    //以select开头
+            if (/^select*/.test(md.c_memo)) { //以select开头
                 //let sql = md.c_memo.replace(/#group#/,think.session('groupID')).replace(/##/,"'");
                 let sql = md.c_memo;
                 let list = await this.query(sql);
-                for(let rec of list) {
-                    items.push( `<option value='${rec.id}' ${rec.id === md.c_default ? "selected" : ""} >${rec.c_name} </option>`);
+                for (let rec of list) {
+                    items.push(`<option value='${rec.id}' ${rec.id === md.c_default ? "selected" : ""} >${rec.c_name} </option>`);
                 }
-            }else {
-                if (/^\[{\w+/.test(md.c_memo)) {    //以 [ 开头       //设置如：[{##value##:true,##text##:##男##},{##value##:false,##text##:##女##}]
-                    let its = (think.isString(md.c_memo) ? JSON.parse(md.c_memo.replace(/##/ig,'\"')) : []);
+            } else {
+                if (/^\[{\w+/.test(md.c_memo)) { //以 [ 开头       //设置如：[{##value##:true,##text##:##男##},{##value##:false,##text##:##女##}]
+                    let its = (think.isString(md.c_memo) ? JSON.parse(md.c_memo.replace(/##/ig, '\"')) : []);
                     for (let it of its) {
                         items.push(`<option value='${it.value}' ${it.value === md.c_default ? "selected" : ""} >${it.text} </option>`);
                     }
-                }else{
-                    let its = md.c_memo.trim().split(':');        //设置如： admin/code:getParmsByPid:3
+                } else {
+                    let its = md.c_memo.trim().split(':'); //设置如： admin/code:getParmsByPid:3
                     let parms = [];
-                    let fnModel = cmpage.service(its[0]);     //通过某个模块的某个方法取下拉设置
-                    if(think.isFunction(fnModel[its[1]])){
-                        if(its.length > 2){
-                            parms = await fnModel[ its[1] ](its[2]);
-                        }else{
-                            parms = await fnModel[ its[1] ]();
+                    let fnModel = cmpage.service(its[0]); //通过某个模块的某个方法取下拉设置
+                    if (think.isFunction(fnModel[its[1]])) {
+                        if (its.length > 2) {
+                            parms = await fnModel[its[1]](its[2]);
+                        } else {
+                            parms = await fnModel[its[1]]();
                         }
                     }
                     //cmpage.debug(parms);
                     //如果设置有字段和连接字符的参数，形如： admin/code:getParmsByPid:3:c_ucode,c_name:-
-                    let fieldNames = its.length >3 ? its[3] : '';
-                    let joinStr =  its.length >4 ? its[4] : ',';
+                    let fieldNames = its.length > 3 ? its[3] : '';
+                    let joinStr = its.length > 4 ? its[4] : ',';
                     for (let parm of parms) {
-                        let text = its.length >3 ? cmpage.strGetValuesByPropertyName(parm, fieldNames, joinStr) : parm.c_name;
+                        let text = its.length > 3 ? cmpage.strGetValuesByPropertyName(parm, fieldNames, joinStr) : parm.c_name;
                         items.push(`<option value='${parm.id}' "  ${parm.id == md.c_default ? "selected" : ""} >${text}</option>`);
                     }
                 }
             }
         }
-//        cmpage.debug(items.join(' '));
+        //        cmpage.debug(items.join(' '));
         return items.join(' ');
     }
 
@@ -231,46 +235,49 @@ module.exports = class extends PageBase {
      * @param   {object} md 下拉项的设置，其中md.c_default为默认值，可以在调用本方法前修改
      * @param   {bool} [isBlank=false]   下拉项中是否增加空项，一般查询项是需要的
      */
-    async getOptionsTree(md, isBlank){
+    async getOptionsTree(md, isBlank) {
         let selectName = '';
         let items = [];
-        if (md.c_type.indexOf("select") ===0) {          //下拉框设置
+        if (md.c_type.indexOf("select") === 0) { //下拉框设置
             //cmpage.debug(md.c_memo);
-            if(isBlank){
+            if (isBlank) {
                 items.push(`<li data-id='0' data-pid='0' data-checked=true > (不选择) </li>`);
             }
-            if (md.c_memo.indexOf('select') ===0) {    //以select开头
+            if (md.c_memo.indexOf('select') === 0) { //以select开头
                 //let sql = md.c_memo.replace(/#group#/,think.session('groupID')).replace(/##/,"'");
                 let sql = md.c_memo;
                 let list = await this.query(sql);
-                for(let rec of list) {
-                    if(rec.id == md.c_default)  selectName += (think.isEmpty(selectName) ? '':',') +think.isEmpty(rec.name) ? rec.c_name : rec.name;
-                    items.push( `<li data-id='${rec.id}' data-pid='${think.isEmpty(rec.pid) ? rec.c_pid : rec.pid}' + ${rec.id == md.c_default} ? "data-checked=true" : ""}
+                for (let rec of list) {
+                    if (rec.id == md.c_default) selectName += (think.isEmpty(selectName) ? '' : ',') + think.isEmpty(rec.name) ? rec.c_name : rec.name;
+                    items.push(`<li data-id='${rec.id}' data-pid='${think.isEmpty(rec.pid) ? rec.c_pid : rec.pid}' + ${rec.id == md.c_default} ? "data-checked=true" : ""}
                             ${rec.checkDisalbed ? "data-chk-disabled=true  " : " "} ${list.indexOf(rec) == 0 ? "data-open=true " : " "} >${think.isEmpty(rec.name) ? rec.c_name : rec.name}</li>`);
                 }
-            }else {
-                let its = md.c_memo.trim().split(':');        //设置如： admin/code:getTreeList:3
+            } else {
+                let its = md.c_memo.trim().split(':'); //设置如： admin/code:getTreeList:3
                 let list = [];
-                let fnModel = cmpage.service(its[0]);     //通过某个模块的某个方法取下拉设置
-                if(think.isFunction(fnModel[its[1]])){
-                    if(its.length === 3){
+                let fnModel = cmpage.service(its[0]); //通过某个模块的某个方法取下拉设置
+                if (think.isFunction(fnModel[its[1]])) {
+                    if (its.length === 3) {
                         let parms = its[2].split(',');
-                        list = await fnModel[ its[1] ](...parms);
-                    }else{
-                        list = await fnModel[ its[1] ]();
+                        list = await fnModel[its[1]](...parms);
+                    } else {
+                        list = await fnModel[its[1]]();
                     }
                 }
                 //cmpage.debug(parms);
                 for (let rec of list) {
-                    if(rec.id == md.c_default)  selectName += (think.isEmpty(selectName) ? '':',') +think.isEmpty(rec.name) ? rec.c_name : rec.name;
-                    items.push( `<li data-id='${rec.id}' data-pid='${think.isEmpty(rec.pid) ? rec.c_pid : rec.pid}' + ${rec.id == md.c_default} ? "data-checked=true" : ""}
+                    if (rec.id == md.c_default) selectName += (think.isEmpty(selectName) ? '' : ',') + think.isEmpty(rec.name) ? rec.c_name : rec.name;
+                    items.push(`<li data-id='${rec.id}' data-pid='${think.isEmpty(rec.pid) ? rec.c_pid : rec.pid}' + ${rec.id == md.c_default} ? "data-checked=true" : ""}
                             ${rec.checkDisalbed ? "data-chk-disabled=true  " : " "} ${list.indexOf(rec) == 0 ? "data-open=true " : " "} >${think.isEmpty(rec.name) ? rec.c_name : rec.name}</li>`);
                 }
             }
         }
         //cmpage.debug(items.join(' '));
-        debug(md,'page.getOptionsTree - md');
-        return {selectName:selectName, options:items.join(' ')};
+        debug(md, 'page.getOptionsTree - md');
+        return {
+            selectName: selectName,
+            options: items.join(' ')
+        };
     }
 
     /**
@@ -278,41 +285,41 @@ module.exports = class extends PageBase {
      * @method  htmlGetBtnHeader
      * @return {string}  HTML片段
      */
-    async htmlGetBtnHeader(){
-      let html =[];
-      let htmlRight =[];
-      html.push(`<button type="submit" class="btn btn-default" id="btnSearch${this.mod.c_modulename}" data-icon="search">
+    async htmlGetBtnHeader() {
+        let html = [];
+        let htmlRight = [];
+        html.push(`<button type="submit" class="btn btn-default" id="btnSearch${this.mod.c_modulename}" data-icon="search">
       ${this.mod.user.listColumns === cmpage.ui.enumListColumns.MOBILE ? "":"查询"}</button>`);
-      if(!this.mod.parmsUrl.readonly){
-          for(let btn of this.modBtns){
-              btn.c_url = cmpage.objPropertysReplaceToStr(btn.c_url,this.mod.parmsUrl);
-              if(btn.c_object.indexOf('.Edit') >0 || btn.c_object.indexOf('.Add') >0){
-                  for(let p in this.mod.parmsUrl){
-                      //自动添加列表模块的URL参数
-                      if(!["modulename","id","c_id","_"].includes(p)){
-                          btn.c_url += `&${p}=${this.mod.parmsUrl[p]}`;
-                      }
-                  }
-              }
-              if(this.mod.user.listColumns === cmpage.ui.enumListColumns.MOBILE)    btn.c_label ='';
-                if(btn.c_isshow && btn.c_location <10 && this.isShowBtn(null,btn)){
-                    if(btn.c_location <6){
+        if (!this.mod.parmsUrl.readonly) {
+            for (let btn of this.modBtns) {
+                btn.c_url = cmpage.objPropertysReplaceToStr(btn.c_url, this.mod.parmsUrl);
+                if (btn.c_object.indexOf('.Edit') > 0 || btn.c_object.indexOf('.Add') > 0) {
+                    for (let p in this.mod.parmsUrl) {
+                        //自动添加列表模块的URL参数
+                        if (!["modulename", "id", "c_id", "_"].includes(p)) {
+                            btn.c_url += `&${p}=${this.mod.parmsUrl[p]}`;
+                        }
+                    }
+                }
+                if (this.mod.user.listColumns === cmpage.ui.enumListColumns.MOBILE) btn.c_label = '';
+                if (btn.c_isshow && btn.c_location < 10 && this.isShowBtn(null, btn)) {
+                    if (btn.c_location < 6) {
                         html.push(`<a class="${btn.c_class}" data-toggle="${btn.c_opentype}" data-options="${this.getReplaceToSpecialChar(btn.c_options)}"  data-on-close="page${this.mod.c_modulename}Edit_onClose"
                           data-icon="${btn.c_icon}" href="${this.getReplaceToSpecialChar(btn.c_url)}" data-title="${btn.c_title}" data-on-load="pageRecList_load"
                           onclick="${this.getReplaceToSpecialChar(btn.c_onclick)}">${btn.c_label}</a>`);
-                    }else if(btn.c_location >5 && btn.c_location <10){      //靠右放置
+                    } else if (btn.c_location > 5 && btn.c_location < 10) { //靠右放置
                         htmlRight.push(`<a class="${btn.c_class}" data-toggle="${btn.c_opentype}" data-options="${this.getReplaceToSpecialChar(btn.c_options)}"  data-on-close="page${this.mod.c_modulename}Edit_onClose"
                           data-icon="${btn.c_icon}" href="${this.getReplaceToSpecialChar(btn.c_url)}" data-title="${btn.c_title}" data-on-load="pageRecList_load"
                           onclick="${this.getReplaceToSpecialChar(btn.c_onclick)}">${btn.c_label}</a>`);
                     }
                 }
-          }
-      }
+            }
+        }
         //debug(this.mod.parmsUrl,'page.htmlGetBtnHeader - this.mod.parmsUrl');
-        if(this.mod.parmsUrl.moduleOpen !== 'div'){
+        if (this.mod.parmsUrl.moduleOpen !== 'div') {
             htmlRight.push(`<button type="button" class="btn btn-close " data-icon="close">${this.mod.user.listColumns === cmpage.ui.enumListColumns.MOBILE ? "":"关闭"}</button>`);
         }
-      return html.join(' ')+(htmlRight.length >0 ? '<div class="pull-right">'+htmlRight.join(' ')+'</div>': '');
+        return html.join(' ') + (htmlRight.length > 0 ? '<div class="pull-right">' + htmlRight.join(' ') + '</div>' : '');
     }
 
     /**
@@ -321,27 +328,27 @@ module.exports = class extends PageBase {
      * @return {string}  HTML片段
      * @param   {object} rec 每行的记录对象
      */
-    async htmlGetBtnList(rec){
-        let html=[];
-        let k=0;
-        let btnMore = '<div class="btn-group"> <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'
-            +'更多<span class="caret"></span> </button> <ul class="dropdown-menu" role="menu">';
-        for(let btn of this.modBtns){
+    async htmlGetBtnList(rec) {
+        let html = [];
+        let k = 0;
+        let btnMore = '<div class="btn-group"> <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' +
+            '更多<span class="caret"></span> </button> <ul class="dropdown-menu" role="menu">';
+        for (let btn of this.modBtns) {
             //if(btn.c_object == 'OrderApplyList.ToOrder') debug(btn,'page.htmlGetBtnList - btn');
-            if (btn.c_isshow && btn.c_location > 10 && this.isShowBtn(rec,btn)) {
-                k +=1;
-                if(k === this.mod.user.listBtns +1)  html.push(btnMore);
-                let btnUrl = this.getReplaceToSpecialChar(cmpage.objPropertysReplaceToStr(btn.c_url,rec));
-                let btnClick = this.getReplaceToSpecialChar(cmpage.objPropertysReplaceToStr(btn.c_onclick,rec));
+            if (btn.c_isshow && btn.c_location > 10 && this.isShowBtn(rec, btn)) {
+                k += 1;
+                if (k === this.mod.user.listBtns + 1) html.push(btnMore);
+                let btnUrl = this.getReplaceToSpecialChar(cmpage.objPropertysReplaceToStr(btn.c_url, rec));
+                let btnClick = this.getReplaceToSpecialChar(cmpage.objPropertysReplaceToStr(btn.c_onclick, rec));
                 let options = this.getReplaceToSpecialChar(btn.c_options);
-                btn.c_label = k >this.mod.user.listBtns ? (think.isEmpty(btn.c_label) ? btn.c_title : btn.c_label):btn.c_label;
-                if(btn.c_object.indexOf('.Edit') >0 || btn.c_object.indexOf('.View') >0){
+                btn.c_label = k > this.mod.user.listBtns ? (think.isEmpty(btn.c_label) ? btn.c_title : btn.c_label) : btn.c_label;
+                if (btn.c_object.indexOf('.Edit') > 0 || btn.c_object.indexOf('.View') > 0) {
                     btnUrl += `&listIds=${this.list.ids.join(',')}`;
                 }
-                if(btn.c_opentype =='_self' || btn.c_opentype == '_blank'){
+                if (btn.c_opentype == '_self' || btn.c_opentype == '_blank') {
                     html.push(` <a class="${btn.c_class}" target="${btn.c_opentype}" title="${btn.c_title}" href="${btnUrl}"
                                 onclick="${btnClick}" style="${btn.c_style}" >${btn.c_label}</a> `);
-                }else{
+                } else {
                     html.push(` <a type="button" class="${btn.c_class}" data-toggle="${btn.c_opentype}" data-options="${options}" title="${btn.c_title}"
                                  data-on-load="pageRecList_load"  data-on-close="page${this.mod.c_modulename}Edit_onClose" data-icon="${btn.c_icon}" href="${btnUrl}"
                                 onclick="${btnClick}" data-title="${btn.c_title}"  style="${btn.c_style}" >${btn.c_label}</a> `);
@@ -373,7 +380,7 @@ module.exports = class extends PageBase {
         //     }
         // }
 
-        if(k >this.mod.user.listBtns){
+        if (k > this.mod.user.listBtns) {
             html.push('</ul></div>');
         }
         return html.join(' ');
@@ -386,7 +393,7 @@ module.exports = class extends PageBase {
      */
     async htmlGetList() {
         let html = ['<thead> <tr >'];
-        let isShowBtns = this.mod.c_modulename.indexOf('Lookup') >0;
+        let isShowBtns = this.mod.c_modulename.indexOf('Lookup') > 0;
         for (let btn of this.modBtns) {
             if (btn.c_location > 9) {
                 isShowBtns = true;
@@ -394,14 +401,14 @@ module.exports = class extends PageBase {
             }
         }
         //debug(this.mod.user, 'page.htmlGetList - this.mod.user');
-        if(think.isEmpty(this.mod.user.listColumns)){
+        if (think.isEmpty(this.mod.user.listColumns)) {
             this.mod.user.listColumns = cmpage.ui.listColumns.MAX;
         }
-        let k =0;
+        let k = 0;
         for (let col of this.modCols) {
             if (col.c_isshow) {
                 k += 1;
-                if(k <= this.mod.user.listColumns) {
+                if (k <= this.mod.user.listColumns) {
                     html.push(`<th width="${col.c_width}" style="text-align:center;">${col.c_name} </th>`);
                 }
             }
@@ -422,19 +429,23 @@ module.exports = class extends PageBase {
         html.push('<tbody>');
         for (let item of this.list.data) {
             html.push(`<tr id="row${item[this.pk]}" data-id="${item[this.pk]}" onclick="return pageRowSelect(${item[this.pk]},this);" >`);
-            k =0;
+            k = 0;
             for (let col of this.modCols) {
                 if (col.c_isshow) {
                     k += 1;
-                    if(k > this.mod.user.listColumns) {    break;             }
+                    if (k > this.mod.user.listColumns) {
+                        break;
+                    }
                     //cmpage.debug(col);
                     html.push(`<td style="${item[this.pk] === 0 ? "font-weight:bold;" + col.c_style : col.c_style}" >`);
-                    if (item[this.pk] !== 0 ) {
+                    if (item[this.pk] !== 0) {
                         if (!think.isEmpty(col.c_format)) {
                             if (col.c_coltype === "float") {
-                                html.push(cmpage.formatNumber(Number(item[col.c_column]), {pattern: col.c_format}));
-                            } else if(col.c_coltype === "timestamp" || col.c_coltype === "date") {
-                                if(!think.isEmpty(item[col.c_column]))  html.push(cmpage.datetime(item[col.c_column], col.c_format));
+                                html.push(cmpage.formatNumber(Number(item[col.c_column]), {
+                                    pattern: col.c_format
+                                }));
+                            } else if (col.c_coltype === "timestamp" || col.c_coltype === "date") {
+                                if (!think.isEmpty(item[col.c_column])) html.push(cmpage.datetime(item[col.c_column], col.c_format));
                             }
                         } else if (col.c_type === "checkbox") {
                             html.push(`<input type="checkbox"  data-toggle="icheck" value="1" disabled  ${item[col.c_column] || item[col.c_column]===1 ? "checked" : ""} />`);
@@ -442,12 +453,12 @@ module.exports = class extends PageBase {
                             //类似： flow/act_assign:getLinkNameById:#c_type#
                             //debug(item,'page.htmlGetList - replace.item');
                             let templete = cmpage.objPropertysReplaceToStr(col.c_memo, item);
-                            html.push(await this.getReplaceText(item[col.c_column],templete));
-                        }else if(col.c_type === "html"){
-                            let input = think.isEmpty(col.c_memo) ? md[col.c_column] : this.cmpage.objPropertysReplaceToStr(col.c_memo, item); 
+                            html.push(await this.getReplaceText(item[col.c_column], templete));
+                        } else if (col.c_type === "html") {
+                            let input = think.isEmpty(col.c_memo) ? md[col.c_column] : this.cmpage.objPropertysReplaceToStr(col.c_memo, item);
                             //debug(input,'page.htmlGetView - input.html');
                             html.push(input);
-                        }else if(col.c_type === "pic"){
+                        } else if (col.c_type === "pic") {
                             html.push(`<img width=100 height=100 src='${item[col.c_column]}' alt='${item[col.c_column]}' />`);
                         } else {
                             if (!think.isEmpty(col.c_column)) {
@@ -463,14 +474,14 @@ module.exports = class extends PageBase {
             }
             if (isShowBtns) {
                 html.push('<td >');
-                let btnHtml =await this.htmlGetBtnList(item);
+                let btnHtml = await this.htmlGetBtnList(item);
                 //cmpage.debug(btnHtml);
                 html.push(btnHtml);
                 html.push('</td >');
             }
             html.push('</tr >');
         }
-        html.push(await this.htmlGetListSumRow(isShowBtns));  //合计
+        html.push(await this.htmlGetListSumRow(isShowBtns)); //合计
         html.push('</tbody >');
 
         return html.join(' ');
@@ -482,17 +493,17 @@ module.exports = class extends PageBase {
      * @method  isShowBtn
      * @return {boolean} 是否显示
      */
-    isShowBtn(rec,btn){
-        if(!think.isEmpty(btn.c_memo)) {
+    isShowBtn(rec, btn) {
+        if (!think.isEmpty(btn.c_memo)) {
             let sets = cmpage.objFromString(cmpage.objPropertysReplaceToStr(btn.c_memo, rec));
-            if (!think.isEmpty(sets.isShow) ) {
+            if (!think.isEmpty(sets.isShow)) {
                 //cmpage.debug(sets, 'page.isShowBtn - sets');
                 //cmpage.debug(rec, 'page.isShowBtn - rec');
                 return eval("(" + sets.isShow + ")");
             }
         }
         //if(btn.c_object.indexOf('.View') == -1 && this.mod.c_modulename.indexOf('Lookup') >0 )  return false;
-        if(btn.c_object.indexOf('.View') == -1 && this.mod.parmsUrl.readonly == 1)  return false;
+        if (btn.c_object.indexOf('.View') == -1 && this.mod.parmsUrl.readonly == 1) return false;
         return true;
     }
 
@@ -502,30 +513,30 @@ module.exports = class extends PageBase {
      * @method  isShowBtn
      * @return {string} 合计行的HTML片段
      */
-    htmlGetListSumRow(isShowBtns){
-        if(this.list.data.length <=0)   return '';
+    htmlGetListSumRow(isShowBtns) {
+        if (this.list.data.length <= 0) return '';
         let html = [];
         let isSum = false;
-        for(let col of this.modCols){
-            if(!col.c_isshow)   continue;
-            if(col.c_type_sum == 'none'){
+        for (let col of this.modCols) {
+            if (!col.c_isshow) continue;
+            if (col.c_type_sum == 'none') {
                 html.push('<td> </td>');
-            }else{
+            } else {
                 isSum = true;
-                if(col.c_type_sum == 'text'){
+                if (col.c_type_sum == 'text') {
                     html.push(`<td style="text-align:center;font-weight:bold;">${col.c_memo}</td>`);
                     continue;
                 }
                 let sum = 0;
-                for(let rec of this.list.data){
+                for (let rec of this.list.data) {
                     sum += Number(rec[col.c_column]);
                 }
-                if(col.c_type_sum == 'avg') sum = sum / this.list.data.length;
-                debug(cmpage.formatNumber(sum,col.c_format),'page.htmlGetListSumRow - cmpage.formatNumber(sum,col.c_format)');
+                if (col.c_type_sum == 'avg') sum = sum / this.list.data.length;
+                debug(cmpage.formatNumber(sum, col.c_format), 'page.htmlGetListSumRow - cmpage.formatNumber(sum,col.c_format)');
                 html.push(`<td style="text-align:right;font-weight:bold;">${cmpage.formatNumber(sum,{pattern:col.c_format})}</td>`);
             }
         }
-        if(isSum)   return `<tr>${html.join('')}${isShowBtns ? '<td> </td>':'' }</tr>`;
+        if (isSum) return `<tr>${html.join('')}${isShowBtns ? '<td> </td>':'' }</tr>`;
         return '';
     }
 
@@ -538,11 +549,11 @@ module.exports = class extends PageBase {
         let html = [];
         let md = await this.getDataRecord();
         //debug(md,'page.htmlGetEdit - md');
-        if(think.isEmpty(md)){
-            return '';            
-        }   
+        if (think.isEmpty(md)) {
+            return '';
+        }
         //子类中可以重写此处之前涉及的方法来改变URL参数值等，例如 getDataRecord， 参见 docu/docu_list
-        if(this.mod.parmsUrl.readonly){
+        if (this.mod.parmsUrl.readonly) {
             this.modCols = await cmpage.service('cmpage/module').getModuleCol(this.mod.id);
             //debug(this.mod,'page.htmlGetEdit - this.mod');
             return `<table id="pageViewData" class="table table-condensed table-hover" width="100%"><tbody>${await this.htmlGetView()}</tbody> </table> `;
@@ -555,47 +566,51 @@ module.exports = class extends PageBase {
         // cmpage.debug(md);
 
         //debug(this.modEdits,'page.htmlGetEdit - modEdits')
-        for(let col of this.modEdits){
-            if (!col.c_editable || col.c_column === this.pk ) {  continue; }
-            let colValue = md[col.c_column];            
-            if(col.c_desc.indexOf('fn:')===0){    //非数据库字段
-                let its = col.c_desc.trim().split(':');        //设置如： fn:admin/code:getNameByPid:c_status
-                let fnModel = cmpage.service(its[1]);     //通过某个模块的某个方法取下拉设置
-                if(think.isFunction(fnModel[its[2]])){
-                    if(its.length === 4){
-                        colValue = await fnModel[ its[2] ]( md[its[3]]);
-                    }else{
-                        colValue = await fnModel[ its[2] ]();
+        for (let col of this.modEdits) {
+            if (!col.c_editable || col.c_column === this.pk) {
+                continue;
+            }
+            let colValue = md[col.c_column];
+            if (col.c_desc.indexOf('fn:') === 0) { //非数据库字段
+                let its = col.c_desc.trim().split(':'); //设置如： fn:admin/code:getNameByPid:c_status
+                let fnModel = cmpage.service(its[1]); //通过某个模块的某个方法取下拉设置
+                if (think.isFunction(fnModel[its[2]])) {
+                    if (its.length === 4) {
+                        colValue = await fnModel[its[2]](md[its[3]]);
+                    } else {
+                        colValue = await fnModel[its[2]]();
                     }
                 }
-                debug(colValue,'page.htmlGetEdit.fn - colValue');
+                debug(colValue, 'page.htmlGetEdit.fn - colValue');
             }
 
-            if(col.c_coltype === 'timestamp'){  colValue = think.datetime(colValue); }
-            if (col.c_type === "hidden" ) {
+            if (col.c_coltype === 'timestamp') {
+                colValue = think.datetime(colValue);
+            }
+            if (col.c_type === "hidden") {
                 html.push(`<input id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" type="hidden" value="${colValue}" />`);
                 continue;
-            }else if ( (col.c_type == 'areaSelect' || col.c_type == 'codeSelect' ) && think.isEmpty(col.c_memo)){
+            } else if ((col.c_type == 'areaSelect' || col.c_type == 'codeSelect') && think.isEmpty(col.c_memo)) {
                 continue;
             }
 
             col.c_format = col.c_format.trim();
             col.c_width = this.mod.user.listColumns === cmpage.ui.enumListColumns.MOBILE ? 20 : col.c_width;
             html.push(` <label  class="row-label" >${col.c_name}: </label>`);
-            let input ='';
-            if (col.c_type === "datetime" ||col.c_type === "date") {                
+            let input = '';
+            if (col.c_type === "datetime" || col.c_type === "date") {
                 input += `<input type="text" id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" value="${ cmpage.datetime(colValue,think.isEmpty(col.c_format) ? 'yyyy-MM-dd':col.c_format)}"
                     ${col.c_type === "readonly" ? "disabled":""} data-toggle="datepicker" data-pattern="${think.isEmpty(col.c_format) ? 'yyyy-MM-dd':col.c_format}"  size="15" />`;
                 // if(col.c_column === 'c_time_end')   debug(input,'page.editHtml - datetime');
-            } else if (col.c_type === "select" || col.c_type === "selectMultiple" ) {
+            } else if (col.c_type === "select" || col.c_type === "selectMultiple") {
                 input += `<select id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" data-toggle="selectpicker" 
                     ${col.c_isrequired ? "data-rule=required" : ""}  ${col.c_type === "selectMultiple" ? " multiple":""} >`;
                 col.c_default = colValue;
-                input += await this.getOptions(col,false);
+                input += await this.getOptions(col, false);
                 input += '</select>';
             } else if (col.c_type === "selectTree" || col.c_type === "selectTreeMultiple") {
                 col.c_default = colValue;
-                let treeOptions = await this.getOptionsTree(col,false);
+                let treeOptions = await this.getOptionsTree(col, false);
                 input += `<input id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}"  type="hidden" value="${colValue}" />
                     <input name="${col.c_column}Show" type="text" size="25" value="${treeOptions.selectName}" data-toggle="selectztree" data-tree="#selectTree${this.mod.c_modulename + col.c_column}"   readonly />
                     <ul id="selectTree${this.mod.c_modulename + col.c_column}" class="ztree hide" data-toggle="ztree" data-expand-all="false" data-check-enable="true"
@@ -610,62 +625,68 @@ module.exports = class extends PageBase {
                     data-width="800" data-height="600" data-toggle="lookup" data-title="${col.c_name} 选择" data-url="${this.getReplaceToSpecialChar(col.c_memo)}" readonly="readonly" />
                       <!--<a class="bjui-lookup" href="javascript:;" ><i class="fa fa-search"></i></a>--> `;
             } else if (col.c_type === "fileUpload") {
-                let options = {       pick: {label: '点击选择文件'},
-                                      server: '/cmpage/page/upload_file',
-                                      fileNumLimit: 1,
-                                      fileSingleSizeLimit: 1024*1024*5,
-                                      formData: {link_type:this.mod.c_table,inputName:col.c_column},
-                                      required: col.c_isrequired,
-                                      uploaded: '',
-                                      basePath: '',
-                                      accept: {
-                                          title: '文件',
-                                          extensions: this.mod.parmsUrl.c_type==0 ? '*': 'jpg,png,jpeg,gif,bmp',
-                                          mimeTypes: this.mod.parmsUrl.c_type==0 ? '.*': '.jpg,.png,.jpeg,.gif,.bmp'
-                                      }
-                                };
-                if(this.cmpage.isImageFile(colValue)){
+                let options = {
+                    pick: {
+                        label: '点击选择文件'
+                    },
+                    server: '/cmpage/page/upload_file',
+                    fileNumLimit: 1,
+                    fileSingleSizeLimit: 1024 * 1024 * 5,
+                    formData: {
+                        link_type: this.mod.c_table,
+                        inputName: col.c_column
+                    },
+                    required: col.c_isrequired,
+                    uploaded: '',
+                    basePath: '',
+                    accept: {
+                        title: '文件',
+                        extensions: this.mod.parmsUrl.c_type == 0 ? '*' : 'jpg,png,jpeg,gif,bmp',
+                        mimeTypes: this.mod.parmsUrl.c_type == 0 ? '.*' : '.jpg,.png,.jpeg,.gif,.bmp'
+                    }
+                };
+                if (this.cmpage.isImageFile(colValue)) {
                     input += `<img width=100 height=100 src='${colValue}' alt='${colValue}' />`
                 }
                 input += `<input type="file" name="${col.c_column}" data-name="${col.c_column}" data-toggle="webuploader" data-options="${cmpage.objToString(options)}" >`;
-            }else if (col.c_type == "areaSelect"){
-                if(!think.isEmpty(col.c_memo)){
+            } else if (col.c_type == "areaSelect") {
+                if (!think.isEmpty(col.c_memo)) {
                     input += await this.htmlGetAreaSelect(col.c_memo, col.c_column, this.rec);
                 }
-            }else if (col.c_type == "codeSelect"){
-                if(!think.isEmpty(col.c_memo)){
+            } else if (col.c_type == "codeSelect") {
+                if (!think.isEmpty(col.c_memo)) {
                     input += await this.htmlGetCodeSelect(col.c_memo, col.c_column, this.rec);
                 }
-            } else if(col.c_type === "kindeditor"){
+            } else if (col.c_type === "kindeditor") {
                 input += `<div style="display: inline-block; vertical-align: middle;"> <textarea name="${col.c_column}" style="width: 960px;height:640px;"
                         data-toggle="kindeditor" data-minheight="460"> ${colValue}  </textarea> </div>`;
             } else if (col.c_type == "checkbox") {
                 input += `<input id="${this.mod.c_modulename + col.c_column}" type="checkbox" name="${col.c_column}" data-toggle="icheck" value="1" data-label="${col.c_memo}"
                     ${colValue == "1" ? "checked" : ""} />`;
-            // }else if (col.c_type === "readonly") {
-            //     input += `<input id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" type="text" size="${col.c_width}" value="${colValue}"  readonly="readonly"  />`; // style=background-color:#fde5d4;
+                // }else if (col.c_type === "readonly") {
+                //     input += `<input id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" type="text" size="${col.c_width}" value="${colValue}"  readonly="readonly"  />`; // style=background-color:#fde5d4;
             } else if (col.c_type == "number") {
                 input += `<input id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" type="text" size="${col.c_width}" value="${colValue}" onkeyup="return testNum(this);" />`;
-            }else if (col.c_type === "readonly") {      //readonly 和 readonlyReplace 类型合并
+            } else if (col.c_type === "readonly") { //readonly 和 readonlyReplace 类型合并
                 //debug(col,'page.htmlGetEdit - col readonlyReplace');
                 //debug(md,'this.mod.getHtmlEdit --- md readonlyReplace');
-                if(think.isEmpty(col.c_memo)){
+                if (think.isEmpty(col.c_memo)) {
                     input += `<input id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" type="text" size="${col.c_width}" value="${colValue}"  readonly="readonly"  />`; // style=background-color:#fde5d4
-                }else{
+                } else {
                     let txt = await this.getReplaceText(colValue, col.c_memo);
                     //debug(txt+' - value:'+colValue,'page.htmlGetEdit - txt,colValue readonlyReplace');
                     input += `<input name="${col.c_column}" type="hidden"  value="${colValue}"  readonly="readonly"  />`;
                     input += `<input name="${col.c_column}_text" type="text" size="${col.c_width}" value="${txt}"  readonly="readonly"  />`; // style=background-color:#fde5d4;
                 }
-            }else if(col.c_column !=='c_province' && col.c_column !=='c_city'){
+            } else if (col.c_column !== 'c_province' && col.c_column !== 'c_city') {
                 input += `<input id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" type="${col.c_type}" size="${col.c_width}" value="${colValue}"
                     ${col.c_isrequired ? "data-rule=required;" + col.c_memo : (think.isEmpty(col.c_memo) ? "" : "data-rule=" + col.c_memo)} />`;
             }
-            if (col.c_type !== "areaSelect"){
+            if (col.c_type !== "areaSelect") {
                 input += col.c_suffix;
             }
-            if(input.length >0){
-                input = await this.htmlGetEditInput(col,colValue,input);
+            if (input.length > 0) {
+                input = await this.htmlGetEditInput(col, colValue, input);
                 html.push(input);
                 //debug(input,'page.htmlGetEdit - input-'+col.c_column)
             }
@@ -683,7 +704,7 @@ module.exports = class extends PageBase {
      * @params {string} colValue Input的值
      * @params {string} input Edit页面的Input的HTML片段
      */
-    async htmlGetEditInput(col,colValue,input) {
+    async htmlGetEditInput(col, colValue, input) {
         let html = `<div id="field${this.mod.c_modulename + col.c_column}"  class="row-input">${input}</div>`;
         //增加模块编辑页面的操作逻辑，也可以配合页面js方法
 
@@ -700,32 +721,32 @@ module.exports = class extends PageBase {
         let html = [];
         let parmsUrl = this.mod.parmsUrl;
 
-        if(think.isEmpty(this.mod.c_other.editHideCloseBtn)){
+        if (think.isEmpty(this.mod.c_other.editHideCloseBtn)) {
             html.push('<li><button type="button" class="btn-close" data-icon="close">关闭</button></li>');
         }
         //debug(task,'page.htmlGetEditBtns - task');
         let defaultSaveBtn = '<li ><button type="submit" class="btn-green"  data-icon="save">保存</button></li>';
-        if(!think.isEmpty(this.mod.c_module_slave.modulename)){
+        if (!think.isEmpty(this.mod.c_module_slave.modulename)) {
             //主从页面的按钮处理
             let reloadUrl = `/cmpage/page/edit_ms?modulename=${this.mod.c_modulename}&listIds=`;
-            for(let p in this.mod.parmsUrl){
+            for (let p in this.mod.parmsUrl) {
                 //加入URL参数
-                if(!['modulename',this.pk,'listIds','_'].includes(p)){
+                if (!['modulename', this.pk, 'listIds', '_'].includes(p)) {
                     reloadUrl += `&${p}=${this.mod.parmsUrl[p]}`;
                 }
             }
             defaultSaveBtn = `<li ><button type="button" class="btn-green" onclick="return pageSaveMs('${this.mod.c_modulename}','${reloadUrl}',
                 ${this.mod.editID},'${this.pk}');"  data-icon="save">保存</button></li>`;
         }
-       
+
         //debug(defaultSaveBtn,'page.htmlGetEditBtns - defaultSaveBtn');
         //if(think.isEmpty(this.mod.c_other.editHideSaveBtn) && !this.mod.parmsUrl.readonly && !this.rec.hasOwnProperty('c_task') ) {
-        if(think.isEmpty(this.mod.c_other.editHideSaveBtn) && !this.mod.parmsUrl.readonly 
-            && this.rec.c_act !==null && (this.rec.c_act == 0 || this.rec.c_act === this.proc.c_act_start )) {
+        if (think.isEmpty(this.mod.c_other.editHideSaveBtn) && !this.mod.parmsUrl.readonly &&
+            this.rec.c_act !== null && (this.rec.c_act == 0 || this.rec.c_act === this.proc.c_act_start)) {
             //不隐藏保存按钮，不是只读页面，没有关联的工作流ID
             html.push(defaultSaveBtn);
         }
-        debug(this.rec,'page.htmlGetEditBtns - this.rec');
+        debug(this.rec, 'page.htmlGetEditBtns - this.rec');
 
         // if(!think.isEmpty(this.rec['c_task']) && this.rec.c_task >0){
         //     let task =  await cmpage.service('flow/task').getTask(this.rec.c_task > 0 ? this.rec.c_task: parmsUrl.taskID);
@@ -747,10 +768,11 @@ module.exports = class extends PageBase {
         //     }
         // }
 
-        if(this.mod.editID >0 && think.isEmpty(this.mod.c_module_slave.modulename)) {
+        if (this.mod.editID > 0 && think.isEmpty(this.mod.c_module_slave.modulename)) {
             let listIds = parmsUrl.listIds.split(',');
             if (listIds.length > 0) {
-                let prevID = 0, nextID = 0;
+                let prevID = 0,
+                    nextID = 0;
                 let k = 0;
                 for (let id of listIds) {
                     if (id == this.mod.editID) {
@@ -771,12 +793,12 @@ module.exports = class extends PageBase {
             }
         }
         //如果和流程相关，则显示流程节点的按钮
-        if(!think.isEmpty(this.proc)){
+        if (!think.isEmpty(this.proc)) {
             //debug(this.proc,'page.htmlGetBtnList - this.proc');
             let actBtns = [];
-            if(this.proc.c_type === cmpage.enumProcType.STATUSCHANGE){
+            if (this.proc.c_type === cmpage.enumProcType.STATUSCHANGE) {
                 //直接取模板设置的按钮
-                if(this.rec.c_act > 0 ){
+                if (this.rec.c_act > 0) {
                     actBtns = await this.htmlGetActBtns(this.rec);
                 }
             }
@@ -786,17 +808,17 @@ module.exports = class extends PageBase {
             //         actBtns = await this.htmlGetTaskActBtns(this.rec);
             //     }
             // }
-            for(let btn of actBtns){
+            for (let btn of actBtns) {
                 btn = `<li class="left" >${btn}</li>`;
             }
-            if(!think.isEmpty(actBtns))  html.push(actBtns.join(''));
+            if (!think.isEmpty(actBtns)) html.push(actBtns.join(''));
         }
 
         return html.join('');
     }
     /**
-    * 取状态流转类型的流程节点相关的按钮设置，组合成按钮的HTML输出</br>
-    * 考虑到按钮输出和业务关联度大，定义在此处
+     * 取状态流转类型的流程节点相关的按钮设置，组合成按钮的HTML输出</br>
+     * 考虑到按钮输出和业务关联度大，定义在此处
      * @method  htmlGetActBtns
      * @return {Array} 按钮数组
      */
@@ -805,7 +827,9 @@ module.exports = class extends PageBase {
         //debug(rec,'page.htmlGetActBtns - rec');
         let actModel = cmpage.service('flow/act');
         let act = await actModel.getActById(rec.c_act);
-        if(think.isEmpty(act)){    return []; }
+        if (think.isEmpty(act)) {
+            return [];
+        }
 
         //debug(act,'page.htmlGetActBtns - act');
 
@@ -818,49 +842,48 @@ module.exports = class extends PageBase {
         //如果主业务模块实现类已经定义了 getStatusById方法，则调用，否则，直接从数据库中取业务记录状态
         //如果主业务模块操作的数据表位于和框架不同的数据库，则需要定义 getStatusById 方法
         //debug(this.proc,'page.htmlGetActBtns - this.proc');
-        let linkRec ={};
+        let linkRec = {};
         linkRec.id = think.isEmpty(this.mod.parmsUrl.linkID) ? rec[this.pk] : this.mod.parmsUrl.linkID;
         let linkModel = cmpage.service(this.proc.c_link_model);
         linkModel.mod = await cmpage.service('cmpage/module').getModuleByName(this.proc.linkModulename);
         await linkModel.initPage();
-        if(think.isEmpty(linkModel['getStatusById'])){
+        if (think.isEmpty(linkModel['getStatusById'])) {
             linkRec = await linkModel.model(this.proc.c_link_type).where(`${linkModel.pk}=${linkRec.id}`).find();
-        }else{
+        } else {
             linkRec = await linkModel.getStatusById(linkRec.id);
         }
         linkRec.id = think.isEmpty(this.mod.parmsUrl.linkID) ? rec[this.pk] : this.mod.parmsUrl.linkID;
-        debug(linkRec,'page.htmlGetActBtns - linkRec');
-        debug(act,'page.htmlGetActBtns - act');
+        debug(linkRec, 'page.htmlGetActBtns - linkRec');
+        debug(act, 'page.htmlGetActBtns - act');
 
-        if(act.id >0){
+        if (act.id > 0) {
             //debug(form,'page.htmlGetActBtns - form');
             //if(form.hasOwnProperty('modulename') && form['modulename'] == this.mod.c_modulename ){
-            if(linkRec.c_status != act.c_domain_st){
+            if (linkRec.c_status != act.c_domain_st) {
                 //debug(linkRec,'page.htmlGetActBtns - linkRec');
                 //验证当前用户是否有该节点的权限
-                if(this.mod.c_modulename!='Appr' && think.isEmpty(this.mod.parmsUrl.linkModulename)){
-                    let actAssign = await cmpage.service('flow/act_assign').getAssignByUser(act.id,this.mod.user, createUserID, prevUserID);
-                    debug(actAssign,'page.htmlGetActBtns - actAssign');
-                    if(think.isEmpty(actAssign))   return [];
+                if (this.mod.c_modulename != 'Appr' && think.isEmpty(this.mod.parmsUrl.linkModulename)) {
+                    let actAssign = await cmpage.service('flow/act_assign').getAssignByUser(act.id, this.mod.user, createUserID, prevUserID);
+                    debug(actAssign, 'page.htmlGetActBtns - actAssign');
+                    if (think.isEmpty(actAssign)) return [];
                 }
 
                 //本表单是流程节点需要打开的表单
                 let btns = cmpage.arrFromString(act.c_form_btn);
-                for(let btn of btns){
+                for (let btn of btns) {
                     btn.label = think.isEmpty(btn['label']) ? act.c_name : btn.label;
                     btn.class = think.isEmpty(btn['class']) ? 'btn-green' : btn.class;
                     btn.icon = think.isEmpty(btn['icon']) ? 'cogs' : btn.icon;
-                    if(!think.isEmpty(btn['onclick'])){
-                        btn.onclick = btn.onclick.replace(/#procID#/g,this.proc.id).replace(/#actID#/g,act.id);
+                    if (!think.isEmpty(btn['onclick'])) {
+                        btn.onclick = btn.onclick.replace(/#procID#/g, this.proc.id).replace(/#actID#/g, act.id);
                         html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}" onclick="${btn.onclick}">${btn.label}</button>`);
-                    }
-                    else if(!think.isEmpty(btn['url'])){
+                    } else if (!think.isEmpty(btn['url'])) {
                         btn.title = think.isEmpty(btn['title']) ? btn.label : btn.title;
                         btn.opentype = think.isEmpty(btn['opentype']) ? 'dialog' : btn.opentype;
-                        btn.url = btn.url.replace(/#procID#/g,this.proc.id).replace(/#actID#/g,act.id);
+                        btn.url = btn.url.replace(/#procID#/g, this.proc.id).replace(/#actID#/g, act.id);
                         html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}" data-toggle="${btn.opentype}"
                             data-options="{id:'flowDialog', url:'${btn.url}', title:'${btn.title}'}">${btn.label}</button>`);
-                    }else {
+                    } else {
                         html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}" data-toggle="doajax"
                             data-options="{url:'/cmpage/page/update_status?modulename=${this.mod.c_modulename}&id=${rec[this.pk]}&actID=${act.id}&status=${act.c_domain_st}',
                             confirmMsg:'是否确定要${btn.label}？'}">${btn.label}</button>`);
@@ -869,56 +892,56 @@ module.exports = class extends PageBase {
                 // debug(linkRec,'page.htmlGetActBtns - linkRec');
                 // debug(this.mod,'page.htmlGetActBtns - this.mod');
                 // debug(this.proc,'page.htmlGetActBtns - this.proc');
-                if (linkRec.id >0 && this.proc.c_link_type != this.mod.c_table) {
-                    if(linkRec.c_status == act.c_domain_st) {
+                if (linkRec.id > 0 && this.proc.c_link_type != this.mod.c_table) {
+                    if (linkRec.c_status == act.c_domain_st) {
                         html.push('<label style="color: red;">本操作已经执行完毕！</label>');
-                    }else{
+                    } else {
                         //默认的保存或者审核通过按钮
                         let reloadUrl = `/cmpage/page/${think.isEmpty(this.mod.c_module_slave.modulename) ? 'edit':'edit_ms'}?modulename=${this.mod.c_modulename}&procID=${
                             this.proc.id}&actID=${act.id}&status=${act.c_domain_st}&linkID=${linkRec.id}&linkType=${this.proc.c_link_type}&linkModel=${this.proc.c_link_model}&listIds=`;
-                        debug(reloadUrl,'page.htmlGetActBtns - reloadUrl');
+                        debug(reloadUrl, 'page.htmlGetActBtns - reloadUrl');
                         html.push(`<button type="button" class="btn-green"  data-icon="save"
                             onclick="return pageSaveByAct('${this.mod.c_modulename}','${reloadUrl}',
                             '${think.isEmpty(this.mod.c_other.editSaveAfter) ? '' : this.mod.c_other.editSaveAfter}','${this.proc.c_link_model}');">
                             ${think.isEmpty(this.mod.c_other.editSaveLabel) ? '保存' : this.mod.c_other.editSaveLabel}</button>`);
                     }
                 }
-            }else if(this.proc.c_link_type == this.mod.c_table){
+            } else if (this.proc.c_link_type == this.mod.c_table) {
                 //本表单是流程的关联主表单，则显示本流程节点的调用按钮
                 //找到当前节点去向节点，并显示调用该节点的按钮，可能有多个去向
                 let toActs = await cmpage.service('flow/act').getToActsFromId(this.proc.id, act.id);
-                debug(toActs,'page.htmlGetActBtns - toActs');
-                for(let toAct of toActs){
+                debug(toActs, 'page.htmlGetActBtns - toActs');
+                for (let toAct of toActs) {
                     //验证当前用户是否有该节点的权限
-                    let actAssign = await cmpage.service('flow/act_assign').getAssignByUser(toAct.id,this.mod.user, createUserID,prevUserID);
+                    let actAssign = await cmpage.service('flow/act_assign').getAssignByUser(toAct.id, this.mod.user, createUserID, prevUserID);
                     //debug(actAssign,'page.htmlGetActBtns - actAssign');
-                    if(think.isEmpty(actAssign))   continue;
+                    if (think.isEmpty(actAssign)) continue;
 
-                    let btn = think.isEmpty(toAct.c_call_btn) ? {}:eval(`(${toAct.c_call_btn})`);
+                    let btn = think.isEmpty(toAct.c_call_btn) ? {} : eval(`(${toAct.c_call_btn})`);
                     btn.label = think.isEmpty(btn['label']) ? toAct.c_name : btn.label;
                     btn.class = think.isEmpty(btn['class']) ? 'btn-green' : btn.class;
                     btn.icon = think.isEmpty(btn['icon']) ? 'cogs' : btn.icon;
-                    let form = think.isEmpty(toAct.c_form) ? {} : eval("("+ toAct.c_form +")");
+                    let form = think.isEmpty(toAct.c_form) ? {} : eval("(" + toAct.c_form + ")");
                     form.title = think.isEmpty(btn['title']) ? btn.label : btn.title;
                     form.opentype = think.isEmpty(btn['opentype']) ? 'dialog' : btn.opentype;
-                    if(think.isEmpty(toAct.c_form)){
+                    if (think.isEmpty(toAct.c_form)) {
                         //默认是业务主模块，则修改本身状态
                         html.push(` <button type="button" class="${btn.class}" data-icon="${btn.icon}" data-toggle="doajax"
                             data-options="{url:'/cmpage/page/update_status?modulename=${this.mod.c_modulename}&id=${rec[this.pk]}&actID=${toAct.id}&status=${toAct.c_domain_st}',
                             confirmMsg:'是否确定要${btn.label}？'}">${btn.label}</button>`);
-                    }else{
-                        if(!think.isEmpty(form['modulename'])){
+                    } else {
+                        if (!think.isEmpty(form['modulename'])) {
                             //如果被调用节点对应 form.modulename 也是业务主模块，则修改本身状态
-                            if(form.modulename === this.mod.c_modulename){
+                            if (form.modulename === this.mod.c_modulename) {
                                 html.push(` <button type="button" class="${btn.class}" data-icon="${btn.icon}" data-toggle="doajax"
                                     data-options="{url:'/cmpage/page/update_status?modulename=${this.mod.c_modulename}&id=${rec[this.pk]}&actID=${toAct.id}&status=${toAct.c_domain_st}',
                                     confirmMsg:'是否确定要${btn.label}？'}">${btn.label}</button>`);
                                 continue;
-                            }else{
+                            } else {
                                 form.url = `/cmpage/page/edit?modulename=${form['modulename']}&id=0&procID=${toAct.c_proc}&actID=${toAct.id}&status=${toAct.c_domain_st}&linkID=${rec[this.pk]}&linkType=${this.mod.c_table}&linkModulename=${this.mod.c_modulename}`;
                             }
                         }
-                        form.url = form.url.replace(/#actID#/g,toAct.id);
+                        form.url = form.url.replace(/#actID#/g, toAct.id);
                         html.push(` <button type="button" class="${btn.class}" data-icon="${btn.icon}" data-toggle="${form.opentype}"
                                 data-options="{id:'flowDialog', url:'${form.url}', title:'${form.title}', mask:true}">${btn.label}</button>`)
                     }
@@ -939,58 +962,60 @@ module.exports = class extends PageBase {
     async htmlGetView(isPrintStyle) {
         isPrintStyle = !think.isEmpty(isPrintStyle);
         let html = [];
-        if(this.mod.editID <=0){
-        return '<tr><td>----</td><td>----</td><td>----</td><td>该数据不存在！</td><td>----</td><td>----</td><td>----</td></tr>';
+        if (this.mod.editID <= 0) {
+            return '<tr><td>----</td><td>----</td><td>----</td><td>该数据不存在！</td><td>----</td><td>----</td><td>----</td></tr>';
         }
         let list = await this.query(`select ${this.getListFields()} from ${this.mod.c_datasource} where ${this.pk}=${this.mod.editID}`);
-        let md =list[0];
-            //cmpage.debug(md);
+        let md = list[0];
+        //cmpage.debug(md);
         html.push('<tr>');
-        let k =0;
-        for(let col of this.modCols){
-        if (!col.c_isview ){
-            continue;
-        }
-        //html.push(`<td ${think.isEmpty(col.c_style) ? "":"style=" + col.c_style}>
-        if(isPrintStyle){
-            html.push(`<td class="td3" width="21%"> ${col.c_name}</td><td>`);
-        }else{
-            html.push(`<td> <label class="control-label x85">${col.c_name}: </label>`);
-        }
-        if (col.c_type === "checkbox"){
-            //   if(isPrintStyle){
-            //       html.push(md[col.c_column] ? "是" : "否");
-            //   }else{
+        let k = 0;
+        for (let col of this.modCols) {
+            if (!col.c_isview) {
+                continue;
+            }
+            //html.push(`<td ${think.isEmpty(col.c_style) ? "":"style=" + col.c_style}>
+            if (isPrintStyle) {
+                html.push(`<td class="td3" width="21%"> ${col.c_name}</td><td>`);
+            } else {
+                html.push(`<td> <label class="control-label x85">${col.c_name}: </label>`);
+            }
+            if (col.c_type === "checkbox") {
+                //   if(isPrintStyle){
+                //       html.push(md[col.c_column] ? "是" : "否");
+                //   }else{
                 html.push(`<input type="checkbox"  data-toggle="icheck" value="1" disabled  ${md[col.c_column] ? "checked" : ""} />`);
-            //   }
-        }else if (col.c_type === "kindeditor") {
-            html.push(`<div style="display: inline-block; vertical-align: middle;">${md[col.c_column]} </div>`);
-        }else if(col.c_type === "html"){
-            //let input = think.isEmpty(col.c_memo) ? md[col.c_column] : col.c_memo.replace(/#value#/ig,md[col.c_column]);
-            let input = think.isEmpty(col.c_memo) ? md[col.c_column] : this.cmpage.objPropertysReplaceToStr(col.c_memo, md); 
-            //debug(input,'page.htmlGetView - input.html');
-            html.push(input);
-        }else if(col.c_type === "pic"){
-            html.push(`<img src='${md[col.c_column]}' alt='${md[col.c_column]}' />`);
-        }else if (col.c_coltype === "float") {
-            html.push(cmpage.formatNumber(Number(md[col.c_column]), {pattern: col.c_format}));
-        } else if(col.c_coltype === "timestamp") {
-            html.push(cmpage.datetime(md[col.c_column],col.c_format));
-        } else if(col.c_coltype === "date") {
-            html.push(cmpage.datetime(md[col.c_column],'yyyy-MM-dd'));
-        } else if (col.c_type === "replace" && !(/^select/.test(col.c_memo))) {
-            html.push(await this.getReplaceText(md[col.c_column], col.c_memo));
-        } else  {
-            html.push(md[col.c_column]);
+                //   }
+            } else if (col.c_type === "kindeditor") {
+                html.push(`<div style="display: inline-block; vertical-align: middle;">${md[col.c_column]} </div>`);
+            } else if (col.c_type === "html") {
+                //let input = think.isEmpty(col.c_memo) ? md[col.c_column] : col.c_memo.replace(/#value#/ig,md[col.c_column]);
+                let input = think.isEmpty(col.c_memo) ? md[col.c_column] : this.cmpage.objPropertysReplaceToStr(col.c_memo, md);
+                //debug(input,'page.htmlGetView - input.html');
+                html.push(input);
+            } else if (col.c_type === "pic") {
+                html.push(`<img src='${md[col.c_column]}' alt='${md[col.c_column]}' />`);
+            } else if (col.c_coltype === "float") {
+                html.push(cmpage.formatNumber(Number(md[col.c_column]), {
+                    pattern: col.c_format
+                }));
+            } else if (col.c_coltype === "timestamp") {
+                html.push(cmpage.datetime(md[col.c_column], col.c_format));
+            } else if (col.c_coltype === "date") {
+                html.push(cmpage.datetime(md[col.c_column], 'yyyy-MM-dd'));
+            } else if (col.c_type === "replace" && !(/^select/.test(col.c_memo))) {
+                html.push(await this.getReplaceText(md[col.c_column], col.c_memo));
+            } else {
+                html.push(md[col.c_column]);
+            }
+            html.push('</td>');
+            k += 1;
+            if (k >= (this.mod.user.listColumns === cmpage.ui.enumListColumns.MOBILE ? 1 : this.mod.c_edit_column)) {
+                html.push('</tr><tr>');
+                k = 0;
+            }
         }
-        html.push('</td>');
-        k +=1;
-        if(k >= (this.mod.user.listColumns === cmpage.ui.enumListColumns.MOBILE ? 1 : this.mod.c_edit_column)){
-            html.push('</tr><tr>');
-            k =0;
-        }
-        }
-        if(k>0 && k <this.mod.c_edit_column && isPrintStyle){
+        if (k > 0 && k < this.mod.c_edit_column && isPrintStyle) {
             html.push('<td> </td><td> </td>');
         }
         html.push('</tr>');
@@ -998,38 +1023,39 @@ module.exports = class extends PageBase {
         return html.join(' ');
     }
 
-  async htmlGetViewBtn(){
-      let html =[];
-      let listIds = this.mod.listIds.split(',');
-      if (listIds.length > 0) {
-          let prevID = 0, nextID = 0;
-          let k = 0;
-          for (let id of listIds) {
-              if (id == this.mod.editID) {
-                  k = listIds.indexOf(id);
-                  break;
-              }
-          }
-          if (k > 0) {
-              prevID = listIds[k - 1];
-          }
-          if (k < listIds.length - 1) {
-              nextID = listIds[k + 1];
-          }
-          html.push(`<li class="left" style="margin-left: -40px;"><button type="button" class="btn-default" ${k == 0 ? 'style="display:none"' : ''} data-icon="arrow-left"
+    async htmlGetViewBtn() {
+        let html = [];
+        let listIds = this.mod.listIds.split(',');
+        if (listIds.length > 0) {
+            let prevID = 0,
+                nextID = 0;
+            let k = 0;
+            for (let id of listIds) {
+                if (id == this.mod.editID) {
+                    k = listIds.indexOf(id);
+                    break;
+                }
+            }
+            if (k > 0) {
+                prevID = listIds[k - 1];
+            }
+            if (k < listIds.length - 1) {
+                nextID = listIds[k + 1];
+            }
+            html.push(`<li class="left" style="margin-left: -40px;"><button type="button" class="btn-default" ${k == 0 ? 'style="display:none"' : ''} data-icon="arrow-left"
                   onclick="return pageGotoView('${this.mod.c_modulename}',${prevID});">上一条</button></li>`);
-          html.push(`<li class="left" ><button type="button" class="btn-default" ${nextID == 0 ? 'style="display:none"' : ''} data-icon="arrow-right"
+            html.push(`<li class="left" ><button type="button" class="btn-default" ${nextID == 0 ? 'style="display:none"' : ''} data-icon="arrow-right"
                   onclick="return pageGotoView('${this.mod.c_modulename}',${nextID});">下一条</button></li>`);
-      }
-      html.push('<li><button type="button" class="btn-close" data-icon="close">关闭</button></li>');
-      return html.join('');
-  }
+        }
+        html.push('<li><button type="button" class="btn-close" data-icon="close">关闭</button></li>');
+        return html.join('');
+    }
 
-  /**
-   * 取查看页面的设置，组合成打印页面的HTML输出
-   * @method  htmlGetPrint
-   * @return {string} HTML页面片段
-   */
+    /**
+     * 取查看页面的设置，组合成打印页面的HTML输出
+     * @method  htmlGetPrint
+     * @return {string} HTML页面片段
+     */
     async htmlGetPrint() {
         let html = [];
         //主表部分
@@ -1045,7 +1071,7 @@ module.exports = class extends PageBase {
      * @return {string}  HTML片段
      */
     htmlGetFooter() {
-        if(this.mod.c_pager){
+        if (this.mod.c_pager) {
             let cnt = this.mod.user.listColumns === cmpage.ui.enumListColumns.MOBILE ?
                 `${this.mod.pageSize > this.list.count ? this.list.count: this.mod.pageSize} / ${this.list.count}` : `每页&nbsp;${this.mod.pageSize}&nbsp;条，共  ${this.list.count} 条`;
             return `<div class="bjui-pageFooter">
@@ -1070,14 +1096,14 @@ module.exports = class extends PageBase {
 
         await this.getDataList();
         //debug(this.list.data, 'page.htmlGetListTimeline - this.list.data');
-        for(let row of this.list.data){
+        for (let row of this.list.data) {
             //debug(row, 'page.htmlGetListTimeline - row'+this.list.data.indexOf(row));
             //处理替换值
-            for(let col of this.modCols){
+            for (let col of this.modCols) {
                 if (col.c_type === "replace" && !(/^select/.test(col.c_memo))) {
                     //debug(col, 'page.htmlGetListTimeline - col'+this.modCols.indexOf(col));
                     row[col.c_column] = await this.getReplaceText(row[col.c_column], col.c_memo);
-                }else if(col.c_coltype === 'timestamp'){
+                } else if (col.c_coltype === 'timestamp') {
                     row[col.c_column] = think.datetime(row[col.c_column]);
                 }
             }
@@ -1098,7 +1124,7 @@ module.exports = class extends PageBase {
     /******************************* 以下方法暂时不用 ************************************************* */
 
 
-     /**
+    /**
      * 取流程节点相关的按钮设置，组合按钮的HTML输出</br>
      * 考虑到按钮输出和业务关联度大，定义在此处
      * @method  htmlGetTaskActBtns
@@ -1108,86 +1134,88 @@ module.exports = class extends PageBase {
         let html = [];
         //debug(rec,'page.htmlGetTaskActBtns - rec');
         let task = await cmpage.service('flow/task').getTask(rec.c_task);
-        if(think.isEmpty(task)){    return []; }
+        if (think.isEmpty(task)) {
+            return [];
+        }
 
         let parmsUrl = this.mod.parmsUrl;
         //取流程的当前节点，然后取按钮设置
-        let act ={},taskAct={};
-        if(think.isEmpty(parmsUrl['taskActID'])){
+        let act = {},
+            taskAct = {};
+        if (think.isEmpty(parmsUrl['taskActID'])) {
             let taskModel = cmpage.service('flow/task');
-            act =await taskModel.getTaskWithCurrentAct(task);
+            act = await taskModel.getTaskWithCurrentAct(task);
             taskAct = taskModel.currTaskAct;
-        }else{
+        } else {
             taskAct = await cmpage.service('flow/task_act').getTaskAct(parmsUrl['taskActID']);
             act = await cmpage.service('flow/act').getActById(taskAct.c_act);
         }
         //debug(task,'page.htmlGetTaskActBtns - task');
         //debug(act,'page.htmlGetTaskActBtns - act');
-        if(act.id >0){
+        if (act.id > 0) {
             //验证当前用户是否有该节点的权限
-            let actAssign = await cmpage.service('flow/act_assign').getAssignByUser(act.id,this.mod.user, task.c_creater);
-            debug(actAssign,'page.htmlGetTaskActBtns - actAssign');
-            if(think.isEmpty(actAssign))   return [];
+            let actAssign = await cmpage.service('flow/act_assign').getAssignByUser(act.id, this.mod.user, task.c_creater);
+            debug(actAssign, 'page.htmlGetTaskActBtns - actAssign');
+            if (think.isEmpty(actAssign)) return [];
 
             let form = think.isEmpty(act.c_form) ? {} : cmpage.objFromString(act.c_form);
-            debug(form,'page.htmlGetTaskActBtns - form');
-            if(form.hasOwnProperty('modulename') && form['modulename'] === this.mod.c_modulename ){
+            debug(form, 'page.htmlGetTaskActBtns - form');
+            if (form.hasOwnProperty('modulename') && form['modulename'] === this.mod.c_modulename) {
                 //本表单是流程节点需要打开的表单
                 let btns = cmpage.arrFromString(act.c_form_btn);
-                for(let btn of btns){
+                for (let btn of btns) {
                     btn.label = think.isEmpty(btn['label']) ? act.c_name : btn.label;
                     btn.class = think.isEmpty(btn['class']) ? 'btn-green' : btn.class;
                     btn.icon = think.isEmpty(btn['icon']) ? 'cogs' : btn.icon;
-                    if(!think.isEmpty(btn['onclick'])){
-                        btn.onclick = btn.onclick.replace(/#taskID#/g,task.id).replace(/#taskActID#/g,taskAct.id);;
+                    if (!think.isEmpty(btn['onclick'])) {
+                        btn.onclick = btn.onclick.replace(/#taskID#/g, task.id).replace(/#taskActID#/g, taskAct.id);;
                         html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}" onclick="${btn.onclick}">${btn.label}</button>`)
-                    }
-                    else if(!think.isEmpty(btn['url'])){
+                    } else if (!think.isEmpty(btn['url'])) {
                         btn.title = think.isEmpty(btn['title']) ? btn.label : btn.title;
                         btn.opentype = think.isEmpty(btn['opentype']) ? 'dialog' : btn.opentype;
-                        btn.url = btn.url.replace(/#taskID#/g,task.id).replace(/#taskActID#/g,taskAct.id);
+                        btn.url = btn.url.replace(/#taskID#/g, task.id).replace(/#taskActID#/g, taskAct.id);
                         html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}" data-toggle="${btn.opentype}"
                         data-options="{id:'flowDialog', url:'${btn.url}', title:'${btn.title}'}">${btn.label}</button>`)
-                    }else {
+                    } else {
                         html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}"
                             onclick="return fwRunAct(${taskAct.id},true,'${this.mod.c_modulename}');">${btn.label}</button>`)
                     }
                 }
                 if (task.c_link_type !== this.mod.c_table) {
-                    debug(taskAct,'page.htmlGetActBtns - taskAct');
-                    if(taskAct.c_status === cmpage.enumTaskActStatus.WAIT) {
+                    debug(taskAct, 'page.htmlGetActBtns - taskAct');
+                    if (taskAct.c_status === cmpage.enumTaskActStatus.WAIT) {
                         //默认的保存或者审核通过按钮
                         let reloadUrl = `/cmpage/page/edit?modulename=${this.mod.c_modulename}&taskActID=${parmsUrl.taskActID}&status=${parmsUrl.status}&listIds=`;
                         html.push(`<button type="button" class="btn-green"  data-icon="save"
                                 onclick="return pageSaveByTask('${this.mod.c_modulename}','${reloadUrl}',
                                 '${think.isEmpty(this.mod.c_other.editSaveAfter) ? '' : this.mod.c_other.editSaveAfter}');">
                                 ${think.isEmpty(this.mod.c_other.editSaveLabel) ? '保存' : this.mod.c_other.editSaveLabel}</button>`);
-                    }else{
+                    } else {
                         html.push('<label style="color: red;">本操作已经执行完毕！</label>')
                     }
                 }
-            }else if(task.c_link_type === this.mod.c_table){
+            } else if (task.c_link_type === this.mod.c_table) {
                 //本表单是流程的关联主表单，则显示本流程节点的调用按钮
-                let btn = think.isEmpty(act.c_call_btn) ? {}:eval(`(${act.c_call_btn})`);
+                let btn = think.isEmpty(act.c_call_btn) ? {} : eval(`(${act.c_call_btn})`);
                 btn.label = think.isEmpty(btn['label']) ? act.c_name : btn.label;
                 btn.class = think.isEmpty(btn['class']) ? 'btn-green' : btn.class;
                 btn.icon = think.isEmpty(btn['icon']) ? 'cogs' : btn.icon;
-                let form =eval("("+ act.c_form +")");
+                let form = eval("(" + act.c_form + ")");
                 form.title = think.isEmpty(btn['title']) ? btn.label : btn.title;
                 form.opentype = think.isEmpty(btn['opentype']) ? 'dialog' : btn.opentype;
-                if(!think.isEmpty(form['modulename'])){
+                if (!think.isEmpty(form['modulename'])) {
                     form.url = `/cmpage/page/edit?modulename=${form['modulename']}&id=0&taskID=${task.id}&taskActID=${taskAct.id}&status=${act.c_domain_st}`;
                 }
-                form.url = form.url.replace(/#taskID#/g,task.id).replace(/#taskActID#/g,taskAct.id);
+                form.url = form.url.replace(/#taskID#/g, task.id).replace(/#taskActID#/g, taskAct.id);
                 html.push(`<button type="button" class="${btn.class}" data-icon="${btn.icon}" data-toggle="${form.opentype}"
                         data-options="{id:'flowDialog', url:'${form.url}', title:'${form.title}', mask:true}">${btn.label}</button>`)
             }
             //增加可终止或者可挂起按钮
-            if(taskAct.c_status == cmpage.enumTaskActStatus.WAIT){
-                if(act.c_can_terminate){
+            if (taskAct.c_status == cmpage.enumTaskActStatus.WAIT) {
+                if (act.c_can_terminate) {
                     html.push(`<button type="button" class="btn-red" data-icon="stop" onclick="return fwTerminate(${taskAct.c_task},'${this.mod.c_modulename}');">终止</button>`)
                 }
-                if(act.c_can_suspend){
+                if (act.c_can_suspend) {
                     html.push(`<button type="button" class="btn-orange" data-icon="pause" onclick="return fwSuspend(${taskAct.id},'${this.mod.c_modulename}');">挂起</button>`)
                 }
             }

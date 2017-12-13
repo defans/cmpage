@@ -21,9 +21,9 @@
  * 代码于参数设置的操作类，提供一些操作t_code表的方法
  * @class admin.service.code
  */
-const Base =require('../cmpage/base.js');
+const Base = require('../cmpage/base.js');
 
- module.exports = class extends Base {
+module.exports = class extends Base {
 
     /**
      * 用递归法从t_code缓存中返回所有子节点
@@ -32,31 +32,35 @@ const Base =require('../cmpage/base.js');
      * @param {int} rootID  根节点的ID
      * @param {bool} [selfContains]   是否加入自身节点
      */
-    async getTreeList(rootID, selfContains){
+    async getTreeList(rootID, selfContains) {
         let codes = await this.getCodes();
         let ret = [];
-        for(let codeMd of codes){
-            if(selfContains && codeMd.id == rootID ){  //加入自身
+        for (let codeMd of codes) {
+            if (selfContains && codeMd.id == rootID) { //加入自身
                 ret.push(codeMd);
-            }else if(codeMd.c_pid == rootID){
+            } else if (codeMd.c_pid == rootID) {
                 ret.push(codeMd);
-                let childs =await this.getChildList(codeMd.id,codes, 1);
-                for(let child of childs){ ret.push(child);  }
+                let childs = await this.getChildList(codeMd.id, codes, 1);
+                for (let child of childs) {
+                    ret.push(child);
+                }
             }
         }
         return ret;
     }
-    async getChildList(pid,codes,depth){
-        if((depth ++) >20){
+    async getChildList(pid, codes, depth) {
+        if ((depth++) > 20) {
             console.log('code.getChildList depth > 20 layer.');
             return [];
         }
         let ret = [];
-        for(let codeMd of codes){
-            if(codeMd.c_pid == pid){
+        for (let codeMd of codes) {
+            if (codeMd.c_pid == pid) {
                 ret.push(codeMd);
-                let childs =await this.getChildList(codeMd.id, codes, depth);
-                for(let child of childs){ ret.push(child);  }
+                let childs = await this.getChildList(codeMd.id, codes, depth);
+                for (let child of childs) {
+                    ret.push(child);
+                }
             }
         }
         return ret;
@@ -70,27 +74,27 @@ const Base =require('../cmpage/base.js');
      * @param   {string} fieldNames 字段名称,逗号分隔
      * @param   {string} joinStr 连接的字符串
      */
-    async getNameById(id,fieldNames,joinStr){
+    async getNameById(id, fieldNames, joinStr) {
         //debug(id,'code.getNameById - id');
-        let codes =await this.getCodes();
-        for(let codeMd of codes){
-            if(codeMd.id == id){
-                if(think.isEmpty(fieldNames)){
+        let codes = await this.getCodes();
+        for (let codeMd of codes) {
+            if (codeMd.id == id) {
+                if (think.isEmpty(fieldNames)) {
                     return codeMd.c_name;
-                }else{
-                    return cmpage.strGetValuesByPropertyName(codeMd,fieldNames,joinStr)
+                } else {
+                    return cmpage.strGetValuesByPropertyName(codeMd, fieldNames, joinStr)
                 }
             }
         }
         return '';
     }
-    async getNameWithColorById(id){
-        let md =await this.getCodeById(id);
+    async getNameWithColorById(id) {
+        let md = await this.getCodeById(id);
         let other = cmpage.objFromString(md.c_other);
-        if(!think.isEmpty(other.color)){
+        if (!think.isEmpty(other.color)) {
             //debug(other,'code.getNameWithColorById - other');
             return `<label style="color:${other.color};">${md.c_name}</label>`
-        }else{
+        } else {
             return md.c_name;
         }
     }
@@ -100,10 +104,10 @@ const Base =require('../cmpage/base.js');
      * @return {Object}  参数对象
      * @param {int} id  参数ID
      */
-    async getCodeById(id){
-        let codes =await this.getCodes();
-        for(let codeMd of codes){
-            if(codeMd.id == id){
+    async getCodeById(id) {
+        let codes = await this.getCodes();
+        for (let codeMd of codes) {
+            if (codeMd.id == id) {
                 return codeMd;
             }
         }
@@ -115,11 +119,11 @@ const Base =require('../cmpage/base.js');
      * @return {Array}  参数列表
      * @param {int} pid  父节点ID
      */
-    async getCodesByPid(pid){
-        let codes =await this.getCodes();
-        let ret =[];
-        for(let codeMd of codes){
-            if(codeMd.c_pid == pid){
+    async getCodesByPid(pid) {
+        let codes = await this.getCodes();
+        let ret = [];
+        for (let codeMd of codes) {
+            if (codeMd.c_pid == pid) {
                 ret.push(codeMd);
             }
         }
@@ -131,18 +135,18 @@ const Base =require('../cmpage/base.js');
      * @return {Array}  参数列表
      * @param {int} pid  父节点ID
      */
-    async getCodeItemsByPid(pid, curValue, isBlank=true){
+    async getCodeItemsByPid(pid, curValue, isBlank = true) {
         let ret = [];
-        if (isBlank){
+        if (isBlank) {
             ret.push(`<option value="-1" ${defaultValue == 0 || defaultValue == -1 ? "selected" : ""}>请选择</option>`);
         }
-        if(pid >0){
-            let codes =await this.getCodes();
-            for(let md of codes){
-                if(md.c_pid == pid){
+        if (pid > 0) {
+            let codes = await this.getCodes();
+            for (let md of codes) {
+                if (md.c_pid == pid) {
                     ret.push(`<option value="${md.id}" ${md.id == defaultValue ? "selected" : ""} >${md.c_name}</option>`);
                 }
-            }                
+            }
         }
         return ret.join();
     }
@@ -153,11 +157,11 @@ const Base =require('../cmpage/base.js');
      * @return {Array}  参数列表
      * @param {int} rootID  根节点ID
      */
-    async getCodesByRoot(rootID){
-        let codes =await this.getCodes();
-        let ret =[];
-        for(let codeMd of codes){
-            if(codeMd.c_root == rootID){
+    async getCodesByRoot(rootID) {
+        let codes = await this.getCodes();
+        let ret = [];
+        for (let codeMd of codes) {
+            if (codeMd.c_root == rootID) {
                 ret.push(codeMd);
             }
         }
@@ -169,17 +173,17 @@ const Base =require('../cmpage/base.js');
      * @return {string}  性别
      * @param {bool} [value]  默认值
      */
-    getSexName(value){
-        return think.isEmpty(value) ? '男':'女';
+    getSexName(value) {
+        return think.isEmpty(value) ? '男' : '女';
     }
     /**
      * 取参数列表，带Parm的这几个方法一般是用户业务相关的参数，根节点ID === 4，用缓存
      * @method  getParms
      * @return {Array}  参数列表
      */
-    async getParms(){
+    async getParms() {
         return await think.cache("codeParms", () => {
-                return this.getTreeList(4,false);
+            return this.getTreeList(4, false);
         });
     }
     /**
@@ -188,13 +192,13 @@ const Base =require('../cmpage/base.js');
      * @return {Array}  参数列表
      * @param {int} pid  父节点ID
      */
-    async getParmsByPid(pid){
-        if(think.isEmpty(pid))  return [];
+    async getParmsByPid(pid) {
+        if (think.isEmpty(pid)) return [];
 
-        let parms =await this.getParms();
-        let ret =[];
-        for(let parm of parms){
-            if(parm.c_pid == pid){
+        let parms = await this.getParms();
+        let ret = [];
+        for (let parm of parms) {
+            if (parm.c_pid == pid) {
                 ret.push(parm);
             }
         }
@@ -206,8 +210,8 @@ const Base =require('../cmpage/base.js');
      * @return {Array}  参数列表
      * @param {string} pobj  父节点的c_object
      */
-    async getParmsByPobj(pobj){
-        let pid =await this.getParmByObj(pobj).id;
+    async getParmsByPobj(pobj) {
+        let pid = await this.getParmByObj(pobj).id;
         return await this.getParmsByPid(pid);
     }
     /**
@@ -216,10 +220,10 @@ const Base =require('../cmpage/base.js');
      * @return {Object}  参数对象
      * @param {int} id  参数ID
      */
-    async getParmById(id){
-        let parms =await this.getParms();
-        for(let parm of parms){
-            if(parm.id == id){
+    async getParmById(id) {
+        let parms = await this.getParms();
+        for (let parm of parms) {
+            if (parm.id == id) {
                 return parm;
             }
         }
@@ -231,10 +235,10 @@ const Base =require('../cmpage/base.js');
      * @return {Object}  参数对象
      * @param {string} obj  参数的c_object
      */
-    async getParmByObj(obj){
+    async getParmByObj(obj) {
         let parms = await this.getParms();
-        for(let parm of parms){
-            if(parm.c_ojbect == obj){
+        for (let parm of parms) {
+            if (parm.c_ojbect == obj) {
                 return parm;
             }
         }
@@ -245,14 +249,14 @@ const Base =require('../cmpage/base.js');
      * 清空t_code表的相关缓存
      * @method  clearCodeCache
      */
-    async clearCodeCache(){
-        await think.cache('codeGroups',null);
-        await think.cache('codeRoles',null);
-        await think.cache('codeStocks',null);
-        await think.cache('codeDepts',null);
-        await think.cache('codeCodes',null);
-        await think.cache('codeParms',null);
-        await think.cache('groupUsers',null);
+    async clearCodeCache() {
+        await think.cache('codeGroups', null);
+        await think.cache('codeRoles', null);
+        await think.cache('codeStocks', null);
+        await think.cache('codeDepts', null);
+        await think.cache('codeCodes', null);
+        await think.cache('codeParms', null);
+        await think.cache('groupUsers', null);
         cmpage.debug('code cache is clear!')
     }
 
@@ -261,9 +265,9 @@ const Base =require('../cmpage/base.js');
      * @method  getGroups
      * @return {Array}  账套列表
      */
-    async getGroups(){
+    async getGroups() {
         return await think.cache("codeGroups", () => {
-            return this.getTreeList(2,true);
+            return this.getTreeList(2, true);
         });
     }
 
@@ -272,7 +276,7 @@ const Base =require('../cmpage/base.js');
      * @method  getRoles
      * @return {Array}  角色列表
      */
-    async getRoles(){
+    async getRoles() {
         return await think.cache("codeRoles", () => {
             return this.getTreeList(3);
         });
@@ -283,7 +287,7 @@ const Base =require('../cmpage/base.js');
      * @method  getStocks
      * @return {Array}  仓库列表
      */
-    async getStocks(){
+    async getStocks() {
         return await think.cache("codeStocks", () => {
             return this.getTreeList(6);
         });
@@ -294,9 +298,9 @@ const Base =require('../cmpage/base.js');
      * @method  getDepts
      * @return {Array}  部门列表
      */
-    async getDepts(){
+    async getDepts() {
         return await think.cache("codeDepts", () => {
-            return this.getTreeList(5,true);
+            return this.getTreeList(5, true);
         });
     }
 
@@ -305,7 +309,7 @@ const Base =require('../cmpage/base.js');
      * @method  getCodes
      * @return {Array}  t_code记录列表
      */
-    async getCodes(){
+    async getCodes() {
         return await think.cache("codeCodes", () => {
             return this.query('select * from t_code where c_status=0 order by  c_pid,c_ucode ');
         });

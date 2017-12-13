@@ -29,24 +29,30 @@ module.exports = class extends docuRec {
      * @return {object} 如果有验证错误，则返回格式： {statusCode:300, message:'xxxxxx'}
      * @param  {object} parms 前端传入的FORM参数
      */
-    async pageSave(parms){
+    async pageSave(parms) {
         parms = pageSavePretreat(parms);
 
-        if(parms.c_qty > parms.c_qty_from){
-            return {statusCode:300, message:`开票数量不能大于物料数量: ${parms.c_qty_from}`};
+        if (parms.c_qty > parms.c_qty_from) {
+            return {
+                statusCode: 300,
+                message: `开票数量不能大于物料数量: ${parms.c_qty_from}`
+            };
         }
         parms.c_amt_tax = parseFloat(parms.c_amt_tax);
-        if(parms.c_amt_tax <=0 ){
-            return {statusCode:300, message:'含税金额应大于 0 '};
+        if (parms.c_amt_tax <= 0) {
+            return {
+                statusCode: 300,
+                message: '含税金额应大于 0 '
+            };
         }
-        parms.c_price = (parms.c_amt_tax / parms.c_qty) / (1 + parms.c_tax/100);
+        parms.c_price = (parms.c_amt_tax / parms.c_qty) / (1 + parms.c_tax / 100);
         parms.c_price_tax = parms.c_amt_tax / parms.c_qty;
         parms.c_amt = parms.c_qty * parms.c_price;
-    
+
         let ret = await super.pageSave(parms);
 
         //重新计算来源数量，设置是否关闭的标记
-        if(parms.c_rec_from >0){
+        if (parms.c_rec_from > 0) {
             await this.query(`select fn_docu_rec_qty_from_calc(${this.docuType.modulename}',${parms.c_rec_from},'false');`);
         }
         return ret;

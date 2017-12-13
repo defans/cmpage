@@ -10,7 +10,7 @@ mui.init({
 	statusBarBackground: '#f7f7f7'
 });
 
-mui.plusReady(function() {
+mui.plusReady(function () {
 	plus.screen.lockOrientation("portrait-primary");
 	settings = app.getSettings();
 
@@ -23,16 +23,16 @@ function getLogingroup() {
 		data: {},
 		type: "post",
 		timeout: 5000,
-		error: function(request) {
-			app.toast("服务器连接失败("+app.getDomain()+")！");
+		error: function (request) {
+			app.toast("服务器连接失败(" + app.getDomain() + ")！");
 			plus.nativeUI.closeWaiting();
 		},
-		success: function(data) {
+		success: function (data) {
 			//console.log(JSON.stringify(data));
 			logingroupDIV.innerHTML += data.data;
-			
+
 			groupS = document.getElementById("group");
-			
+
 			//检查 "登录状态/锁屏状态" 结束
 			autoLoginButton.classList[settings.autoLogin ? 'add' : 'remove']('mui-active');
 
@@ -42,19 +42,19 @@ function getLogingroup() {
 				passwordBox.value = settings.password;
 				groupS.value = settings.user.groupID;
 				login(accountBox.value, passwordBox.value, groupS.value);
-			}else {
+			} else {
 				accountBox.value = 'defans';
 				passwordBox.value = '123456';
 			}
 
-			loginButton.onclick = function() {
-				setTimeout(function() {
+			loginButton.onclick = function () {
+				setTimeout(function () {
 					login(accountBox.value, passwordBox.value, groupS.value);
 				}, 50);
 			}
 
-			autoLoginButton.addEventListener('toggle', function(event) {
-				setTimeout(function() {
+			autoLoginButton.addEventListener('toggle', function (event) {
+				setTimeout(function () {
 					var isActive = event.detail.isActive;
 					settings.autoLogin = isActive;
 				}, 50);
@@ -75,21 +75,21 @@ function login(account, password, group) {
 		type: "post",
 		dataType: 'json',
 		timeout: 5000,
-		error: function(request) {
+		error: function (request) {
 			app.toast("登录失败！");
 			wait.close();
 		},
-		success: function(user) {
+		success: function (user) {
 			if (user.id == 0) {
 				wait.close();
 				app.toast(user.msg);
 			} else {
 				settings.user = user;
-				settings.password =password;	
+				settings.password = password;
 				//console.log(JSON.stringify(settings));
 				app.setSettings(settings);
 				wait.close();
-				setTimeout(function() {
+				setTimeout(function () {
 					mui.openWindow({
 						id: 'main',
 						url: '../admin/main.html'
@@ -102,7 +102,7 @@ function login(account, password, group) {
 }
 
 //添加自定义事件监听是否要显示数据
-window.addEventListener('logout', function(event) {
+window.addEventListener('logout', function (event) {
 	accountBox.value = "";
 	passwordBox.value = "";
 	groupS.value = 2;
@@ -111,14 +111,14 @@ window.addEventListener('logout', function(event) {
 });
 
 var backButtonPress = 0;
-mui.back = function(event) {
+mui.back = function (event) {
 	backButtonPress++;
 	if (backButtonPress > 1) {
 		plus.runtime.quit();
 	} else {
 		plus.nativeUI.toast('再按一次退出应用');
 	}
-	setTimeout(function() {
+	setTimeout(function () {
 		backButtonPress = 0;
 	}, 1000);
 	return false;

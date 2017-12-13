@@ -1,24 +1,24 @@
 var ws = null;
 var scan = null;
 var barcode = document.getElementById("barcode");
-var parm,opener;
+var parm, opener;
 var flash = false;
 
 // H5 plus事件处理
 mui.init();
-mui.plusReady(function() {
+mui.plusReady(function () {
 
 	opener = plus.webview.currentWebview().opener();
 	// 获取窗口对象
 	ws = mui.currentWebview;
 	// 开始扫描
-	ws.addEventListener('show', function() {
+	ws.addEventListener('show', function () {
 		scan = new plus.barcode.Barcode('bcid');
 		scan.onmarked = onmarked;
 		scan.start({
 			conserve: true,
 			filename: "_doc/barcode/"
-		});		
+		});
 	});
 	ws.show();
 
@@ -65,15 +65,15 @@ function addStub() {
 		type: "post",
 		dataType: 'json',
 		timeout: 5000,
-		error: function(request) {
+		error: function (request) {
 			app.toast("服务器通信失败！");
 		},
-		success: function(data) {
-			if(data.message){
+		success: function (data) {
+			if (data.message) {
 				app.toast(data.message);
-			}			
+			}
 			if (data.statusCode == 200) {
-				mui.fire(opener,"stub_list_refresh", data);
+				mui.fire(opener, "stub_list_refresh", data);
 				mui.back();
 			}
 		}

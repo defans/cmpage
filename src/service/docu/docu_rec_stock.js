@@ -28,7 +28,7 @@ module.exports = class extends docuRec {
      * @method  pageDelete
      * @return {object} 记录对象
      */
-    async pageDelete(){
+    async pageDelete() {
         //删除后需要变动库存数量等
         await this.query(`p_docu_rec_qty_from_calc '${this.docuType.modulename}',${this.mod.recID},1);`);
 
@@ -36,7 +36,11 @@ module.exports = class extends docuRec {
         let rec = this.model('vw_docu_list').where(`c_id=${this.mod.recID}`).find();
         await this.query(`p_stock_goods_qty_calc ${rec.c_goods},${rec.c_stock},${this.mod.user.groupID}`);
 
-        return {statusCode:200,message:'删除成功！',data:{}};
+        return {
+            statusCode: 200,
+            message: '删除成功！',
+            data: {}
+        };
     }
 
 
@@ -47,7 +51,7 @@ module.exports = class extends docuRec {
      * @return {object} 如果有验证错误，则返回格式： {statusCode:300, message:'xxxxxx'}
      * @param  {object} parms 前端传入的FORM参数
      */
-    async pageSave(parms){
+    async pageSave(parms) {
         parms = pageSavePretreat(parms);
 
         //实盘数量 c_qty_from

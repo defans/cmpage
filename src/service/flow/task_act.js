@@ -12,65 +12,65 @@
  * 具体的业务相关的工作流活动的子类可以继承本类，来增加定制的业务逻辑
  * @class flow.model.task_act
  */
- const Base =require('../cmpage/base.js');
- module.exports = class extends Base {
+const Base = require('../cmpage/base.js');
+module.exports = class extends Base {
     constructor() {
         super();
-        this.connStr='cmpage';
-        this.act = {};  //当前流程模板的节点设置
-        this.taskAct = {};  //当前流程实例节点
-        this.user = {};  //当前用户
-        this.fromTaskActs = [];   //来源节点列表
-        this.toTaskActs = [];   //去向节点列表
-        this.toPaths = [];   //去向路径列表
+        this.connStr = 'cmpage';
+        this.act = {}; //当前流程模板的节点设置
+        this.taskAct = {}; //当前流程实例节点
+        this.user = {}; //当前用户
+        this.fromTaskActs = []; //来源节点列表
+        this.toTaskActs = []; //去向节点列表
+        this.toPaths = []; //去向路径列表
     }
-    
+
     /**
      * 是否可以运行一个流程实例的活动(流程节点)
      * @method  canRun
      * @return {boolean}  判断值
      */
-    async canRun(){
+    async canRun() {
         let taskAct = this.taskAct;
         let act = this.act;
-        cmpage.debug(taskAct,'task_act.canRun --- taskAct --- 根据节点状态判断');
-        cmpage.debug(act,'task_act.canRun --- act --- 根据节点状态判断');
-        if(act.c_type === cmpage.enumActType.START  || act.c_type === cmpage.enumActType.DUMMY || act.c_type === cmpage.enumActType.END
-            || (taskAct.c_status === cmpage.enumTaskActStatus.SUSPEND && taskAct.c_from_rule !== cmpage.enumActFromRule.DEFINE) ){
+        cmpage.debug(taskAct, 'task_act.canRun --- taskAct --- 根据节点状态判断');
+        cmpage.debug(act, 'task_act.canRun --- act --- 根据节点状态判断');
+        if (act.c_type === cmpage.enumActType.START || act.c_type === cmpage.enumActType.DUMMY || act.c_type === cmpage.enumActType.END ||
+            (taskAct.c_status === cmpage.enumTaskActStatus.SUSPEND && taskAct.c_from_rule !== cmpage.enumActFromRule.DEFINE)) {
             return true;
-        }else if(taskAct.c_status === cmpage.enumTaskActStatus.NO_BEGIN || taskAct.c_status === cmpage.enumTaskActStatus.SUSPEND){
+        } else if (taskAct.c_status === cmpage.enumTaskActStatus.NO_BEGIN || taskAct.c_status === cmpage.enumTaskActStatus.SUSPEND) {
             //根据汇聚类型判断
-            if(taskAct.c_from_rule === cmpage.enumActFromRule.DEFINE || act.c_type === cmpage.enumActType.NORMAL_MAN){
+            if (taskAct.c_from_rule === cmpage.enumActFromRule.DEFINE || act.c_type === cmpage.enumActType.NORMAL_MAN) {
                 //等待自定义的方法被调用后继续往下走, 人为参与的节点类似
-                cmpage.debug(taskAct,'task_act.canRun --- taskAct --- 等待...');
+                cmpage.debug(taskAct, 'task_act.canRun --- taskAct --- 等待...');
                 taskAct.c_status = cmpage.enumTaskActStatus.WAIT;
                 await this.save();
                 return false;
-            }else if(taskAct.c_from_rule === cmpage.enumActFromRule.ORDER){
+            } else if (taskAct.c_from_rule === cmpage.enumActFromRule.ORDER) {
                 return true;
-            }else{
+            } else {
                 let actCnt = await this.getFromTasksWithEnd();
-                if(actCnt.cntEnd >0){
-                    if(taskAct.c_from_rule === cmpage.enumActFromRule.OR_JOIN || (actCnt.cnt === actCnt.cntEnd)
-                    || (taskAct.c_from_rule === cmpage.enumActFromRule.VOTES_JOIN && actCnt.cntEnd >= taskAct.c_votes)){
+                if (actCnt.cntEnd > 0) {
+                    if (taskAct.c_from_rule === cmpage.enumActFromRule.OR_JOIN || (actCnt.cnt === actCnt.cntEnd) ||
+                        (taskAct.c_from_rule === cmpage.enumActFromRule.VOTES_JOIN && actCnt.cntEnd >= taskAct.c_votes)) {
                         return true;
-                    }else{
-                        taskAct.c_status = cmpage.enumTaskActStatus.PENDING;    //转 汇聚中
+                    } else {
+                        taskAct.c_status = cmpage.enumTaskActStatus.PENDING; //转 汇聚中
                         await this.save();
                         return false;
                     }
-                }else{
-                    taskAct.c_status = cmpage.enumTaskActStatus.PENDING;    //转 汇聚中
+                } else {
+                    taskAct.c_status = cmpage.enumTaskActStatus.PENDING; //转 汇聚中
                     await this.save();
                     return false;
                 }
             }
-        }else if(taskAct.c_status === cmpage.enumTaskActStatus.PENDING){
+        } else if (taskAct.c_status === cmpage.enumTaskActStatus.PENDING) {
             //根据汇聚情况判断
             let actCnt = await this.getFromTasksWithEnd();
-            if(actCnt.cntEnd >0){
-                return (taskAct.c_from_rule === cmpage.enumActFromRule.OR_JOIN || (actCnt.cnt === actCnt.cntEnd)
-                    || (taskAct.c_from_rule === cmpage.enumActFromRule.VOTES_JOIN && actCnt.cntEnd >= taskAct.c_votes));
+            if (actCnt.cntEnd > 0) {
+                return (taskAct.c_from_rule === cmpage.enumActFromRule.OR_JOIN || (actCnt.cnt === actCnt.cntEnd) ||
+                    (taskAct.c_from_rule === cmpage.enumActFromRule.VOTES_JOIN && actCnt.cntEnd >= taskAct.c_votes));
             }
         }
         return false;
@@ -81,8 +81,8 @@
      * 子类中可以重写本方法实现更多的控制逻辑
      * @method  defineFromRule
      */
-    async defineFromRule(){
-        if(this.taskAct.c_status ===cmpage.enumTaskActStatus.WAIT){
+    async defineFromRule() {
+        if (this.taskAct.c_status === cmpage.enumTaskActStatus.WAIT) {
             this.taskAct.c_status = cmpage.enumTaskActStatus.RUN;
             await this.save();
         }
@@ -92,9 +92,9 @@
      * 运行一个流程实例的活动(流程节点)
      * @method  fwRun
      */
-    async fwRun(isPass){
-        cmpage.debug(isPass,'task_act.fwRun - isPass');
-        if(isPass || await this.canRun() ) {
+    async fwRun(isPass) {
+        cmpage.debug(isPass, 'task_act.fwRun - isPass');
+        if (isPass || await this.canRun()) {
             this.taskAct.c_status = cmpage.enumTaskActStatus.RUN;
             await this.save();
             //执行本节点，子类中可以加入其他业务逻辑
@@ -104,7 +104,7 @@
             let btns = cmpage.arrFromString(this.act.c_form_btn);
             debug(btns, 'task_act.fwRun - btns');
             for (let btn of btns) {
-                if (!think.isEmpty(btn.fn)) {         //如果表单按钮设置有函数调用，则调用
+                if (!think.isEmpty(btn.fn)) { //如果表单按钮设置有函数调用，则调用
                     let fnModel = cmpage.service(btn.model);
                     if (think.isFunction(fnModel[btn.fn])) {
                         await fnModel[btn.fn](this.taskAct, this.act, this.user);
@@ -122,8 +122,8 @@
      * 挂起一个流程实例的活动(流程节点)
      * @method  fwSuspend
      */
-    async fwSuspend(){
-        if(this.taskAct.c_status ===cmpage.enumTaskActStatus.RUN || this.taskAct.c_status ===cmpage.enumTaskActStatus.WAIT){
+    async fwSuspend() {
+        if (this.taskAct.c_status === cmpage.enumTaskActStatus.RUN || this.taskAct.c_status === cmpage.enumTaskActStatus.WAIT) {
             this.taskAct.c_status = cmpage.enumTaskActStatus.SUSPEND;
             await this.save();
         }
@@ -133,21 +133,21 @@
      * 终止一个流程实例的活动(流程节点)
      * @method  fwTerminate
      */
-    async fwTerminate(){
-        if(this.taskAct.c_status !== cmpage.enumTaskActStatus.TERMINATE && this.taskAct.c_status !== cmpage.enumTaskActStatus.END
-            && this.taskAct.c_status !== cmpage.enumTaskActStatus.NO_BEGIN ){
+    async fwTerminate() {
+        if (this.taskAct.c_status !== cmpage.enumTaskActStatus.TERMINATE && this.taskAct.c_status !== cmpage.enumTaskActStatus.END &&
+            this.taskAct.c_status !== cmpage.enumTaskActStatus.NO_BEGIN) {
             this.taskAct.c_status = cmpage.enumTaskActStatus.TERMINATE;
             await this.save();
             //判断，如果当前节点都已经终止，则终止本流程实例，一般是自动终止的时候要检查，手动的话通过调用proc.fwTerminate来进行
             let taskActs = await this.getTaskActs(this.taskAct.c_task);
             let canTerminate = true;
-            for(let ta of taskActs){
-                if(ta.c_status !== cmpage.enumTaskActStatus.TERMINATE && ta.c_status !== cmpage.enumTaskActStatus.END
-                    && ta.c_status !== cmpage.enumTaskActStatus.NO_BEGIN){
+            for (let ta of taskActs) {
+                if (ta.c_status !== cmpage.enumTaskActStatus.TERMINATE && ta.c_status !== cmpage.enumTaskActStatus.END &&
+                    ta.c_status !== cmpage.enumTaskActStatus.NO_BEGIN) {
                     canTerminate = false;
                 }
             }
-            if(canTerminate) {
+            if (canTerminate) {
                 await cmpage.service('flow/proc').fwTerminate(this.taskAct.c_task, this.user);
             }
         }
@@ -159,33 +159,33 @@
      * 正常结束一个流程实例的活动(流程节点)
      * @method  fwEnd
      */
-    async fwEnd(){
+    async fwEnd() {
         let taskAct = this.taskAct;
-        if(taskAct.c_status ===cmpage.enumTaskActStatus.RUN){
+        if (taskAct.c_status === cmpage.enumTaskActStatus.RUN) {
             taskAct.c_status = cmpage.enumTaskActStatus.END;
             await this.save();
-            if(this.act.c_type == cmpage.enumActType.END){
+            if (this.act.c_type == cmpage.enumActType.END) {
                 await cmpage.service('flow/proc').fwEnd(this.taskAct.c_task, this.user);
-                cmpage.debug(this.taskAct,'task_act.fwEnd - taskAct - 结束task');
-            }else{
+                cmpage.debug(this.taskAct, 'task_act.fwEnd - taskAct - 结束task');
+            } else {
                 //找去向节点,根据去向规则进行Run
-                cmpage.debug(taskAct,'task_act.fwEnd --- taskAct --- 此节点处，找去向节点');
+                cmpage.debug(taskAct, 'task_act.fwEnd --- taskAct --- 此节点处，找去向节点');
                 let toTaskActs = await this.getToTaskActs(taskAct);
-                if(this.act.c_to_rule === cmpage.enumActToRule.ORDER || this.act.c_to_rule === cmpage.enumActToRule.AND_SPLIT ){
-                    for(let ta of toTaskActs ){
-                        await cmpage.service('flow/act').fwRun(ta.id,this.user);
-                        cmpage.debug(ta,'task_act.fwEnd --- toTaskActs.ta --- 此处直接往下');
+                if (this.act.c_to_rule === cmpage.enumActToRule.ORDER || this.act.c_to_rule === cmpage.enumActToRule.AND_SPLIT) {
+                    for (let ta of toTaskActs) {
+                        await cmpage.service('flow/act').fwRun(ta.id, this.user);
+                        cmpage.debug(ta, 'task_act.fwEnd --- toTaskActs.ta --- 此处直接往下');
                     }
-                }else if(this.act.c_to_rule === cmpage.enumActToRule.OR_SPLIT){
+                } else if (this.act.c_to_rule === cmpage.enumActToRule.OR_SPLIT) {
                     //或分支为条件分支，有一个满足条件则继续，没有分支能满足条件则任务终止，因此需要表单填写后先进行有效性的验证
                     //根据分支路径上的业务规则进行判断
-                    this.toPaths = await cmpage.service('flow/act_path').getToActPaths(this.act.id,this.act.c_proc);
-                    for(let path of this.toPaths ){
-                        if(await this.defineOrSplit(path)){
-                            for(let ta of toTaskActs){
-                                if(ta.c_act === path.c_to){
-                                    await cmpage.service('flow/act').fwRun(ta.id,this.user);
-                                    cmpage.debug(ta,'task_act.fwEnd --- toTaskActs.ta --- 或分支往下');
+                    this.toPaths = await cmpage.service('flow/act_path').getToActPaths(this.act.id, this.act.c_proc);
+                    for (let path of this.toPaths) {
+                        if (await this.defineOrSplit(path)) {
+                            for (let ta of toTaskActs) {
+                                if (ta.c_act === path.c_to) {
+                                    await cmpage.service('flow/act').fwRun(ta.id, this.user);
+                                    cmpage.debug(ta, 'task_act.fwEnd --- toTaskActs.ta --- 或分支往下');
                                     return;
                                 }
                             }
@@ -193,7 +193,7 @@
                     }
                     //let rand = cmpage.getRandomNum(0,toTaskIds.length -1);
                     //this.model('act').fwRun(toTaskIds[rand],user);
-                }else{
+                } else {
                     await this.defineToRule();
                 }
             }
@@ -207,24 +207,24 @@
      * @return {boolean}  是否通过该路径
      * @params {object} path 去向的某一个路径
      */
-    async defineOrSplit(path){
+    async defineOrSplit(path) {
         await this.domainGetData();
 
         //此处实现了常规的条件判断处理
-        if(!think.isEmpty(path.c_domain)){
-            let rule = eval("("+path.c_domain+")");
-            if(!think.isEmpty(rule['fn'])){      //通过某个模块的某个方法来判断是否可以通过改路径
+        if (!think.isEmpty(path.c_domain)) {
+            let rule = eval("(" + path.c_domain + ")");
+            if (!think.isEmpty(rule['fn'])) { //通过某个模块的某个方法来判断是否可以通过改路径
                 let fnModel = cmpage.service(rule['model']);
-                if(think.isFunction(fnModel[ rule['fn'] ])){
-                    return await fnModel[  rule['fn'] ](this.taskAct, this.act, user);
+                if (think.isFunction(fnModel[rule['fn']])) {
+                    return await fnModel[rule['fn']](this.taskAct, this.act, user);
                 }
-            }else if(think.isArray(rule)){      //形如： [{field:"c_days",op:">",value:1},{field:"c_days",op:"<=",value:3}]
+            } else if (think.isArray(rule)) { //形如： [{field:"c_days",op:">",value:1},{field:"c_days",op:"<=",value:3}]
                 let where = [];
-                for(let item of rule){
+                for (let item of rule) {
                     where.push(`(${ this.taskAct.domainData[ item['field'] ] } ${item['op']} ${item['value']})`);
                 }
-                cmpage.debug(where.join(' && '),'task_act.defineOrSplit - to path where');
-                return  eval("("+ where.join(' && ') +")");
+                cmpage.debug(where.join(' && '), 'task_act.defineOrSplit - to path where');
+                return eval("(" + where.join(' && ') + ")");
             }
         }
 
@@ -237,14 +237,16 @@
      * @method  domainGetData
      * @return {object}  增加业务对象数据后的节点对象
      */
-    async domainGetData(){
+    async domainGetData() {
         this.taskAct.domainData = {};
         let task = await cmpage.service('flow/task').getTask(this.taskAct.c_task);
-        cmpage.debug(task,'task_act.deomainGetData - task');
-        if(!think.isEmpty(task.c_link_type)){
-            this.taskAct.domainData =  await this.model(task.c_link_type).where({id:task.c_link}).find();
+        cmpage.debug(task, 'task_act.deomainGetData - task');
+        if (!think.isEmpty(task.c_link_type)) {
+            this.taskAct.domainData = await this.model(task.c_link_type).where({
+                id: task.c_link
+            }).find();
         }
-        cmpage.debug(this.taskAct.domainData,'task_act.domainGetData - this.taskAct.domainData');
+        cmpage.debug(this.taskAct.domainData, 'task_act.domainGetData - this.taskAct.domainData');
 
         //子类中可以增加其他业务规则
     }
@@ -254,8 +256,8 @@
      * @method  defineToRule
      * @return {object}  任务节点对象
      */
-    async defineToRule(){
-        if(think.isEmpty(this.toTaskActs)){
+    async defineToRule() {
+        if (think.isEmpty(this.toTaskActs)) {
             this.toTaskActs = await this.getToTaskActs(this.taskAct);
         }
         //子类中增加自定义规则
@@ -266,15 +268,18 @@
      * 子类中可以重写本方法来增加其他逻辑，比如保存其他业务表数据等, 此处可以改用缓存机制
      * @method  save
      */
-    async save(){
-        let md = cmpage.objPropertysFromOtherObj({},this.taskAct,['c_task','c_act','c_status','c_user',
-                    'c_memo','c_link','c_link_type']);
-        if(!think.isEmpty(this.user)){
+    async save() {
+        let md = cmpage.objPropertysFromOtherObj({}, this.taskAct, ['c_task', 'c_act', 'c_status', 'c_user',
+            'c_memo', 'c_link', 'c_link_type'
+        ]);
+        if (!think.isEmpty(this.user)) {
             md.c_user = this.user.id;
         }
         md.c_time = think.datetime();
-        if(!think.isEmpty(md)){
-            await this.model('fw_task_act').where({id:this.taskAct.id}).update(md);
+        if (!think.isEmpty(md)) {
+            await this.model('fw_task_act').where({
+                id: this.taskAct.id
+            }).update(md);
             await this.addTaskSt();
         }
     }
@@ -285,12 +290,18 @@
      * @method  addTaskSt
      * @params {string} desc 状态描述
      */
-    async addTaskSt( desc){
+    async addTaskSt(desc) {
         let taskAct = this.taskAct;
-        let md = {c_proc:taskAct.c_proc,c_act:taskAct.c_act,c_task:taskAct.c_task, c_task_act:taskAct.id,
-            c_time:taskAct.c_time, c_user:taskAct.c_user};
+        let md = {
+            c_proc: taskAct.c_proc,
+            c_act: taskAct.c_act,
+            c_task: taskAct.c_task,
+            c_task_act: taskAct.id,
+            c_time: taskAct.c_time,
+            c_user: taskAct.c_user
+        };
         //组成状态描述
-        if(taskAct.c_status === cmpage.enumActType.NORMAL_MAN || taskAct.c_status === cmpage.enumActType.NORMAL_AUTO ){
+        if (taskAct.c_status === cmpage.enumActType.NORMAL_MAN || taskAct.c_status === cmpage.enumActType.NORMAL_AUTO) {
             md.c_desc = think.isEmpty(desc) ? `节点(${await cmpage.service('flow/act').getNameById(taskAct.c_act)})
                     ${cmpage.service('cmpage/utils').getEnumName(md.c_status,'TaskStatus')}` : desc;
             md.id = await this.model('fw_task_st').add(md);
@@ -306,14 +317,14 @@
      * @return {int} 来源的任务节点的完成数
      * @params {object} taskAct 任务节点对象
      */
-    async getFromTasksWithEnd(){
-        cmpage.debug(this.taskAct,'task_act.getFromTasksWithEnd - taskAct');
-        if(think.isEmpty(this.fromTaskActs)){
+    async getFromTasksWithEnd() {
+        cmpage.debug(this.taskAct, 'task_act.getFromTasksWithEnd - taskAct');
+        if (think.isEmpty(this.fromTaskActs)) {
             this.fromTaskActs = await this.getFromTaskActs(this.taskAct);
         }
         //cmpage.debug(list);
-        let cntEnd =0;
-        for(let md of this.fromTaskActs){
+        let cntEnd = 0;
+        for (let md of this.fromTaskActs) {
             if (md.c_status === cmpage.enumTaskActStatus.END) {
                 cntEnd += 1;
             }
@@ -327,13 +338,15 @@
      * @return {Array} 来源的任务节点的列表
      * @params {object} taskAct 任务节点对象
      */
-    async getFromTaskActs(taskAct){
-        cmpage.debug(taskAct,'task_act.getFromTaskIds')
-        let fromArr =await cmpage.service('flow/act_path').getFromActIds(taskAct.c_act, taskAct.c_proc);
-        let list = await this.model('fw_task_act').where({c_task:taskAct.c_task}).select();
-        let ret =[];
-        for(let md of list){
-            for(let fromID of fromArr) {
+    async getFromTaskActs(taskAct) {
+        cmpage.debug(taskAct, 'task_act.getFromTaskIds')
+        let fromArr = await cmpage.service('flow/act_path').getFromActIds(taskAct.c_act, taskAct.c_proc);
+        let list = await this.model('fw_task_act').where({
+            c_task: taskAct.c_task
+        }).select();
+        let ret = [];
+        for (let md of list) {
+            for (let fromID of fromArr) {
                 if (md.c_act === fromID) {
                     ret.push(md);
                 }
@@ -348,13 +361,13 @@
      * @return {Array} 去向的任务节点的列表
      * @params {object} taskAct 任务节点对象
      */
-    async getToTaskActs(taskAct){
-        debug(taskAct,'task_act.getToTaskActs ---- taskAct');
-        let toArr =await cmpage.service('flow/act_path').getToActIds(taskAct.c_act, taskAct.c_proc);
+    async getToTaskActs(taskAct) {
+        debug(taskAct, 'task_act.getToTaskActs ---- taskAct');
+        let toArr = await cmpage.service('flow/act_path').getToActIds(taskAct.c_act, taskAct.c_proc);
         let list = await this.query(`select * from fw_task_act where c_task=${taskAct.c_task}`);
-        let ret =[];
-        for(let md of list){
-            for(let toID of toArr) {
+        let ret = [];
+        for (let md of list) {
+            for (let toID of toArr) {
                 if (md.c_act === toID) {
                     ret.push(md);
                 }
@@ -369,7 +382,7 @@
      * @return {Array} 任务节点ID的列表
      * @params {int} taskID 任务ID
      */
-    async getTaskActs(taskID){
+    async getTaskActs(taskID) {
         return await this.query(`select * from fw_task_act where c_task=${taskID}`);
     }
 
@@ -380,11 +393,13 @@
      * @return {object} 流程实例的节点对象
      * @params {object} taskActID 任务对象的节点ID
      */
-    async getTaskAct(taskActID){
+    async getTaskAct(taskActID) {
         return await this.getTaskActById(taskActID);
     }
-    async getTaskActById(taskActID){
-        return await this.model('vw_task_act').where({id:taskActID}).find();
+    async getTaskActById(taskActID) {
+        return await this.model('vw_task_act').where({
+            id: taskActID
+        }).find();
     }
 
 }

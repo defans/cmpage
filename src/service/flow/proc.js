@@ -12,12 +12,12 @@
  * 根据流程模板中的实现类设置，调用具体业务相关的类来实现具体功能
  * @class flow.model.proc
  */
- const Base =require('../cmpage/base.js');
- module.exports = class extends Base {
+const Base = require('../cmpage/base.js');
+module.exports = class extends Base {
     constructor() {
         super();
-        this.connStr='cmpage';
-        this.taskModel = null;   //当前流程实例的对象
+        this.connStr = 'cmpage';
+        this.taskModel = null; //当前流程实例的对象
     }
 
     /**
@@ -28,17 +28,17 @@
      * @params {int} procID 流程模板ID
      * @params {object} [user] 流程发起人
      */
-    async fwStart(procID,user){
-        if(think.isEmpty(this.taskModel)){
-            await this.fwInit(0,user,procID);
+    async fwStart(procID, user) {
+        if (think.isEmpty(this.taskModel)) {
+            await this.fwInit(0, user, procID);
         }
-        if(!think.isEmpty(this.taskModel)){
+        if (!think.isEmpty(this.taskModel)) {
             await this.taskModel.fwStart();
-            cmpage.debug(this.taskModel.task,'proc.fwStart --- this.taskModel.task');
-            if(!think.isEmpty(this.taskModel.task)){
+            cmpage.debug(this.taskModel.task, 'proc.fwStart --- this.taskModel.task');
+            if (!think.isEmpty(this.taskModel.task)) {
                 //取当前节点
                 await this.taskModel.getTaskWithCurrentAct();
-                cmpage.debug(this.taskModel.currAct,'proc.fwStart - taskModel.currAct');
+                cmpage.debug(this.taskModel.currAct, 'proc.fwStart - taskModel.currAct');
             }
         }
     }
@@ -50,9 +50,9 @@
      * @params {int} taskID 任务对象ID
      * @params {object} user 流程执行人
      */
-    async fwRun(taskID,user){
-        if(think.isEmpty(this.taskModel)){
-            await this.fwInit(taskID,user);
+    async fwRun(taskID, user) {
+        if (think.isEmpty(this.taskModel)) {
+            await this.fwInit(taskID, user);
         }
         await this.taskModel.fwRun();
     }
@@ -64,9 +64,9 @@
      * @params {int} taskID 任务对象ID
      * @params {object} user 流程执行人
      */
-    async fwSuspend(taskID,user){
-        if(think.isEmpty(this.taskModel)){
-            await this.fwInit(taskID,user);
+    async fwSuspend(taskID, user) {
+        if (think.isEmpty(this.taskModel)) {
+            await this.fwInit(taskID, user);
         }
         await this.taskModel.fwSuspend();
     }
@@ -78,9 +78,9 @@
      * @params {int} taskID 任务对象ID
      * @params {object} user 流程执行人
      */
-    async fwTerminate(taskID,user){
-        if(think.isEmpty(this.taskModel)){
-            await this.fwInit(taskID,user);
+    async fwTerminate(taskID, user) {
+        if (think.isEmpty(this.taskModel)) {
+            await this.fwInit(taskID, user);
         }
         await this.taskModel.fwTerminate();
     }
@@ -92,9 +92,9 @@
      * @params {int} taskID 任务对象ID
      * @params {object} user 流程执行人
      */
-    async fwEnd(taskID,user){
-        if(think.isEmpty(this.taskModel)){
-            await this.fwInit(taskID,user);
+    async fwEnd(taskID, user) {
+        if (think.isEmpty(this.taskModel)) {
+            await this.fwInit(taskID, user);
         }
         await this.taskModel.fwEnd();
     }
@@ -107,9 +107,11 @@
      * @params {object} user 流程执行人
      * @params {int} [procID] 模板ID,当 taskID===0 时，取procID的值
      */
-    async fwInit(taskID,user,procID){
-        let task = taskID >0 ? await this.model('fw_task').where({id:taskID}).find() : {};
-        let proc = await this.getProcById(taskID >0 ? task.c_proc : procID);
+    async fwInit(taskID, user, procID) {
+        let task = taskID > 0 ? await this.model('fw_task').where({
+            id: taskID
+        }).find() : {};
+        let proc = await this.getProcById(taskID > 0 ? task.c_proc : procID);
         this.taskModel = cmpage.service(think.isEmpty(proc.c_class) ? 'flow/task' : proc.c_class);
         this.taskModel.proc = proc;
         this.taskModel.task = task;
@@ -122,10 +124,10 @@
      * @return {object} 流程模板对象
      * @params {int} id 流程模板ID
      */
-    async getProcById(id){
-        let list =await this.getProcs();
-        for(let md of list){
-            if(md.id == id){
+    async getProcById(id) {
+        let list = await this.getProcs();
+        for (let md of list) {
+            if (md.id == id) {
                 return md;
             }
         }
@@ -138,32 +140,32 @@
      * @return {string}  模板名称
      * @param {int} id  模板ID
      */
-    async getNameById(id){
-        let list =await this.getProcs();
-        for(let md of list){
-            if(md.id == id){
+    async getNameById(id) {
+        let list = await this.getProcs();
+        for (let md of list) {
+            if (md.id == id) {
                 return md.c_name;
             }
         }
         return '';
     }
-    async getProcs(){
+    async getProcs() {
         return await think.cache("procProcs", () => {
             return this.query('select id,c_name,c_desc,c_type,c_class,c_no_format,c_way_create,c_time_from,c_time_to,c_status,' +
                 'c_user,c_time,c_group,c_link_model,c_link_type,c_act_start  from fw_proc  where c_status=0 order by id');
         });
     }
 
-    async clearCache(){
+    async clearCache() {
         let procs = await this.query('select id from fw_proc where c_status=0 ');
-        for(let proc of procs){
-            await think.cache(`procActs${proc.id}`,null);
-            await think.cache(`procActPaths${proc.id}`,null);
-            await think.cache(`procAssigns${proc.id}`,null);
+        for (let proc of procs) {
+            await think.cache(`procActs${proc.id}`, null);
+            await think.cache(`procActPaths${proc.id}`, null);
+            await think.cache(`procAssigns${proc.id}`, null);
         }
         let acts = await this.query('select id from fw_act where c_status=0 ');
-        for(let act of acts){
-            await think.cache(`actAssigns${act.id}`,null);
+        for (let act of acts) {
+            await think.cache(`actAssigns${act.id}`, null);
         }
 
         await think.cache('procProcs', null);

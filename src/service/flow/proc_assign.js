@@ -16,7 +16,7 @@ const CMPage = require('../cmpage/page_mob.js');
 module.exports = class extends CMPage {
     constructor() {
         super();
-        this.connStr='cmpage';
+        this.connStr = 'cmpage';
     }
 
     /**
@@ -24,13 +24,13 @@ module.exports = class extends CMPage {
      * @method  pageEditInit
      * @return {object} 新增的记录对象
      */
-    async pageEditInit(){
-        let md =await super.pageEditInit();
-        debug(this.mod.parmsUrl,'proc_assign.pageEditInit - this.mod.parmsUrl');
-        md.c_type = cmpage.enumProcAssignType.ALL;    //默认是所有人
+    async pageEditInit() {
+        let md = await super.pageEditInit();
+        debug(this.mod.parmsUrl, 'proc_assign.pageEditInit - this.mod.parmsUrl');
+        md.c_type = cmpage.enumProcAssignType.ALL; //默认是所有人
         md.c_proc = this.mod.parmsUrl.c_proc;
 
-        debug(md,'proc_assign.pageEditInit - md');
+        debug(md, 'proc_assign.pageEditInit - md');
         return md
     }
 
@@ -42,34 +42,34 @@ module.exports = class extends CMPage {
      * @params {string} colValue Input的值
      * @params {string} input Edit页面的Input的HTML片段
      */
-    async htmlGetEditInput(col,colValue,input) {
+    async htmlGetEditInput(col, colValue, input) {
         let html = '';
         //增加模块编辑页面的操作逻辑，也可以配合页面js方法
-        if(col.c_column ==='link_name'){
+        if (col.c_column === 'link_name') {
             let dataUrl = '';
-            if(this.rec.c_type === cmpage.enumProcAssignType.DEPT){
-                dataUrl ='/admin/code/code_lookup?rootid=5&multiselect=false';
+            if (this.rec.c_type === cmpage.enumProcAssignType.DEPT) {
+                dataUrl = '/admin/code/code_lookup?rootid=5&multiselect=false';
                 colValue = await cmpage.service('admin/code').getNameById(this.rec.c_link);
-            }else if(this.rec.c_type === cmpage.enumProcAssignType.ROLE){
-                dataUrl ='/admin/code/code_lookup?rootid=3&multiselect=false';
+            } else if (this.rec.c_type === cmpage.enumProcAssignType.ROLE) {
+                dataUrl = '/admin/code/code_lookup?rootid=3&multiselect=false';
                 colValue = await cmpage.service('admin/code').getNameById(this.rec.c_link);
-            }else if(this.rec.c_type === cmpage.enumProcAssignType.TEAM){
-                dataUrl ='/admin/code/code_lookup?rootid=7&multiselect=false';
+            } else if (this.rec.c_type === cmpage.enumProcAssignType.TEAM) {
+                dataUrl = '/admin/code/code_lookup?rootid=7&multiselect=false';
                 colValue = await cmpage.service('admin/code').getNameById(this.rec.c_link);
-            }else if(this.rec.c_type === cmpage.enumProcAssignType.USER){
-                dataUrl ='/cmpage/page/lookup?modulename=UserLookup&multiselect=false';
+            } else if (this.rec.c_type === cmpage.enumProcAssignType.USER) {
+                dataUrl = '/cmpage/page/lookup?modulename=UserLookup&multiselect=false';
                 colValue = await cmpage.service('admin/user').getNameById(this.rec.c_link);
             }
-            if(think.isEmpty(dataUrl)){
+            if (think.isEmpty(dataUrl)) {
                 input = `<input id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" type="text" size="${col.c_width}" value="" readonly="readonly" />`;
-            }else{
-                input =  `<input id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" type="lookup" size="${col.c_width}" value="${colValue}"
+            } else {
+                input = `<input id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" type="lookup" size="${col.c_width}" value="${colValue}"
                     data-width="800" data-height="600" data-toggle="lookup" data-title="${col.c_name} 选择" data-url="${dataUrl}" readonly="readonly" />`;
             }
-        }else if(col.c_column === 'c_type'){
+        } else if (col.c_column === 'c_type') {
             input = `<select id="${this.mod.c_modulename + col.c_column}" name="${col.c_column}" data-toggle="selectpicker" onchange="return actAssignChangeLink(this,'FwProcAssign');">`;
             col.c_default = colValue;
-            input += await this.getOptions(col,false);
+            input += await this.getOptions(col, false);
             input += '</select>';
         }
 
@@ -84,13 +84,13 @@ module.exports = class extends CMPage {
      * @params {int} procID  流程模板ID
      * @params {object} user 用户对象
      */
-    async getAssignByUser(procID,user){
-        let list =await this.getAssignsByProcId(procID);
-        for(let md of list){
-            if(md.c_type === cmpage.enumProcAssignType.DEPT && md.c_link === user.c_dept ||
+    async getAssignByUser(procID, user) {
+        let list = await this.getAssignsByProcId(procID);
+        for (let md of list) {
+            if (md.c_type === cmpage.enumProcAssignType.DEPT && md.c_link === user.c_dept ||
                 md.c_type === cmpage.enumProcAssignType.ROLE && md.c_link === user.c_role ||
                 md.c_type === cmpage.enumProcAssignType.USER && md.c_link === user.id ||
-                md.c_type === cmpage.enumProcAssignType.TEAM && await cmpage.service('admin/teamuser').isTeamMember(md.c_link, user.id)){
+                md.c_type === cmpage.enumProcAssignType.TEAM && await cmpage.service('admin/teamuser').isTeamMember(md.c_link, user.id)) {
                 return md;
             }
         }
@@ -103,12 +103,12 @@ module.exports = class extends CMPage {
      * @return {string}  模板名称
      * @param {int} id  模板ID
      */
-    async getLinkNameById(id){
+    async getLinkNameById(id) {
         let md = await this.getAssignById(id);
-        let ret ='';
-        if (md.c_type === cmpage.enumProcAssignType.DEPT || md.c_type === cmpage.enumProcAssignType.ROLE || md.c_type === cmpage.enumProcAssignType.TEAM){
+        let ret = '';
+        if (md.c_type === cmpage.enumProcAssignType.DEPT || md.c_type === cmpage.enumProcAssignType.ROLE || md.c_type === cmpage.enumProcAssignType.TEAM) {
             ret = await cmpage.service('admin/code').getNameById(md.c_link);
-        }else if (md.c_type === cmpage.enumProcAssignType.USER ){
+        } else if (md.c_type === cmpage.enumProcAssignType.USER) {
             ret = await cmpage.service('admin/user').getNameById(md.c_link);
         }
         return ret;
@@ -120,10 +120,10 @@ module.exports = class extends CMPage {
      * @return {object} 活动(流程节点)参数对象
      * @params {int} id 活动节点ID
      */
-    async getAssignById(id){
-        let list =await this.getAssigns();
-        for(let md of list){
-            if(md.id === id){
+    async getAssignById(id) {
+        let list = await this.getAssigns();
+        for (let md of list) {
+            if (md.id === id) {
                 return md;
             }
         }
@@ -138,10 +138,10 @@ module.exports = class extends CMPage {
      * @params {int} id 活动节点ID
      * @param {int} procID  流程模板ID
      */
-    async getAssignByProcId(id,procID){
-        let list =await this.getAssignsByProcId(procID);
-        for(let md of list){
-            if(md.id === id){
+    async getAssignByProcId(id, procID) {
+        let list = await this.getAssignsByProcId(procID);
+        for (let md of list) {
+            if (md.id === id) {
                 return md;
             }
         }
@@ -153,7 +153,7 @@ module.exports = class extends CMPage {
      * @method  getAssigns
      * @return {Array}  活动节点列表
      */
-    async getAssigns(){
+    async getAssigns() {
         return await think.cache("procAssigns", () => {
             return this.query('select * from fw_proc_assign order by id ');
         });
@@ -164,8 +164,8 @@ module.exports = class extends CMPage {
      * @return {Array}  活动节点列表
      * @param {int} procID  流程模板ID
      */
-    async getAssignsByProcId(procID){
-        return await think.cache("procAssigns"+procID, () => {
+    async getAssignsByProcId(procID) {
+        return await think.cache("procAssigns" + procID, () => {
             return this.query(`select * from fw_proc_assign where c_proc=${procID} order by id `);
         });
     }

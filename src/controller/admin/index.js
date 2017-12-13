@@ -17,82 +17,102 @@
 const Base = require('./base.js');
 
 module.exports = class extends Base {
-  /**
-   * 系统首页，加载符合权限的菜单、加载前端BJUI框架等
-   * @method  index
-   * @return {Promise}
-   */
-  async indexAction(){
-    //auto render template file index_index.html
-    let user = await this.session('user');
-    debug(user,'admin.C.index - index.user');
-    let codeMd =await cmpage.service('admin/code').getCodeById(344);    //系统版本
-    let vb={groupName:user.groupName || "",version:codeMd.c_desc,title:'CmPage by defans'};
-    user.roleName = await cmpage.service('admin/code').getNameById(user.c_role);
-    vb.userName = `${user.c_name} [${user.groupName}--${user.roleName}]`;
-    let menus = await cmpage.service('admin/privilege').userGetPrivilegeTree(user.id,user.c_role);
+    /**
+     * 系统首页，加载符合权限的菜单、加载前端BJUI框架等
+     * @method  index
+     * @return {Promise}
+     */
+    async indexAction() {
+        //auto render template file index_index.html
+        let user = await this.session('user');
+        debug(user, 'admin.C.index - index.user');
+        let codeMd = await cmpage.service('admin/code').getCodeById(344); //系统版本
+        let vb = {
+            groupName: user.groupName || "",
+            version: codeMd.c_desc,
+            title: 'CmPage by defans'
+        };
+        user.roleName = await cmpage.service('admin/code').getNameById(user.c_role);
+        vb.userName = `${user.c_name} [${user.groupName}--${user.roleName}]`;
+        let menus = await cmpage.service('admin/privilege').userGetPrivilegeTree(user.id, user.c_role);
 
-      //取主菜单
-      let menuHtml = [];
-      if(think.env === 'development'){
-          menuHtml.push(`<li>
+        //取主菜单
+        let menuHtml = [];
+        if (think.env === 'development') {
+            menuHtml.push(`<li>
               <a data-toggle="navtab" style="cursor: pointer;"
                       data-options="{id:'module_setting', url:'/cmpage/module/index', title:'模块配置', external:true}">模块界面配置</a>
           </li>`);
-      }
-      let firstMenu = true;
-      for(let menu of menus){
-          if(menu.c_type === 'N' && menu.c_pid ===1 && menu.isAllow){
-              menuHtml.push(`<li ${firstMenu ? 'class="active"':''}><a href="/admin/index/get_menu?root_id=${menu.id}" data-toggle="sidenav"
+        }
+        let firstMenu = true;
+        for (let menu of menus) {
+            if (menu.c_type === 'N' && menu.c_pid === 1 && menu.isAllow) {
+                menuHtml.push(`<li ${firstMenu ? 'class="active"':''}><a href="/admin/index/get_menu?root_id=${menu.id}" data-toggle="sidenav"
                      data-tree-options="{onClick:MainMenuClick}" data-id-key="targetid" >${menu.c_name}</a></li>`)
-              firstMenu = false;
-          }
-      }
-      vb.menuHtml = menuHtml;
+                firstMenu = false;
+            }
+        }
+        vb.menuHtml = menuHtml;
 
-    // cmpage.debug(vb.itemList);
-    this.assign('vb',vb);
-    return this.display();
-  }
+        // cmpage.debug(vb.itemList);
+        this.assign('vb', vb);
+        return this.display();
+    }
     /**
      * 用户密码修改页面，get方式显示编辑页面，post方式执行密码修改
      * @method  loginPwdEdit
      * @return {Promise}
      */
-    async get_menuAction(){
+    async get_menuAction() {
         let user = await this.session('user');
         let rootID = this.get('root_id');
-        let menus = await cmpage.service('admin/privilege').userGetPrivilegeTree(user.id,user.c_role,rootID);
+        let menus = await cmpage.service('admin/privilege').userGetPrivilegeTree(user.id, user.c_role, rootID);
         //debug(menus,'admin.index.getMenuAction - menus');
-        let ret =[];
+        let ret = [];
         let nav = [];
-        for(let menu of menus){
-            if(menu.c_pid === rootID && menu.c_type === 'M' && menu.isAllow){
-                menu.external = (menu.c_object === 'Module') || (menu.c_desc.indexOf('http')==0);
-                nav.push({id:`page${menu.c_object.split('.').join('')}`, name:menu.c_name, target:'navtab',
-                    url:menu.c_desc, external:menu.external});
+        for (let menu of menus) {
+            if (menu.c_pid === rootID && menu.c_type === 'M' && menu.isAllow) {
+                menu.external = (menu.c_object === 'Module') || (menu.c_desc.indexOf('http') == 0);
+                nav.push({
+                    id: `page${menu.c_object.split('.').join('')}`,
+                    name: menu.c_name,
+                    target: 'navtab',
+                    url: menu.c_desc,
+                    external: menu.external
+                });
             }
         }
-        if(nav.length >0){
-            ret.push({name:await cmpage.service('admin/code').getNameById(rootID), children:nav});
+        if (nav.length > 0) {
+            ret.push({
+                name: await cmpage.service('admin/code').getNameById(rootID),
+                children: nav
+            });
         }
         let navs = [];
-        for(let menu of menus){
-            if(menu.c_type === 'N'){
+        for (let menu of menus) {
+            if (menu.c_type === 'N') {
                 navs.push(menu);
             }
         }
-        for(let n of navs ){
+        for (let n of navs) {
             nav = [];
-            for(let menu of menus){
-                if(menu.c_pid === n.id  && menu.c_type === 'M' && menu.isAllow){
-                    menu.external = (menu.c_object === 'Module') || (menu.c_desc.indexOf('http')==0);
-                    nav.push({id:`page${menu.c_object.split('.').join('')}`, name:menu.c_name, target:'navtab',
-                        url:menu.c_desc, external:menu.external});
+            for (let menu of menus) {
+                if (menu.c_pid === n.id && menu.c_type === 'M' && menu.isAllow) {
+                    menu.external = (menu.c_object === 'Module') || (menu.c_desc.indexOf('http') == 0);
+                    nav.push({
+                        id: `page${menu.c_object.split('.').join('')}`,
+                        name: menu.c_name,
+                        target: 'navtab',
+                        url: menu.c_desc,
+                        external: menu.external
+                    });
                 }
             }
-            if(nav.length >0){
-                ret.push({name:n.c_name, children:nav});
+            if (nav.length > 0) {
+                ret.push({
+                    name: n.c_name,
+                    children: nav
+                });
             }
         }
 
@@ -105,82 +125,84 @@ module.exports = class extends Base {
      * @method  login
      * @return {Promise}
      */
-    async loginAction(){
+    async loginAction() {
         //let vb ={msg:'请选择您有权限登录的账套。'};
-        let vb ={msg:'演示账号：defans，密码：123456'};
+        let vb = {
+            msg: '演示账号：defans，密码：123456'
+        };
         //vb.groups = await cmpage.service('admin/code').getGroups();
-        if(this.isGet){
+        if (this.isGet) {
             let user = await this.session('user');
-            if(think.isEmpty(user)){
+            if (think.isEmpty(user)) {
                 vb.loginName = 'defans';
                 vb.loginPwd = '123456';
-            }else{
+            } else {
                 vb.loginName = user.c_login_name;
                 vb.loginPwd = '';
             }
-           // cmpage.debug(vb);
-        }else{
-            let user = await cmpage.service('admin/user').getUserByLogin(this.post('loginName'),this.post('loginPwd'));
+            // cmpage.debug(vb);
+        } else {
+            let user = await cmpage.service('admin/user').getUserByLogin(this.post('loginName'), this.post('loginPwd'));
             cmpage.debug(user);
-            if(!think.isEmpty(user)){
-                if(user.c_status != 1){
+            if (!think.isEmpty(user)) {
+                if (user.c_status != 1) {
                     vb.loginName = this.post('loginName');
                     vb.msg = '请等候管理员审核，谢谢！';
-                    this.assign('vb',vb);
+                    this.assign('vb', vb);
                     return this.display();
                 }
                 //判断是否有权限登录所选择的账套
-                user.groupID = await cmpage.service('admin/groupuser').getDefaultGroupID(user.id, user.c_group);    //默认的账套ID
-                if(think.isEmpty(user.groupID)){
+                user.groupID = await cmpage.service('admin/groupuser').getDefaultGroupID(user.id, user.c_group); //默认的账套ID
+                if (think.isEmpty(user.groupID)) {
                     vb.loginName = this.post('loginName');
                     vb.msg = '请等候管理员分配账套，谢谢！';
-                    this.assign('vb',vb);
+                    this.assign('vb', vb);
                     return this.display();
                 }
-                debug(user,'admin.C.index - login.user');
+                debug(user, 'admin.C.index - login.user');
                 let groups = await cmpage.service('admin/groupuser').getLoginGroups(user.groupID, user.id);
-                debug(groups,'admin.C.index - login.groups');
-                if(think.isEmpty(groups)){
+                debug(groups, 'admin.C.index - login.groups');
+                if (think.isEmpty(groups)) {
                     vb.loginName = this.post('loginName');
                     vb.msg = '对不起，您不能登录该账套！';
-                    this.assign('vb',vb);
+                    this.assign('vb', vb);
                     return this.display();
-                }else {
+                } else {
                     user.ip = this.ip;
                     user.urlLast = '/admin/index/index';
                     user.groupName = await cmpage.service('admin/code').getNameById(user.groupID);
                     user.groups = groups;
                     let width = think.isEmpty(this.post('clientWidth')) ? 1200 : this.post('clientWidth');
-                    user.listColumns = width >=1200 ? cmpage.ui.enumListColumns.MAX : (width >=970 ? cmpage.ui.enumListColumns.MIDDLE :
-                        (width >=768 ? cmpage.ui.enumListColumns.SMALL : cmpage.ui.enumListColumns.MOBILE ));
-                    user.listBtns = width >=1200 ? cmpage.ui.enumListBtns.MAX : (width >=970 ? cmpage.ui.enumListBtns.MIDDLE :
-                        (width >=768 ? cmpage.ui.enumListBtns.SMALL : cmpage.ui.enumListBtns.MOBILE ));
-                    user.queryColumns = width >=1200 ? cmpage.ui.enumQueryColumns.MAX : (width >=970 ? cmpage.ui.enumQueryColumns.MIDDLE :
-                        (width >=768 ? cmpage.ui.enumQueryColumns.SMALL : cmpage.ui.enumQueryColumns.MOBILE ));
+                    user.listColumns = width >= 1200 ? cmpage.ui.enumListColumns.MAX : (width >= 970 ? cmpage.ui.enumListColumns.MIDDLE :
+                        (width >= 768 ? cmpage.ui.enumListColumns.SMALL : cmpage.ui.enumListColumns.MOBILE));
+                    user.listBtns = width >= 1200 ? cmpage.ui.enumListBtns.MAX : (width >= 970 ? cmpage.ui.enumListBtns.MIDDLE :
+                        (width >= 768 ? cmpage.ui.enumListBtns.SMALL : cmpage.ui.enumListBtns.MOBILE));
+                    user.queryColumns = width >= 1200 ? cmpage.ui.enumQueryColumns.MAX : (width >= 970 ? cmpage.ui.enumQueryColumns.MIDDLE :
+                        (width >= 768 ? cmpage.ui.enumQueryColumns.SMALL : cmpage.ui.enumQueryColumns.MOBILE));
 
-                    debug(user,'admin.index.C.login - user');
+                    debug(user, 'admin.index.C.login - user');
                     await cmpage.service('admin/login').addLogin(user);
                     await this.session('user', user);
                     let index_name = await this.session('index_name');
-                    if(!think.isEmpty(index_name)){
-                        await this.session('index_name',null);
+                    if (!think.isEmpty(index_name)) {
+                        await this.session('index_name', null);
                         return this.redirect(`/${index_name}/index/index`);
                     }
-                    if(width <768){
+                    if (width < 768) {
                         return this.redirect('/cmpage/hh/index');
-                    }else{
-                        return this.redirect('/admin/index/index');                        
+                    } else {
+                        return this.redirect('/admin/index/index');
                     }
                 }
-            }else{
+            } else {
                 vb.loginName = this.post('loginName');
                 vb.msg = '用户名或密码错误！';
-                this.assign('vb',vb);
+                this.assign('vb', vb);
                 return this.display();
             }
         }
         vb.msgCount = 0;
-        this.assign('vb',vb);
+        this.assign('vb', vb);
         return this.display();
     }
 
@@ -189,11 +211,11 @@ module.exports = class extends Base {
      * @method  groupChange
      * @return {Promise}
      */
-    async group_changeAction(){
+    async group_changeAction() {
         let groupID = this.get('groupID');
         let user = await this.session('user');
-        let groups =  await cmpage.service('admin/groupuser').getLoginGroups(groupID, user.id);
-        if(!think.isEmpty(groups)){
+        let groups = await cmpage.service('admin/groupuser').getLoginGroups(groupID, user.id);
+        if (!think.isEmpty(groups)) {
             user.groupID = groupID;
             user.groupName = await cmpage.service('admin/code').getNameById(groupID);
             user.groups = groups;
@@ -207,9 +229,9 @@ module.exports = class extends Base {
      * @method  exitLogin
      * @return {Promise}
      */
-    async exit_loginAction(){
+    async exit_loginAction() {
         await cmpage.service('admin/login').exitLogin(await this.session('user'));
-        await this.session('user',null);
+        await this.session('user', null);
         return this.redirect('/admin/index/login');
     }
 
@@ -218,42 +240,56 @@ module.exports = class extends Base {
      * @method  loginPwdEdit
      * @return {Promise}
      */
-    async login_pwd_editAction(){
-        if(this.method() === 'get'){
+    async login_pwd_editAction() {
+        if (this.method() === 'get') {
             return this.display();
-        }else{
+        } else {
             let user = await this.session('user');
-            await this.model('t_user').where({id:user.id}).update({c_login_pwd:think.md5(this.post('newPwd'))});
-            await this.cache("users",null);  //清除users缓存
-            return this.json({statusCode:200, message:'密码已修改，请牢记！',closeCurrent:true});
+            await this.model('t_user').where({
+                id: user.id
+            }).update({
+                c_login_pwd: think.md5(this.post('newPwd'))
+            });
+            await this.cache("users", null); //清除users缓存
+            return this.json({
+                statusCode: 200,
+                message: '密码已修改，请牢记！',
+                closeCurrent: true
+            });
         }
     }
 
-    async set_client_widthAction(){
+    async set_client_widthAction() {
         let user = await this.session('user');
         let width = think.isEmpty(this.get('width')) ? 1200 : this.get('width');
-        user.listColumns = width >=1200 ? cmpage.ui.enumListColumns.MAX : (width >=970 ? cmpage.ui.enumListColumns.MIDDLE :
-            (width >=768 ? cmpage.ui.enumListColumns.SMALL : cmpage.ui.enumListColumns.MOBILE ));
-        user.listBtns = width >=1200 ? cmpage.ui.enumListBtns.MAX : (width >=970 ? cmpage.ui.enumListBtns.MIDDLE :
-            (width >=768 ? cmpage.ui.enumListBtns.SMALL : cmpage.ui.enumListBtns.MOBILE ));
-        user.queryColumns = width >=1200 ? cmpage.ui.enumQueryColumns.MAX : (width >=970 ? cmpage.ui.enumQueryColumns.MIDDLE :
-            (width >=768 ? cmpage.ui.enumQueryColumns.SMALL : cmpage.ui.enumQueryColumns.MOBILE ));
+        user.listColumns = width >= 1200 ? cmpage.ui.enumListColumns.MAX : (width >= 970 ? cmpage.ui.enumListColumns.MIDDLE :
+            (width >= 768 ? cmpage.ui.enumListColumns.SMALL : cmpage.ui.enumListColumns.MOBILE));
+        user.listBtns = width >= 1200 ? cmpage.ui.enumListBtns.MAX : (width >= 970 ? cmpage.ui.enumListBtns.MIDDLE :
+            (width >= 768 ? cmpage.ui.enumListBtns.SMALL : cmpage.ui.enumListBtns.MOBILE));
+        user.queryColumns = width >= 1200 ? cmpage.ui.enumQueryColumns.MAX : (width >= 970 ? cmpage.ui.enumQueryColumns.MIDDLE :
+            (width >= 768 ? cmpage.ui.enumQueryColumns.SMALL : cmpage.ui.enumQueryColumns.MOBILE));
         await this.session('user', user);
-        return this.json({statusCode:200, message:''});
+        return this.json({
+            statusCode: 200,
+            message: ''
+        });
     }
 
 
-    installAction(){
-        if(this.ip() != "127.0.0.1"){
-            return this.json({statusCode:300,message:"You should install on localhost! "+this.ip()});
+    installAction() {
+        if (this.ip() != "127.0.0.1") {
+            return this.json({
+                statusCode: 300,
+                message: "You should install on localhost! " + this.ip()
+            });
         }
         return this.display();
     }
 
-    homeAction(){
+    homeAction() {
         return this.display();
     }
-    gitAction(){
+    gitAction() {
         return this.display();
     }
 

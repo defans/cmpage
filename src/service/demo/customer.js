@@ -14,11 +14,11 @@ module.exports = class extends CMPage {
     /**
      * 取查询项的设置，结合POST参数，得到Where字句
      */
-    async getQueryWhere(){
+    async getQueryWhere() {
         //通过父类的方法取查询列设置解析后的where子句
-        let where =await super.getQueryWhere();
+        let where = await super.getQueryWhere();
         //此处增加额外的条件
-        where += ' and c_status<>-1';      //也可以在查询列设置一条 ‘固定’类型的查询列，备注中填： c_status<>-1
+        where += ' and c_status<>-1'; //也可以在查询列设置一条 ‘固定’类型的查询列，备注中填： c_status<>-1
 
         return where;
     }
@@ -61,9 +61,9 @@ module.exports = class extends CMPage {
      * @return {string}  客户名称
      * @param {int} id  客户ID
      */
-    async getNameById(id){
+    async getNameById(id) {
         let customer = await this.getCustomerById(id);
-        if(think.isEmpty(customer)) return '';
+        if (think.isEmpty(customer)) return '';
         return customer.c_name;
     }
     /**
@@ -72,10 +72,10 @@ module.exports = class extends CMPage {
      * @return {object}  客户对象
      * @param {int} id  客户ID
      */
-    async getCustomerById(id){
-        let Customers =await this.getCustomers();
-        for(let customer of Customers){
-            if(customer.id == id){
+    async getCustomerById(id) {
+        let Customers = await this.getCustomers();
+        for (let customer of Customers) {
+            if (customer.id == id) {
                 return customer;
             }
         }
@@ -87,7 +87,7 @@ module.exports = class extends CMPage {
      * @method  getCustomers
      * @return {Array}  t_customer记录列表
      */
-    async getCustomers(){
+    async getCustomers() {
         return this.query('select * from t_customer order by  c_name ');
     }
 

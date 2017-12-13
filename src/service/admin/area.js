@@ -24,7 +24,7 @@
  * 全国行政区划的操作类，如果内容作调整后，手机端APP部分也应该做调整，因为数据是预存在APP端的
  * @class cmpage.service.area
  */
- const CMPage = require('../cmpage/page.js');
+const CMPage = require('../cmpage/page.js');
 
 module.exports = class extends CMPage {
     /**
@@ -32,7 +32,7 @@ module.exports = class extends CMPage {
      * @method  getProvinces
      * @return {Array}  省份记录列表
      */
-    async getProvinces(){
+    async getProvinces() {
         return await think.cache(`provinces`, () => {
             return this.query(`select * from t_area where c_pid =0 order by c_ucode`);
         });
@@ -44,13 +44,13 @@ module.exports = class extends CMPage {
      * @return {string}  名称
      * @param {string} province  编码
      */
-    async getProvinceName(province){
-        if(think.isEmpty(province)){
+    async getProvinceName(province) {
+        if (think.isEmpty(province)) {
             return '';
         }
         let provinces = await this.getProvinces();
-        for(let item of provinces){
-            if(item.c_ucode == province){
+        for (let item of provinces) {
+            if (item.c_ucode == province) {
                 return item.c_name;
             }
         }
@@ -63,13 +63,13 @@ module.exports = class extends CMPage {
      * @return {string}  名称
      * @param {string} city  编码
      */
-    async getCityName(city){
-        if(think.isEmpty(city)){
+    async getCityName(city) {
+        if (think.isEmpty(city)) {
             return '';
         }
-        let citys = await this.getCitys(city.substr(0,2)+'0000');
-        for(let item of citys){
-            if(item.c_ucode == city){
+        let citys = await this.getCitys(city.substr(0, 2) + '0000');
+        for (let item of citys) {
+            if (item.c_ucode == city) {
                 return item.c_name;
             }
         }
@@ -82,13 +82,13 @@ module.exports = class extends CMPage {
      * @return {string}  名称
      * @param {string} country  编码
      */
-    async getCountryName(country){
-        if(think.isEmpty(country)){
+    async getCountryName(country) {
+        if (think.isEmpty(country)) {
             return '';
         }
-        let countrys = await this.getCountrys(country.substr(0,4)+'00');
-        for(let item of countrys){
-            if(item.c_ucode == country){
+        let countrys = await this.getCountrys(country.substr(0, 4) + '00');
+        for (let item of countrys) {
+            if (item.c_ucode == country) {
                 return item.c_name;
             }
         }
@@ -101,7 +101,7 @@ module.exports = class extends CMPage {
      * @return {Array}  城市记录列表
      * @param {string} province  省份编码
      */
-    async getCitys(province){
+    async getCitys(province) {
         return await think.cache(`city${province}`, () => {
             return this.query(`select * from t_area where c_pid in(select id from t_area where c_ucode='${province}') order by c_ucode`);
         });
@@ -113,7 +113,7 @@ module.exports = class extends CMPage {
      * @return {Array}  区县记录列表
      * @param {string} province  城市编码
      */
-    async getCountrys(city){
+    async getCountrys(city) {
         return await think.cache(`country${city}`, () => {
             return this.query(`select * from t_area where c_pid in(select id from t_area where c_ucode='${city}') order by c_ucode`);
         });
@@ -126,14 +126,14 @@ module.exports = class extends CMPage {
      * @param {string} value  省份编码，当前值
      * @param {bool} hasEmptyItem  是否有空项，一般查询HTML输出时用到
      */
-    async getProvinceItems(value,hasEmptyItem){
+    async getProvinceItems(value, hasEmptyItem) {
         let html = [];
-        value = think.isEmpty(value) ? '-1': value;
-        if(hasEmptyItem){
+        value = think.isEmpty(value) ? '-1' : value;
+        if (hasEmptyItem) {
             html.push(`<option value="-1" ${value =="-1" ? "selected":""}>请选择</option>`);
         }
         let provinces = await this.getProvinces();
-        for(let item of provinces){
+        for (let item of provinces) {
             html.push(`<option value="${item.c_ucode}" ${item.c_ucode == value ? "selected":""}>${item.c_name}</option>`);
         }
         return html.join('');
@@ -147,18 +147,18 @@ module.exports = class extends CMPage {
      * @param {bool} hasEmptyItem  是否有空项，一般查询HTML输出时用到
      * @param {string} provinceValue  当前省份编码
      */
-    async getCityItems(value,hasEmptyItem,provinceValue){
+    async getCityItems(value, hasEmptyItem, provinceValue) {
         let html = [];
-        value = think.isEmpty(value) ? '-1': value;
-        if(hasEmptyItem){
+        value = think.isEmpty(value) ? '-1' : value;
+        if (hasEmptyItem) {
             html.push(`<option value="-1" ${value =="-1" ? "selected":""}>请选择</option>`);
         }
-        let province = think.isEmpty(provinceValue) ? '':provinceValue;
-        if(!think.isEmpty(value) && value !== '-1'){
-            province = value.substring(0,2)+'0000';
+        let province = think.isEmpty(provinceValue) ? '' : provinceValue;
+        if (!think.isEmpty(value) && value !== '-1') {
+            province = value.substring(0, 2) + '0000';
         }
         let citys = await this.getCitys(province);
-        for(let item of citys){
+        for (let item of citys) {
             html.push(`<option value="${item.c_ucode}" ${item.c_ucode == value ? "selected":""}>${item.c_name}</option>`);
         }
         return html.join('');
@@ -172,18 +172,18 @@ module.exports = class extends CMPage {
      * @param {bool} hasEmptyItem  是否有空项，一般查询HTML输出时用到
      * @param {string} cityValue  当前城市编码
      */
-    async getCountryItems(value,hasEmptyItem,cityValue){
+    async getCountryItems(value, hasEmptyItem, cityValue) {
         let html = [];
-        value = think.isEmpty(value) ? '-1': value;
-        if(hasEmptyItem){
+        value = think.isEmpty(value) ? '-1' : value;
+        if (hasEmptyItem) {
             html.push(`<option value="-1" ${value =="-1" ? "selected":""}>请选择</option>`);
         }
-        let city =think.isEmpty(cityValue) ? '':cityValue;
-        if(!think.isEmpty(value) && value !== '-1'){
-            city = value.substring(0,4)+'00';
+        let city = think.isEmpty(cityValue) ? '' : cityValue;
+        if (!think.isEmpty(value) && value !== '-1') {
+            city = value.substring(0, 4) + '00';
         }
         let countrys = await this.getCountrys(city);
-        for(let item of countrys){
+        for (let item of countrys) {
             html.push(`<option value="${item.c_ucode}" ${item.c_ucode == value ? "selected":""}>${item.c_name}</option>`);
         }
         return html.join('');

@@ -14,10 +14,13 @@ module.exports = class extends Base {
      * @method  run
      * @return {json}  流程实例对象
      */
-    async runAction(){
+    async runAction() {
         let isPass = !think.isEmpty(this.get('isPass'));
-        await cmpage.service('flow/act').fwRun(this.get('taskActID'),await this.session('user'),null, isPass);
-        return this.json({statusCode:200,message:'本次操作成功!'});
+        await cmpage.service('flow/act').fwRun(this.get('taskActID'), await this.session('user'), null, isPass);
+        return this.json({
+            statusCode: 200,
+            message: '本次操作成功!'
+        });
     }
 
     /**
@@ -25,9 +28,12 @@ module.exports = class extends Base {
      * @method  suspend
      * @return {json}  流程实例对象
      */
-    async suspendAction(){
-        await cmpage.service('flow/act').fwSuspend(this.get('taskActID'),await this.session('user') );
-        return this.json({statusCode:200,message:'本次操作已成功挂起!'});
+    async suspendAction() {
+        await cmpage.service('flow/act').fwSuspend(this.get('taskActID'), await this.session('user'));
+        return this.json({
+            statusCode: 200,
+            message: '本次操作已成功挂起!'
+        });
     }
 
     /**
@@ -35,9 +41,12 @@ module.exports = class extends Base {
      * @method  terminate
      * @return {json}  流程实例对象
      */
-    async terminateAction(){
-        await cmpage.service('flow/act').fwTerminate(this.get('taskActID'),await this.session('user') );
-        return this.json({statusCode:200,message:'本次操作已成功终止!'});
+    async terminateAction() {
+        await cmpage.service('flow/act').fwTerminate(this.get('taskActID'), await this.session('user'));
+        return this.json({
+            statusCode: 200,
+            message: '本次操作已成功终止!'
+        });
     }
 
 }

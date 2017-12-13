@@ -12,7 +12,7 @@ module.exports = class extends Base {
      * @method  design
      * @return {promise}
      */
-    async designAction(){
+    async designAction() {
         let module = cmpage.service('cmpage/module')
         let parms = await module.getModuleByName('FwProcList');
         parms.parmsUrl = JSON.stringify(this.get());
@@ -24,13 +24,13 @@ module.exports = class extends Base {
         await pageModel.initPage();
         pageModel.modEdits = await module.getModuleEdit(parms.id);
 
-        let procEditHtml =await pageModel.htmlGetEdit();
-        this.assign('procEditHtml',procEditHtml);
-        this.assign('parms',pageModel.mod);
+        let procEditHtml = await pageModel.htmlGetEdit();
+        this.assign('procEditHtml', procEditHtml);
+        this.assign('parms', pageModel.mod);
 
         let parmsAct = await module.getModuleByName('FwAct');
-        parmsAct.parmsUrl= '{}';
-        parmsAct.editID =0;
+        parmsAct.parmsUrl = '{}';
+        parmsAct.editID = 0;
         parmsAct.user = parms.user;
         let pageAct = cmpage.service('cmpage/page');
         pageAct.mod = parmsAct;
@@ -39,10 +39,10 @@ module.exports = class extends Base {
 
         let actEditHtml = await pageAct.htmlGetEdit();
         //cmpage.debug(actEditHtml,'flow.controller.proc - actEditHtml');
-        this.assign('actEditHtml','<tbody>'+actEditHtml+'</tbody>');
+        this.assign('actEditHtml', '<tbody>' + actEditHtml + '</tbody>');
 
         let flowMap = await pageModel.getFlowMap(parms.editID);
-        this.assign('flowMap',flowMap);
+        this.assign('flowMap', flowMap);
 
         return this.display();
     }
@@ -51,11 +51,11 @@ module.exports = class extends Base {
      * @method  flowMap
      * @return {promise}
      */
-    async flow_mapAction(){
+    async flow_mapAction() {
         let procID = this.get("proc_id");
         let flowMap = await cmpage.service('flow/proc_list').getFlowMap(procID);
-        this.assign('flowMap',flowMap);
-        this.assign('procID',procID)
+        this.assign('flowMap', flowMap);
+        this.assign('procID', procID)
 
         return this.display();
     }
@@ -65,15 +65,23 @@ module.exports = class extends Base {
      * @method  saveMap
      * @return {json}
      */
-    async save_mapAction(){
-        let parms =this.post();
+    async save_mapAction() {
+        let parms = this.post();
         await cmpage.service('flow/proc_list').saveFlowMap(parms);
 
-        return this.json({statusCode:200,message:'保存图形成功!'});
+        return this.json({
+            statusCode: 200,
+            message: '保存图形成功!'
+        });
     }
 
-    async clear_cacheAction(){
-        let ret={statusCode:200,message:'已成功清除了流程模板的缓存!',tabid: '',data:{}};
+    async clear_cacheAction() {
+        let ret = {
+            statusCode: 200,
+            message: '已成功清除了流程模板的缓存!',
+            tabid: '',
+            data: {}
+        };
 
         await cmpage.service('flow/proc').clearCache();
 

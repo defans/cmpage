@@ -21,10 +21,10 @@ mui.init({
 });
 
 //B页面onload从服务器获取列表数据；
-mui.plusReady(function() {
+mui.plusReady(function () {
 	//仅支持竖屏显示
 	plus.screen.lockOrientation("portrait-primary");
-	
+
 	formdata = {
 		modulename: "Msg",
 		parms: "Msg",
@@ -41,10 +41,10 @@ mui.plusReady(function() {
  * 下拉刷新具体业务实现
  */
 function pulldownRefresh() {
-	setTimeout(function() {
+	setTimeout(function () {
 		var table = document.body.querySelector('.erp-msg-list');
 		table.innerHTML = "";
-		var size = pageIndex * pageSize ;
+		var size = pageIndex * pageSize;
 		size = size < pageSize ? pageSize : size;
 		pageIndex = 0;
 		getMsgList(size);
@@ -56,14 +56,14 @@ function pulldownRefresh() {
  * 上拉加载具体业务实现
  */
 function pullupRefresh() {
-	setTimeout(function() {
+	setTimeout(function () {
 		mui('#pullrefresh').pullRefresh().endPullupToRefresh(false); //参数为true代表没有更多数据了。
 		getMsgList(pageSize);
 	}, 1000);
 }
 
 //列表item点击事件
-mui('.erp-msg-list').on('tap', 'a', function(e) {
+mui('.erp-msg-list').on('tap', 'a', function (e) {
 	//更改消息状态
 	var id = this.getAttribute('data-id');
 	mui.ajax(app.getDomain() + "/Flow/MsgUpdateStatusRead", {
@@ -73,10 +73,10 @@ mui('.erp-msg-list').on('tap', 'a', function(e) {
 		type: "post",
 		dataType: 'json',
 		timeout: 5000,
-		error: function(request) {
+		error: function (request) {
 			app.toast("服务器获取数据失败！");
 		},
-		success: function(ret) {
+		success: function (ret) {
 			if (ret.statusCode == 200) {
 				getUnreadCount();
 			}
@@ -87,12 +87,12 @@ mui('.erp-msg-list').on('tap', 'a', function(e) {
 	var url = this.getAttribute('href');
 	var docuID = this.getAttribute('data-docu');
 	var modulename = this.getAttribute('data-modulename');
-	if(curItem != null){
-		curItem.setAttribute('style','');
+	if (curItem != null) {
+		curItem.setAttribute('style', '');
 	}
-	this.setAttribute('style','background-color: #EEEEEE;');
+	this.setAttribute('style', 'background-color: #EEEEEE;');
 	curItem = this;
-	setTimeout(function() {
+	setTimeout(function () {
 		mui.openWindow({
 			id: url,
 			url: url,
@@ -113,10 +113,10 @@ function getUnreadCount() {
 		type: "post",
 		dataType: 'json',
 		timeout: 5000,
-		error: function(request) {
+		error: function (request) {
 			app.toast("服务器获取数据失败！");
 		},
-		success: function(data) {
+		success: function (data) {
 			if (data.statusCode == 200) {
 				if (unreadcount !== data.count) {
 					unreadcount = data.count;
@@ -150,11 +150,11 @@ function getMsgList(size) {
 			type: "post",
 			dataType: 'json',
 			timeout: 5000,
-			error: function(request) {
+			error: function (request) {
 				plus.nativeUI.closeWaiting();
 				app.toast("服务器获取数据失败！");
 			},
-			success: function(data) {
+			success: function (data) {
 				plus.nativeUI.closeWaiting();
 				if (data.statusCode == 200) {
 					var table = document.body.querySelector('.erp-msg-list');
@@ -166,14 +166,14 @@ function getMsgList(size) {
 				}
 			}
 		});
-	}	
+	}
 }
 
 //搜索按钮点击事件
-mui('.erp-msg-menu').on('tap', 'a', function(e) {
+mui('.erp-msg-menu').on('tap', 'a', function (e) {
 	mui("#topPopover").popover("toggle");
 	var url = this.getAttribute("href");
-	setTimeout(function() {
+	setTimeout(function () {
 		mui.openWindow({
 			id: url,
 			url: url,
@@ -190,7 +190,7 @@ mui('.erp-msg-menu').on('tap', 'a', function(e) {
 });
 
 //添加自定义事件监听是否要显示数据
-window.addEventListener('search_callback', function(event) {
+window.addEventListener('search_callback', function (event) {
 	var table = document.body.querySelector('.erp-msg-list');
 	table.innerHTML = "";
 	var d = event.detail;

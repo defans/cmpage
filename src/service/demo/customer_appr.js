@@ -32,14 +32,23 @@ module.exports = class extends CMPage {
      * @params {int} status 状态值，一般在t_code表中设置
      * @params {boolean} isSelf 自身表单的调用，区别于其他模块的调用
      */
-    async updateStatus(id, actID, status, isSelf){
+    async updateStatus(id, actID, status, isSelf) {
         //修改业务对象状态
-        let ret = await super.updateStatus(id, actID, status,isSelf);
-        debug(ret,'customer_appr.updateStatus - super.ret');
-        if(ret.statusCode === 200 && isSelf){
+        let ret = await super.updateStatus(id, actID, status, isSelf);
+        debug(ret, 'customer_appr.updateStatus - super.ret');
+        if (ret.statusCode === 200 && isSelf) {
             //增加历史状态记录,此处关联已经明确，逻辑明确，故而直接增加状态记录
-            let apprRec = {c_link:id, c_link_type:'t_customer', c_modulename:'CustomerAppr',c_status:status, c_desc:'',
-                c_user:this.mod.user.id, c_time:think.datetime(), c_group:this.mod.user.groupID, c_act:actID};
+            let apprRec = {
+                c_link: id,
+                c_link_type: 't_customer',
+                c_modulename: 'CustomerAppr',
+                c_status: status,
+                c_desc: '',
+                c_user: this.mod.user.id,
+                c_time: think.datetime(),
+                c_group: this.mod.user.groupID,
+                c_act: actID
+            };
             await this.model('t_appr').add(apprRec);
         }
         return ret;

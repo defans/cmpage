@@ -26,10 +26,10 @@ module.exports = class extends Base {
      * @method  edit
      * @return {json}   act编辑页面的HTML片段
      */
-    async editAction(){
+    async editAction() {
         let actModule = cmpage.service('cmpage/module');
         let parmsAct = await actModule.getModuleByName('FwAct');
-        parmsAct.parmsUrl= '{}';
+        parmsAct.parmsUrl = '{}';
         parmsAct.editID = this.get('id');
         parmsAct.user = await this.session('user');
         let pageAct = cmpage.service('flow/act_list');
@@ -39,7 +39,10 @@ module.exports = class extends Base {
 
         let actEditHtml = await pageAct.htmlGetEdit();
 
-        return this.json({statusCode:200, actEditHtml:actEditHtml});
+        return this.json({
+            statusCode: 200,
+            actEditHtml: actEditHtml
+        });
     }
 
     /**
@@ -47,23 +50,31 @@ module.exports = class extends Base {
      * @method  delete
      * @return {json}   删除状态
      */
-    async deleteAction(){
+    async deleteAction() {
         let actID = this.get('id');
-        await cmpage.service('fw_act_path','cmpage').where(`c_from=${actID} or c_to=${actID}`).delete();
-        await this.model('fw_act','cmpage').where({id:actID}).delete();
+        await cmpage.service('fw_act_path', 'cmpage').where(`c_from=${actID} or c_to=${actID}`).delete();
+        await this.model('fw_act', 'cmpage').where({
+            id: actID
+        }).delete();
 
-        return this.json({statusCode:200, message:''});
+        return this.json({
+            statusCode: 200,
+            message: ''
+        });
     }
     /**
      * 删除流程节点的路径信息， GET调用： /flow/act/delete_path?id=xxx
      * @method  deletePath
      * @return {json}   删除状态
      */
-    async delete_pathAction(){
+    async delete_pathAction() {
         let id = this.get('id');
-        await this.model('fw_act_path','cmpage').where(`c_id=${id}`).delete();
+        await this.model('fw_act_path', 'cmpage').where(`c_id=${id}`).delete();
 
-        return this.json({statusCode:200, message:''});
+        return this.json({
+            statusCode: 200,
+            message: ''
+        });
     }
 
     /**
@@ -71,11 +82,16 @@ module.exports = class extends Base {
      * @method  edit
      * @return {json}   act编辑页面的HTML片段
      */
-    async getActPathAction(){
+    async getActPathAction() {
         let id = this.get('id');
-        let data = await this.model('fw_act_path','cmpage').where({id:id}).find();
+        let data = await this.model('fw_act_path', 'cmpage').where({
+            id: id
+        }).find();
 
-        return this.json({statusCode:200, data:data});
+        return this.json({
+            statusCode: 200,
+            data: data
+        });
     }
 
 }

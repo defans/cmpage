@@ -22,37 +22,59 @@ const docuRec = require('./docu_rec.js');
 
 module.exports = class extends docuRec {
 
-     /**
-      * 增加物料明细，根据模块名称判断数据来源，实现相应的逻辑
-      * @method  goodsAdd
-      * @return {object} 返回前端的状态对象
-      */
-    async goodsAdd(fromID, docuID){
-        if(think.isEmpty(docuID))  return  {statusCode:300, message:`单据ID错误!`};
-        let goods = await this.model('t_goods').where('c_id='+fromID).find();
-        if(think.isEmpty(goods)){
-            return  {statusCode:300, message:`物料ID不存在!`};
+    /**
+     * 增加物料明细，根据模块名称判断数据来源，实现相应的逻辑
+     * @method  goodsAdd
+     * @return {object} 返回前端的状态对象
+     */
+    async goodsAdd(fromID, docuID) {
+        if (think.isEmpty(docuID)) return {
+            statusCode: 300,
+            message: `单据ID错误!`
+        };
+        let goods = await this.model('t_goods').where('c_id=' + fromID).find();
+        if (think.isEmpty(goods)) {
+            return {
+                statusCode: 300,
+                message: `物料ID不存在!`
+            };
         }
 
-        let rec = {c_order_apply:docuID,c_goods:fromID,c_qty:1,c_supplier:0,c_time_arrive:think.datetime(),
-            c_close:false,c_qty_to:0,c_use:'',c_memo:''};
+        let rec = {
+            c_order_apply: docuID,
+            c_goods: fromID,
+            c_qty: 1,
+            c_supplier: 0,
+            c_time_arrive: think.datetime(),
+            c_close: false,
+            c_qty_to: 0,
+            c_use: '',
+            c_memo: ''
+        };
         let recID = await this.model('t_order_apply_rec').add(rec);
 
-        return  {statusCode:recID>0 ? 200:300, message: recID>0 ? "":"操作失败！"};
+        return {
+            statusCode: recID > 0 ? 200 : 300,
+            message: recID > 0 ? "" : "操作失败！"
+        };
     }
 
-      /**
-       * 删除记录,<br/>
-       * 子类中可以重写本方法，实现其他的删除逻辑，如判断是否可以删除，删除相关联的其他记录等等
-       * @method  pageDelete
-       * @return {object} 记录对象
-       */
-      async pageDelete(){
-         //删除后需要变动库存数量等
-         await this.model('t_order_apply_rec').where(` c_id=${this.mod.recID}`).delete();
+    /**
+     * 删除记录,<br/>
+     * 子类中可以重写本方法，实现其他的删除逻辑，如判断是否可以删除，删除相关联的其他记录等等
+     * @method  pageDelete
+     * @return {object} 记录对象
+     */
+    async pageDelete() {
+        //删除后需要变动库存数量等
+        await this.model('t_order_apply_rec').where(` c_id=${this.mod.recID}`).delete();
 
-         return {statusCode:200,message:'删除成功！',data:{}};
-      }
+        return {
+            statusCode: 200,
+            message: '删除成功！',
+            data: {}
+        };
+    }
 
 
 }

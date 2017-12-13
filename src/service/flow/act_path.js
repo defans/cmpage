@@ -12,11 +12,11 @@
  * 一般不需要继承，也没有相关联的业务类
  * @class flow.model.act_path
  */
- const Base =require('../cmpage/base.js');
- module.exports = class extends Base {
+const Base = require('../cmpage/base.js');
+module.exports = class extends Base {
     constructor() {
         super();
-        this.connStr='cmpage';
+        this.connStr = 'cmpage';
     }
 
     /**
@@ -25,10 +25,10 @@
      * @return {object} 活动路径对象
      * @params {int} id 活动路径ID
      */
-    async getActPathById(id){
-        let list =await this.getActPaths();
-        for(let md of list){
-            if(md.id == id){
+    async getActPathById(id) {
+        let list = await this.getActPaths();
+        for (let md of list) {
+            if (md.id == id) {
                 return md;
             }
         }
@@ -43,10 +43,10 @@
      * @params {int} id 活动路径ID
      * @params {int} procID 流程模板ID
      */
-    async getActPathByIdAndProcId(id,procID){
-        let list =await this.getActPathsByProcId(procID);
-        for(let md of list){
-            if(md.id == id){
+    async getActPathByIdAndProcId(id, procID) {
+        let list = await this.getActPathsByProcId(procID);
+        for (let md of list) {
+            if (md.id == id) {
                 return md;
             }
         }
@@ -60,11 +60,11 @@
      * @params {int} actID 活动节点ID
      * @params {int} procID 流程模板ID
      */
-    async getFromActIds(actID,procID){
-        let list =await this.getActPathsByProcId(procID);
+    async getFromActIds(actID, procID) {
+        let list = await this.getActPathsByProcId(procID);
         let ret = [];
-        for(let md of list){
-            if(md.c_to == actID){
+        for (let md of list) {
+            if (md.c_to == actID) {
                 ret.push(md.c_from);
             }
         }
@@ -78,12 +78,12 @@
      * @params {int} actID 活动节点ID
      * @params {int} procID 流程模板ID
      */
-    async getToActIds(actID,procID){
-        let list =await this.getActPathsByProcId(procID);
+    async getToActIds(actID, procID) {
+        let list = await this.getActPathsByProcId(procID);
         //debug(list,'act_path.getToActPaths - list');
         let ret = [];
-        for(let md of list){
-            if(md.c_from == actID){
+        for (let md of list) {
+            if (md.c_from == actID) {
                 ret.push(md.c_to);
             }
         }
@@ -96,12 +96,12 @@
      * @params {int} actID 活动节点ID
      * @params {int} procID 流程模板ID
      */
-    async getToActPaths(actID,procID){
-        let list =await this.getActPathsByProcId(procID);
+    async getToActPaths(actID, procID) {
+        let list = await this.getActPathsByProcId(procID);
         //debug(list,'act_path.getToActPaths - list');
         let ret = [];
-        for(let md of list){
-            if(md.c_from == actID){
+        for (let md of list) {
+            if (md.c_from == actID) {
                 ret.push(md);
             }
         }
@@ -114,29 +114,29 @@
      * @return {string}  活动名称
      * @param {int} id  活动路径ID
      */
-    async getNameById(id){
-        let list =await this.getActPaths();
-        for(let md of list){
-            if(md.id == id){
+    async getNameById(id) {
+        let list = await this.getActPaths();
+        for (let md of list) {
+            if (md.id == id) {
                 return md.c_name;
             }
         }
         return '';
     }
 
-    async getActPaths(){
+    async getActPaths() {
         return await think.cache("procActPaths", () => {
             return this.query('select * from fw_act_path order by id ');
         });
     }
 
-    async getActPathsByProcId(procID){
-        if(procID === 0){
+    async getActPathsByProcId(procID) {
+        if (procID === 0) {
             return await this.getActPaths();
-        }else{
-            return await think.cache("procActPaths"+procID, () => {
+        } else {
+            return await think.cache("procActPaths" + procID, () => {
                 return this.query(`select * from fw_act_path where c_proc=${procID} order by id `);
-            });    
+            });
         }
     }
 

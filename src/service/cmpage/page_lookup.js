@@ -27,7 +27,7 @@ module.exports = class extends CMPage {
      * @return {boolean} 是否显示
      * @param   {object} page 页面按钮的设置
      */
-    isShowBtns(rec,btn){
+    isShowBtns(rec, btn) {
         return true;
     }
 
@@ -38,20 +38,20 @@ module.exports = class extends CMPage {
      * @return  {string}  HTML片段
      * @param   {object} rec 每行的记录对象
      */
-    async htmlGetBtnList(rec){
-        let ret ='';
-        if(think.isEmpty(this.mod.parmsUrl.callmodulename)){
-            let html =await this.getLookupResult(rec);
-            ret= ` <a href="javascript:;" data-toggle="lookupback" data-args="{${html.join(',')}}" class="btn btn-blue" title="选择本项" data-icon="check">选择</a>`;
-        }else{
+    async htmlGetBtnList(rec) {
+        let ret = '';
+        if (think.isEmpty(this.mod.parmsUrl.callmodulename)) {
+            let html = await this.getLookupResult(rec);
+            ret = ` <a href="javascript:;" data-toggle="lookupback" data-args="{${html.join(',')}}" class="btn btn-blue" title="选择本项" data-icon="check">选择</a>`;
+        } else {
             let value = 0;
-            for(let col of this.modCols){
-                if (col.c_isview ) {    //&& col.c_desc == this.pk  取第一个返回字段值
+            for (let col of this.modCols) {
+                if (col.c_isview) { //&& col.c_desc == this.pk  取第一个返回字段值
                     value = rec[col.c_column];
                     break;
                 }
             }
-            if(value >0){
+            if (value > 0) {
                 let parms = think.isEmpty(this.mod.parmsUrl.callparms) ? value : `${value},${this.mod.parmsUrl.callparms}`;
                 ret = ` <a href="javascript:;" onclick="return pageSelectAdd(this,'${this.mod.parmsUrl.callmodulename}','${this.mod.parmsUrl.callfn}','${parms}');"
                     class="btn btn-blue" title="选择加入" data-icon="check">加入</a>`;
@@ -65,26 +65,26 @@ module.exports = class extends CMPage {
      * @return  {Array}  返回字段组成的数组
      * @param   {object} rec 每行的记录对象
      */
-    async getLookupResult(rec){
-        let html=[];
-        let fields= [];
-        if(think.isString(this.mod.parmsUrl))  this.mod.parmsUrl = JSON.parse(this.mod.parmsUrl);
+    async getLookupResult(rec) {
+        let html = [];
+        let fields = [];
+        if (think.isString(this.mod.parmsUrl)) this.mod.parmsUrl = JSON.parse(this.mod.parmsUrl);
         //console.log(this.mod);
         //cmpage.debug(this.mod,'page_lookup.htmlGetBtnList - this.mob');
-        if(!think.isEmpty(this.mod.parmsUrl['returnFields'])){
+        if (!think.isEmpty(this.mod.parmsUrl['returnFields'])) {
             fields = String(this.mod.parmsUrl['returnFields']).split(',');
         }
-        cmpage.debug(fields,'page_lookup.htmlGetBtnList - fields');
-        for(let col of this.modCols){
+        cmpage.debug(fields, 'page_lookup.htmlGetBtnList - fields');
+        for (let col of this.modCols) {
             if (col.c_isview) {
-                if(fields.length >0){
-                    for(let field of fields){
-                        if(field === col.c_column){
+                if (fields.length > 0) {
+                    for (let field of fields) {
+                        if (field === col.c_column) {
                             html.push(`${col.c_column}:'${rec[col.c_column]}'`);
                             break;
                         }
                     }
-                }else{
+                } else {
                     html.push(`${col.c_column}:'${rec[col.c_column]}'`);
                 }
             }
@@ -99,21 +99,21 @@ module.exports = class extends CMPage {
      * @return {string}  HTML片段
      * @param   {object} page 页面对象，包括前端传过来的参数和当前的用户信息等
      */
-    async htmlGetBtnHeader(){
-        if(think.isEmpty(this.mod.parmsUrl.callmodulename)) {
+    async htmlGetBtnHeader() {
+        if (think.isEmpty(this.mod.parmsUrl.callmodulename)) {
             let html = [];
-            for(let col of this.modCols){
+            for (let col of this.modCols) {
                 if (col.c_isview) {
                     html.push(`${col.c_column}:'${col.c_coltype === 'int' ? 0 : ' '}'`);
                 }
             }
             return `<a href="javascript:;" data-toggle="lookupback" data-args="{${html.join(',')}}" class="btn btn-orange" title="清除所选" data-icon="eraser">清除</a>`;
-        }else{
-            if(!think.isEmpty(this.list.ids)){
+        } else {
+            if (!think.isEmpty(this.list.ids)) {
                 //全部加入的按钮
                 let parms = think.isEmpty(this.mod.parmsUrl.callparms) ? value : `0,${this.mod.parmsUrl.callparms},${this.list.ids.join(',')}`;
                 return ` <a href="javascript:;" onclick="return pageSelectAdd(this,'${this.mod.parmsUrl.callmodulename}','${this.mod.parmsUrl.callfn}','${parms}');"
-                    class="btn btn-blue" title="全部加入" data-icon="check">全部加入</a>`;            
+                    class="btn btn-blue" title="全部加入" data-icon="check">全部加入</a>`;
             }
         }
         return '';
@@ -129,12 +129,12 @@ module.exports = class extends CMPage {
 
         this.mobGetPageMuiSetting();
         await this.getDataList();
-        for(let row of this.list.data){
+        for (let row of this.list.data) {
             //处理替换值
-            for(let col of this.modCols){
+            for (let col of this.modCols) {
                 if (col.c_type === "replace" && !(/^select/.test(col.c_memo))) {
                     row[col.c_column] = await this.getReplaceText(row[col.c_column], col.c_memo);
-                }else if(col.c_coltype === 'timestamp'){
+                } else if (col.c_coltype === 'timestamp') {
                     row[col.c_column] = think.datetime(row[col.c_column]);
                 }
             }
@@ -142,7 +142,7 @@ module.exports = class extends CMPage {
 
             //加入按钮组
             //html.push(await this.mobHtmlGetListBtns(row));
-            let btn =await this.getLookupResult(row);
+            let btn = await this.getLookupResult(row);
             btn = `{${btn.join(',')}}`;
             //debug(btn,'page_lookup.mobHtmlGetListBtns - btn');
 
@@ -156,11 +156,11 @@ module.exports = class extends CMPage {
     }
 
     async mobHtmlGetHeaderBtns() {
-        let html =`<a href="cmpage-search.html" class="mui-icon mui-icon-search mui-pull-right cmpage-btn-search"></a>
+        let html = `<a href="cmpage-search.html" class="mui-icon mui-icon-search mui-pull-right cmpage-btn-search"></a>
         <h1 id="title" class="mui-title">${this.mod.c_alias}</h1>`;
 
         let btn = {};
-        for(let col of this.modCols){
+        for (let col of this.modCols) {
             if (col.c_isview) {
                 btn[col.c_column] = col.c_coltype === 'int' ? 0 : ' ';
             }

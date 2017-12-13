@@ -29,24 +29,27 @@ module.exports = class extends think.Logic {
      * @method  save
      * @return {json}  如有错误，返回错误信息
      */
-    async saveAction(){
-        let parms =this.post();
+    async saveAction() {
+        let parms = this.post();
         let moduleModel = cmpage.service('cmpage/module');
 
         let page = await moduleModel.getModuleByName(parms.modulename);
         let pageEdits = await moduleModel.getModuleEdit(page.id);
-      let rules = {};
-      for(let edit of pageEdits){ 
-          if(edit.c_editable && !think.isEmpty(edit.c_validate_rules)){      
-              let rule = eval('('+edit.c_validate_rules+')');
-              rule.aliasName = edit.c_name;
-              rules[edit.c_column] = rule;
-          }
-      }
-       debug(rules, 'page.L.cmpage - rules: '+JSON.stringify(rules));
-       if(!think.isEmpty(rules) && !this.validate(rules)){
-            debug(this.validateErrors,'page.L.cmpage - validateErrors');
-            return this.json({statusCode:300, message: Object.values(this.validateErrors)[0] });
+        let rules = {};
+        for (let edit of pageEdits) {
+            if (edit.c_editable && !think.isEmpty(edit.c_validate_rules)) {
+                let rule = eval('(' + edit.c_validate_rules + ')');
+                rule.aliasName = edit.c_name;
+                rules[edit.c_column] = rule;
+            }
+        }
+        debug(rules, 'page.L.cmpage - rules: ' + JSON.stringify(rules));
+        if (!think.isEmpty(rules) && !this.validate(rules)) {
+            debug(this.validateErrors, 'page.L.cmpage - validateErrors');
+            return this.json({
+                statusCode: 300,
+                message: Object.values(this.validateErrors)[0]
+            });
         }
     }
 }

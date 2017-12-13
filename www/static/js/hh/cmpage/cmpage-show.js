@@ -1,7 +1,7 @@
 var formdata = {
-	pageIndex: 1,
-	pageSize: 10,
-	pageTotal:11
+    pageIndex: 1,
+    pageSize: 10,
+    pageTotal: 11
 };
 var searchHtml;
 var searchInitHtml = null;
@@ -118,9 +118,8 @@ function resetSearch() {
 }
 
 //新增按钮的处理
-mui('body').on('tap', '.cmpage-btn-add', function(e) {
+mui('body').on('tap', '.cmpage-btn-add', function (e) {
     var elem = this;
     window.open(this.getAttribute('href'));
-     
-});
 
+});

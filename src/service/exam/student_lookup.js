@@ -27,7 +27,7 @@ module.exports = class extends CMPage {
      * @method  getQueryWhere
      * @return {string} where 子句， 形如： where xxx and xxx
      */
-    async getQueryWhere(){
+    async getQueryWhere() {
         let where = await super.getQueryWhere();
         where += ` and id not in(select c_student from t_exam_student where c_exam=${this.mod.parmsUrl.c_exam} and c_status<>-1)`;
         return where;

@@ -24,11 +24,11 @@ module.exports = class extends CMPage {
      * @return {string}  where条件子句
      * @param {Object} page  页面设置主信息
      */
-    async getQueryWhere(){
-        let where =await super.getQueryWhere();
+    async getQueryWhere() {
+        let where = await super.getQueryWhere();
         where += ` and c_user=${this.mod.user.id}`;
 
-        return where ;
+        return where;
     }
 
     /**
@@ -37,15 +37,23 @@ module.exports = class extends CMPage {
      * @return {int}  登录记录ID
      * @param {object} user  登录用户对象
      */
-    async addLogin(user){
+    async addLogin(user) {
         //先保存t_login
         //let user = await think.session('user');
-        let login ={c_user:user.id, c_ip:user.ip,c_time_login:think.datetime(), c_time_last:think.datetime(), c_url_last:user.urlLast };
-        await this.model('t_login').where({c_user:user.id}).delete();
+        let login = {
+            c_user: user.id,
+            c_ip: user.ip,
+            c_time_login: think.datetime(),
+            c_time_last: think.datetime(),
+            c_url_last: user.urlLast
+        };
+        await this.model('t_login').where({
+            c_user: user.id
+        }).delete();
         login.id = await this.model('t_login').add(login);
 
         //再保存t_login_his
-        let loginHis = cmpage.objPropertysFromOtherObj({},login,['c_user','c_ip','c_time_login','c_time_last','c_url_last']);
+        let loginHis = cmpage.objPropertysFromOtherObj({}, login, ['c_user', 'c_ip', 'c_time_login', 'c_time_last', 'c_url_last']);
         loginHis.c_login = login.id;
         await this.model('t_login_his').add(loginHis);
         return login.id;
@@ -56,13 +64,22 @@ module.exports = class extends CMPage {
      * @method  addLogin
      * @param {object} user  登录用户对象
      */
-    async exitLogin(user){
+    async exitLogin(user) {
         //let user = await think.session('user');
-        let login =  await this.model('t_login').where({c_user:user.id}).find();
-        if(login){
-            await this.model('t_login_his').where({c_login:login.id}).update({c_time_last:think.datetime(), c_url_last:user.urlLast });
+        let login = await this.model('t_login').where({
+            c_user: user.id
+        }).find();
+        if (login) {
+            await this.model('t_login_his').where({
+                c_login: login.id
+            }).update({
+                c_time_last: think.datetime(),
+                c_url_last: user.urlLast
+            });
         }
-        await this.model('t_login').where({c_user:user.id}).delete();
+        await this.model('t_login').where({
+            c_user: user.id
+        }).delete();
     }
 
 }

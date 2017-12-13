@@ -1,70 +1,73 @@
 <!DOCTYPE HTML>
 <html>
 
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<meta name="HandheldFriendly" content="true" />
-		<meta name="MobileOptimized" content="320" />
-		<title>Hello H5+</title>
-		<link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
-		<link rel="stylesheet" href="../../mui/css/mui.min.css" type="text/css" charset="utf-8" />
-		<style type="text/css">
-			.fitem {
-				width: 96%;
-				overflow: hidden;
-				padding: 10px 2%;
-				border-bottom: 1px solid #c6c6c6;
-				text-align: left;
-			}
-			
-			.fitem:active {
-				background: #f4f4f4;
-			}
-			
-			.ficon {
-				height: 40px;
-				float: left;
-				margin-right: 8px;
-			}
-			
-			.fup {
-				line-height: 40px;
-			}
-			
-			.fname {
-				font-weight: bolder;
-				height: 22px;
-				font-size: 16px;
-			}
-			
-			.finf {
-				height: 18px;
-				font-size: 12px;
-			}
-		</style>
-	</head>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="HandheldFriendly" content="true" />
+	<meta name="MobileOptimized" content="320" />
+	<title>Hello H5+</title>
+	<link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
+	<link rel="stylesheet" href="../../mui/css/mui.min.css" type="text/css" charset="utf-8" />
+	<style type="text/css">
+		.fitem {
+			width: 96%;
+			overflow: hidden;
+			padding: 10px 2%;
+			border-bottom: 1px solid #c6c6c6;
+			text-align: left;
+		}
 
-	<body>
-		<header class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 id="title" class="mui-title">文件系统</h1>
-		</header>
-		<div id="dcontent" class="mui-content dcontent">
-			<div id="pdir" class="fitem" style="display:none" onclick="parentDir();">
-				<img class="ficon" src="../../images/fup.png" />
-				<div class="fup"><span class="fname">返回上一级</span></div>
-			</div>
-			<div id="_doc" class="fitem" onclick="openDir(this);">
-				<img class="ficon" src="../../images/fdisk.png" />
-				<div>
-					<span class="fname">doc</span>
-					<br/>
-					<span class="finf">...</span>
-				</div>
+		.fitem:active {
+			background: #f4f4f4;
+		}
+
+		.ficon {
+			height: 40px;
+			float: left;
+			margin-right: 8px;
+		}
+
+		.fup {
+			line-height: 40px;
+		}
+
+		.fname {
+			font-weight: bolder;
+			height: 22px;
+			font-size: 16px;
+		}
+
+		.finf {
+			height: 18px;
+			font-size: 12px;
+		}
+	</style>
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 id="title" class="mui-title">文件系统</h1>
+	</header>
+	<div id="dcontent" class="mui-content dcontent">
+		<div id="pdir" class="fitem" style="display:none" onclick="parentDir();">
+			<img class="ficon" src="../../images/fup.png" />
+			<div class="fup">
+				<span class="fname">返回上一级</span>
 			</div>
 		</div>
-	</body>
-	<script type="text/javascript" src="../../mui/js/mui.min.js"></script>
-	<script type="text/javascript" src="../../js/cmpage/cmpage-filepicker.js" ></script>
+		<div id="_doc" class="fitem" onclick="openDir(this);">
+			<img class="ficon" src="../../images/fdisk.png" />
+			<div>
+				<span class="fname">doc</span>
+				<br/>
+				<span class="finf">...</span>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../mui/js/mui.min.js"></script>
+<script type="text/javascript" src="../../js/cmpage/cmpage-filepicker.js"></script>
+
 </html>

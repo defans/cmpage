@@ -23,38 +23,47 @@ module.exports = class extends Base {
      * @method  list
      * @return {json}  包含HTML片段
      */
-    async listAction(){
-        let vb={};
+    async listAction() {
+        let vb = {};
         let moduleApp = cmpage.service("cmpage/module");
 
-        let parms ={};
-        parms.modulename =this.post('modulename');
-        if(parms.modulename.length >20){
-            return this.json({statusCode:'300',message:parms.modulename + " 模块名错误！"});
+        let parms = {};
+        parms.modulename = this.post('modulename');
+        if (parms.modulename.length > 20) {
+            return this.json({
+                statusCode: '300',
+                message: parms.modulename + " 模块名错误！"
+            });
         }
         parms.pageIndex = this.post('pageIndex');
         parms.pageSize = this.post('pageSize');
         parms.parmsUrl = JSON.parse(this.post('parmsUrl')) || {};
-        Object.assign(vb,parms);
+        Object.assign(vb, parms);
         //debug(parms,'cmpage.ctrl.mob - parms');
 
         let md = await moduleApp.getModuleByName(parms.modulename);
-        Object.assign(parms,md);
+        Object.assign(parms, md);
 
         parms.query = this.post();
         parms.c_page_size = parms.pageSize;
         //console.log(page);
         parms.user = await this.session('user');
         //    console.log(page);
-        if(think.isEmpty(parms.id)){
-            return this.json({statusCode:'300',message:parms.modulename + " 模块不存在！"});
+        if (think.isEmpty(parms.id)) {
+            return this.json({
+                statusCode: '300',
+                message: parms.modulename + " 模块不存在！"
+            });
         }
 
         let pageModel = cmpage.service(parms.c_path);
-        if(think.isEmpty(pageModel)){
-            return this.json({statusCode:'300',message:parms.modulename + " 的实现类不存在！"});
+        if (think.isEmpty(pageModel)) {
+            return this.json({
+                statusCode: '300',
+                message: parms.modulename + " 的实现类不存在！"
+            });
         }
-        debug(parms.query,'cmpage.C.mob - parms.query');
+        debug(parms.query, 'cmpage.C.mob - parms.query');
         pageModel.mod = parms;
         pageModel.modQuerys = await moduleApp.getModuleQuery(parms.id);
         pageModel.modCols = await moduleApp.getModuleCol(parms.id);
@@ -62,20 +71,20 @@ module.exports = class extends Base {
 
         //拆分联动的下拉选择
         for (const modQ of pageModel.modQuerys) {
-            if(pageModel.mod.query[modQ.c_column] && (modQ.c_type === 'areaSelect' || modQ.c_type === 'codeSelect' ) && !think.isEmpty(modQ.c_memo)){
+            if (pageModel.mod.query[modQ.c_column] && (modQ.c_type === 'areaSelect' || modQ.c_type === 'codeSelect') && !think.isEmpty(modQ.c_memo)) {
                 //cmpage.warn(modQ,'cmpage.C.mob.list - modQ');
                 let values = parms.query[modQ.c_column].split(',');
-                if(values.length === 2){
+                if (values.length === 2) {
                     pageModel.mod.query[modQ.c_memo] = values[0];
                     pageModel.mod.query[modQ.c_column] = values[1];
-                }else if(values.length === 3){
+                } else if (values.length === 3) {
                     let keys = modQ.c_memo.split(',');
                     pageModel.mod.query[keys[0]] = values[0];
                     pageModel.mod.query[keys[1]] = values[1];
                     pageModel.mod.query[modQ.c_column] = values[2];
                 }
             }
-        }    
+        }
         //cmpage.warn(pageModel.mod.query,'cmpage.C.mob.list - parms');
 
         vb.queryHtml = await pageModel.mobHtmlGetQuery();
@@ -86,7 +95,7 @@ module.exports = class extends Base {
         vb.listIds = pageModel.list.ids.join(',');
         vb.count = pageModel.list.count;
         //cmpage.debug(vb.listHtml);
-        vb.statusCode =200;
+        vb.statusCode = 200;
 
         return this.json(vb);
     }
@@ -105,16 +114,22 @@ module.exports = class extends Base {
         //console.log(page);
         parms.user = await this.session('user');
         let pageModel = cmpage.service(parms.c_path);
-        if(think.isEmpty(pageModel)){
-            return this.json({statusCode:'300',message:parms.modulename + " 的实现类不存在！"});
+        if (think.isEmpty(pageModel)) {
+            return this.json({
+                statusCode: '300',
+                message: parms.modulename + " 的实现类不存在！"
+            });
         }
         //cmpage.debug(parms);
         pageModel.mod = parms;
         pageModel.modEdits = await module.getModuleEdit(parms.id);
 
-        let editHtml =await pageModel.mobHtmlGetEdit();
+        let editHtml = await pageModel.mobHtmlGetEdit();
 
-        return this.json({statusCode:200, editHtml:editHtml});
+        return this.json({
+            statusCode: 200,
+            editHtml: editHtml
+        });
     }
 
     /**
@@ -122,25 +137,30 @@ module.exports = class extends Base {
      * @method  save
      * @return {json}
      */
-    async saveAction(){
-        let parms =this.post();
+    async saveAction() {
+        let parms = this.post();
         let user = await this.session('user');
 
-        parms.c_user =user.id;
+        parms.c_user = user.id;
         parms.c_group = (think.isEmpty(parms.c_group) ? user.groupID : parms.c_group);
         parms.c_time = think.datetime();
-        parms.c_status= (think.isEmpty(parms.c_status) ? 0 : parms.c_status);
-        if(!think.isEmpty(parms.c_country)){    //地区联动，拆分
+        parms.c_status = (think.isEmpty(parms.c_status) ? 0 : parms.c_status);
+        if (!think.isEmpty(parms.c_country)) { //地区联动，拆分
             let area = parms.c_country.split(',');
             parms.c_province = area[0];
             parms.c_city = area[1];
             parms.c_country = area[2];
         }
-        let ret={statusCode:200,message:'保存成功!',tabid: `page${parms.modulename}`,data:{}};
+        let ret = {
+            statusCode: 200,
+            message: '保存成功!',
+            tabid: `page${parms.modulename}`,
+            data: {}
+        };
 
         let module = cmpage.service('cmpage/module');
         let md = await module.getModuleByName(parms.modulename);
-        let pageModel = cmpage.service(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
+        let pageModel = cmpage.service(think.isEmpty(md.c_path) ? 'cmpage/page' : md.c_path);
         pageModel.mod = md;
         pageModel.mod.user = user;
         pageModel.modEdits = await module.getModuleEdit(md.id);
@@ -158,43 +178,46 @@ module.exports = class extends Base {
     async viewAction() {
         let module = cmpage.service('cmpage/module');
         let md = await module.getModuleByName(this.post('modulename'));
-        let pageModel = cmpage.service(think.isEmpty(md.c_path) ? 'cmpage/page':md.c_path);
+        let pageModel = cmpage.service(think.isEmpty(md.c_path) ? 'cmpage/page' : md.c_path);
         pageModel.mod = md;
-        pageModel.mod.editID =parseInt( this.post('curID'));
-        pageModel.mod.user =  await this.session('user');
+        pageModel.mod.editID = parseInt(this.post('curID'));
+        pageModel.mod.user = await this.session('user');
         pageModel.modEdits = await module.getModuleEdit(md.id);
         pageModel.modCols = await module.getModuleCol(md.id);
 
         let viewHtml = await pageModel.mobHtmlGetView()
-        return this.json({statusCode:200, viewHtml:viewHtml});
+        return this.json({
+            statusCode: 200,
+            viewHtml: viewHtml
+        });
     }
 
-//     /**
-//      * 上传文件的URL接口，调用： /cmpage/mob/upload_file </br>
-//      * 通用的附件上传，保持与表 t_file </br>
-//      * 如果仅仅是单个文件上传，然后取得保存后的文件路径名，则调用 /cmpage/page/upload_file
-//      * @method  updateFile
-//      * @return {json}  状态
-//      */
-//     async uploadFileAction(){
-//         var path = require('path');
-//         var fs = require('fs');
-//         let parms = this.post();
-//         //debug(parms,'page.C.updateFile - parms');
-//         let uploadPath = `${think.ROOT_PATH}${think.sep}www${think.sep}static${think.sep}upfiles${think.sep}${parms.link_type}${think.sep}${cmpage.datetime().substring(0,4)}`; //${parms.name}`;
-//         think.mkdir(uploadPath);
-//         let file = think.extend({}, this.file());
-//         //debug(file,'page.C.updateFile - file');
-//         if(think.isEmpty(file)){
-//             return this.json({statusCode:300, message:'您上传了无效的文件！', filename:''});
-//         }
-//
-// //        debug(uploadPath,'page.C.updateFile - path');
-//         let newPath =  uploadPath + think.sep + file.file.originalFilename;
-//         fs.renameSync(file.file.path, newPath);
-//
-//         let filename = `/static/upfiles/${parms.link_type}/${cmpage.datetime().substring(0,4)}/${file.file.originalFilename}`;
-//         return this.json({statusCode:200, message:'', filename: filename});
-//     }
+    //     /**
+    //      * 上传文件的URL接口，调用： /cmpage/mob/upload_file </br>
+    //      * 通用的附件上传，保持与表 t_file </br>
+    //      * 如果仅仅是单个文件上传，然后取得保存后的文件路径名，则调用 /cmpage/page/upload_file
+    //      * @method  updateFile
+    //      * @return {json}  状态
+    //      */
+    //     async uploadFileAction(){
+    //         var path = require('path');
+    //         var fs = require('fs');
+    //         let parms = this.post();
+    //         //debug(parms,'page.C.updateFile - parms');
+    //         let uploadPath = `${think.ROOT_PATH}${think.sep}www${think.sep}static${think.sep}upfiles${think.sep}${parms.link_type}${think.sep}${cmpage.datetime().substring(0,4)}`; //${parms.name}`;
+    //         think.mkdir(uploadPath);
+    //         let file = think.extend({}, this.file());
+    //         //debug(file,'page.C.updateFile - file');
+    //         if(think.isEmpty(file)){
+    //             return this.json({statusCode:300, message:'您上传了无效的文件！', filename:''});
+    //         }
+    //
+    // //        debug(uploadPath,'page.C.updateFile - path');
+    //         let newPath =  uploadPath + think.sep + file.file.originalFilename;
+    //         fs.renameSync(file.file.path, newPath);
+    //
+    //         let filename = `/static/upfiles/${parms.link_type}/${cmpage.datetime().substring(0,4)}/${file.file.originalFilename}`;
+    //         return this.json({statusCode:200, message:'', filename: filename});
+    //     }
 
 }

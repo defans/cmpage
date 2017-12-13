@@ -23,8 +23,10 @@ module.exports = class extends CMPage {
 
     constructor() {
         super();
-        this.mod = {c_table:'t_goods'};
-        this.pk ='c_id';
+        this.mod = {
+            c_table: 't_goods'
+        };
+        this.pk = 'c_id';
     }
 
     /**
@@ -33,15 +35,23 @@ module.exports = class extends CMPage {
      * @method  pageDelete
      * @return {object} 记录对象
      */
-    async pageDelete(){
+    async pageDelete() {
         let cnt = await this.model('t_order_rec').where(` c_goods=${this.mod.recID}`).count();
-        if(cnt >0)  return {statusCode:300,message:'该物料资料已经有订单使用！',data:{}};
+        if (cnt > 0) return {
+            statusCode: 300,
+            message: '该物料资料已经有订单使用！',
+            data: {}
+        };
 
         cnt = await this.model('t_docu_rec').where(` c_goods=${this.mod.recID}`).count();
-        if(cnt >0)  return {statusCode:300,message:'该物料资料已经有单据使用！',data:{}};
+        if (cnt > 0) return {
+            statusCode: 300,
+            message: '该物料资料已经有单据使用！',
+            data: {}
+        };
 
         return await super.pageDelete();
     }
-    
+
 
 }

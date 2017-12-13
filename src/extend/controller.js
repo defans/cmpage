@@ -17,8 +17,15 @@
  * @class common.extend.controller
  */
 module.exports = {
-    success_bjui_doajax(msg,data){
-        let ret = {errno:0, errmsg:'', statusCode:200, message:msg, data:data, callback:''};
+    success_bjui_doajax(msg, data) {
+        let ret = {
+            errno: 0,
+            errmsg: '',
+            statusCode: 200,
+            message: msg,
+            data: data,
+            callback: ''
+        };
         return this.json(ret);
     }
-  }
+}

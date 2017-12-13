@@ -3,7 +3,7 @@ var parms = "";
 mui.init();
 
 //B页面onload从服务器获取列表数据；
-mui.plusReady(function() {
+mui.plusReady(function () {
 	//仅支持竖屏显示
 	plus.screen.lockOrientation("portrait-primary");
 
@@ -19,19 +19,19 @@ mui.plusReady(function() {
 function getView() {
 	mui.ajax(app.getDomain() + "/cmpage/mob/view", {
 		data: {
-			modulename:cmpage.modulename,
-			curID:cmpage.curID
+			modulename: cmpage.modulename,
+			curID: cmpage.curID
 		},
 		type: "post",
 		dataType: 'json',
 		timeout: 5000,
-		error: function(request) {
+		error: function (request) {
 			//console.log(JSON.stringify(request));
 			app.toast("服务器获取数据失败！");
 			plus.nativeUI.closeWaiting();
 		},
-		success: function(data) {
-//			console.log(JSON.stringify(data));
+		success: function (data) {
+			//			console.log(JSON.stringify(data));
 			if (data.statusCode == 200) {
 				var content = document.body.querySelector('.erp-cmpage-view');
 				content.innerHTML += data.viewHtml;

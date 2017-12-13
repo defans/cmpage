@@ -10,8 +10,8 @@ var opener;
 
 mui.init();
 
-mui.plusReady(function() {
-	
+mui.plusReady(function () {
+
 	opener = plus.webview.currentWebview().opener();
 	pitem = document.getElementById("pdir");
 	list = document.getElementById("dcontent");
@@ -25,24 +25,24 @@ mui.plusReady(function() {
 
 // Update root information with item(HTMLUIElement)
 function updateRootItem(item) {
-	plus.io.resolveLocalFileSystemURL(dir + item.id, function(entry) {
+	plus.io.resolveLocalFileSystemURL(dir + item.id, function (entry) {
 		root.push(entry);
 		item.entry = entry;
 		updateInf(item, entry);
-	}, function(e) {
+	}, function (e) {
 		console.log("Update " + item.id + " information failed: " + e.message);
 	});
 }
 // Update HTMLUIElement information with entry object
 function updateInf(item, entry) {
-	entry.getMetadata(function(metadata) {
+	entry.getMetadata(function (metadata) {
 		var inf = item.querySelector(".finf");
 		if (entry.isDirectory) {
 			inf.innerText = "文件夹:" + metadata.directoryCount + "项，文件:" + metadata.fileCount + "项";
 		} else {
 			inf.innerText = dateToStr(metadata.modificationTime);
 		}
-	}, function(e) {
+	}, function (e) {
 		console.log("Get metadata " + entry.name + " failed: " + e.message);
 	}, false);
 }
@@ -52,7 +52,7 @@ function updateList(entries) {
 	items.shift();
 	// sort the entries
 	entries.sort(sortCompareEntry)
-		// Update item to ui
+	// Update item to ui
 	for (i = 0; i < entries.length; i++) {
 		var di = null;
 		if (i < items.length) {
@@ -94,7 +94,7 @@ function openDir(item) {
 	if (entry.isDirectory) {
 		console.log("Open directory: \"" + dir + item.id + "\"");
 		var dirReader = entry.createReader();
-		dirReader.readEntries(function(entries) {
+		dirReader.readEntries(function (entries) {
 			parent = current;
 			current = item.entry;
 			dir = entry.toURL() + "/";
@@ -102,7 +102,7 @@ function openDir(item) {
 			pitem.style.display = "block";
 			// Update ui
 			updateList(entries);
-		}, function(e) {
+		}, function (e) {
 			console.log("Read directory " + item.id + " failed: " + e.message);
 		});
 	} else {
@@ -110,7 +110,9 @@ function openDir(item) {
 		if (dst.slice(0, 7) != "file://") {
 			dst = "file://" + dst;
 		}
-		mui.fire(opener,"file_selected",{path: dst});
+		mui.fire(opener, "file_selected", {
+			path: dst
+		});
 		mui.back();
 	}
 }
@@ -127,19 +129,19 @@ function parentDir() {
 		updateList(root);
 	} else {
 		var dirReader = parent.createReader();
-		dirReader.readEntries(function(entries) {
+		dirReader.readEntries(function (entries) {
 			dir = dir.substr(0, p + 1);
 			console.log("Current directory: \"" + dir + "\"");
 			current = parent;
-			current.getParent(function(entry) {
+			current.getParent(function (entry) {
 				parent = entry;
-			}, function(e) {
+			}, function (e) {
 				console.log("Get \"" + current.name + "\" parent directory failed: " + e.emssage);
 			});
 			parent = null;
 			// Update ui
 			updateList(entries);
-		}, function(e) {
+		}, function (e) {
 			console.log("Read directory " + item.id + " failed: " + e.message);
 		});
 	}

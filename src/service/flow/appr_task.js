@@ -23,7 +23,7 @@ const CMPage = require('../cmpage/page_mob.js');
 module.exports = class extends CMPage {
     constructor() {
         super();
-        this.connStr='cmpage';
+        this.connStr = 'cmpage';
     }
     /**
      * 取查询项的设置，结合POST参数，得到Where字句
@@ -38,9 +38,9 @@ module.exports = class extends CMPage {
      * @method  pageEditInit
      * @return {object} 新增的记录对象
      */
-    async pageEditInit(){
-        let md =await super.pageEditInit();
-        let parmsUrl =this.mod.parmsUrl;
+    async pageEditInit() {
+        let md = await super.pageEditInit();
+        let parmsUrl = this.mod.parmsUrl;
 
         let task = await cmpage.service('flow/task').getTask(parmsUrl.taskID);
         md.c_status = parmsUrl.status;
@@ -59,20 +59,20 @@ module.exports = class extends CMPage {
      * @method  pageSave
      * @param  {object} parms 前端传入的FORM参数
      */
-    async pageSave(parms){
+    async pageSave(parms) {
         await super.pageSave(parms);
-        debug(this.rec,'appr.pageSave - this.rec');
-        if(this.rec.id >0){
+        debug(this.rec, 'appr.pageSave - this.rec');
+        if (this.rec.id > 0) {
             let task = await cmpage.service('flow/task').getTask(this.rec.c_task);
             let proc = await cmpage.service('flow/proc').getProcById(task.c_proc);
-            debug(proc,'appr.pageSave - proc');
+            debug(proc, 'appr.pageSave - proc');
             let linkModel = cmpage.service(proc.c_link_model);
-            if(linkModel){
+            if (linkModel) {
                 //更新关联对象的状态
                 await linkModel.updateStatus(this.rec);
                 //当前流程节点继续往下执行
                 let parmsUrl = JSON.parse(parms.parmsUrl);
-                await cmpage.service('flow/act').fwRun(parmsUrl.taskActID, this.mod.user, null,true);
+                await cmpage.service('flow/act').fwRun(parmsUrl.taskActID, this.mod.user, null, true);
             }
         }
     }
@@ -85,13 +85,13 @@ module.exports = class extends CMPage {
      * @param  {object} act 流程模板节点对象
      * @param  {object} user 当前用户对象
      */
-    async addStatus(taskAct,act,user){
-        let md ={};
+    async addStatus(taskAct, act, user) {
+        let md = {};
         let task = await cmpage.service('flow/task').getTask(taskAct.c_task);
-        debug(task,'appr.addStatus - task');
+        debug(task, 'appr.addStatus - task');
         //验证是否已经更新过
         let link = await this.model(task.c_link_type).query(`select * from ${task.c_link_type} where id=${task.c_link}`);
-        if(think.isEmpty(link) || link.c_status === act.c_domain_st) return false;
+        if (think.isEmpty(link) || link.c_status === act.c_domain_st) return false;
 
         md.c_status = act.c_domain_st;
         md.c_task = task.id;
@@ -104,9 +104,9 @@ module.exports = class extends CMPage {
         md.id = await this.model('t_appr').add(md);
 
         let proc = await cmpage.service('flow/proc').getProcById(task.c_proc);
-        debug(proc,'appr.addStatus - proc');
+        debug(proc, 'appr.addStatus - proc');
         let linkModel = cmpage.service(proc.c_link_model);
-        if(linkModel){
+        if (linkModel) {
             //更新关联对象的状态
             await linkModel.updateStatus(md);
         }

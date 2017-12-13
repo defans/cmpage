@@ -1,32 +1,32 @@
 /////////////////////////////FORM相关--BEGIN////////////////////////////////
 
 //从FORM中的INPUT的值生成JSON对象
-function formGetInputValue(form,prefix){
-	var obj ='{';
-	var len = prefix.length;
+function formGetInputValue(form, prefix) {
+    var obj = '{';
+    var len = prefix.length;
 
-	$.each(form.serializeArray(),function(i,n){
-		if(prefix =='' || n.name.substr(0,len) == prefix){
-			obj += '"'+n.name.substring(len)+'":"' + n.value + '",';
-		}
-	});
-    obj =obj.substr(0,obj.length -1) +'}';
+    $.each(form.serializeArray(), function (i, n) {
+        if (prefix == '' || n.name.substr(0, len) == prefix) {
+            obj += '"' + n.name.substring(len) + '":"' + n.value + '",';
+        }
+    });
+    obj = obj.substr(0, obj.length - 1) + '}';
     //console.log(obj);
     return $.parseJSON(obj);
 }
 
 //从JSON对象中取值，赋值给FORM中的INPUT
-function formSetInputValue(obj){
-	$('form input,select,textarea').each(function(i,n){
-    	for (var it in obj) {
-    		if($(n).attr('name') == it){
-    			$(n).val(obj[it]);
-    		}
-    	}
+function formSetInputValue(obj) {
+    $('form input,select,textarea').each(function (i, n) {
+        for (var it in obj) {
+            if ($(n).attr('name') == it) {
+                $(n).val(obj[it]);
+            }
+        }
     });
 }
 jQuery.download = function (url, data, method) {
-// 获取url和data
+    // 获取url和data
     if (url && data) {
         // data 是 string 或者 array/object
         data = typeof data == 'string' ? data : jQuery.param(data);
@@ -46,8 +46,7 @@ jQuery.download = function (url, data, method) {
 /////////////////////////////JSON相关--BEGIN////////////////////////////////
 
 //克隆JS对象
-function clone (jsonObj)
-{
+function clone(jsonObj) {
     var buf;
     if (jsonObj instanceof Array) {
         buf = [];
@@ -56,15 +55,15 @@ function clone (jsonObj)
             buf[i] = arguments.callee(jsonObj[i]);
         }
         return buf;
-    }else if (typeof jsonObj == "function"){
+    } else if (typeof jsonObj == "function") {
         return jsonObj;
-    }else if (jsonObj instanceof Object){
+    } else if (jsonObj instanceof Object) {
         buf = {};
         for (var k in jsonObj) {
             buf[k] = arguments.callee(jsonObj[k]);
         }
         return buf;
-    }else{
+    } else {
         return jsonObj;
     }
 }
@@ -88,8 +87,7 @@ function json2PostData(obj) {
         } else if (obj[itm] instanceof Object == true) {
             //是json对象。
             s += json2PostData(obj[itm]);
-        }
-        else {
+        } else {
             //是简单数值
             s += "&" + encodeURI(itm) + "=" + encodeURI(obj[itm]);
         }
@@ -112,7 +110,7 @@ function testIntNum(obj) //整型
     }
 }
 
-function testNum(obj)//数字
+function testNum(obj) //数字
 {
     obj.value = obj.value.replace(/[^\d.]/g, "");
     //    obj.value = obj.value.replace(/^\./g,"");

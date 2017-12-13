@@ -3,20 +3,26 @@
 var cmpage = {};
 
 /* cmpage/page/edit 上一条，下一条 */
-function pageGotoEdit(modulename,editID){
-    $.CurrentDialog.dialog('reload',{ url:"/cmpage/page/edit?modulename="+ modulename +"&id="+ editID
-        +"&listIds="+ $.CurrentDialog.find('#listIds').val(), type:"GET" });
+function pageGotoEdit(modulename, editID) {
+    $.CurrentDialog.dialog('reload', {
+        url: "/cmpage/page/edit?modulename=" + modulename + "&id=" + editID +
+            "&listIds=" + $.CurrentDialog.find('#listIds').val(),
+        type: "GET"
+    });
     return true;
 }
 /* cmpage/page/view 上一条，下一条 */
-function pageGotoView(modulename,viewID){
-    $.CurrentDialog.dialog('reload',{ url:"/cmpage/page/view?modulename="+ modulename +"&id="+ viewID
-        +"&listIds="+ $.CurrentDialog.find('#listIds').val(), type:"GET" });
+function pageGotoView(modulename, viewID) {
+    $.CurrentDialog.dialog('reload', {
+        url: "/cmpage/page/view?modulename=" + modulename + "&id=" + viewID +
+            "&listIds=" + $.CurrentDialog.find('#listIds').val(),
+        type: "GET"
+    });
     return true;
 }
 
 /* cmpage/page/edit 工作流(状态流转类)相关编辑界面，保存后刷新或者关闭对话框 */
-function pageSaveByAct(modulename,reloadUrl,flag,linkModulename){
+function pageSaveByAct(modulename, reloadUrl, flag, linkModulename) {
     //var page = pageGetCurrent(obj);
     BJUI.alertmsg("confirm", "是否确定要执行本操作？", {
         okCall: function () {
@@ -29,15 +35,19 @@ function pageSaveByAct(modulename,reloadUrl,flag,linkModulename){
                     if (flag === 'close') {
                         BJUI.dialog('closeCurrent');
                     }
-                    if(linkModulename){
+                    if (linkModulename) {
                         var rec = json.data;
-                        var url = reloadUrl +'&id=' + rec.id +'&c_id=' + rec.id;
+                        var url = reloadUrl + '&id=' + rec.id + '&c_id=' + rec.id;
                         //alert(url);
-//                        if(reloadOpenType == 'navtab'){
-                            BJUI.navtab('reload',linkModulename, {url: url});
-//                        }else{
-                            BJUI.dialog('reload', linkModulename, {url: url});
-//                        }
+                        //                        if(reloadOpenType == 'navtab'){
+                        BJUI.navtab('reload', linkModulename, {
+                            url: url
+                        });
+                        //                        }else{
+                        BJUI.dialog('reload', linkModulename, {
+                            url: url
+                        });
+                        //                        }
                     }
                 }
             });
@@ -47,7 +57,7 @@ function pageSaveByAct(modulename,reloadUrl,flag,linkModulename){
 }
 
 /* cmpage/page/edit 工作流相关编辑界面，保存后刷新或者关闭对话框 */
-function pageSaveByTask(modulename,reloadUrl,flag){
+function pageSaveByTask(modulename, reloadUrl, flag) {
     //var page = pageGetCurrent(obj);
     BJUI.alertmsg("confirm", "是否确定要执行本操作？", {
         okCall: function () {
@@ -61,7 +71,9 @@ function pageSaveByTask(modulename,reloadUrl,flag){
                         BJUI.dialog('closeCurrent');
                     } else {
                         var rec = json.data;
-                        BJUI.dialog('reload', {url: reloadUrl + '&id=' + rec.id + '&taskID=' + rec.c_task });
+                        BJUI.dialog('reload', {
+                            url: reloadUrl + '&id=' + rec.id + '&taskID=' + rec.c_task
+                        });
                     }
                 }
             });
@@ -71,17 +83,17 @@ function pageSaveByTask(modulename,reloadUrl,flag){
 }
 
 /* cmpage/page/list -- delete record */
-function pageDelete(id,obj,flag) {
+function pageDelete(id, obj, flag) {
     var page = pageGetCurrent(obj);
     var modulename = page.find('#modulename').val();
-    BJUI.alertmsg("confirm", "是否确定要删除？",{
-        okCall:function(){
+    BJUI.alertmsg("confirm", "是否确定要删除？", {
+        okCall: function () {
             BJUI.ajax('doajax', {
-                url: "/cmpage/page/delete?modulename="+ modulename +"&id=" + id+"&flag=" + flag,
+                url: "/cmpage/page/delete?modulename=" + modulename + "&id=" + id + "&flag=" + flag,
                 loadingmask: true,
-                okCallback: function(json, options) {
-                    BJUI.alertmsg(json.statusCode=="200" ? "info":"error",json.message);
-                    $('#btnSearch'+ modulename).click();
+                okCallback: function (json, options) {
+                    BJUI.alertmsg(json.statusCode == "200" ? "info" : "error", json.message);
+                    $('#btnSearch' + modulename).click();
                 }
             });
         }
@@ -90,11 +102,11 @@ function pageDelete(id,obj,flag) {
 }
 
 /* cmpage/page/list export data to excel file */
-function pageExportData(){
-    BJUI.alertmsg("confirm", "是否确定要导出数据？",{
-        okCall:function(){
-            $.fileDownload('/cmpage/page/excel_export?'+$.CurrentNavtab.find('#pagerForm').serialize(), {
-                failCallback: function(responseHtml, url) {
+function pageExportData() {
+    BJUI.alertmsg("confirm", "是否确定要导出数据？", {
+        okCall: function () {
+            $.fileDownload('/cmpage/page/excel_export?' + $.CurrentNavtab.find('#pagerForm').serialize(), {
+                failCallback: function (responseHtml, url) {
                     BJUI.alertmsg("warn", "导出文件失败！");
                 }
             });
@@ -107,7 +119,7 @@ function pageExportData(){
 function pageGoSeeSee(id, obj) {
     var page = pageGetCurrent(obj);
     var modulename = page.find('#modulename').val();
-    BJUI.alertmsg("confirm", "是否确定要查看？", { 
+    BJUI.alertmsg("confirm", "是否确定要查看？", {
         okCall: function () {
             BJUI.ajax('ajaxform', {
                 url: "/cmpage/page/go_see_see?modulename=" + modulename + "&id=" + id,
@@ -120,9 +132,9 @@ function pageGoSeeSee(id, obj) {
                             url: json.url,
                             title: '去看看'
                         });
-          
+
                     }
-                } 
+                }
             });
         }
     });
@@ -131,39 +143,39 @@ function pageGoSeeSee(id, obj) {
 
 /* cmpage/page/list refresh list data */
 function pageRefresh(modulename) {
-    $("#btnSearch"+modulename).click();
+    $("#btnSearch" + modulename).click();
 }
 
 /* cmpage/page/list(lookup) -- close current navtab or dialog */
 function pageClose() {
-    if( $.CurrentDialog){
+    if ($.CurrentDialog) {
         BJUI.dialog('closeCurrent');
-    }else{
+    } else {
         BJUI.navtab('closeCurrentTab');
     }
     return false;
 }
 
 /* cmpage/page/list 鼠标单击显示选中行 */
-function pageRowSelect(id,obj){
+function pageRowSelect(id, obj) {
     var page = pageGetCurrent(obj);
 
     var oldRowID = page.find('#idSelect').val()
-    if(oldRowID != id){
-        page.find('#row'+oldRowID).removeClass('selected');
+    if (oldRowID != id) {
+        page.find('#row' + oldRowID).removeClass('selected');
     }
     page.find('#idSelect').val(id);
-    page.find('#row'+id).toggleClass('selected');
+    page.find('#row' + id).toggleClass('selected');
     return true;
 }
 
-function pageGetCurrent(){
+function pageGetCurrent() {
     //return  $(obj).closest('.navtab-panel').length ? $.CurrentNavtab : $.CurrentDialog;
-    return  $.CurrentDialog || $.CurrentNavtab;
+    return $.CurrentDialog || $.CurrentNavtab;
 }
 
 /* cmpage/page/edit_ms 主从表的编辑界面，保存后刷新或者关闭对话框 */
-function pageSaveMs(modulename,reloadUrl,editID,pk){
+function pageSaveMs(modulename, reloadUrl, editID, pk) {
     //var page = pageGetCurrent(obj);
     BJUI.ajax('ajaxform', {
         url: '/cmpage/page/save',
@@ -171,9 +183,11 @@ function pageSaveMs(modulename,reloadUrl,editID,pk){
         validate: true,
         loadingmask: true,
         okCallback: function (json, options) {
-            if(editID === 0){
+            if (editID === 0) {
                 var rec = json.data;
-                BJUI.navtab('reload', {url: reloadUrl + '&'+pk+'=' +rec.id});
+                BJUI.navtab('reload', {
+                    url: reloadUrl + '&' + pk + '=' + rec.id
+                });
             }
         }
     });
@@ -181,16 +195,16 @@ function pageSaveMs(modulename,reloadUrl,editID,pk){
 }
 
 /* cmpage/utils/call_function 根据URL参数直接调用相关model的相关方法,  本方法的参数必填 */
-function pageSelectAdd(obj,modulename,fn,parms){
+function pageSelectAdd(obj, modulename, fn, parms) {
     BJUI.ajax('doajax', {
-        url: '/cmpage/utils/call_function_by_modulename?modulename='+modulename+'&fn='+fn+'&parms='+parms,
+        url: '/cmpage/utils/call_function_by_modulename?modulename=' + modulename + '&fn=' + fn + '&parms=' + parms,
         loadingmask: true,
         okCallback: function (json, options) {
-            if(json.statusCode == 200){
+            if (json.statusCode == 200) {
                 $(obj).hide();
                 //刷新父窗口
-                $('#btnSearch'+modulename).click();
-            }else{
+                $('#btnSearch' + modulename).click();
+            } else {
                 BJUI.alertmsg("warn", json.messag);
             }
         }
@@ -217,7 +231,7 @@ function pageSelectAdd(obj,modulename,fn,parms){
 //         url: '/Utils/CallFunctionByModulename?modulename=' + modulename + '&fn=' + fn + '&parms=' + ids,
 //         dataType: 'text',
 //         success: function (ret) {
-           
+
 //             //alert(ret);
 //             if (ret.indexOf('成功') > 0) {
 //                 if (parentModulename) {
@@ -241,23 +255,23 @@ function pageSelectAdd(obj,modulename,fn,parms){
 
 
 /* 简单调用ajax，不刷新界面等 */
-function pageDoajax(url){
-    BJUI.alertmsg("confirm", "是否确定要执行该操作？", { 
+function pageDoajax(url) {
+    BJUI.alertmsg("confirm", "是否确定要执行该操作？", {
         okCall: function () {
             BJUI.ajax('doajax', {
                 url: url,
                 loadingmask: true,
                 okCallback: function (json, options) {
-                    if(json.statusCode == 200){
-                        if(json.messag){
-                            BJUI.alertmsg("info", json.messag);                    
+                    if (json.statusCode == 200) {
+                        if (json.messag) {
+                            BJUI.alertmsg("info", json.messag);
                         }
-                    }else{
+                    } else {
                         BJUI.alertmsg("warn", json.messag);
                     }
                 }
-            });    
-        }            
+            });
+        }
     });
     return false;
 }
@@ -266,7 +280,8 @@ function pageDoajax(url){
 function selectNodeCheck(e, treeId, treeNode) {
     var zTree = $.fn.zTree.getZTreeObj(treeId),
         nodes = zTree.getCheckedNodes(true);
-    var ids = '', names = '';
+    var ids = '',
+        names = '';
 
     for (var i = 0; i < nodes.length; i++) {
         ids += ',' + nodes[i].id;

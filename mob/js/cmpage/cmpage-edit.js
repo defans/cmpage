@@ -1,6 +1,6 @@
 mui.init();
 
-mui.plusReady(function() {
+mui.plusReady(function () {
 	//仅支持竖屏显示
 	plus.screen.lockOrientation("portrait-primary");
 	//框架参数初始化设置
@@ -26,10 +26,10 @@ function getEditHtml() {
 		type: "post",
 		dataType: 'json',
 		timeout: 5000,
-		error: function(request) {
+		error: function (request) {
 			app.toast("服务器获取数据失败！");
 		},
-		success: function(data) {
+		success: function (data) {
 			if (data.statusCode == 200) {
 				var content = document.body.querySelector('.cmpage-edit');
 				//console.log(data.editHtml);
@@ -55,10 +55,10 @@ function saveData() {
 		type: "post",
 		dataType: 'json',
 		timeout: 5000,
-		error: function(request) {
+		error: function (request) {
 			app.toast("服务器获取数据失败！");
 		},
-		success: function(data) {
+		success: function (data) {
 			if (data.statusCode == 200) {
 				app.toast(data.message);
 				mui.back();
@@ -68,4 +68,3 @@ function saveData() {
 		}
 	});
 }
-

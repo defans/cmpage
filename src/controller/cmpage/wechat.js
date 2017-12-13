@@ -8,7 +8,7 @@
 // +----------------------------------------------------------------------
 
 
- //  微信的URL接口, 待定
+//  微信的URL接口, 待定
 
 const Base = require('./base.js');
 
@@ -19,27 +19,27 @@ module.exports = class extends Base {
    * index action
    * @return {Promise} []
    */
-  indexAction(){
+  indexAction() {
     let echostr = this.get('echostr');
     return this.success(echostr);
   }
-  reply(message){
+  reply(message) {
     this.success(message);
   }
-  textAction(){
+  textAction() {
     var message = this.post();
     var msg = message.Content.trim();
-    this.success('测试成功:'+msg);
+    this.success('测试成功:' + msg);
   }
-  eventAction(){
+  eventAction() {
     var message = this.post();
     this.success(JSON.stringify(message));
   }
-  __call(){
+  __call() {
     this.success(DEFULT_AUTO_REPLY);
   }
   //不验证登陆
-    async __before(){
-      //部分 action 下不检查,
-    }
+  async __before() {
+    //部分 action 下不检查,
+  }
 }

@@ -26,38 +26,50 @@ module.exports = class extends CMPage {
     constructor() {
         super();
         this.pk = 'c_id';
-        this.docuType = {id:0, name:'',header:'',key:'c_docu',modulename:''};
+        this.docuType = {
+            id: 0,
+            name: '',
+            header: '',
+            key: 'c_docu',
+            modulename: ''
+        };
     }
 
     /**
      * 初始化设置页面参数
      * @method  initPage
      */
-    async initPage(){
+    async initPage() {
         await super.initPage();
         //根据模块名称，取单据基本信息
-        let typeName = this.mod.c_modulename.replace(/Rec/,'');
-        for(let p in cmpage.enumDocuType){
-            if( p == typeName){
+        let typeName = this.mod.c_modulename.replace(/Rec/, '');
+        for (let p in cmpage.enumDocuType) {
+            if (p == typeName) {
                 this.docuType.id = cmpage.enumDocuType[p];
-                this.docuType.name = cmpage.enumDocuType[p+'_name'];
-                this.docuType.header = cmpage.enumDocuType[p+'_header'];
+                this.docuType.name = cmpage.enumDocuType[p + '_name'];
+                this.docuType.header = cmpage.enumDocuType[p + '_header'];
                 this.docuType.modulename = p;
             }
         }
-        if(this.docuType.id === cmpage.enumDocuType.OrderApply)    this.docuType.key='c_order_apply';
-        if(this.docuType.id === cmpage.enumDocuType.Order)          this.docuType.key='c_order';
+        if (this.docuType.id === cmpage.enumDocuType.OrderApply) this.docuType.key = 'c_order_apply';
+        if (this.docuType.id === cmpage.enumDocuType.Order) this.docuType.key = 'c_order';
         //debug(this.docuType,'docu_rec.initDocuType - this.docuType');
     }
 
     /**
      * 增加物料明细，根据模块名称判断数据来源，实现相应的逻辑
-    * @method  goodsAdd
-    * @return {object} 返回前端的状态对象
-    */
-    async goodsAdd(fromID, docuID){
-        if(think.isEmpty(docuID))  return  {statusCode:300, message:`单据ID错误!`};
-        return  {statusCode:300, message:"请在子类中继承本方法！"};
+     * @method  goodsAdd
+     * @return {object} 返回前端的状态对象
+     */
+    async goodsAdd(fromID, docuID) {
+        if (think.isEmpty(docuID)) return {
+            statusCode: 300,
+            message: `单据ID错误!`
+        };
+        return {
+            statusCode: 300,
+            message: "请在子类中继承本方法！"
+        };
     }
 
 
@@ -68,10 +80,13 @@ module.exports = class extends CMPage {
      * @return {object} 处理后的参数
      * @param  {object} parms 前端传入的FORM参数
      */
-    pageSavePretreat(parms){
+    pageSavePretreat(parms) {
         parms.c_qty = parseFloat(parms.c_qty) || 0;
-        if(this.docuType.id != cmpage.enumDocuType.DocuStock && parms.c_qty <0){
-            return {statusCode:300, message:'数量应大于 0'};
+        if (this.docuType.id != cmpage.enumDocuType.DocuStock && parms.c_qty < 0) {
+            return {
+                statusCode: 300,
+                message: '数量应大于 0'
+            };
         }
         //类型检查
         parms.c_qty_from = parseFloat(parms.c_qty_from) || 0;
@@ -81,7 +96,7 @@ module.exports = class extends CMPage {
         parms.c_qty_stock = parseFloat(parms.c_qty_stock) || 0;
         parms.c_tax = parseFloat(parms.c_tax) || 17;
 
-        return parms;        
+        return parms;
     }
 
     /**
@@ -91,7 +106,7 @@ module.exports = class extends CMPage {
      * @return {object} 如果有验证错误，则返回格式： {statusCode:300, message:'xxxxxx'}
      * @param  {object} parms 前端传入的FORM参数
      */
-    async pageSave(parms){
+    async pageSave(parms) {
         parms = pageSavePretreat(parms);
 
         return await super.pageSave(parms);

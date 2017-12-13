@@ -23,7 +23,9 @@ module.exports = class extends CMPage {
 
     constructor() {
         super();
-        this.mod = {c_table:'t_supplier'};  //为直接调用的函数初始化某些值，如：getNameById
+        this.mod = {
+            c_table: 't_supplier'
+        }; //为直接调用的函数初始化某些值，如：getNameById
     }
 
     /**
@@ -32,12 +34,20 @@ module.exports = class extends CMPage {
      * @method  pageDelete
      * @return {object} 记录对象
      */
-    async pageDelete(){
+    async pageDelete() {
         let cnt = await this.model('t_order').where(` c_supplier=${this.mod.recID}`).count();
-        if(cnt >0)  return {statusCode:300,message:'该物料资料已经有订单使用！',data:{}};
+        if (cnt > 0) return {
+            statusCode: 300,
+            message: '该物料资料已经有订单使用！',
+            data: {}
+        };
 
         cnt = await this.model('t_docu').where(` c_supplier=${this.mod.recID}`).count();
-        if(cnt >0)  return {statusCode:300,message:'该物料资料已经有单据使用！',data:{}};
+        if (cnt > 0) return {
+            statusCode: 300,
+            message: '该物料资料已经有单据使用！',
+            data: {}
+        };
 
         return await super.pageDelete();
     }
