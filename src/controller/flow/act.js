@@ -52,7 +52,7 @@ module.exports = class extends Base {
      */
     async deleteAction() {
         let actID = this.get('id');
-        await cmpage.service('fw_act_path', 'cmpage').where(`c_from=${actID} or c_to=${actID}`).delete();
+        await this.model('fw_act_path', 'cmpage').where(`c_from=${actID} or c_to=${actID}`).delete();
         await this.model('fw_act', 'cmpage').where({
             id: actID
         }).delete();
@@ -82,7 +82,7 @@ module.exports = class extends Base {
      * @method  edit
      * @return {json}   act编辑页面的HTML片段
      */
-    async getActPathAction() {
+    async get_act_pathAction() {
         let id = this.get('id');
         let data = await this.model('fw_act_path', 'cmpage').where({
             id: id

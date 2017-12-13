@@ -215,7 +215,7 @@ module.exports = class extends think.Service {
             let ret = await this._sequelize.query(`select @@IDENTITY as ${this.pk};`, {
                 plain: true
             });
-            cmpage.warn(ret, 'base.add - ret');
+            //cmpage.warn(ret, 'base.add - ret');
             if (ret) {
                 return ret[this.pk];
             }
@@ -226,6 +226,7 @@ module.exports = class extends think.Service {
         if (this._model) {
             return await this._model.update(rec);
         }
+        //this.cmpage.warn(rec, 'base.update - rec before parseValue');
         let _field = [];
         for (let key in rec) {
             if (/^c_\w+/.test(key) && key != this.pk) {
@@ -236,6 +237,7 @@ module.exports = class extends think.Service {
         }
         if (think.isEmpty(this._where)) this._where = ` where ${this.pk}=${rec[this.pk]}`;
         let sql = `UPDATE ${this._tableName} SET ${_field.join(',')}  ${this._where}`;
+        //this.cmpage.warn(rec, 'base.update - rec after parseValue');
         //debug(sql,'base.update - sql');
         await this.query(sql);
 
@@ -275,9 +277,9 @@ module.exports = class extends think.Service {
             } else {
                 value = value.map(item => this.parseValue(item));
             }
-        } else if (think.isBoolean(value) && this.config.type == 'mysql') {
-            value = value ? 'TRUE' : 'FALSE';
-        } else if (think.isBoolean(value) && this.config.type == 'mssql') {
+        } else if (think.isBoolean(value) ) {
+        //     value = value ? 'TRUE' : 'FALSE';
+        // } else if (think.isBoolean(value) && this.config.type == 'mssql') {
             value = value ? 1 : 0;
         } else if (think.isDate(value)) {
             value = `'${think.datetime(value)}'`;

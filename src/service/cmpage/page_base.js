@@ -339,13 +339,14 @@ module.exports = class extends Base {
         } else {
             md = await this.pageEditInit();
         }
-        //console.log(md);
+        //cmpage.warn(md,'page_base.getDataRecord - md');
         //对记录进行处理
         for (let edit of this.modEdits) {
             if (edit.c_coltype === 'bool') {
                 md[edit.c_column] = think.isBoolean(md[edit.c_column]) ? md[edit.c_column] : (md[edit.c_column] === 1);
             }
         }
+        //cmpage.warn(md,'page_base.getDataRecord - md');
         this.rec = md;
         return md;
     }
@@ -366,12 +367,15 @@ module.exports = class extends Base {
         for (let edit of this.modEdits) {
             if (edit.c_editable && edit.c_column.indexOf('c_') === 0) { //&& this.isExistColumn(edit.c_column,colList)
                 //"varchar", "int","date","timestamp","bool","float"
+                let colValue = parms[edit.c_column];
                 if (edit.c_coltype === 'int') {
-                    this.rec[edit.c_column] = parseInt(parms[edit.c_column]) || 0;
+                    this.rec[edit.c_column] = parseInt(colValue) || 0;
                 } else if (edit.c_coltype === 'float') {
-                    this.rec[edit.c_column] = parseFloat(parms[edit.c_column]) || 0.0;
-                } else {
-                    this.rec[edit.c_column] = parms[edit.c_column];
+                    this.rec[edit.c_column] = parseFloat(colValue) || 0.0;
+                } else if (edit.c_coltype === 'bool') {
+                    this.rec[edit.c_column] =(colValue && colValue.toLowerCase() === 'false') ? true : Boolean(colValue);
+                }else{
+                    this.rec[edit.c_column] = colValue;
                 }
             }
         }

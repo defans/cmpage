@@ -742,7 +742,7 @@ module.exports = class extends PageBase {
         //debug(defaultSaveBtn,'page.htmlGetEditBtns - defaultSaveBtn');
         //if(think.isEmpty(this.mod.c_other.editHideSaveBtn) && !this.mod.parmsUrl.readonly && !this.rec.hasOwnProperty('c_task') ) {
         if (think.isEmpty(this.mod.c_other.editHideSaveBtn) && !this.mod.parmsUrl.readonly &&
-            this.rec.c_act !== null && (this.rec.c_act == 0 || this.rec.c_act === this.proc.c_act_start)) {
+            this.rec.c_act !== null && (this.rec.c_act == 0 || this.rec.c_act === this.proc.c_act_start) || (this.mod.c_modulename.indexOf('Fw')===0)) {
             //不隐藏保存按钮，不是只读页面，没有关联的工作流ID
             html.push(defaultSaveBtn);
         }
@@ -854,7 +854,7 @@ module.exports = class extends PageBase {
         }
         linkRec.id = think.isEmpty(this.mod.parmsUrl.linkID) ? rec[this.pk] : this.mod.parmsUrl.linkID;
         debug(linkRec, 'page.htmlGetActBtns - linkRec');
-        debug(act, 'page.htmlGetActBtns - act');
+        cmpage.warn(act, 'page.htmlGetActBtns - act');
 
         if (act.id > 0) {
             //debug(form,'page.htmlGetActBtns - form');

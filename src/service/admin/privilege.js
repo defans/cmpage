@@ -33,7 +33,7 @@ module.exports = class extends Base {
         if (!think.isEmpty(parms.ids)) {
             let sql = `insert into t_role_privilege(c_role,c_privilege,c_allow,c_deny) select
 			      ${parms.roleID},id,FALSE,TRUE from t_code where id in(${parms.ids})`;
-            await this.execute(sql);
+            await this.query(sql);
         }
         await think.cache('rolePrivileges', null);
     }

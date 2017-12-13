@@ -196,7 +196,7 @@ module.exports = class extends CMPage {
 
 
     /**
-     * 修改状态，供界面按钮直接调用，工作流相关方法（状态流转类）</br>
+     * 修改状态，供界面按钮直接调用，工作流相关方法（状态流转，比如Appr中保存的时候调用本方法可以更新状态及其他操作）</br>
      * 子类中覆写本方法，可以根据业务对象的状态增加其他逻辑
      * @method  updateStatus
      * @return {object} 结果输出
@@ -220,6 +220,14 @@ module.exports = class extends CMPage {
             };
             await this.query(`update ${this.mod.c_table} set c_status=${status},c_act=${actID},c_appr_people=${this.mod.user.id},
                 c_appr_time='${think.datetime()}',c_time='${think.datetime()}' where c_id=${id}`);
+            //根据状态值及单据类型，进行 更新库存等操作
+            if( status===1213 && (this.docuType.id == this.cmpage.enumDocuType.DocuCheck || this.docuType.id == this.cmpage.enumDocuType.DocuSale 
+            || this.docuType.id == this.cmpage.enumDocuType.DocuTransfer ) ){
+                let recList = this.model('vw_docu_list').where(`c_id=${id}`).select();
+                for (const rec of recList) {
+                    await this.query(`p_stock_goods_qty_calc ${rec.c_goods},${rec.c_stock},${this.mod.user.groupID}`);
+                }
+            }
             ret = {
                 statusCode: 200,
                 message: '操作执行成功！'
