@@ -202,29 +202,31 @@ module.exports = class extends Base {
     }
 
     //从数据源取字段名称和类型
-    async getAllColumns(datasource, table, path) {
+    async getAllColumns(mod) {
         let configModel = think.config("model");
         //debug(configModel,'cmpage.module - getAllColumns');
-        let config = configModel.admin;
+        let app = cmpage.service('cmpage/base');
+        app.connStr = mod.c_conn_name;
+        app.config = configModel[mod.c_conn_name];
         let sql = '';
-        if (config.type === 'postgresql') {
+        if (app.config.type === 'postgresql') {
             sql = `SELECT    a.attnum,  a.attname AS column,  t.typname AS type,   case when a.attlen >0 then a.attlen else a.atttypmod end AS length,  a.attnotnull AS notnull,  col_description(a.attrelid,a.attnum) as comment
-                FROM   pg_class c,   pg_attribute a,   pg_type t WHERE   c.relname = '${datasource}'  and a.attnum > 0  and a.attrelid = c.oid  and a.atttypid = t.oid `;;
-        } else if (config.type === 'mssql') {
-            sql = `SELECT a.colorder, a.name as [column],b.name as [type],collen=a.length
+                FROM   pg_class c,   pg_attribute a,   pg_type t WHERE   c.relname = '${mod.c_datasource}'  and a.attnum > 0  and a.attrelid = c.oid  and a.atttypid = t.oid `;;
+        } else if (app.config.type === 'mssql') {
+            sql = `SELECT a.colorder, a.name as [column],b.name as [type], a.length
                  FROM syscolumns a left join systypes b on a.xusertype=b.xusertype  inner join sysobjects d on a.id=d.id   and   d.name<>'dtproperties'
-                where d.name='${datasource}' order by a.id,a.colorder`;
+                where d.name='${mod.c_datasource}' order by a.id,a.colorder`;
         } else {
-            sql = `SHOW FULL COLUMNS FROM ${datasource}`;
+            sql = `SHOW FULL COLUMNS FROM ${mod.c_datasource}`;
         }
         let ret = [];
-        let list = await think.model('cmpage/base', config).query(sql);
+        let list = await app.query(sql);
         //debug(list,'module.getAllColumns - list');
-        if (config.type === 'postgresql') {
+        if (app.config.type === 'postgresql') {
             ret = list;
-        } else if (config.type === 'mssql') {
+        } else if (app.config.type === 'mssql') {
             ret = list;
-            let comments = await think.model('cmpage/base', config).query(`SELECT * FROM sysproperties  where TableName= '${table}'`);
+            let comments = await app.query(`SELECT * FROM sysproperties  where TableName= '${mod.c_table}'`);
             for (let comment of comments) {
                 for (let col of ret) {
                     if (col.column == comment.ColName) {
@@ -257,7 +259,7 @@ module.exports = class extends Base {
                 //}else {
                 //    col.type = 'varchar';
             }
-            if (config.type === 'mysql') {
+            if (app.config.type === 'mysql') {
                 col.length = 0;
             }
         }
@@ -286,7 +288,7 @@ module.exports = class extends Base {
         let model = this.model('t_module_col', 'cmpage');
 
         //await model.where({c_module: md.id}).delete();
-        let columns = await this.getAllColumns(md.c_datasource, md.c_table, md.c_path);
+        let columns = await this.getAllColumns(md);
         if (columns.length === 0) {
             return {
                 statusCode: 200,
@@ -295,7 +297,7 @@ module.exports = class extends Base {
         }
         let comments = [];
         if (md.c_datasource !== md.c_table) {
-            comments = await this.getAllColumns(md.c_table, md.c_table, md.c_path);
+            comments = await this.getAllColumns(md);
         } else {
             Object.assign(comments, columns);
         }
@@ -360,7 +362,7 @@ module.exports = class extends Base {
         let model = this.model('t_module_edit', 'cmpage');
 
         //await model.where({c_module: md.id}).delete();
-        let columns = await this.getAllColumns(md.c_datasource, md.c_table, md.c_path);
+        let columns = await this.getAllColumns(md);
         if (columns.length === 0) {
             return {
                 statusCode: 200,
@@ -369,7 +371,7 @@ module.exports = class extends Base {
         }
         let comments = [];
         if (md.c_datasource !== md.c_table) {
-            comments = await this.getAllColumns(md.c_table, md.c_table, md.c_path);
+            comments = await this.getAllColumns(md);
         } else {
             Object.assign(comments, columns);
         }
@@ -437,7 +439,7 @@ module.exports = class extends Base {
         }).find();
         let model = this.model('t_module_query', 'cmpage');
         //await model.where({c_module: md.id}).delete();
-        let columns = await this.getAllColumns(md.c_datasource, md.c_table, md.c_path);
+        let columns = await this.getAllColumns(md);
         if (columns.length === 0) {
             return {
                 statusCode: 200,
@@ -446,7 +448,7 @@ module.exports = class extends Base {
         }
         let comments = [];
         if (md.c_datasource !== md.c_table) {
-            comments = await this.getAllColumns(md.c_table, md.c_table, md.c_path);
+            comments = await this.getAllColumns(md);
         } else {
             Object.assign(comments, columns);
         }
@@ -704,23 +706,15 @@ module.exports = class extends Base {
         };
     }
 
-    async copyModuleFromMssql(modulename, config) {
-        if (think.isEmpty(config)) {
-            config = {
-                type: 'mssql',
-                adapter: {
-                    mssql: {
-                        host: "127.0.0.1",
-                        port: "1433",
-                        database: 'ERPCommpage',
-                        user: 'cmpage',
-                        password: 'defans'
-                    }
-                }
-            };
-        }
-        let fromModel = new Base('base', config);
+    async copyModuleFromMssql(modulename) {
+        let modelConfig = think.config('model');
+        let fromModel = cmpage.service('cmpage/base');
+        fromModel.connStr = 'tmp';
+        fromModel.config = modelConfig['tmp'];
         let toModel = cmpage.service('cmpage/base');
+        toModel.connStr = 'cmpage';
+        toModel.config = modelConfig['cmpage'];
+
         let list = await toModel.query(`select * from t_module where c_modulename='${modulename}'`);
         if (list.length > 0) return {
             statusCode: 300,
@@ -732,13 +726,15 @@ module.exports = class extends Base {
             statusCode: 300,
             message: `未取到原模块信息！`
         };
-        //        debug(list,'module.copyModuleFromMssql - list');
+        //debug(list,'module.copyModuleFromMssql - list');
         let rec = cmpage.objPropertysFromOtherObj({}, list[0], 'c_modulename,c_datasource,c_table,c_multiselect,c_pager,c_page_size,c_other,c_user,c_memo');
-        debug(rec, 'module.copyModuleFromMssql - rec');
-        //        if(think.isEmpty(rec))  return;
+        debug(rec, 'module.rec');
+        //if(think.isEmpty(rec))  return;
         rec.c_sort_by = `${list[0]["c_sortname"]} ${list[0]["c_sortorder"]}`;
         rec.c_time = think.datetime();
         rec.c_status = 0;
+        rec.c_conn_name = 'admin';
+        rec.c_pk = 'id';
         let newID = await toModel.model('t_module').add(rec);
         if (newID == 0) return;
         let oldID = list[0]["c_id"];
@@ -761,6 +757,11 @@ module.exports = class extends Base {
             from t_commpage_btn where c_commpage=${oldID}`);
         for (let md of list) {
             md.c_module = newID;
+            if (md.c_object.indexOf('.ExportData') > 0) {
+                md.c_onclick = 'return pageExportData();';
+            } else if (md.c_object.indexOf('.Del') > 0) {
+                md.c_onclick = 'return pageDelete(#c_id#,this);';
+            }
             await toModel.model('t_module_btn').add(md);
         }
         //复制 edits

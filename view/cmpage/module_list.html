@@ -37,7 +37,7 @@
         <%vb.data.forEach(function(item){%>
         <tr data-id="<%=item.id%>">
             <td><%=item.id%></td>
-            <td><a data-title="模块编辑"  data-toggle="dialog" href="/cmpage/module/edit?id=<%= item.id%>" data-id="pageModuleEdit" data-options="{mask:true,width:800,height:350}"><%= item.c_modulename%> </a></td>
+            <td><a data-title="模块编辑"  data-toggle="dialog" href="/cmpage/module/edit?id=<%= item.id%>" data-id="pageModuleEdit" data-options="{mask:true,width:800,height:400}"><%= item.c_modulename%> </a></td>
             <td><%=item.c_module_slave%></td>
             <td><%=item.c_datasource%></td>
             <td><%=item.c_table%></td>

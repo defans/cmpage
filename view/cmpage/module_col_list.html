@@ -52,7 +52,6 @@
                     </select>
                 </th>
                 <th title="备注"><textarea name="editList[#index#].c_memo" data-toggle="autoheight" rows="1"></textarea></th>
-                <th title="MUI"><textarea name="editList[#index#].c_mui" data-toggle="autoheight" rows="1"></textarea></th>
 
                 <th title="" data-addtool="false" >
 
@@ -76,7 +75,6 @@
                     <td ><%= item.c_style%></td>
                     <td data-val="<%= item.c_type_sum%>"><%= item.c_type_sum%></td>
                     <td ><%= item.c_memo%></td>
-                    <td ><%= item.c_mui%></td>
                     <td data-noedit="true">
                         <a href="/cmpage/module/delete?id=<%= item.id%>&table=t_module_col&flag=true" class="btn btn-red row-del" data-icon="times"
                             data-title="删除" data-confirm-msg="确定要删除该行信息吗？"></a>

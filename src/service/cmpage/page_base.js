@@ -150,14 +150,14 @@ module.exports = class extends Base {
     async getQueryWhere() {
         let ret = [' where 1=1'];
         let parmsUrl = this.mod.parmsUrl;
-        //debug(parmsUrl,'page.getQueryWhere - parmsUrl');
+        debug(parmsUrl,'parmsUrl');
         for (let md of this.modQuerys) {
             if (md.c_type === "fixed") { //如果是‘固定’，则直接增加c_memo中的设置值
                 let wh = ` (${md.c_memo.replace(/#userID#/,this.mod.user.id)
                     .replace(/#groupID#/,this.mod.user.groupID)
                     .replace(/#groups#/,this.mod.user.groups)
                     .split(/##/).join('\'')})`;
-                //this.cmpage.objPropertysReplaceToStr(wh,parmsUrl);
+                wh = this.cmpage.objPropertysReplaceToStr(wh,parmsUrl);
                 if (wh.indexOf('#value#') > -1) {
                     wh = think.isEmpty(parmsUrl[md.c_column]) ? '' : wh.replace(/#value#/, parmsUrl[md.c_column]);
                 }

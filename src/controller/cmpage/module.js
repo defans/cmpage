@@ -119,7 +119,7 @@ module.exports = class extends Base {
     return this.json(await cmpage.service('cmpage/module').copyToNewModule(modulename, newName));
   }
 
-  async copyModuleFromMssqlAction() {
+  async copy_module_from_mssqlAction() {
     let modulename = this.get('modulename');
     return this.json(await cmpage.service('cmpage/module').copyModuleFromMssql(modulename));
   }
@@ -266,7 +266,7 @@ module.exports = class extends Base {
         md.c_width = posts[`editList[${i}].c_width`];
         md.c_style = posts[`editList[${i}].c_style`];
         md.c_type_sum = posts[`editList[${i}].c_type_sum`].trim();
-        md.c_mui = posts[`editList[${i}].c_mui`];
+        md.c_mui = '';  //posts[`editList[${i}].c_mui`];
         md.c_memo = posts[`editList[${i}].c_memo`];
         //cmpage.debug(JSON.stringify(md));
         if (think.isEmpty(posts[`editList[${i}].id`])) {
