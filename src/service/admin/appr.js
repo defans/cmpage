@@ -73,10 +73,11 @@ module.exports = class extends CMPage {
         if (linkModel) {
             await linkModel.initPage();
             //取下一个流程节点ID
-            let actID = await cmpage.service('flow/act').getNextActIDFromId(0, parms.c_act);
+            //目前不需要，状态流转类假设都是‘人为参与’的节点，如果有自动执行的节点则通过下面的 updateStatus 中的逻辑实现
+            //let actID = await cmpage.service('flow/act').getNextActIDFromId(0, parms.c_act);
 
             //更新关联对象的状态
-            let ret = await linkModel.updateStatus(parms.c_link, actID, parms.c_status, false);
+            let ret = await linkModel.updateStatus(parms.c_link, parms.c_act, parms.c_status, false);
             debug(ret, 'appr.pageSave - linkModel.updateStatus.ret');
             if (ret.statusCode === 200) {
                 await super.pageSave(parms);

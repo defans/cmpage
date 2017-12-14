@@ -104,6 +104,9 @@ module.exports = class extends CMPage {
             for (let k in flowMap.states) {
                 actids.push(flowMap.states[k].data_id);
             }
+            if(think.isEmpty(actids)){
+                return;
+            }
             await this.query(`delete from fw_act where c_proc=${parms.procID} and id not in(${actids.join(',')})`);
             for (let k in flowMap.states) {
                 if (flowMap.states[k].data_id == 0) {
@@ -129,7 +132,7 @@ module.exports = class extends CMPage {
                     flowMap.states[k].data_id = await this.model('fw_act').add(act);
                 }
             }
-            //            await pathModel.query(`delete from fw_act_path where c_proc=${parms.procID} and (c_from not in(${actids.join(',')}) or c_to not in(${actids.join(',')}) or c_from is null or c_to is null)`);
+            //await pathModel.query(`delete from fw_act_path where c_proc=${parms.procID} and (c_from not in(${actids.join(',')}) or c_to not in(${actids.join(',')}) or c_from is null or c_to is null)`);
             //路径全部更新
             await this.query(`delete from fw_act_path where c_proc=${parms.procID} `);
             for (let k in flowMap.paths) {

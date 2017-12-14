@@ -20,6 +20,8 @@ module.exports = class extends CMPage {
         //此处增加额外的条件
         where += ' and c_status<>-1'; //也可以在查询列设置一条 ‘固定’类型的查询列，备注中填： c_status<>-1
 
+        //cmpage.warn('v的点点滴滴多大奥付 发顺丰');
+
         return where;
     }
 

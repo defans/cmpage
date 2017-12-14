@@ -532,7 +532,7 @@ module.exports = class extends PageBase {
                     sum += Number(rec[col.c_column]);
                 }
                 if (col.c_type_sum == 'avg') sum = sum / this.list.data.length;
-                debug(cmpage.formatNumber(sum, col.c_format), 'page.htmlGetListSumRow - cmpage.formatNumber(sum,col.c_format)');
+                //debug(cmpage.formatNumber(sum, col.c_format), 'cmpage.formatNumber(sum,col.c_format)');
                 html.push(`<td style="text-align:right;font-weight:bold;">${cmpage.formatNumber(sum,{pattern:col.c_format})}</td>`);
             }
         }
@@ -792,9 +792,10 @@ module.exports = class extends PageBase {
                         onclick="return pageGotoEdit('${this.mod.c_modulename}',${nextID});">下一条</button></li>`);
             }
         }
+        //cmpage.warn(this.proc,'this.proc');
         //如果和流程相关，则显示流程节点的按钮
         if (!think.isEmpty(this.proc)) {
-            //debug(this.proc,'page.htmlGetBtnList - this.proc');
+            //debug(this.proc,'this.proc');
             let actBtns = [];
             if (this.proc.c_type === cmpage.enumProcType.STATUSCHANGE) {
                 //直接取模板设置的按钮
@@ -853,8 +854,10 @@ module.exports = class extends PageBase {
             linkRec = await linkModel.getStatusById(linkRec.id);
         }
         linkRec.id = think.isEmpty(this.mod.parmsUrl.linkID) ? rec[this.pk] : this.mod.parmsUrl.linkID;
-        debug(linkRec, 'page.htmlGetActBtns - linkRec');
-        cmpage.warn(act, 'page.htmlGetActBtns - act');
+        debug(linkRec, 'linkRec');
+        debug(this.proc,'this.proc');
+        debug(this.mod.c_proc,'this.mod');
+        cmpage.warn(act, 'act');
 
         if (act.id > 0) {
             //debug(form,'page.htmlGetActBtns - form');
@@ -890,8 +893,6 @@ module.exports = class extends PageBase {
                     }
                 }
                 // debug(linkRec,'page.htmlGetActBtns - linkRec');
-                // debug(this.mod,'page.htmlGetActBtns - this.mod');
-                // debug(this.proc,'page.htmlGetActBtns - this.proc');
                 if (linkRec.id > 0 && this.proc.c_link_type != this.mod.c_table) {
                     if (linkRec.c_status == act.c_domain_st) {
                         html.push('<label style="color: red;">本操作已经执行完毕！</label>');
@@ -912,7 +913,7 @@ module.exports = class extends PageBase {
                 let toActs = await cmpage.service('flow/act').getToActsFromId(this.proc.id, act.id);
                 debug(toActs, 'page.htmlGetActBtns - toActs');
                 for (let toAct of toActs) {
-                    //验证当前用户是否有该节点的权限
+                    //验证当前用户是否有该节点的权限.
                     let actAssign = await cmpage.service('flow/act_assign').getAssignByUser(toAct.id, this.mod.user, createUserID, prevUserID);
                     //debug(actAssign,'page.htmlGetActBtns - actAssign');
                     if (think.isEmpty(actAssign)) continue;

@@ -260,15 +260,29 @@ exports.checksql = (obj) => {
 /***************************其他的全局方法 **************************************/
 exports.debug = (msg, desc) => {
     if (think.env === 'development') {
+        var info = cmpage.stackInfo();
+        var method = info['method'].split('.');
+        var path = info['path'];
+        var line = info['line'];
+
         //let message = think.isObject(msg) ? JSON.stringify(msg).replace(/"/g,'').replace(/\\/g,'').replace(/,/g,',  ') : msg;
         let message = objToString(msg);
-        think.logger.debug((!think.isEmpty(desc) ? '[' + desc + '] --> ' : '[CMPAGE] ') + message);
+        message = method[method.length - 1] + " " + path + ":" + line + " \n ----> " +
+            (!think.isEmpty(desc) ? ' [' + desc + '] ' : '') + message;
+        think.logger.debug(message);
         // think.logger.debug(message, think.isEmpty(desc) ? ' CMPAGE ':desc);
     }
 };
 exports.warn = (msg, desc) => {
+    var info = cmpage.stackInfo();
+    var method = info['method'].split('.');
+    var path = info['path'];
+    var line = info['line'];
+
     let message = objToString(msg);
-    think.logger.warn((!think.isEmpty(desc) ? '[' + desc + '] --> ' : '[CMPAGE] ') + message);
+    message = method[method.length - 1] + " " + path + ":" + line + " \n ----> " +
+        (!think.isEmpty(desc) ? ' [' + desc + '] ' : '') + message;
+    think.logger.warn(message);
 };
 
 /**
@@ -495,6 +509,36 @@ exports.sleep = function (milliSecond) {
     var startTime = new Date().getTime();
     while (new Date().getTime() <= milliSecond + startTime) {}
 };
+
+
+// function log(msg) {
+//     var info = stackInfo();
+//     var method = info['method'];
+//     var file = info['file'];
+//     var line = info['line'];
+//     console.log("(" + method + ") <" + file + ":" + line + "> " + msg);
+// }
+
+// 这里是主要方法
+exports.stackInfo = function () {
+    var path = require('path');
+    var stackReg = /at\s+(.*)\s+\((.*):(\d*):(\d*)\)/i;
+    var stackReg2 = /at\s+()(.*):(\d*):(\d*)/i;
+    var stacklist = (new Error()).stack.split('\n').slice(3);
+    var s = stacklist[0];
+    var sp = stackReg.exec(s) || stackReg2.exec(s);
+    var data = {};
+    if (sp && sp.length === 5) {
+        data.method = sp[1];
+        data.path = sp[2];
+        data.line = sp[3];
+        data.pos = sp[4];
+        data.file = path.basename(data.path);
+    }
+
+    return data;
+}
+
 
 
 //用户状态

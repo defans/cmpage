@@ -69,7 +69,7 @@ module.exports = class extends Base {
      */
     async delete_pathAction() {
         let id = this.get('id');
-        await this.model('fw_act_path', 'cmpage').where(`c_id=${id}`).delete();
+        await this.model('fw_act_path', 'cmpage').where(`id=${id}`).delete();
 
         return this.json({
             statusCode: 200,

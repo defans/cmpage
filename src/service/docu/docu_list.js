@@ -52,7 +52,7 @@ module.exports = class extends CMPage {
         if (this.docuType.id === cmpage.enumDocuType.OrderApply) this.docuType.key = 'c_order_apply';
         if (this.docuType.id === cmpage.enumDocuType.Order) this.docuType.key = 'c_order';
         //this.pk = 'c_id';
-        //debug(this.docuType,'docu_list.initDocuType - this.docuType');
+        debug(this.docuType, 'docu_list.initDocuType - this.docuType');
         debug(this.proc, 'docu_list.initDocuType - this.proc');
     }
 
@@ -220,10 +220,11 @@ module.exports = class extends CMPage {
             };
             await this.query(`update ${this.mod.c_table} set c_status=${status},c_act=${actID},c_appr_people=${this.mod.user.id},
                 c_appr_time='${think.datetime()}',c_time='${think.datetime()}' where c_id=${id}`);
+            cmpage.debug(this.docuType, 'this.docuType');
             //根据状态值及单据类型，进行 更新库存等操作
-            if( status===1213 && (this.docuType.id == this.cmpage.enumDocuType.DocuCheck || this.docuType.id == this.cmpage.enumDocuType.DocuSale 
-            || this.docuType.id == this.cmpage.enumDocuType.DocuTransfer ) ){
-                let recList = this.model('vw_docu_list').where(`c_id=${id}`).select();
+            if (status == 1213 && (this.docuType.id == this.cmpage.enumDocuType.DocuCheck || this.docuType.id == this.cmpage.enumDocuType.DocuSale ||
+                    this.docuType.id == this.cmpage.enumDocuType.DocuTransfer)) {
+                let recList = await this.model('vw_docu_list').where(`c_id=${id}`).select();
                 for (const rec of recList) {
                     await this.query(`p_stock_goods_qty_calc ${rec.c_goods},${rec.c_stock},${this.mod.user.groupID}`);
                 }
