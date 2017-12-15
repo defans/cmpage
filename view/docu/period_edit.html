@@ -1,0 +1,95 @@
+﻿
+<div id="recPeriodContent" class="bjui-pageContent">
+    <form id="recPeriodForm" name="recPeriodForm" action="#" data-toggle="validate" data-alertmsg="false">
+            <input id="recPeriodID" name="c_id" type="hidden" value="@ViewBag.dr["c_id"].ToString()" />
+            <input id="modulename" name="modulename" type="hidden" value="@ViewBag.page.c_modulename" />
+            <input name="parms" type="hidden" value="@ViewBag.parms" />
+        <table id="recPeriodTable" class="table table-condensed " width="100%">
+            <tbody>
+            @Html.Raw(ViewBag.editForm)
+            </tbody>
+        </table>
+    </form>
+
+    <div id="recPeriodDiv" >
+            <fieldset>
+                <legend>-</legend>
+                <!-- Tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li "class=active"><a href="#recPeriodList" role="tab" data-toggle="tab">库存明细</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="recPeriodList"  name="recPeriodList"
+                     dataurl="/Commpage/PageShow/PeriodRec,c_period=@ViewBag.dr["c_id"].ToString(),c_modulename=Period,PageRecViewFlag=false" > </div>
+                </div>
+            </fieldset>
+	</div>
+</div>
+<div class="bjui-pageFooter" >
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
+        <li class="left"><button type="button" id="periodCalcBtn" class="btn-green" onclick="return period_Calc();" @(ViewBag.isPeriodFinish ? "disabled":"") data-icon="building">库存核算</button></li>
+        <li class="left"><button type="button" id="periodFinishBtn" class="btn-green" onclick="return period_finish();" @(ViewBag.isPeriodFinish ? "disabled":"") data-icon="check">完成结转</button></li>
+    </ul>
+</div>
+
+ <script type="text/javascript">
+
+function period_Calc(){  
+        $(this).alertmsg("confirm", "是否确定要重新核算当前库存以及进价？",{
+            okCall:function(){                
+                $.ajax({
+                    type: "POST",
+                    url: "/Docu/PeriodCalc",
+                    data: $("#recPeriodForm").serialize(), // 序列化参数，以FORM形式传到后端
+                    async: false,
+                    success: function (ret) {
+                        //var ret =eval("("+data+")")
+                        $(this).alertmsg(ret.statusCode=="200" ? "info":"error",ret.message);
+                        if(ret.statusCode=="200")
+                        {
+                            if(ret.newID >0)
+                            {
+                                $("#recPeriodID").val(ret.newID);
+                                $.CurrentNavtab.navtab('reload', { url:"/Docu/PeriodEdit/"+ret.newID, type:"GET", onLoad:"recPeriodList_load2"})   
+                            }
+                        }          
+                    }
+                }); 
+            }
+        });
+
+        return false;   
+} 
+   
+function recPeriodList_load2(){
+    //event.preventDefault();
+    var id = $("#recPeriodID").val();
+
+    $(this).bjuiajax('doLoad', {target:$("#recPeriodList"), url:"/Commpage/PageShow/PeriodRec,c_period="+id+",c_modulename=Period" });              
+}  
+
+function period_finish(){  
+        $(this).alertmsg("confirm", "是否确定要结束该仓库的库存结转？",{
+            okCall:function(){                
+                $.ajax({
+                    type: "POST",
+                    url: "/Docu/PeriodFinish",
+                    data: "periodID=@(ViewBag.dr["c_id"].ToString())", // 序列化参数，以FORM形式传到后端
+                    async: false,
+                    success: function (ret) {
+                       // var ret =eval("("+data+")")
+                        $(this).alertmsg(ret.statusCode=="200" ? "info":"error",ret.message);
+                        if(ret.statusCode=="200")
+                        {
+                                $.CurrentNavtab.navtab('reload', { url:"/Docu/PeriodEdit/"+ret.newID, type:"GET", onLoad:"recPeriodList_load2"})   
+                        }            
+                    }
+                }); 
+            }
+        });
+
+        return false;   
+} 
+ </script>       

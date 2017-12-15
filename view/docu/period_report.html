@@ -1,0 +1,67 @@
+﻿<div class="bjui-pageHeader">
+    <form id="pagerForm" name="pageStoreReportForm" data-toggle="ajaxsearch" action="/Docu/StoreReport" method="post">
+        <div class="bjui-searchBar">
+            @*<label>期次</label>
+            <input name="c_ucode" type="lookup" size="15" value="" data-width="800" data-height="600" data-toggle="lookup" value="@ViewBag.period"
+                   data-title="期次选择" data-url="/Commpage/PageLookup/PeriodLookUp,0" readonly="readonly" data-rule="required" class="form-control" style="padding-right: 15px;">
+            <input name="periodselect" type="hidden">
+            <button type="submit" class="btn btn-default" id="btnSearchStoreReport" data-icon="search">统计</button>*@
+            <div class="pull-right">
+                <button type="button" class="btn btn-close " data-icon="close">关闭</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="bjui-pageContent">
+    <div style=" height:auto">
+        @*<table data-toggle="tablefixed" data-width="100%" data-nowrap="false">*@
+        <table id="tbList" width="100%" border="1">
+            <tr style="text-align: center; color :#0076c8; background-color :#f4faff; font-weight: bold">
+                <td style="width: 10%; " rowspan="2">类别</td>
+                <td style="width: 10%; " rowspan="2">名称</td>
+                <td style="width: 20%; " rowspan="2">规格</td>
+                <td style="width: 15%; " colspan="3">期初结存</td>
+                <td style="width: 15%; " colspan="3">本期收入</td>
+                <td style="width: 15%; " colspan="3">本期发出</td>
+                <td style="width: 15%; " colspan="3">期末结存</td>
+            </tr>
+            <tr style="text-align: center; color :#0076c8; background-color :#f4faff; font-weight: bold">
+                <td style="width: 5%; ">数量</td>
+                <td style="width: 5%; ">单价</td>
+                <td style="width: 5%; ">金额</td>
+                <td style="width: 5%; ">数量</td>
+                <td style="width: 5%; ">单价</td>
+                <td style="width: 5%; ">金额</td>
+                <td style="width: 5%; ">数量</td>
+                <td style="width: 5%; ">单价</td>
+                <td style="width: 5%; ">金额</td>
+                <td style="width: 5%; ">数量</td>
+                <td style="width: 5%; ">单价</td>
+                <td style="width: 5%; ">金额</td>
+            </tr>
+            @{
+                foreach (var item in ViewBag.dataTable.Rows)
+                {
+                    <tr bgcolor='#F4FAFF'>
+                        <td align="left">@item["c_class"]</td>
+                        <td align="left"><a data-toggle="navtab" data-options="{id:'pageStockGoodsEdit', mask:true, width:600, height:400 }" href="/Commpage/PageShow/DocuReportList,periodid=@ViewBag.period,goodid=@item["c_goods"]" onclick="" data-title="明细" style=""> @item["c_name"]</a></td>
+                        <td align="left">@item["c_desc"]</td>
+                        <td align="right">@item["num_befor"]</td>
+                        <td align="right">@item["unitprice_before"]</td>
+                        <td align="right">@item["totalprice_befor"]</td>
+                        <td align="right">@item["amount_in"]</td>
+                        <td align="right">@item["unitprice_in"]</td>
+                        <td align="right">@item["price_in"]</td>
+                        <td align="right">@item["amount_out"]</td>
+                        <td align="right">@item["unitprice_out"]</td>
+                        <td align="right">@item["price_out"]</td>
+                        <td align="right">@item["c_end"]</td>
+                        <td align="right">@item["unitprice_end"]</td>
+                        <td align="right">@item["c_price"]</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+</div>

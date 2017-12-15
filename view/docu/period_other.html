@@ -1,0 +1,65 @@
+﻿
+
+<script type="text/javascript">
+
+    function docuNew(obj, modulename) {
+        $.ajax({
+            type: "POST",
+            url: "/Docu/DocuNew",
+            data: { modulename: modulename },
+            async: false,
+            success: function (ret) {
+                if (ret.statusCode == "200") {
+                    $(obj).navtab({ id: 'page' + modulename + 'Edit', url: '/Docu/PeriodEdit/' + ret.docuID.toString() ,
+                        title: '当前期次', onLoad: 'pageRecList_load'
+                    });
+                }
+            }
+        });
+
+        return false;
+    }   
+    function period_Close(){
+        $(this).alertmsg("confirm", "是否确定要进行关账操作？", {
+            okCall: function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/Docu/PeriodClose",
+                    data: "close=1", // 序列化参数，以FORM形式传到后端
+                    async: false,
+                    success: function (ret) {
+                        //var ret = eval("(" + data + ")")
+                        $(this).alertmsg(ret.statusCode == "200" ? "info" : "error", ret.message);
+                        if (ret.statusCode == "200") {
+                            $("#btnSearchPeriod").click();
+                        }
+                    }
+                });
+            }
+        });
+
+        return false;   
+}  
+function period_unClose(){  
+        $(this).alertmsg("confirm", "是否确定要进行反关账操作？",{
+            okCall:function(){                
+                $.ajax({
+                    type: "POST",
+                    url: "/Docu/PeriodClose",
+                    data: "close=0", // 序列化参数，以FORM形式传到后端
+                    async: false,
+                    success: function (ret) {
+                        //var ret =eval("("+data+")")
+                        $(this).alertmsg(ret.statusCode=="200" ? "info":"error",ret.message);
+                        if(ret.statusCode=="200")
+                        {
+                            $("#btnSearchPeriod").click();
+                        }            
+                    }
+                }); 
+            }
+        });
+
+        return false;   
+} 
+</script>
