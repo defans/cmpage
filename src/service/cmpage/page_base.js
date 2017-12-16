@@ -48,7 +48,7 @@ module.exports = class extends Base {
             this.proc.c_link_type = this.mod.c_table;
             this.proc.linkModulename = this.mod.c_modulename;
         }
-        this.mod.c_other = think.isEmpty(this.mod.c_other) ? {} : cmpage.objFromString(this.mod.c_other);
+        this.mod.c_other = think.isEmpty(this.mod.c_other) ? {} : this.cmpage.objFromString(this.mod.c_other);
         this.mod.c_module_slave = think.isEmpty(this.mod.c_module_slave) ? {} : cmpage.objFromString(this.mod.c_module_slave);
 
     }

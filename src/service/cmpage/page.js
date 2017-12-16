@@ -1072,10 +1072,11 @@ module.exports = class extends PageBase {
      * @return {string}  HTML片段
      */
     htmlGetFooter() {
+        let ret ='';
         if (this.mod.c_pager) {
             let cnt = this.mod.user.listColumns === cmpage.ui.enumListColumns.MOBILE ?
                 `${this.mod.pageSize > this.list.count ? this.list.count: this.mod.pageSize} / ${this.list.count}` : `每页&nbsp;${this.mod.pageSize}&nbsp;条，共  ${this.list.count} 条`;
-            return `<div class="bjui-pageFooter">
+            ret = `<div class="bjui-pageFooter">
                 <div class="pages">
                     <span>${cnt}</span>
                 </div>
@@ -1084,7 +1085,12 @@ module.exports = class extends PageBase {
                 </div>
             </div>`;
         }
-        return '';
+        //cmpage.debug(this.mod.c_other.requireJs);
+        if(!think.isEmpty(this.mod.c_other.requireJs)){
+            ret += ` <script src="${this.mod.c_other.requireJs}"></script>`
+        }
+
+        return ret;
     }
 
     /**
