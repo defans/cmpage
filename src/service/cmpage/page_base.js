@@ -150,17 +150,17 @@ module.exports = class extends Base {
     async getQueryWhere() {
         let ret = [' where 1=1'];
         let parmsUrl = this.mod.parmsUrl;
-        debug(parmsUrl,'parmsUrl');
+        debug(parmsUrl, 'parmsUrl');
         for (let md of this.modQuerys) {
             if (md.c_type === "fixed") { //如果是‘固定’，则直接增加c_memo中的设置值
                 let wh = ` (${md.c_memo.replace(/#userID#/,this.mod.user.id)
                     .replace(/#groupID#/,this.mod.user.groupID)
                     .replace(/#groups#/,this.mod.user.groups)
                     .split(/##/).join('\'')})`;
-                wh = this.cmpage.objPropertysReplaceToStr(wh,parmsUrl);
                 if (wh.indexOf('#value#') > -1) {
                     wh = think.isEmpty(parmsUrl[md.c_column]) ? '' : wh.replace(/#value#/, parmsUrl[md.c_column]);
                 }
+                wh = this.cmpage.objPropertysReplaceToStr(wh, parmsUrl);
 
                 //debug(parmsUrl,'page.getQueryWhere - parmsUrl');
                 //debug(md.c_memo,'page.getQueryWhere - md.c_memo');
@@ -327,7 +327,7 @@ module.exports = class extends Base {
         if (this.mod.editID > 0) {
             let fields = [];
             for (let edit of this.modEdits) {
-                if (edit.c_desc.indexOf('fn:') !== 0 && edit.c_isretrieve) {
+                if (edit.c_desc.indexOf('fn:') !== 0 && edit.c_enable) {
                     fields.push(edit.c_desc == edit.c_column ? edit.c_desc : `${edit.c_desc} as ${edit.c_column}`);
                 }
             }
@@ -373,8 +373,8 @@ module.exports = class extends Base {
                 } else if (edit.c_coltype === 'float') {
                     this.rec[edit.c_column] = parseFloat(colValue) || 0.0;
                 } else if (edit.c_coltype === 'bool') {
-                    this.rec[edit.c_column] =(colValue && colValue.toLowerCase() === 'false') ? true : Boolean(colValue);
-                }else{
+                    this.rec[edit.c_column] = (colValue && colValue.toLowerCase() === 'false') ? true : Boolean(colValue);
+                } else {
                     this.rec[edit.c_column] = colValue;
                 }
             }

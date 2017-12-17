@@ -31,7 +31,6 @@
                     </select>
                 </th>
                 <th title="说明"><input type="text" name="editList[#index#].c_desc" data-rule="required" value="" size="5"></th>
-                <th title="检索"><input type="checkbox" name="editList[#index#].c_isshow" class="j-icheck" data-toggle="icheck" value="true"></th>
                 <th title="是否编辑"><input type="checkbox" name="editList[#index#].c_editable" class="j-icheck" data-toggle="icheck" value="true"></th>
                 <th title="编辑类型">
                     <select name="editList[#index#].c_type" data-toggle="selectpicker" data-rule="required">
@@ -62,7 +61,6 @@
                     <td ><%= item.c_column%></td>
                     <td data-val="<%= item.c_coltype%>"><%= item.c_coltype%></td>
                     <td ><%= item.c_desc%></td>
-                    <td data-val="<%= (item.c_isshow || item.c_isshow == 1 ? 'true':'false')%>">Y</td>
                     <td data-val="<%= (item.c_editable || item.c_editable == 1 ? 'true':'false')%>">Y</td>
                     <td data-val="<%= item.c_type%>"><%= item.c_type%></td>
                     <td ><%= item.c_format%></td>
