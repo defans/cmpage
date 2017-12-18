@@ -13,6 +13,7 @@ const Base = require('../cmpage/base.js');
 module.exports = class extends Base {
 
     async test(cronID) {
+        debug('dddddddddddddddd');
         const json = await this.fetchJson('https://api.github.com/repos/thinkjs/think-fetch');
 
         cmpage.warn(json);
@@ -20,10 +21,10 @@ module.exports = class extends Base {
 
     }
 
-    async fetchJson(cronID){
+    async exeByUrl(cronID){
         let cron = await this.model('t_crontab').where(`id=${cronID}`).find();
         let exeRole = this.cmpage.objFromString(cron.c_exe_role);
-        cmpage.warn(exeRole);
+//        cmpage.warn(exeRole);
         if(!think.isEmpty(exeRole.url)){
             let json = await this.fetchJson(exeRole.url);
             cmpage.warn(json);

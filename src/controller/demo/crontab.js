@@ -18,10 +18,10 @@ module.exports = class extends Base {
     }
 
     async testAction() {
-        const crontabApp = this.cmpage.service('demo/crontab');
-        let cron = await crontabApp.getCrontabByNo('001');
+        const crontabApp = this.cmpage.service('admin/crontab');
+        let cron = await crontabApp.getCrontabByNo(this.get('no'));
         if (cron) {
-            // debug('tttttttttttttttttest');
+             debug('tttttttttttttttttest');
             // cronApp.addCrontabLog(cron.id, 'tttttttttttttttest');
             return this.success();
         }

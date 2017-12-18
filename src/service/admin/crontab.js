@@ -90,7 +90,14 @@ module.exports = class extends CMPage {
     /** 重新配置任务列表
      * @method  setConfig
      */
-    async setConfig() {
+    async setConfig(isConfig) {
+        //重写配置文件
+        const fs = require('fs');
+        if(!isConfig){
+            fs.writeFileSync(`${think.ROOT_PATH}/src/config/crontab.js`, 'module.exports=[]');
+            return;
+        }
+
         let crontabList = await this.query(`select * from t_crontab where c_status=1 and c_time_start <'${cmpage.datetime()} 23:59:59' and c_time_end >'${cmpage.datetime()}' `);
         let tasks = [];
         for (let md of crontabList) {
@@ -99,17 +106,13 @@ module.exports = class extends CMPage {
             }
             let exeRole = this.cmpage.objFromString(md.c_exe_role);
             if(!think.isEmpty(exeRole.fn)){
-                let task = `{cron:"${md.c_cycle_role}",handle:()=>{
-                    const cronApp = think.service('crontab_exe','admin');
-                    await cronApp.${exeRole.fn}(${md.id});              
-                  }}`;
+                let task = `{cron:'${md.c_cycle_role}',handle:'/admin/index/crontab_exe?fn=${exeRole.fn}&id=${md.id}'}`;
                 tasks.push(task);    
             }
         }
         let crontabConfig = `module.exports =[${tasks.join(',')}]`;
-        //重写配置文件
-        const fs = require('fs');
-        fs.writeFileSync(`${think.ROOT_PATH}/src/config/crontab.js`, `module.exports =${crontabConfig}`);
+        fs.writeFileSync(`${think.ROOT_PATH}/src/config/crontab.js`, crontabConfig);
     }
+
 
 }

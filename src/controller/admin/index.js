@@ -277,9 +277,28 @@ module.exports = class extends Base {
 
     //刷新任务列表的缓存
     async refresh_crontabAction() {
-        await cmpage.service('admin/crontab').setConfig();
-        
+        await cmpage.service('admin/crontab').setConfig(true);        
         return this.success_bjui_doajax("执行成功，定时任务列表已经刷新!");
+    }
+    //刷新任务列表的缓存
+    async stop_crontabAction() {
+        await cmpage.service('admin/crontab').setConfig(false);        
+        return this.success_bjui_doajax("执行成功，定时任务列表已经清空!");
+    }
+
+    //刷新任务列表的缓存
+    async crontab_exeAction() {
+        // 如果不是定时任务调用，则拒绝
+        if (!this.isCli) {
+            return false;
+        }
+        const fn = this.get('fn');
+        const id = this.get('id');
+        const app = cmpage.service('admin/crontab_exe');
+        if(think.isFunction(app[fn])){
+            await app[fn](id);
+        }
+        return this.fail();
     }
 
 

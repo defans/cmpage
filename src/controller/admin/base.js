@@ -33,7 +33,7 @@ module.exports = class extends Base {
      */
     async __before() {
         //部分 action 下不检查
-        let blankActions = ["login", "get_groups"];
+        let blankActions = ["login", "get_groups", "crontab_exe"];
         //console.log(this.ctx.action);
         if (blankActions.indexOf(this.ctx.action) >= 0) {
             return;
