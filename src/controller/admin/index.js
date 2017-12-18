@@ -275,6 +275,13 @@ module.exports = class extends Base {
         });
     }
 
+    //刷新任务列表的缓存
+    async refresh_crontabAction() {
+        await cmpage.service('admin/crontab').setConfig();
+        
+        return this.success_bjui_doajax("执行成功，定时任务列表已经刷新!");
+    }
+
 
     installAction() {
         if (this.ip() != "127.0.0.1") {

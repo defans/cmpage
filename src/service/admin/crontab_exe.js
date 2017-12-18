@@ -12,11 +12,23 @@ const Base = require('../cmpage/base.js');
 
 module.exports = class extends Base {
 
-    async test(taskID) {
-        let msg = 'tttttttttttest___' + taskID;
-        debug(msg);
-        await this.addCrontabLog(taskID, msg, this.cmpage.enumStatusExecute.SUCCESS);
+    async test(cronID) {
+        const json = await this.fetchJson('https://api.github.com/repos/thinkjs/think-fetch');
 
+        cmpage.warn(json);
+        //await this.addCrontabLog(taskID, msg, this.cmpage.enumStatusExecute.SUCCESS);
+
+    }
+
+    async fetchJson(cronID){
+        let cron = await this.model('t_crontab').where(`id=${cronID}`).find();
+        let exeRole = this.cmpage.objFromString(cron.c_exe_role);
+        cmpage.warn(exeRole);
+        if(!think.isEmpty(exeRole.url)){
+            let json = await this.fetchJson(exeRole.url);
+            cmpage.warn(json);
+            await this.addCrontabLog(taskID, this.cmpage.objToString(json), this.cmpage.enumStatusExecute.SUCCESS);
+        }
     }
 
     async addCrontabLog(cronID, msg, status) {
@@ -30,5 +42,7 @@ module.exports = class extends Base {
         };
         await this.model('t_crontab_log').add(md);
     }
+
+
 
 }

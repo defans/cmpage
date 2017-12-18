@@ -60,6 +60,16 @@ module.exports = class extends PageMs {
         return '';
     }
     
+    /**
+     * 结束某个期次的库存核算，供前端页面调用
+     * @method  periodFinish
+     * @return {object}  返回前端页面的对象
+     * @param {int} periodID  期次ID
+     * @param   {int} isClose 1:完成结转，0：重写核算
+     */
+    async periodFinish(periodID,isClose){
+
+    }
 
      
 }

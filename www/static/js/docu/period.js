@@ -9,7 +9,7 @@ function period_calc(){
                 okCallback: function (json, options) {
                     var rec = json.data;
                     BJUI.navtab('reload', {
-                        url: '/cmpage/page/edit_ms?modulename=Period&c_id=' + rec.id
+                        url: '/cmpage/page/edit_ms?modulename=Period&c_id=' + rec.id, type:"GET"
                     });
                 }
             });
@@ -19,14 +19,15 @@ function period_calc(){
     return false;   
 } 
 
-
-function period_finish(periodID){  
+//结束某个期次的库存核算，通过动态调用后端方法进行
+//@parm isClose     1:完成结转，0：重写核算
+function period_finish(periodID,isClose){  
     $(this).alertmsg("confirm", "是否确定要结束该仓库的库存结转？",{
         okCall:function(){                
             $.ajax({
-                type: "POST",
-                url: "/docu/period/period_finish",
-                data: "periodID="+ periodID, // 序列化参数，以FORM形式传到后端
+                type: "GET",
+                url: "/cmpage/utils/callFunction",
+                data: "modulename=Period&fn=periodFinish&parms="+ periodID+","+isClose, // 序列化参数，以FORM形式传到后端
                 async: false,
                 success: function (ret) {
                    // var ret =eval("("+data+")")
@@ -34,7 +35,8 @@ function period_finish(periodID){
                     if(ret.statusCode=="200")
                     {
                         BJUI.navtab('reload', { 
-                            url:"/cmpage/page/edit_ms?modulename=Period&c_id="+ret.newID, type:"GET"})   
+                            url:"/cmpage/page/edit_ms?modulename=Period&c_id="+periodID, type:"GET"
+                        });   
                     }            
                 }
             }); 
@@ -46,14 +48,14 @@ function period_finish(periodID){
 
 
 //进行关账或者反关账操作
-//@parm is_back     1:关账，0：反关账
-function period_close(is_close){
+//@parm isClose     1:关账，0：反关账
+function period_close(isClose){
     $(this).alertmsg("confirm", "是否确定要进行该操作？", {
         okCall: function () {
             $.ajax({
-                type: "POST",
-                url: "/docu/period/period_close",
-                data: "close=" + is_back, // 序列化参数，以FORM形式传到后端
+                type: "GET",
+                url: "/cmpage/utils/callFunction",
+                data: "modulename=Period&fn=periodClose&parms="+isClose, // 序列化参数，以FORM形式传到后端
                 async: false,
                 success: function (ret) {
                     //var ret = eval("(" + data + ")")

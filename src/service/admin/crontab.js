@@ -30,7 +30,7 @@ module.exports = class extends CMPage {
      * @param {int} id  客户ID
      */
     async getNameById(id) {
-        let md = await this.query(`select * from t_crontab where c_id=${id}`);
+        let md = await this.query(`select * from t_crontab where id=${id}`);
         if (think.isEmpty(md)) return '';
         return md.c_name;
     }
@@ -97,16 +97,19 @@ module.exports = class extends CMPage {
             if (think.isEmpty(md.c_cycle_role) || think.isEmpty(md.c_exe_role)) {
                 continue;
             }
-            let task = `{cron:"${md.c_cycle_role}",handle:()=>{
-                const cronApp = think.service('crontab_exe','demo');
-                cronApp.${md.c_exe_role}(${md.id});              
-              }}`;
-            tasks.push(task);
+            let exeRole = this.cmpage.objFromString(md.c_exe_role);
+            if(!think.isEmpty(exeRole.fn)){
+                let task = `{cron:"${md.c_cycle_role}",handle:()=>{
+                    const cronApp = think.service('crontab_exe','admin');
+                    await cronApp.${exeRole.fn}(${md.id});              
+                  }}`;
+                tasks.push(task);    
+            }
         }
         let crontabConfig = `module.exports =[${tasks.join(',')}]`;
         //重写配置文件
         const fs = require('fs');
-        fs.writeFileSync(`${think.ROOT_PATH}/src/demo/config/crontab.js`, `module.exports =${crontabConfig}`);
+        fs.writeFileSync(`${think.ROOT_PATH}/src/config/crontab.js`, `module.exports =${crontabConfig}`);
     }
 
 }

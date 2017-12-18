@@ -1,7 +1,6 @@
 /**
  * this file will be loaded before server started
  * you can define global functions used in controllers, models, templates
- * 定义了全局对象 cmpage， 把框架用到的参数设置和公共方法放入其中，统一用 cmpage.xxx 来调用
  */
 
 

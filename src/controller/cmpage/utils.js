@@ -29,9 +29,13 @@ module.exports = class extends Base {
         //        let ret = await this.model('cmpage/page').query('select c_name,c_time from t_customer limit 2');
         //debug(ret,'utils.C.test - ret');
 
-        let ret = Number(0.3).sub(0.2);
-        console.log(ret);
-        console.log(0.3 - 0.2);
+        // let ret = Number(0.3).sub(0.2);
+        // console.log(ret);
+        // console.log(0.3 - 0.2);
+
+        const tt = cmpage.service('demo/crontab_exe');
+        await tt.test(1);
+
         return this.json({});
     }
 
@@ -77,7 +81,7 @@ module.exports = class extends Base {
     }
 
     /**
-     * 根据URL参数直接调用相关model的相关方法， 调用： /cmpage/utils/callFunction?model=xxx&fn=xxx&parms=xxx,xxx
+     * 根据URL参数直接调用相关model的相关方法， 调用： /cmpage/utils/callFunction?modulename=xxx&fn=xxx&parms=xxx,xxx
      * @method callFunction
      * @return {json}
      */

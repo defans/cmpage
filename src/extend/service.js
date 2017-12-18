@@ -13,19 +13,11 @@
  */
 
 /**
- * controller的扩展类，在controller/xxx中可以直接引用
- * @class common.extend.controller
+ * service的扩展类，在service/xxx中可以直接引用
+ * @class common.extend.service
  */
 module.exports = {
-    success_bjui_doajax(msg, data) {
-        let ret = {
-            errno: 0,
-            errmsg: '',
-            statusCode: 200,
-            message: msg,
-            data: data,
-            callback: ''
-        };
-        return this.json(ret);
+    async fetchJson(url){
+        return await this.fetch(url).then(res => res.json());
     }
 }
