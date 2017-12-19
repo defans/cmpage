@@ -27,8 +27,8 @@ module.exports = class extends Base {
 //        cmpage.warn(exeRole);
         if(!think.isEmpty(exeRole.url)){
             let json = await this.fetchJson(exeRole.url);
-            cmpage.warn(json);
-            await this.addCrontabLog(taskID, this.cmpage.objToString(json), this.cmpage.enumStatusExecute.SUCCESS);
+            cmpage.debug(json);
+            await this.addCrontabLog(cronID, this.cmpage.objToString(json), this.cmpage.enumStatusExecute.SUCCESS);
         }
     }
 
@@ -36,9 +36,8 @@ module.exports = class extends Base {
         let md = {
             c_crontab: cronID,
             c_desc: msg,
-            c_time: cmpage.datetime(),
+            c_time: new Date(),// this.cmpage.datetime('yyyy-MM-dd HH:mm:ss'),
             c_status: status,
-            c_memo: '',
             c_group: 0
         };
         await this.model('t_crontab_log').add(md);
