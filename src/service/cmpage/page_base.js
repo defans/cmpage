@@ -179,7 +179,7 @@ module.exports = class extends Base {
                     if (md.c_coltype == "bool") {
                         value = think.isEmpty(value) ? 0 : 1;
                     }
-                    if (md.c_type.indexOf('elect') > 0 && (value === '-1' || value === '')) {
+                    if (md.c_type.indexOf('elect') > 0 && (value === '-1' || value === '' || value === '0')) {
                         //debug(md,'page.getQueryWhere.select - md');
                         continue;
                     }
