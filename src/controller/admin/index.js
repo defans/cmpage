@@ -53,8 +53,10 @@ module.exports = class extends Base {
             }
         }
         vb.menuHtml = menuHtml;
+        let cnt = await cmpage.service('flow/msg').getUnReadCount(user.id);
+        vb.msgCount = cnt.data;
 
-        // cmpage.debug(vb.itemList);
+        cmpage.warn(vb);
         this.assign('vb', vb);
         return this.display();
     }

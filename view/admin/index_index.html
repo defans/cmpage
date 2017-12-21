@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title><%= vb.title%></title>
-  <meta name="Keywords" content="cmpage,defans"/>
-  <meta name="Description" content="cmpage by defans@sina.cn"/>
+    <title>
+        <%= vb.title%>
+    </title>
+    <meta name="Keywords" content="cmpage,defans" />
+    <meta name="Description" content="cmpage by defans@sina.cn" />
 
-  <link href="/static/css/index.css" rel="stylesheet">
+    <link href="/static/css/index.css" rel="stylesheet">
     <link rel="apple-touch-icon-precomposed" href="/static/assets/ico/apple-touch-icon-precomposed.png">
     <link rel="shortcut icon" type="image/png" href="/static/images/favicon.png">
 
@@ -76,39 +79,61 @@
     <script src="/static/bjui/plugins/download/jquery.fileDownload.js"></script>
     <!-- init -->
     <script type="text/javascript">
-        $(function() {
+        $(function () {
             BJUI.init({
-                JSPATH       : '/static/bjui/',         //[可选]框架路径
-                PLUGINPATH   : '/static/bjui/plugins/', //[可选]插件路径
-                loginInfo    : {url:'login_timeout.html', title:'登录', width:440, height:240}, // 会话超时后弹出登录对话框
-                statusCode   : {ok:200, error:300, timeout:301}, //[可选]
-                ajaxTimeout  : 300000, //[可选]全局Ajax请求超时时间(毫秒)
-                alertTimeout : 2000,  //[可选]信息提示[info/correct]自动关闭延时(毫秒)
-                pageInfo     : {total:'totalRow', pageCurrent:'pageCurrent', pageSize:'pageSize', orderField:'orderField', orderDirection:'orderDirection'}, //[可选]分页参数
-                keys         : {statusCode:'statusCode', message:'message'}, //[可选]
-                ui           : {
-                    sidenavWidth     : 220,
-                    showSlidebar     : true, //[可选]左侧导航栏锁定/隐藏
-                    clientPaging     : true, //[可选]是否在客户端响应分页及排序参数
-                    overwriteHomeTab : false //[可选]当打开一个未定义id的navtab时，是否可以覆盖主navtab(我的主页)
+                JSPATH: '/static/bjui/', //[可选]框架路径
+                PLUGINPATH: '/static/bjui/plugins/', //[可选]插件路径
+                loginInfo: {
+                    url: 'login_timeout.html',
+                    title: '登录',
+                    width: 440,
+                    height: 240
+                }, // 会话超时后弹出登录对话框
+                statusCode: {
+                    ok: 200,
+                    error: 300,
+                    timeout: 301
+                }, //[可选]
+                ajaxTimeout: 300000, //[可选]全局Ajax请求超时时间(毫秒)
+                alertTimeout: 2000, //[可选]信息提示[info/correct]自动关闭延时(毫秒)
+                pageInfo: {
+                    total: 'totalRow',
+                    pageCurrent: 'pageCurrent',
+                    pageSize: 'pageSize',
+                    orderField: 'orderField',
+                    orderDirection: 'orderDirection'
+                }, //[可选]分页参数
+                keys: {
+                    statusCode: 'statusCode',
+                    message: 'message'
+                }, //[可选]
+                ui: {
+                    sidenavWidth: 220,
+                    showSlidebar: true, //[可选]左侧导航栏锁定/隐藏
+                    clientPaging: true, //[可选]是否在客户端响应分页及排序参数
+                    overwriteHomeTab: false //[可选]当打开一个未定义id的navtab时，是否可以覆盖主navtab(我的主页)
                 },
-                debug        : true,    // [可选]调试模式 [true|false，默认false]
-                theme        : 'green' // 若有Cookie['bjui_theme'],优先选择Cookie['bjui_theme']。皮肤[五种皮肤:default, orange, purple, blue, red, green]
+                debug: true, // [可选]调试模式 [true|false，默认false]
+                theme: 'green' // 若有Cookie['bjui_theme'],优先选择Cookie['bjui_theme']。皮肤[五种皮肤:default, orange, purple, blue, red, green]
             })
-            if(document.documentElement.clientWidth <768){
+            if (document.documentElement.clientWidth < 768) {
                 BJUI.setRegional('pagination', {
-                    first   : '',
-                    last    : '',
-                    prev    : '',
-                    next    : ''
+                    first: '',
+                    last: '',
+                    prev: '',
+                    next: ''
                 })
             }
 
             //时钟
-            var today = new Date(), time = today.getTime()
+            var today = new Date(),
+                time = today.getTime()
             $('#bjui-date').html(today.formatDate('yyyy/MM/dd'))
-            $('#bjui-top').bjuiajax('doAjax', { url: '/admin/index/set_client_width?width='+document.documentElement.clientWidth ,callback:function(data){}})
-            setInterval(function() {
+            $('#bjui-top').bjuiajax('doAjax', {
+                url: '/admin/index/set_client_width?width=' + document.documentElement.clientWidth,
+                callback: function (data) {}
+            })
+            setInterval(function () {
                 today = new Date(today.setSeconds(today.getSeconds() + 1))
                 $('#bjui-clock').html(today.formatDate('HH:mm:ss'))
             }, 1000)
@@ -130,154 +155,248 @@
     </script>
 
 </head>
+
 <body>
 
-<!--[if lte IE 7]>
+    <!--[if lte IE 7]>
 <div id="errorie"><div>您还在使用老掉牙的IE，正常使用系统前请升级您的浏览器到 IE8以上版本 <a target="_blank" href="http://windows.microsoft.com/zh-cn/internet-explorer/ie-8-worldwide-languages">点击升级</a>&nbsp;&nbsp;强烈建议您更改换浏览器：<a href="http://down.tech.sina.com.cn/content/40975.html" target="_blank">谷歌 Chrome</a></div></div>
 <![endif]-->
-<div id="bjui-top" class="bjui-header">
-    <div class="container_fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapsenavbar" data-target="#bjui-top-collapse" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        <nav class="collapse navbar-collapse" id="bjui-top-collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li class="datetime"><a><span id="bjui-clock">00:00:00</span></a></li>
-                <li><a href="#"><%= vb.userName%></a></li>
+    <div id="bjui-top" class="bjui-header">
+        <div class="container_fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapsenavbar" data-target="#bjui-top-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <nav class="collapse navbar-collapse" id="bjui-top-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="datetime">
+                        <a>
+                            <span id="bjui-clock">00:00:00</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <%= vb.userName%>
+                        </a>
+                    </li>
 
 
-                <li class="dropdown"><a href="#" class="dropdown-toggle bjui-fonts-tit" data-toggle="dropdown" style="background-color:#e87e38;font-weight:bold;" title="我的登录">
-                        <i class="fa fa-user"></i> 我的登录</a>
-                    <ul class="dropdown-menu" role="menu" id="bjui-fonts">
-                        <li><a href="/cmpage/page/list?modulename=OtherSystem" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true"
-                            data-width="400" data-height="300" style="font-weight:bold;">&nbsp;<i class="fa fa-share"></i> 切换系统</a></li>
-                        <li><a href="/cmpage/page/list?modulename=GroupChange" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true"
-                                data-width="600" data-height="400" style="font-weight:bold;">&nbsp;<i class="fa fa-share"></i> 切换账套</a></li>
-                        <li><a href="/admin/index/login_pwd_edit" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true"
-                            data-width="400" data-height="300" style="font-weight:bold;">&nbsp;<i class="fa fa-key"></i> 修改密码</a></li>
-                        <li><a  href="#" onclick="return loginExit();" style="font-weight:bold;">&nbsp;<i class="fa fa-power-off"></i> 注销登陆</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown"><a href="#" class="dropdown-toggle bjui-fonts-tit" data-toggle="dropdown" style="background-color:#39175a;" title="更改字号">
-                        <i class="fa fa-font"></i> 小</a>
-                    <ul class="dropdown-menu" role="menu" id="bjui-fonts">
-                        <li><a href="javascript:;" class="bjui-font-a" data-toggle="fonts"><i class="fa fa-font"></i> 特大</a></li>
-                        <li><a href="javascript:;" class="bjui-font-b" data-toggle="fonts"><i class="fa fa-font"></i> 大</a></li>
-                        <li><a href="javascript:;" class="bjui-font-c" data-toggle="fonts"><i class="fa fa-font"></i> 中</a></li>
-                        <li><a href="javascript:;" class="bjui-font-d" data-toggle="fonts"><i class="fa fa-font"></i> 小</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown active"><a href="#" class="dropdown-toggle theme" data-toggle="dropdown" title="切换皮肤"><i class="fa fa-tree"></i></a>
-                    <ul class="dropdown-menu" role="menu" id="bjui-themes">
-                        <!--
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle bjui-fonts-tit" data-toggle="dropdown" style="background-color:#e87e38;font-weight:bold;"
+                            title="我的登录">
+                            <i class="fa fa-user"></i> 我的登录</a>
+                        <ul class="dropdown-menu" role="menu" id="bjui-fonts">
+                            <li>
+                                <a href="/cmpage/page/list?modulename=OtherSystem" data-toggle="dialog" data-id="sys_user_changepass"
+                                    data-mask="true" data-width="400" data-height="300" style="font-weight:bold;">&nbsp;
+                                    <i class="fa fa-share"></i> 切换系统</a>
+                            </li>
+                            <li>
+                                <a href="/cmpage/page/list?modulename=GroupChange" data-toggle="dialog" data-id="sys_user_changepass"
+                                    data-mask="true" data-width="600" data-height="400" style="font-weight:bold;">&nbsp;
+                                    <i class="fa fa-share"></i> 切换账套</a>
+                            </li>
+                            <li>
+                                <a href="/admin/index/login_pwd_edit" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true"
+                                    data-width="400" data-height="300" style="font-weight:bold;">&nbsp;
+                                    <i class="fa fa-key"></i> 修改密码</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="return loginExit();" style="font-weight:bold;">&nbsp;
+                                    <i class="fa fa-power-off"></i> 注销登陆</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle bjui-fonts-tit" data-toggle="dropdown" style="background-color:#39175a;"
+                            title="更改字号">
+                            <i class="fa fa-font"></i> 小</a>
+                        <ul class="dropdown-menu" role="menu" id="bjui-fonts">
+                            <li>
+                                <a href="javascript:;" class="bjui-font-a" data-toggle="fonts">
+                                    <i class="fa fa-font"></i> 特大</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="bjui-font-b" data-toggle="fonts">
+                                    <i class="fa fa-font"></i> 大</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="bjui-font-c" data-toggle="fonts">
+                                    <i class="fa fa-font"></i> 中</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="bjui-font-d" data-toggle="fonts">
+                                    <i class="fa fa-font"></i> 小</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle theme" data-toggle="dropdown" title="切换皮肤">
+                            <i class="fa fa-tree"></i>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" id="bjui-themes">
+                            <!--
                         <li><a href="javascript:;" class="theme_default" data-toggle="theme" data-theme="default">&nbsp;<i class="fa fa-tree"></i> 黑白分明&nbsp;&nbsp;</a></li>
                         <li><a href="javascript:;" class="theme_orange" data-toggle="theme" data-theme="orange">&nbsp;<i class="fa fa-tree"></i> 橘子红了</a></li>
                         -->
-                        <li><a href="javascript:;" class="theme_purple" data-toggle="theme" data-theme="purple">&nbsp;<i class="fa fa-tree"></i> 紫罗兰</a></li>
-                        <li class="active"><a href="javascript:;" class="theme_blue" data-toggle="theme" data-theme="blue">&nbsp;<i class="fa fa-tree"></i> 天空蓝</a></li>
-                        <li><a href="javascript:;" class="theme_green" data-toggle="theme" data-theme="green">&nbsp;<i class="fa fa-tree"></i> 绿草如茵</a></li>
-                    </ul>
-                </li>
-                <li><a href="javascript:;" onclick="bjui_index_exchange()" title="横向收缩/充满屏幕"><i class="fa fa-exchange"></i></a></li>
-            </ul>
-        </nav>
-    </div>
-</div>
-<header class="navbar bjui-header" id="bjui-navbar">
-    <div class="container_fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" id="bjui-navbar-collapsebtn" data-toggle="collapsenavbar" data-target="#bjui-navbar-collapse" aria-expanded="false">
-                <i class="fa fa-angle-double-right"></i>
-            </button>
-            <a class="navbar-brand" href="/home/index/index"><img src="/static/images/logo.png" height="30"></a>
+                            <li>
+                                <a href="javascript:;" class="theme_purple" data-toggle="theme" data-theme="purple">&nbsp;
+                                    <i class="fa fa-tree"></i> 紫罗兰</a>
+                            </li>
+                            <li class="active">
+                                <a href="javascript:;" class="theme_blue" data-toggle="theme" data-theme="blue">&nbsp;
+                                    <i class="fa fa-tree"></i> 天空蓝</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="theme_green" data-toggle="theme" data-theme="green">&nbsp;
+                                    <i class="fa fa-tree"></i> 绿草如茵</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" onclick="bjui_index_exchange()" title="横向收缩/充满屏幕">
+                            <i class="fa fa-exchange"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-        <nav class="collapse navbar-collapse" id="bjui-navbar-collapse">
-            <ul class="nav navbar-nav navbar-right" id="bjui-hnav-navbar">
-                <%- vb.menuHtml%>
-            </ul>
-        </nav>
     </div>
-</header>
-<div id="bjui-body-box">
-    <div class="container_fluid" id="bjui-body">
-        <div id="bjui-sidenav-col">
-            <div id="bjui-sidenav">
-                <div id="bjui-sidenav-arrow" data-toggle="tooltip" data-placement="left" data-title="隐藏左侧菜单">
-                    <i class="fa fa-long-arrow-left"></i>
-                </div>
-                <div id="bjui-sidenav-box">
+    <header class="navbar bjui-header" id="bjui-navbar">
+        <div class="container_fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" id="bjui-navbar-collapsebtn" data-toggle="collapsenavbar" data-target="#bjui-navbar-collapse"
+                    aria-expanded="false">
+                    <i class="fa fa-angle-double-right"></i>
+                </button>
+                <a class="navbar-brand" href="/home/index/index">
+                    <img src="/static/images/logo.png" height="30">
+                </a>
+            </div>
+            <nav class="collapse navbar-collapse" id="bjui-navbar-collapse">
+                <ul class="nav navbar-nav navbar-right" id="bjui-hnav-navbar">
+                    <%- vb.menuHtml%>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div id="bjui-body-box">
+        <div class="container_fluid" id="bjui-body">
+            <div id="bjui-sidenav-col">
+                <div id="bjui-sidenav">
+                    <div id="bjui-sidenav-arrow" data-toggle="tooltip" data-placement="left" data-title="隐藏左侧菜单">
+                        <i class="fa fa-long-arrow-left"></i>
+                    </div>
+                    <div id="bjui-sidenav-box">
 
+                    </div>
                 </div>
             </div>
-        </div>
-        <div id="bjui-navtab" class="tabsPage">
-            <div id="bjui-sidenav-btn" data-toggle="tooltip" data-title="显示左侧菜单" data-placement="right">
-                <i class="fa fa-bars"></i>
-            </div>
-            <div class="tabsPageHeader">
-                <div class="tabsPageHeaderContent">
-                    <ul class="navtab-tab nav nav-tabs">
-                        <li data-url="/admin/index/home"><a href="javascript:;"><span><i class="fa fa-home"></i> #maintab#</span></a></li>
-                    </ul>
+            <div id="bjui-navtab" class="tabsPage">
+                <div id="bjui-sidenav-btn" data-toggle="tooltip" data-title="显示左侧菜单" data-placement="right">
+                    <i class="fa fa-bars"></i>
                 </div>
-                <div class="tabsLeft"><i class="fa fa-angle-double-left"></i></div>
-                <div class="tabsRight"><i class="fa fa-angle-double-right"></i></div>
-                <div class="tabsMore"><i class="fa fa-angle-double-down"></i></div>
-            </div>
-            <ul class="tabsMoreList">
-                <li><a href="javascript:;"></a></li>
-            </ul>
-            <div class="navtab-panel tabsPageContent">
-                <div class="navtabPage unitBox">
-                    <div class="bjui-pageContent" style="background:#FFF;">
- 数据加载中，请稍后 ...
+                <div class="tabsPageHeader">
+                    <div class="tabsPageHeaderContent">
+                        <ul class="navtab-tab nav nav-tabs">
+                            <li data-url="/admin/index/home">
+                                <a href="javascript:;">
+                                        <span><i class="fa fa-home"></i> #maintab#</span>
+                                        <span id="msg-count" class="badge" style=" background-color:#fde5d4;color:red;"><%= vb.msgCount%></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tabsLeft">
+                        <i class="fa fa-angle-double-left"></i>
+                    </div>
+                    <div class="tabsRight">
+                        <i class="fa fa-angle-double-right"></i>
+                    </div>
+                    <div class="tabsMore">
+                        <i class="fa fa-angle-double-down"></i>
+                    </div>
+                </div>
+                <ul class="tabsMoreList">
+                    <li>
+                        <a href="javascript:;"></a>
+                    </li>
+                </ul>
+                <div class="navtab-panel tabsPageContent">
+                    <div class="navtabPage unitBox">
+                        <div class="bjui-pageContent" style="background:#FFF;">
+                            数据加载中，请稍后 ...
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="/static/bjui/other/ie10-viewport-bug-workaround.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/static/bjui/other/ie10-viewport-bug-workaround.js"></script>
 
 </body>
+
 </html>
 
 <script type="text/javascript">
-  function loginExit() {
-    $(this).alertmsg("confirm", "是否要退出当前登录的账户？", {
-      okCall: function () {
-        window.location.href = "/admin/index/exit_login";
-      }
-    });
-  }
-  function modulePreview(url,title) {
-      BJUI.navtab({ id:'module_preview', url:url, title:title  });
-  }
-  var resizeTimer = null;
+    function loginExit() {
+        $(this).alertmsg("confirm", "是否要退出当前登录的账户？", {
+            okCall: function () {
+                window.location.href = "/admin/index/exit_login";
+            }
+        });
+    }
 
-  function doResize(){
-      BJUI.ajax('doajax', {
-          url:  '/admin/index/set_client_width?width='+document.documentElement.clientWidth ,
-          loadingmask: false,
-          okCallback: function(json, options) {
-          }
-      });
-      resizeTimer = null;
-  }
-  window.onresize = function(){
-      if( resizeTimer == null) {
-          resizeTimer = setTimeout("doResize()",1000);
-      }
-  }
+    function modulePreview(url, title) {
+        BJUI.navtab({
+            id: 'module_preview',
+            url: url,
+            title: title
+        });
+    }
+    var resizeTimer = null;
 
+    function doResize() {
+        BJUI.ajax('doajax', {
+            url: '/admin/index/set_client_width?width=' + document.documentElement.clientWidth,
+            loadingmask: false,
+            okCallback: function (json, options) {}
+        });
+        resizeTimer = null;
+    }
+    window.onresize = function () {
+        if (resizeTimer == null) {
+            resizeTimer = setTimeout("doResize()", 1000);
+        }
+    }
+
+    var msgCount = 0;
+    setInterval("msgGetCountUnread()", 60000);
+    /*更新商户姓名、佣金额、资金额*/
+    function msgGetCountUnread() {
+        $.ajax({
+            type: 'post',
+            url: '/cmpage/utils/call_function_by_modulename?modulename=Msg&fn=getUnReadCount&parms=',
+            async: false,
+            dataType: 'json',
+            success: function (ret) {                
+                if (ret.statusCode == "200") {                    
+                    if (msgCount != ret.data) {
+                        msgCount = ret.data;
+                        $("#msg-count").html(ret.data);
+                        $("#btnSearchMsg").click();
+                    }
+                }
+            }
+        });
+    }
 </script>
 
-<script type="text/javascript" src="/static/js/cmpage/web_utils.js" ></script>
-<script type="text/javascript" src="/static/js/cmpage/web_cmpage.js" ></script>
-<script type="text/javascript" src="/static/js/cmpage/web_flow.js" ></script>
+<script type="text/javascript" src="/static/js/cmpage/web_utils.js"></script>
+<script type="text/javascript" src="/static/js/cmpage/web_cmpage.js"></script>
+<script type="text/javascript" src="/static/js/cmpage/web_flow.js"></script>

@@ -121,15 +121,14 @@ function pageGoSeeSee(id, obj) {
     var modulename = page.find('#modulename').val();
     BJUI.alertmsg("confirm", "是否确定要查看？", {
         okCall: function () {
-            BJUI.ajax('ajaxform', {
-                url: "/cmpage/page/go_see_see?modulename=" + modulename + "&id=" + id,
-                form: $.CurrentNavtab.find('#pagerForm'),
+            BJUI.ajax('doajax', {
+                url:  '/cmpage/utils/call_function_by_modulename?modulename=Msg&fn=goSeeSee&parms=',
                 loadingmask: true,
-                okCallback: function (json, options) {
-                    if (json.statusCode === 200) {
+                okCallback: function (ret, options) {
+                    if (ret.statusCode === 200) {
                         BJUI.navtab({
                             id: 'PageGoSeeSee',
-                            url: json.url,
+                            url: ret.data.c_url,
                             title: '去看看'
                         });
 

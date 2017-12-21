@@ -767,6 +767,16 @@ exports.enumActAssignTypeExe = {
     AFTER_CC: 3,
     AFTER_CC_name: '执行并事后通知'
 };
+exports.enumMsgStatus = {
+    UNREAD: 1,
+    UNREAD_name: '未阅读',
+    READ: 2,
+    READ_name: '已阅读',
+    FINISH: 3,
+    FINISH_name: '已完成'
+};
+
+
 exports.enumTaskStatus = {
     INIT: 1,
     INIT_name: '初始化',
